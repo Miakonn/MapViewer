@@ -1,0 +1,9 @@
+﻿<Window x:Class="MapViewer.SideWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SideWindow" Height="600" Width="700">
+    <Grid Background="Black" >
+        <ContentPresenter Grid.Row="0"  Name="MapPresenterSide1" Focusable="true" Margin="10" SizeChanged="SideWinSizeChanged"   />
+        <ContentPresenter Grid.Row="0"  Name="MapPresenterSide2" Focusable="true" Margin="10" SizeChanged="SideWinSizeChanged"   />
+    </Grid>
+</Window>

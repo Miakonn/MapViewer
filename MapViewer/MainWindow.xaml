@@ -1,0 +1,39 @@
+﻿<Window x:Class="MapViewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="600" Width="700">
+    <Grid  KeyDown="MainWinKeyDown">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left" Margin="4">
+            <Button x:Name="BtnOpen"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Open image..." Click="ButtonOpen"  />
+            <Button x:Name="BtnPublish"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Publish" Click="ButtonPublish" />
+            <Button x:Name="BtnClear"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Clear" Click="ButtonClear" />
+        </StackPanel>
+        <Border BorderThickness="0,2" BorderBrush="DarkGray" MouseDown="MainWinMouseDown" MouseMove="MainWinMouseMove" MouseUp="MainWinMouseUp" KeyDown="MainWinKeyDown">
+            <Grid ClipToBounds="True" >
+                <Grid.ContextMenu>
+                    <ContextMenu Name="cm">
+                        <MenuItem Header="Insert point" />
+                        <MenuItem Header="Edit point"/>
+                        <MenuItem Header="Delete line point"  />
+                        <MenuItem Header="Mass duplicate"  />
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                    <UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}"  Background="Black">
+                    <ContentPresenter   Name="MapPresenterMain1" Focusable="true" Margin="10" SizeChanged="MainWinSizeChanged" />
+                </UserControl>
+                <UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}" >
+                        <ContentPresenter   Name="MapPresenterMain2" Focusable="true" Margin="10" SizeChanged="MainWinSizeChanged" />
+                 </UserControl>
+                    <UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}" >
+                        <ContentPresenter   Name="MapPresenterMain3" Focusable="true" Margin="10" SizeChanged="MainWinSizeChanged" />
+                    </UserControl>
+
+                    <Label Content="{Binding ToothDescription}" Foreground="Red" FontSize="18" />
+            </Grid>
+        </Border>
+
+    </DockPanel>
+     
+    </Grid>
+</Window>
