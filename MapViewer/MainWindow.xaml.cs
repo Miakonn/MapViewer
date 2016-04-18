@@ -24,9 +24,10 @@ namespace MapViewer {
 		private Rectangle _dragRectangle;
 
 		private bool _isDraggingSelectionRect;
+		private bool _isMoving;
 		private Point _origMouseDownPoint;
 
-		private bool _stateInvert;
+		private bool _ctrlPressed;
 
 		#endregion
 
@@ -45,6 +46,8 @@ namespace MapViewer {
 
 			_sideWindow.Show();
 		}
+
+		#region UI events
 
 		private void ButtonOpen(object sender, RoutedEventArgs e) {
 			var dialog = new OpenFileDialog();
@@ -76,13 +79,18 @@ namespace MapViewer {
 				_isDraggingSelectionRect = true;
 				_origMouseDownPoint = e.GetPosition(this);
 				e.Handled = true;
-				_stateInvert = Keyboard.IsKeyDown(Key.LeftCtrl);
+				_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl);
+			}
+			else if (e.ChangedButton == MouseButton.Middle) {
+				_isDraggingSelectionRect = false;
+				_isMoving = true;
+				_origMouseDownPoint = e.GetPosition(this);
+				e.Handled = true;
 			}
 		}
 
 		private void MainWinMouseMove(object sender, MouseEventArgs e) {
 			if (_isDraggingSelectionRect) {
-				Trace.Write("*");
 				var curMouseDownPoint = e.GetPosition(this);
 				if (_dragRectangle == null) {
 					InitDragSelectionRect(_origMouseDownPoint, curMouseDownPoint);
@@ -91,9 +99,14 @@ namespace MapViewer {
 
 				e.Handled = true;
 			}
-			else {
-				Trace.Write(".");
-			}
+			if (_isMoving) {
+				var curMouseDownPoint = e.GetPosition(this);
+				Vector move = curMouseDownPoint - _origMouseDownPoint;
+				_mapPrivate.Translate(move);
+				_mapPrivate.Draw();
+				_origMouseDownPoint = curMouseDownPoint;
+				e.Handled = true;
+			}			
 		}
 
 		private void MainWinMouseUp(object sender, MouseButtonEventArgs e) {
@@ -104,11 +117,22 @@ namespace MapViewer {
 					e.Handled = true;
 				}
 			}
+			else if (e.ChangedButton == MouseButton.Middle) {
+				_isMoving = false;
+				e.Handled = true;
+			}
 		}
 
+		private void MainWinMouseWheel(object sender, MouseWheelEventArgs e) {
+			double scale = (1.0 + e.Delta / 600.0);
 
+			_mapPrivate.Zoom(scale, e.GetPosition(this));
+			_mapPrivate.Draw();
+		}
 
-#region Private methods
+		#endregion
+
+		#region Private methods
 
 
 		private void Update() {
@@ -127,7 +151,7 @@ namespace MapViewer {
 			_dragRectangle = new Rectangle {
 				Width = 5,
 				Height = 5,
-				Fill = new SolidColorBrush(_stateInvert ? Colors.White : Colors.Black),
+				Fill = new SolidColorBrush(_ctrlPressed ? Colors.White : Colors.Black),
 				Opacity = 0.5
 			};
 
@@ -168,7 +192,7 @@ namespace MapViewer {
 
 		private void ApplyDragSelectionRect() {
 			if (_dragRectangle != null) {
-				_mapPrivate.RenderRectangle(GetElementRect(_dragRectangle), (byte) (_stateInvert ? 0 : 255));
+				_mapPrivate.RenderRectangle(GetElementRect(_dragRectangle), (byte) (_ctrlPressed ? 0 : 255));
 				_canvas.Children.Clear();
 			}
 		}
@@ -178,6 +202,7 @@ namespace MapViewer {
 				ClearDragSelectionRect();
 			}
 		}
-#endregion
+		#endregion
+
 	}
 }

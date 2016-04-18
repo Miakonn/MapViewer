@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,11 +11,10 @@ namespace MapViewer
 {
     internal class Map
     {
-        public  BitmapImage BackgroundImage;
-        private Transform _displayTransform = new ScaleTransform(1.0, 1.0);
         private string _imagePath;
 
-
+        public  BitmapImage BackgroundImage;
+		public MatrixTransform DisplayTransform { get; set; }
 	    public BitmapSource BmpMask { get; set; }
 
 	    public readonly Canvas CanvasMapMask = new Canvas();
@@ -31,8 +31,6 @@ namespace MapViewer
             }
         }
 
-   //     public int Transparency { get; set; }
-
         public BitmapImage Image {
             get { return BackgroundImage;  }
         }
@@ -42,6 +40,7 @@ namespace MapViewer
 		public Map(bool publicView) {
 			PublicView = publicView;
 			MaskOpacity = PublicView ? 1.0 : 0.3;
+			DisplayTransform = new MatrixTransform(1.0, 0.0, 0.0, 1.0, 1.0, 1.0);
 		}
 
 
@@ -50,7 +49,7 @@ namespace MapViewer
 			CanvasMapMask.Children.Clear();
 
             var backgroundImage = new Image {
-                RenderTransform = _displayTransform,
+                RenderTransform = DisplayTransform,
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 Margin = new Thickness(0, 0, 0, 0),
                 Source = BackgroundImage,
@@ -61,7 +60,7 @@ namespace MapViewer
 			CanvasMapMask.Children.Add(backgroundImage);
 
             var maskImage = new Image {
-                RenderTransform = _displayTransform,
+                RenderTransform = DisplayTransform,
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 Margin = new Thickness(0, 0, 0, 0),
                 Opacity = MaskOpacity,
@@ -100,12 +99,28 @@ namespace MapViewer
         public void Publish(Map mapSource) {
             BmpMask = mapSource.BmpMask.CloneCurrentValue();
 	        BackgroundImage = mapSource.BackgroundImage.CloneCurrentValue();
+	        DisplayTransform = mapSource.DisplayTransform.CloneCurrentValue();
+			Zoom(2.0, new Point(0,0));
         }
 
 		public void ClearMask() {
 			var rect = new Int32Rect(0, 0, BmpMask.PixelWidth, BmpMask.PixelHeight);
 			RenderRectangle(rect, 0);
 		}
+
+	    public void Zoom(double scale, Point pnt) {
+		    var matrix = DisplayTransform.Matrix;
+			matrix.ScaleAtPrepend(scale, scale, pnt.X, pnt.Y);
+		    DisplayTransform.Matrix = matrix;
+
+	    }
+
+	    public void Translate(Vector move) {
+			var matrix = DisplayTransform.Matrix;
+			matrix.Translate(move.X, move.Y);
+			DisplayTransform.Matrix = matrix;
+	    }
+
 
     }
 }

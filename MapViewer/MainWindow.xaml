@@ -9,7 +9,7 @@
             <Button x:Name="BtnPublish"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Publish" Click="ButtonPublish" />
             <Button x:Name="BtnClear"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Clear" Click="ButtonClear" />
         </StackPanel>
-        <Border BorderThickness="0,2" BorderBrush="DarkGray" MouseDown="MainWinMouseDown" MouseMove="MainWinMouseMove" MouseUp="MainWinMouseUp" KeyDown="MainWinKeyDown">
+        <Border BorderThickness="0,2" BorderBrush="DarkGray" MouseDown="MainWinMouseDown" MouseMove="MainWinMouseMove" MouseUp="MainWinMouseUp" KeyDown="MainWinKeyDown" MouseWheel="MainWinMouseWheel">
             <Grid ClipToBounds="True" >
                 <Grid.ContextMenu>
                     <ContextMenu Name="cm">
