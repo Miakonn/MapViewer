@@ -1,0 +1,11 @@
+﻿<Window x:Class="MapViewer.PublicWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PublicWindow" Height="600" Width="700">
+	<Border BorderThickness="0,2" BorderBrush="DarkGray" MouseDown="PublicWin_OnMouseDown" MouseMove="PublicWin_OnMouseMove" MouseUp="PublicWin_OnMouseUp" KeyDown="PublicWinKeyDown" >
+		<Grid MouseDown="PublicWin_OnMouseDown" MouseMove="PublicWin_OnMouseMove" MouseUp="PublicWin_OnMouseUp" KeyDown="PublicWinKeyDown" >
+			<ContentPresenter Grid.Row="0"  Name="MapPresenterPublic1" Focusable="true" Margin="10" MouseDown="PublicWin_OnMouseDown" MouseMove="PublicWin_OnMouseMove" MouseUp="PublicWin_OnMouseUp" KeyDown="PublicWinKeyDown"/>
+			<ContentPresenter Grid.Row="0"  Name="MapPresenterPublic2" Focusable="true" Margin="10" MouseDown="PublicWin_OnMouseDown" MouseMove="PublicWin_OnMouseMove" MouseUp="PublicWin_OnMouseUp" KeyDown="PublicWinKeyDown" />
+    </Grid>
+		</Border>
+</Window>
