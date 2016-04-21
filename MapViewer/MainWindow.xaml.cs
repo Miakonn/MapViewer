@@ -118,7 +118,8 @@ namespace MapViewer {
 
 		public bool SetScaleDialog() {
 			var dialog = new DialogGetFloatValue {
-				LeadText = "Map width in m"
+				LeadText = "Map width in m",
+				Value = _mapPrivate.MapData.ImageLengthM
 			};
 
 			var result = dialog.ShowDialog();

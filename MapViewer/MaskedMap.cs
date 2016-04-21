@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -43,6 +44,10 @@ namespace MapViewer {
 				_imagePath = value;
 				MapImage = new BitmapImage(new Uri(_imagePath));
 				BmpMask = new WriteableBitmap((int)MapImage.Width, (int)MapImage.Height, MapImage.DpiX, MapImage.DpiY, PixelFormats.Pbgra32, null);
+
+				MapData = new MapData(_imagePath);
+				MapData.Deserialize();
+
 				ScaleToWindow();
 			}
 		}
@@ -60,6 +65,8 @@ namespace MapViewer {
 			MaskOpacity = PublicView ? 1.0 : 0.3;
 			DisplayTransform = new MatrixTransform(1.0, 0.0, 0.0, 1.0, 1.0, 1.0);
 
+			MapData = new MapData(null);
+
 			Linked = false;
 
 			if (PublicView) {
@@ -69,7 +76,6 @@ namespace MapViewer {
 				ScreenScaleMMperM = float.Parse(ConfigurationManager.AppSettings["PublicScreenScaleMMperM"]);
 			}
 		}
-
 
 		public void Draw() {
 			CanvasMapMask.Children.Clear();

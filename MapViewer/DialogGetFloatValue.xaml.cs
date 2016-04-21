@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 
 namespace MapViewer {
 	/// <summary>
@@ -13,11 +14,15 @@ namespace MapViewer {
 
 		public float Value {
 			get { return _value; }
-			set { _value = value; }
+			set {
+				_value = value;
+				TextBoxValue.Text = _value.ToString(CultureInfo.InvariantCulture);
+			}
 		}
 
 		public DialogGetFloatValue() {
 			InitializeComponent();
+			
 		}
 
 		private void BtnCancel_Click(object sender, RoutedEventArgs e) {
