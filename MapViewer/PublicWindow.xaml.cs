@@ -34,28 +34,24 @@ namespace MapViewer
 			if (e.ChangedButton == MouseButton.Left) {
 				_isMoving = true;
 				_origMouseDownPoint = e.GetPosition(_map.CanvasMapMask);
-				e.Handled = true;
 			}
 		}
 
 	    private void PublicWin_OnMouseMove(object sender, MouseEventArgs e) {
-			if (_isMoving) {
+			if (_isMoving && e.LeftButton == MouseButtonState.Pressed) {
 				var curMouseDownPoint = e.GetPosition(_map.CanvasMapMask);
 				Vector move = curMouseDownPoint - _origMouseDownPoint;
 				_map.Translate(move);
 				_map.Draw();
 				_origMouseDownPoint = curMouseDownPoint;
-				e.Handled = true;
 			}	
 	    }
 
 	    private void PublicWin_OnMouseUp(object sender, MouseButtonEventArgs e) {
 			if (e.ChangedButton == MouseButton.Left) {
 				_isMoving = false;
-				e.Handled = true;
 			}
 	    }
-
 
 	    private void PublicWinKeyDown(object sender, KeyEventArgs e) {
 			if (e.Key == Key.Escape) {
