@@ -12,6 +12,7 @@ namespace MapViewer {
 		#region Properties
 		private string _imagePath;
 
+
 		public BitmapImage MapImage;
 
 		public MatrixTransform DisplayTransform { get; set; }
@@ -26,7 +27,7 @@ namespace MapViewer {
 
 		public float ScreenScaleMMperPix { get; set; }
 
-		public float ImageLengthM { get; set; }
+		public MapData MapData { get; set; }
 
 		public float ScreenScaleMMperM { get; set; }
 
@@ -69,6 +70,7 @@ namespace MapViewer {
 			}
 		}
 
+
 		public void Draw() {
 			CanvasMapMask.Children.Clear();
 
@@ -95,7 +97,7 @@ namespace MapViewer {
 			CanvasMapMask.Children.Add(maskImage);
 		}
 
-		private void ScaleToWindow() {
+		public void ScaleToWindow() {
 			if (!PublicView && MapImage != null) {
 				var winSizePix = ParentWindow.RenderSize;
 				var scale = Math.Min(winSizePix.Width / MapImage.PixelWidth, winSizePix.Height / MapImage.PixelHeight);
@@ -106,22 +108,36 @@ namespace MapViewer {
 		private void ScaleToReal() {
 			if (PublicView && MapImage != null) {
 
-				if (ImageLengthM == 0.0) {
+				if (MapData.ImageLengthM < 0.5) {
 					MessageBox.Show("Image not calibrated");
 					return;
 				}
 
-				var winSizePix = ParentWindow.RenderSize;
-
-				var winSizeM = winSizePix.Width * ScreenScaleMMperPix / ScreenScaleMMperM;
-
-				ImageScaleMperPix = ImageLengthM / MapImage.PixelWidth;
-
-				var scale = winSizePix.Width / (winSizeM / ImageScaleMperPix);
-
+				ImageScaleMperPix = MapData.ImageLengthM / MapImage.PixelWidth;
+				var scale = ScreenScaleMMperM * ImageScaleMperPix / ScreenScaleMMperPix;
 				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, 0, 0);
 			}
 		}
+
+
+		private void ScaleToLinked(MaskedMap mapSource) {
+			if (PublicView && MapImage != null) {
+				var thisWinSizePix = ParentWindow.RenderSize;
+				var otherWinSizePix = mapSource.ParentWindow.RenderSize;
+
+				var scale = Math.Min(thisWinSizePix.Width / otherWinSizePix.Width, thisWinSizePix.Height / otherWinSizePix.Height);
+
+				DisplayTransform = mapSource.DisplayTransform.CloneCurrentValue();
+
+				var matrix = DisplayTransform.Matrix;
+				matrix.Scale(scale, scale);
+				DisplayTransform.Matrix = matrix;
+
+				
+			}			
+		}
+
+
 
 		private static int Between(int val, int min, int max) {
 			return Math.Max(Math.Min(val, max), min);
@@ -133,7 +149,7 @@ namespace MapViewer {
 				return;
 			}
 
-			double scale = DisplayTransform.Matrix.M11;
+			var scale = DisplayTransform.Matrix.M11;
 			var x0 = (int)Math.Round((rect.X  - DisplayTransform.Matrix.OffsetX)/ scale);
 			x0 = Between(x0, 0, bitmap.PixelWidth);
 			var y0 = (int)Math.Round((rect.Y - DisplayTransform.Matrix.OffsetY)/ scale);
@@ -159,7 +175,7 @@ namespace MapViewer {
 			}
 		}
 
-		public void Publish(MaskedMap mapSource) {
+		public void PublishFrom(MaskedMap mapSource) {
 			if (mapSource.BmpMask != null) {
 				BmpMask = mapSource.BmpMask.CloneCurrentValue();
 			}
@@ -167,10 +183,10 @@ namespace MapViewer {
 				MapImage = mapSource.MapImage.CloneCurrentValue();
 			}
 
-			ImageLengthM = mapSource.ImageLengthM;
+			MapData.ImageLengthM = mapSource.MapData.ImageLengthM;
 
 			if (Linked) {
-				DisplayTransform = mapSource.DisplayTransform.CloneCurrentValue();
+				ScaleToLinked(mapSource);
 			}
 			else {
 				ScaleToReal();

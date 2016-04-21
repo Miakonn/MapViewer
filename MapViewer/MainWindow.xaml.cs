@@ -34,13 +34,11 @@ namespace MapViewer {
 			InitializeComponent();
 
 			_mapPrivate = new MaskedMap(false) {
-				ParentWindow = this
+				ParentWindow = this,
 			};
 			MapPresenterMain1.Content = _mapPrivate.CanvasMapMask;
 			MapPresenterMain2.Content = _mapPrivate.CanvasOverlay;
 			MapPresenterMain3.Content = _canvas;
-
-
 		}
 
 
@@ -127,7 +125,7 @@ namespace MapViewer {
 			if (!result.HasValue || !result.Value) {
 				return false;
 			}
-			_mapPrivate.ImageLengthM = dialog.Value;
+			_mapPrivate.MapData.ImageLengthM = dialog.Value;
 			return true;
 		}
 
@@ -146,7 +144,7 @@ namespace MapViewer {
 		}
 
 		private void ButtonPublish(object sender, RoutedEventArgs e) {
-			_publicWindow.Map.Publish(_mapPrivate);
+			_publicWindow.Map.PublishFrom(_mapPrivate);
 			_publicWindow.Map.Draw();
 		}
 
@@ -231,5 +229,9 @@ namespace MapViewer {
 			Update();
 		}
 		#endregion
+
+		private void BtnZoomToFit_OnClick(object sender, RoutedEventArgs e) {
+			_mapPrivate.ScaleToWindow();
+		}
 	}
 }

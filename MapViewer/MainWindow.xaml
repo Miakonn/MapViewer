@@ -8,8 +8,9 @@
 				<Button x:Name="BtnOpen"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Open image..." Click="ButtonOpen"  />
 				<Button x:Name="BtnClear"  HorizontalAlignment="Left" MinWidth="50" Margin="3" Content="Clear" Click="ButtonClear" />
 				<Button x:Name="BtnSetScaleImage"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="ScaleImage" Click="ButtonSetScaleImage" />
-				<Button x:Name="BtnPublish"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Publish" Click="ButtonPublish" />
+				<Button x:Name="BtnZoomToFit"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Zoom to fit" Click="BtnZoomToFit_OnClick" />
 				<CheckBox Name="CheckBoxLinked" Content="Linked" VerticalAlignment="Center" Checked="CheckBoxLinked_OnChecked" Unchecked="CheckBoxLinked_OnUnchecked"/>
+				<Button x:Name="BtnPublish"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Publish" Click="ButtonPublish" />
 			</StackPanel>
 			<Border BorderThickness="0,2" BorderBrush="DarkGray" MouseDown="MainWinMouseDown" MouseMove="MainWinMouseMove" MouseUp="MainWinMouseUp" KeyDown="MainWinKeyDown" MouseWheel="MainWinMouseWheel">
 				<Grid ClipToBounds="True" >

@@ -12,7 +12,6 @@ namespace MapViewer
 		private bool _isMoving;
 		private Point _origMouseDownPoint;
 
-
 	    public MaskedMap Map {
 		    get { return _map;  }
 	    }
@@ -21,7 +20,7 @@ namespace MapViewer
             InitializeComponent();
 
 			_map = new MaskedMap(true) {
-				ParentWindow = this
+				ParentWindow = this,
 			};
 
 			MapPresenterPublic1.Content = _map.CanvasMapMask;
