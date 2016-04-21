@@ -116,6 +116,22 @@ namespace MapViewer {
 		}
 		#endregion
 
+		#region Public Methods
+
+		public bool SetScaleDialog() {
+			var dialog = new DialogGetFloatValue {
+				LeadText = "Map width in m"
+			};
+
+			var result = dialog.ShowDialog();
+			if (!result.HasValue || !result.Value) {
+				return false;
+			}
+			_mapPrivate.ImageLengthM = dialog.Value;
+			return true;
+		}
+
+		#endregion
 
 		#region UI event handler
 
@@ -198,15 +214,9 @@ namespace MapViewer {
 			_mapPrivate.Zoom(scale, e.GetPosition(this));
 			_mapPrivate.Draw();
 		}
-		private void ButtonSetScaleImage(object sender, RoutedEventArgs e) {
-			var dialog = new DialogGetFloatValue {
-				LeadText = "Map width in m"
-			};
 
-			var result = dialog.ShowDialog();
-			if (result.HasValue && result.Value) {
-				_mapPrivate.ImageLengthM = dialog.Value;
-			}
+		private void ButtonSetScaleImage(object sender, RoutedEventArgs e) {
+			SetScaleDialog();
 		}
 
 		private void CheckBoxLinked_OnChecked(object sender, RoutedEventArgs e) {
