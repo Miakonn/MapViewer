@@ -129,7 +129,6 @@ namespace MapViewer {
 					return;
 				}
 
-				
 				var scale = ScreenScaleMMperM * ImageScaleMperPix / ScreenScaleMMperPix;
 				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, 0, 0);
 			}
@@ -182,7 +181,7 @@ namespace MapViewer {
 			}
 		}
 
-		public void PublishFrom(MaskedMap mapSource) {
+		public void PublishFrom(MaskedMap mapSource, bool scaleNeedsToRecalculate) {
 			if (mapSource.BmpMask != null) {
 				BmpMask = mapSource.BmpMask.CloneCurrentValue();
 			}
@@ -191,11 +190,11 @@ namespace MapViewer {
 			}
 
 			MapData.ImageLengthM = mapSource.MapData.ImageLengthM;
-
+		
 			if (Linked) {
 				ScaleToLinked(mapSource);
 			}
-			else {
+			else if (scaleNeedsToRecalculate) {
 				ScaleToReal();
 			}
 

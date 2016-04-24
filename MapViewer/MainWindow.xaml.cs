@@ -29,6 +29,7 @@ namespace MapViewer {
 
 		private bool _ctrlPressed;
 
+		private bool _publicIsDirty;
 	
 		#endregion
 
@@ -140,15 +141,16 @@ namespace MapViewer {
 			var result = dialog.ShowDialog();
 			if (result == System.Windows.Forms.DialogResult.OK) {
 				_mapPrivate.ImageFile = dialog.FileName;
-
+				_publicIsDirty = true;
 				Update();
 			}
 		}
 
 		private void ButtonPublish(object sender, RoutedEventArgs e) {
 			_publicWindow.Show();
-			_publicWindow.Map.PublishFrom(_mapPrivate);
+			_publicWindow.Map.PublishFrom(_mapPrivate, _publicIsDirty);
 			_publicWindow.Map.Draw();
+			_publicIsDirty = false;
 		}
 
 		private void ButtonClear(object sender, RoutedEventArgs e) {
@@ -303,17 +305,20 @@ namespace MapViewer {
 					_mapPrivate.Linked = false;
 					_publicWindow.Map.Linked = false;
 					_publicWindow.Map.ScreenScaleMMperM = 20.0;
+					_publicIsDirty = true;
 					break;
 				}
 				case 1: {
 					_mapPrivate.Linked = false;
 					_publicWindow.Map.Linked = false;
 					_publicWindow.Map.ScreenScaleMMperM = 10.0;
+					_publicIsDirty = true;
 					break;
 				}
 				case 2: {
 					_mapPrivate.Linked = true;
 					_publicWindow.Map.Linked = true;
+					_publicIsDirty = true;
 					break;
 				}
 				default:
