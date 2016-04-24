@@ -53,7 +53,6 @@ namespace MapViewer {
 		///     Initialize the rectangle used for drag selection.
 		/// </summary>
 		private void InitDragSelectionRect(Point pt1, Point pt2) {
-			Trace.WriteLine("InitDragSelectionRect");
 			var x = Math.Min(pt1.X, pt2.X);
 			var y = Math.Min(pt1.Y, pt2.Y);
 
@@ -145,6 +144,7 @@ namespace MapViewer {
 		}
 
 		private void ButtonPublish(object sender, RoutedEventArgs e) {
+			_publicWindow.Show();
 			_publicWindow.Map.PublishFrom(_mapPrivate);
 			_publicWindow.Map.Draw();
 		}
@@ -154,22 +154,32 @@ namespace MapViewer {
 			_mapPrivate.Draw();
 		}
 
+		private void ButtonClearOverlay(object sender, RoutedEventArgs e) {
+			_mapPrivate.ClearOverlay();
+			_publicWindow.Map.ClearOverlay();
+		}
+
 		private void MainWinSizeChanged(object sender, SizeChangedEventArgs e) {
 			Update();
 		}
 
 		private void MainWinMouseDown(object sender, MouseButtonEventArgs e) {
-			if (e.ChangedButton == MouseButton.Middle) {
+			if (e.ChangedButton == MouseButton.Middle && e.ClickCount == 1) {
 				_isDraggingSelectionRect = true;
 				_origMouseDownPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
 				e.Handled = true;
 				_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl);
 			}
-			else if (e.ChangedButton == MouseButton.Left) {
+			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
 				_isDraggingSelectionRect = false;
 				_isMoving = true;
-				_origMouseDownPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
+				_origMouseDownPoint = e.GetPosition(this);
 				e.Handled = true;
+			}
+			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
+				var pos = e.GetPosition(_mapPrivate.CanvasMapMask.Children[0]);
+				_publicWindow.Map.Ping(pos);
+				_mapPrivate.Ping(pos);
 			}
 		}
 
@@ -184,10 +194,10 @@ namespace MapViewer {
 				e.Handled = true;
 			}
 			else if (_isMoving) {
-				var curMouseDownPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
+				var curMouseDownPoint = e.GetPosition(this);
 				Vector move = curMouseDownPoint - _origMouseDownPoint;
 				_mapPrivate.Translate(move);
-				_mapPrivate.Draw();
+				//_mapPrivate.Draw();
 				_origMouseDownPoint = curMouseDownPoint;
 				e.Handled = true;
 			}			

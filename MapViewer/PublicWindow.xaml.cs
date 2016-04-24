@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace MapViewer
 {
@@ -25,7 +29,7 @@ namespace MapViewer
 
 			MapPresenterPublic1.Content = _map.CanvasMapMask;
 			MapPresenterPublic2.Content = _map.CanvasOverlay;
-			Show();
+			//Show();
 
         }
 
@@ -57,5 +61,11 @@ namespace MapViewer
 				_isMoving = false;
 			}
 	    }
+
+		private void PublicWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+			e.Cancel = true;
+			Visibility = Visibility.Hidden;
+		} 
+
     }
 }

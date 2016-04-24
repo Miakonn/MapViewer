@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using Image = System.Windows.Controls.Image;
 using Point = System.Windows.Point;
 
@@ -79,9 +80,9 @@ namespace MapViewer {
 
 		public void Draw() {
 			CanvasMapMask.Children.Clear();
-
+			CanvasMapMask.RenderTransform = DisplayTransform;
 			var backgroundImage = new Image {
-				RenderTransform = DisplayTransform,
+				
 				RenderTransformOrigin = new Point(0.0, 0.0),
 				Margin = new Thickness(0, 0, 0, 0),
 				Source = MapImage,
@@ -92,7 +93,6 @@ namespace MapViewer {
 			CanvasMapMask.Children.Add(backgroundImage);
 
 			var maskImage = new Image {
-				RenderTransform = DisplayTransform,
 				RenderTransformOrigin = new Point(0.0, 0.0),
 				Margin = new Thickness(0, 0, 0, 0),
 				Opacity = MaskOpacity,
@@ -101,11 +101,13 @@ namespace MapViewer {
 
 
 			CanvasMapMask.Children.Add(maskImage);
+
+			CanvasOverlay.RenderTransform = DisplayTransform;
 		}
 
 		public void ScaleToWindow() {
 			if (!PublicView && MapImage != null) {
-				var winSizePix = ParentWindow.RenderSize;
+				var winSizePix = CanvasMapMask.RenderSize;
 				var scale = Math.Min(winSizePix.Width / MapImage.PixelWidth, winSizePix.Height / MapImage.PixelHeight);
 				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, 0, 0);
 			}
@@ -138,8 +140,6 @@ namespace MapViewer {
 				var matrix = DisplayTransform.Matrix;
 				matrix.Scale(scale, scale);
 				DisplayTransform.Matrix = matrix;
-
-				
 			}			
 		}
 
@@ -200,11 +200,34 @@ namespace MapViewer {
 
 		}
 
+
+		public void Ping(Point pos) {
+			const int size = 50;
+			var x = pos.X - size / 2.0;
+			var y = pos.Y - size / 2.0;
+
+			var ellipse = new Ellipse() {
+				Width = 50,
+				Height = 50,
+				Fill = new SolidColorBrush(Colors.LightGreen),
+				Opacity = 0.4
+			};
+
+			Canvas.SetLeft(ellipse, x);
+			Canvas.SetTop(ellipse, y);
+			CanvasOverlay.Children.Add(ellipse);
+		}
+
+
 		public void ClearMask() {
 			if (BmpMask != null) {
 				var rect = new Int32Rect(0, 0, BmpMask.PixelWidth, BmpMask.PixelHeight);
 				RenderRectangle(rect, 0);
 			}
+		}
+
+		public void ClearOverlay() {
+			CanvasOverlay.Children.Clear();
 		}
 
 		public void Zoom(double scale, Point pnt) {
