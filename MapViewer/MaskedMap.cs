@@ -33,7 +33,11 @@ namespace MapViewer {
 
 		public float ScreenScaleMMperM { get; set; }
 
-		public float ImageScaleMperPix { get; set; }
+		public float ImageScaleMperPix {
+			get {
+				return (MapData.ImageLengthM / MapImage.PixelWidth);
+			}
+		}
 
 		public Window ParentWindow { get; set; }
 
@@ -58,6 +62,11 @@ namespace MapViewer {
 		}
 
 		private bool PublicView { get; set; }
+
+
+		public double Scale {
+			get { return DisplayTransform.Matrix.M11; }
+		}
 
 		#endregion
 
@@ -121,12 +130,11 @@ namespace MapViewer {
 					return;
 				}
 
-				ImageScaleMperPix = MapData.ImageLengthM / MapImage.PixelWidth;
+				
 				var scale = ScreenScaleMMperM * ImageScaleMperPix / ScreenScaleMMperPix;
 				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, 0, 0);
 			}
 		}
-
 
 		private void ScaleToLinked(MaskedMap mapSource) {
 			if (PublicView && MapImage != null) {
@@ -143,8 +151,6 @@ namespace MapViewer {
 			}			
 		}
 
-
-
 		private static int Between(int val, int min, int max) {
 			return Math.Max(Math.Min(val, max), min);
 		}
@@ -155,15 +161,11 @@ namespace MapViewer {
 				return;
 			}
 
-			var scale = DisplayTransform.Matrix.M11;
-			var x0 = (int)Math.Round((rect.X  - DisplayTransform.Matrix.OffsetX)/ scale);
-			x0 = Between(x0, 0, bitmap.PixelWidth);
-			var y0 = (int)Math.Round((rect.Y - DisplayTransform.Matrix.OffsetY)/ scale);
-			y0 = Between(y0, 0, bitmap.PixelHeight);
-			var xMax = x0 + (int)Math.Round(rect.Width / scale);
-			xMax = Between(xMax, 0, bitmap.PixelWidth);
-			var yMax = y0 + (int)Math.Round(rect.Height / scale);
-			yMax = Between(yMax, 0, bitmap.PixelHeight);
+			var x0 = Between(rect.X, 0, bitmap.PixelWidth);
+			var y0 = Between(rect.Y, 0, bitmap.PixelHeight);
+			var xMax = Between(rect.X + rect.Width, 0, bitmap.PixelWidth);
+			var yMax = Between(rect.Y + rect.Height, 0, bitmap.PixelHeight);
+
 			var byteCount = 4 * (xMax - x0);
 
 			var colorData = new byte[byteCount];
@@ -200,22 +202,33 @@ namespace MapViewer {
 
 		}
 
-
-		public void Ping(Point pos) {
-			const int size = 50;
-			var x = pos.X - size / 2.0;
-			var y = pos.Y - size / 2.0;
-
-			var ellipse = new Ellipse() {
-				Width = 50,
-				Height = 50,
-				Fill = new SolidColorBrush(Colors.LightGreen),
+		public void OverlayCircle(Point pos, float radiusM, Color color) {
+			var size = radiusM / ImageScaleMperPix;
+			var shape = new Ellipse {
+				Width = 2 * size,
+				Height = 2 * size,
+				Fill = new SolidColorBrush(color),
 				Opacity = 0.4
 			};
 
-			Canvas.SetLeft(ellipse, x);
-			Canvas.SetTop(ellipse, y);
-			CanvasOverlay.Children.Add(ellipse);
+			Canvas.SetLeft(shape, pos.X - size);
+			Canvas.SetTop(shape, pos.Y - size);
+			CanvasOverlay.Children.Add(shape);
+		}
+
+		public void OverlayLine(Point pos1, Point pos2, float widthM, Color color) {
+			var size = widthM / ImageScaleMperPix;
+			var shape = new Line {
+				X1 = pos1.X,
+				Y1 = pos1.Y,
+				X2 = pos2.X,
+				Y2 = pos2.Y,
+				StrokeThickness = size,
+				Stroke = new SolidColorBrush(color),
+				Opacity = 0.4
+				
+			};
+			CanvasOverlay.Children.Add(shape);
 		}
 
 

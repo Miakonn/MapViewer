@@ -1,9 +1,5 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace MapViewer
 {
@@ -29,20 +25,19 @@ namespace MapViewer
 
 			MapPresenterPublic1.Content = _map.CanvasMapMask;
 			MapPresenterPublic2.Content = _map.CanvasOverlay;
-			//Show();
 
         }
 
 		private void PublicWin_OnMouseDown(object sender, MouseButtonEventArgs e) {
 			if (e.ChangedButton == MouseButton.Left) {
 				_isMoving = true;
-				_origMouseDownPoint = e.GetPosition(_map.CanvasMapMask);
+				_origMouseDownPoint = e.GetPosition(this);
 			}
 		}
 
 	    private void PublicWin_OnMouseMove(object sender, MouseEventArgs e) {
 			if (_isMoving && e.LeftButton == MouseButtonState.Pressed) {
-				var curMouseDownPoint = e.GetPosition(_map.CanvasMapMask);
+				var curMouseDownPoint = e.GetPosition(this);
 				Vector move = curMouseDownPoint - _origMouseDownPoint;
 				_map.Translate(move);
 				_map.Draw();

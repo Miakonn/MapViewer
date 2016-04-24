@@ -16,7 +16,6 @@ namespace MapViewer {
 	public partial class MainWindow {
 
 		#region Attributes
-		private readonly Canvas _canvas = new Canvas();
 
 		private readonly MaskedMap _mapPrivate;
 		private readonly PublicWindow _publicWindow = new PublicWindow();
@@ -25,6 +24,7 @@ namespace MapViewer {
 		private bool _isDraggingSelectionRect;
 		private bool _isMoving;
 		private Point _origMouseDownPoint;
+		private Point _mouseUpPoint;
 
 		private bool _ctrlPressed;
 
@@ -38,7 +38,6 @@ namespace MapViewer {
 			};
 			MapPresenterMain1.Content = _mapPrivate.CanvasMapMask;
 			MapPresenterMain2.Content = _mapPrivate.CanvasOverlay;
-			MapPresenterMain3.Content = _canvas;
 		}
 
 
@@ -65,14 +64,14 @@ namespace MapViewer {
 
 			Canvas.SetLeft(_dragRectangle, x);
 			Canvas.SetTop(_dragRectangle, y);
-			_canvas.Children.Add(_dragRectangle);
+			_mapPrivate.CanvasOverlay.Children.Add(_dragRectangle);
 		}
 
 		/// <summary>
 		///     Initialize the rectangle used for drag selection.
 		/// </summary>
 		private void ClearDragSelectionRect() {
-			_canvas.Children.Remove(_dragRectangle);
+			_mapPrivate.CanvasOverlay.Children.Remove(_dragRectangle);
 			_dragRectangle = null;
 			_isDraggingSelectionRect = false;
 			_isMoving = false;
@@ -102,7 +101,7 @@ namespace MapViewer {
 		private void ApplyDragSelectionRect() {
 			if (_dragRectangle != null) {
 				_mapPrivate.RenderRectangle(GetElementRect(_dragRectangle), (byte)(_ctrlPressed ? 0 : 255));
-				_canvas.Children.Clear();
+				ClearDragSelectionRect();
 			}
 		}
 
@@ -166,7 +165,7 @@ namespace MapViewer {
 		private void MainWinMouseDown(object sender, MouseButtonEventArgs e) {
 			if (e.ChangedButton == MouseButton.Middle && e.ClickCount == 1) {
 				_isDraggingSelectionRect = true;
-				_origMouseDownPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
+				_origMouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
 				e.Handled = true;
 				_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl);
 			}
@@ -177,15 +176,21 @@ namespace MapViewer {
 				e.Handled = true;
 			}
 			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
-				var pos = e.GetPosition(_mapPrivate.CanvasMapMask.Children[0]);
-				_publicWindow.Map.Ping(pos);
-				_mapPrivate.Ping(pos);
+				var pos = e.GetPosition(_mapPrivate.CanvasMapMask);
+				_mapPrivate.OverlayCircle(pos, 25 * _mapPrivate.ImageScaleMperPix, Colors.GreenYellow);
+				if (_publicWindow.IsVisible) {
+					_publicWindow.Map.OverlayCircle(pos, 25*_publicWindow.Map.ImageScaleMperPix, Colors.GreenYellow);
+				}
 			}
+			else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
+				_origMouseDownPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
+			}
+
 		}
 
 		private void MainWinMouseMove(object sender, MouseEventArgs e) {
 			if (_isDraggingSelectionRect) {
-				var curMouseDownPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
+				var curMouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
 				if (_dragRectangle == null) {
 					InitDragSelectionRect(_origMouseDownPoint, curMouseDownPoint);
 				}
@@ -210,6 +215,9 @@ namespace MapViewer {
 					ClearDragSelectionRect();
 					e.Handled = true;
 				}
+			}
+			else if (e.ChangedButton == MouseButton.Right) {
+				_mouseUpPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
 			}
 			else if (e.ChangedButton == MouseButton.Left) {
 				_isMoving = false;
@@ -244,5 +252,45 @@ namespace MapViewer {
 		private void BtnZoomToFit_OnClick(object sender, RoutedEventArgs e) {
 			_mapPrivate.ScaleToWindow();
 		}
+
+		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+			System.Windows.Application.Current.Shutdown();
+		}
+		#region Commands
+
+		private void Fireball_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = true;
+		}
+
+		private void Fireball_Executed(object sender, ExecutedRoutedEventArgs e) {
+			_mapPrivate.OverlayCircle(_origMouseDownPoint, 7, Colors.OrangeRed);
+			if (_publicWindow.IsVisible) {
+				_publicWindow.Map.OverlayCircle(_origMouseDownPoint, 7, Colors.OrangeRed);
+			}
+		}
+
+		private void Moonbeam_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = true;
+		}
+
+		private void Moonbeam_Executed(object sender, ExecutedRoutedEventArgs e) {
+			_mapPrivate.OverlayCircle(_origMouseDownPoint, 2, Colors.Yellow);
+			if (_publicWindow.IsVisible) {
+				_publicWindow.Map.OverlayCircle(_origMouseDownPoint, 2, Colors.Yellow);
+			}
+		}
+
+		private void Wall_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = true;
+		}
+
+		private void Wall_Executed(object sender, ExecutedRoutedEventArgs e) {
+			_mapPrivate.OverlayLine(_origMouseDownPoint, _mouseUpPoint, 2, Colors.Yellow);
+			if (_publicWindow.IsVisible) {
+				_publicWindow.Map.OverlayLine(_origMouseDownPoint,_mouseUpPoint , 2, Colors.Yellow);
+			}
+		}
+
+		#endregion
 	}
 }
