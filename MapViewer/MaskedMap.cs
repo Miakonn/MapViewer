@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -31,7 +30,7 @@ namespace MapViewer {
 
 		public MapData MapData { get; set; }
 
-		public float ScreenScaleMMperM { get; set; }
+		public double ScreenScaleMMperM { get; set; }
 
 		public float ImageScaleMperPix {
 			get {
@@ -83,7 +82,7 @@ namespace MapViewer {
 				var screenWidthMM = float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthMM"]);
 				var screenWidthPix = float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthPix"]);
 				ScreenScaleMMperPix = screenWidthMM / screenWidthPix;
-				ScreenScaleMMperM = float.Parse(ConfigurationManager.AppSettings["PublicScreenScaleMMperM"]);
+				//ScreenScaleMMperM = float.Parse(ConfigurationManager.AppSettings["PublicScreenScaleMMperM"]);
 			}
 		}
 

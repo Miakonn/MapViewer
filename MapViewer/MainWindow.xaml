@@ -2,12 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mapViewer="clr-namespace:MapViewer"
-        Title="MainWindow" Height="800" Width="1200" Closing="MainWindow_Closing">
+        Title="Private Map" Height="800" Width="1200" Closing="MainWindow_Closing">
 
 	<Window.CommandBindings>
 		<CommandBinding Command="mapViewer:CustomCommands.Fireball" Executed="Fireball_Executed" CanExecute="Fireball_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Moonbeam" Executed="Moonbeam_Executed" CanExecute="Moonbeam_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Wall" Executed="Wall_Executed" CanExecute="Wall_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="Measure_CanExecute" />
 	</Window.CommandBindings>
 
 
@@ -19,7 +20,11 @@
 				<Button x:Name="BtnClearOverlay"  HorizontalAlignment="Left" MinWidth="50" Margin="3" Content="Clear overlay" Click="ButtonClearOverlay" />
 				<Button x:Name="BtnSetScaleImage"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Set scale..." Click="ButtonSetScaleImage" />
 				<Button x:Name="BtnZoomToFit"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Zoom to fit" Click="BtnZoomToFit_OnClick" />
-				<CheckBox Name="CheckBoxLinked" Content="Linked" VerticalAlignment="Center" Checked="CheckBoxLinked_OnChecked" Unchecked="CheckBoxLinked_OnUnchecked"/>
+				<ComboBox Name="ComboBoxPublicScale"  Height="20" VerticalAlignment="Center" Width="120" SelectionChanged="ComboBoxPublicScale_OnSelectionChanged">
+					<ComboBoxItem x:Name="StdScale" Content="Public 20 mm/pix"/>
+					<ComboBoxItem x:Name="DoubleScale" Content="Public 10 mm/pix"/>
+					<ComboBoxItem x:Name="Linked" Content="Linked"/>
+				</ComboBox>
 				<Button x:Name="BtnPublish"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Publish" Click="ButtonPublish" />
 			</StackPanel>
 			<Border BorderThickness="0,2" BorderBrush="DarkGray" 
@@ -31,6 +36,7 @@
 							<MenuItem Command="mapViewer:CustomCommands.Fireball" />
 							<MenuItem Command="mapViewer:CustomCommands.Moonbeam" />
 							<MenuItem Command="mapViewer:CustomCommands.Wall" />
+							<MenuItem Command="mapViewer:CustomCommands.Measure" />
 						</ContextMenu>
 					</Grid.ContextMenu>
 					<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}" >
@@ -41,6 +47,7 @@
 					</UserControl>
 				</Grid>
 			</Border>
+		
 		</DockPanel>
 
 	</Grid>
