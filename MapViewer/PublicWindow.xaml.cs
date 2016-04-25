@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace MapViewer
 {
@@ -25,10 +29,25 @@ namespace MapViewer
 
 			MapPresenterPublic1.Content = _map.CanvasMapMask;
 			MapPresenterPublic2.Content = _map.CanvasOverlay;
-
         }
 
-		private void PublicWin_OnMouseDown(object sender, MouseButtonEventArgs e) {
+	    public void MaximizeToSecondaryMonitor() {
+		    var screen2 = Screen.AllScreens.FirstOrDefault(screen => screen.Primary == false);
+		    if (screen2 == null) {
+			    return;
+		    }
+
+		    var rect = screen2.WorkingArea;
+			Top = rect.Top;
+		    Left = rect.Left;
+		    Width = rect.Width;
+		    Height = rect.Height;
+		    if (IsLoaded) {
+			    WindowState = WindowState.Maximized;
+		    }
+	    }
+
+	    private void PublicWin_OnMouseDown(object sender, MouseButtonEventArgs e) {
 			if (e.ChangedButton == MouseButton.Left) {
 				_isMoving = true;
 				_origMouseDownPoint = e.GetPosition(this);

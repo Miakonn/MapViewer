@@ -148,6 +148,7 @@ namespace MapViewer {
 
 		private void ButtonPublish(object sender, RoutedEventArgs e) {
 			_publicWindow.Show();
+			_publicWindow.MaximizeToSecondaryMonitor();
 			_publicWindow.Map.PublishFrom(_mapPrivate, _publicIsDirty);
 			_publicWindow.Map.Draw();
 			_publicIsDirty = false;
