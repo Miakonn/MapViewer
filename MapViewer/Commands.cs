@@ -19,6 +19,8 @@ namespace MapViewer {
 		public static readonly RoutedUICommand SetScale = new RoutedUICommand("Set scale", "Set scale", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ScaleToFit= new RoutedUICommand("Scale to fit", "Scale to fit", typeof(CustomCommands), null);
 
+		public static readonly RoutedUICommand RotateMap = new RoutedUICommand("Rotate map", "Rotate map", typeof(CustomCommands), null);
+
 	}
 
 	public partial class MainWindow {
@@ -93,11 +95,20 @@ namespace MapViewer {
 			_mapPrivate.RenderRectangle(rect, 255);
 		}
 
+		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
+			_publicWindow.Map.RotationAngle = (_publicWindow.Map.RotationAngle + 90) % 360;
+			_publicWindow.Map.Draw();
+		}
+
+
 		private void ImageNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = (_mapPrivate != null && !string.IsNullOrWhiteSpace(_mapPrivate.ImageFile));
 		}
 
 		private void Allways_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = true;
+		}
+		private void Spell_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = true;
 		}
 

@@ -32,6 +32,8 @@ namespace MapViewer {
 
 		public double ScreenScaleMMperM { get; set; }
 
+		public double RotationAngle { get; set; }
+
 		public float ImageScaleMperPix {
 			get {
 				return (MapData.ImageLengthM / MapImage.PixelWidth);
@@ -53,6 +55,7 @@ namespace MapViewer {
 				MapData.Deserialize();
 
 				ScaleToWindow();
+				RotationAngle = 0;
 			}
 		}
 
@@ -88,9 +91,9 @@ namespace MapViewer {
 
 		public void Draw() {
 			CanvasMapMask.Children.Clear();
+			CanvasMapMask.LayoutTransform = new RotateTransform(RotationAngle);
 			CanvasMapMask.RenderTransform = DisplayTransform;
 			var backgroundImage = new Image {
-				
 				RenderTransformOrigin = new Point(0.0, 0.0),
 				Margin = new Thickness(0, 0, 0, 0),
 				Source = MapImage,
