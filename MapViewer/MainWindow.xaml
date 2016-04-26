@@ -6,10 +6,17 @@
 		WindowStyle="ThreeDBorderWindow" >
 
 	<Window.CommandBindings>
-		<CommandBinding Command="mapViewer:CustomCommands.Fireball" Executed="Fireball_Executed" CanExecute="Fireball_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Moonbeam" Executed="Moonbeam_Executed" CanExecute="Moonbeam_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Wall" Executed="Wall_Executed" CanExecute="Wall_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="Measure_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.Fireball" Executed="Fireball_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.Moonbeam" Executed="Moonbeam_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.Wall" Executed="Wall_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.FullMask" Executed="FullMask_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearOverlay_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Executed" CanExecute="Allways_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.PublishMap" Executed="PublishMap_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.SetScale" Executed="SetScale_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ScaleToFit" Executed="ScaleToFit_Executed" CanExecute="ImageNeeded_CanExecute" />
 	</Window.CommandBindings>
 
 
@@ -22,15 +29,16 @@
 		<Ribbon Margin="1,1,1,1" Grid.Row="0">
 			<Ribbon.ApplicationMenu>
 				<RibbonApplicationMenu >
-					<RibbonApplicationMenuItem Header="Open image" Click="ButtonOpen" Name="MenuItemOpen" ImageSource="Images\Open_file.png"/>
+					<RibbonApplicationMenuItem Header="Open image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
 				</RibbonApplicationMenu>
 			</Ribbon.ApplicationMenu>
 			<RibbonTab x:Name="PrivateTab" Header="Private" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
 				<RibbonGroup Name="Private">
-					<RibbonButton x:Name="BtnClear" Label="Clear mask" Click="ButtonClear" LargeImageSource="Images/Map_mask.png" />
-					<RibbonButton x:Name="BtnClearOverlay"  Label="Clear overlay" Click="ButtonClearOverlay" LargeImageSource="Images/Map_mask.png"/>
-					<RibbonButton x:Name="BtnSetScaleImage"  Label="Set scale..." Click="ButtonSetScaleImage"  LargeImageSource="Images/Map_measure.png"/>
-					<RibbonButton x:Name="BtnZoomToFit"  Label="Zoom to fit" Click="BtnZoomToFit_OnClick" LargeImageSource="Images/Map_fit.png"/>
+					<RibbonButton x:Name="BtnFullMask" Label="Full mask" Command="mapViewer:CustomCommands.FullMask" LargeImageSource="Images/Map_mask.png" />
+					<RibbonButton x:Name="BtnClear" Label="Clear mask" Command="mapViewer:CustomCommands.ClearMask" LargeImageSource="Images/Map_mask.png" />
+					<RibbonButton x:Name="BtnClearOverlay"  Label="Clear overlay" Command="mapViewer:CustomCommands.ClearOverlay" LargeImageSource="Images/Map_mask.png"/>
+					<RibbonButton x:Name="BtnSetScaleImage"  Label="Set scale..." Command="mapViewer:CustomCommands.SetScale"  LargeImageSource="Images/Map_measure.png"/>
+					<RibbonButton x:Name="BtnZoomToFit"  Label="Zoom to fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png"/>
 
 				</RibbonGroup>
 
@@ -40,7 +48,7 @@
 						<ComboBoxItem x:Name="DoubleScale" Content="Public 10 mm/pix"/>
 						<ComboBoxItem x:Name="Linked" Content="Linked"/>
 					</ComboBox>
-					<RibbonButton x:Name="BtnPublish"  Label="Publish" Click="ButtonPublish" LargeImageSource="Images/Monitor.png" />
+					<RibbonButton x:Name="BtnPublish"  Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor.png" />
 				</RibbonGroup>
 				<RibbonGroup>
 					<RibbonButton Command="mapViewer:CustomCommands.Fireball" Label="Fireball" />

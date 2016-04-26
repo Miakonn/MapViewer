@@ -28,6 +28,9 @@ namespace MapViewer {
 		private Point _mouseUpPoint;
 
 		private bool _ctrlPressed;
+		private bool _altPressed; 
+		private bool _shiftPressed;
+
 
 		private bool _publicIsDirty;
 	
@@ -136,44 +139,21 @@ namespace MapViewer {
 
 		#region UI event handler
 
-		private void ButtonOpen(object sender, RoutedEventArgs e) {
-			var dialog = new OpenFileDialog();
-			var result = dialog.ShowDialog();
-			if (result == System.Windows.Forms.DialogResult.OK) {
-				_mapPrivate.ImageFile = dialog.FileName;
-				_publicIsDirty = true;
-				Update();
-			}
-		}
-
-		private void ButtonPublish(object sender, RoutedEventArgs e) {
-			_publicWindow.Show();
-			_publicWindow.MaximizeToSecondaryMonitor();
-			_publicWindow.Map.PublishFrom(_mapPrivate, _publicIsDirty);
-			_publicWindow.Map.Draw();
-			_publicIsDirty = false;
-		}
-
-		private void ButtonClear(object sender, RoutedEventArgs e) {
-			_mapPrivate.ClearMask();
-			_mapPrivate.Draw();
-		}
-
-		private void ButtonClearOverlay(object sender, RoutedEventArgs e) {
-			_mapPrivate.ClearOverlay();
-			_publicWindow.Map.ClearOverlay();
-		}
 
 		private void MainWinSizeChanged(object sender, SizeChangedEventArgs e) {
 			Update();
 		}
 
 		private void MainWinMouseDown(object sender, MouseButtonEventArgs e) {
-			if (e.ChangedButton == MouseButton.Middle && e.ClickCount == 1) {
+
+			_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+			_altPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
+			_shiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+
+			if (e.ChangedButton == MouseButton.Left && _shiftPressed  && e.ClickCount == 1) {
 				_isDraggingSelectionRect = true;
 				_mouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
 				e.Handled = true;
-				_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl);
 			}
 			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
 				_isDraggingSelectionRect = false;
@@ -215,7 +195,7 @@ namespace MapViewer {
 		}
 
 		private void MainWinMouseUp(object sender, MouseButtonEventArgs e) {
-			if (e.ChangedButton == MouseButton.Middle) {
+			if (e.ChangedButton == MouseButton.Left && _shiftPressed) {
 				if (_isDraggingSelectionRect) {
 					ApplyDragSelectionRect();
 					ClearDragSelectionRect();
@@ -238,94 +218,46 @@ namespace MapViewer {
 			_mapPrivate.Draw();
 		}
 
-		private void ButtonSetScaleImage(object sender, RoutedEventArgs e) {
-			SetScaleDialog();
-		}
-
+	
 		#endregion
 
-		private void BtnZoomToFit_OnClick(object sender, RoutedEventArgs e) {
-			_mapPrivate.ScaleToWindow();
-		}
+
 
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
 			System.Windows.Application.Current.Shutdown();
 		}
-		#region Commands
-
-		private void Fireball_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = true;
-		}
-
-		private void Fireball_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_mapPrivate.OverlayCircle(_mouseDownPoint, 7, Colors.OrangeRed);
-			if (_publicWindow.IsVisible) {
-				_publicWindow.Map.OverlayCircle(_mouseDownPoint, 7, Colors.OrangeRed);
-			}
-		}
-
-		private void Moonbeam_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = true;
-		}
-
-		private void Moonbeam_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_mapPrivate.OverlayCircle(_mouseDownPoint, 2, Colors.Yellow);
-			if (_publicWindow.IsVisible) {
-				_publicWindow.Map.OverlayCircle(_mouseDownPoint, 2, Colors.Yellow);
-			}
-		}
-
-		private void Wall_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = true;
-		}
-
-		private void Wall_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_mapPrivate.OverlayLine(_mouseDownPoint, _mouseUpPoint, 2, Colors.Yellow);
-			if (_publicWindow.IsVisible) {
-				_publicWindow.Map.OverlayLine(_mouseDownPoint, _mouseUpPoint , 2, Colors.Yellow);
-			}
-		}
-
-		private void Measure_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = true;
-		}
-
-		private void Measure_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var vect = _mouseUpPoint - _mouseDownPoint;
-			var dist = _mapPrivate.ImageScaleMperPix * vect.Length;
-			MessageBox.Show(string.Format("Length is {0} m", dist));
-		}
-
-
-
-		#endregion
 
 		private void ComboBoxPublicScale_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
 			switch (ComboBoxPublicScale.SelectedIndex) {
 				case 0: {
-					_mapPrivate.Linked = false;
-					_publicWindow.Map.Linked = false;
-					_publicWindow.Map.ScreenScaleMMperM = 20.0;
-					_publicIsDirty = true;
-					break;
-				}
+						_mapPrivate.Linked = false;
+						_publicWindow.Map.Linked = false;
+						_publicWindow.Map.ScreenScaleMMperM = 20.0;
+						_publicIsDirty = true;
+						break;
+					}
 				case 1: {
-					_mapPrivate.Linked = false;
-					_publicWindow.Map.Linked = false;
-					_publicWindow.Map.ScreenScaleMMperM = 10.0;
-					_publicIsDirty = true;
-					break;
-				}
+						_mapPrivate.Linked = false;
+						_publicWindow.Map.Linked = false;
+						_publicWindow.Map.ScreenScaleMMperM = 10.0;
+						_publicIsDirty = true;
+						break;
+					}
 				case 2: {
-					_mapPrivate.Linked = true;
-					_publicWindow.Map.Linked = true;
-					_publicIsDirty = true;
-					break;
-				}
+						_mapPrivate.Linked = true;
+						_publicWindow.Map.Linked = true;
+						_publicIsDirty = true;
+						break;
+					}
 				default:
 					break;
 			}
 
 		}
+
+
+
+
+	
 	}
 }
