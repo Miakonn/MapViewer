@@ -14,42 +14,61 @@
 
 
 	<Grid  KeyDown="MainWinKeyDown">
-		<DockPanel>
-			<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Left" Margin="4">
-				<Button x:Name="BtnOpen"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Open image..." Click="ButtonOpen"  />
-				<Button x:Name="BtnClear"  HorizontalAlignment="Left" MinWidth="50" Margin="3" Content="Clear mask" Click="ButtonClear" />
-				<Button x:Name="BtnClearOverlay"  HorizontalAlignment="Left" MinWidth="50" Margin="3" Content="Clear overlay" Click="ButtonClearOverlay" />
-				<Button x:Name="BtnSetScaleImage"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Set scale..." Click="ButtonSetScaleImage" />
-				<Button x:Name="BtnZoomToFit"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Zoom to fit" Click="BtnZoomToFit_OnClick" />
-				<ComboBox Name="ComboBoxPublicScale"  Height="20" VerticalAlignment="Center" Width="120" SelectionChanged="ComboBoxPublicScale_OnSelectionChanged">
-					<ComboBoxItem x:Name="StdScale" Content="Public 20 mm/pix"/>
-					<ComboBoxItem x:Name="DoubleScale" Content="Public 10 mm/pix"/>
-					<ComboBoxItem x:Name="Linked" Content="Linked"/>
-				</ComboBox>
-				<Button x:Name="BtnPublish"  HorizontalAlignment="Left" MinWidth="80" Margin="3" Content="Publish" Click="ButtonPublish" />
-			</StackPanel>
-			<Border BorderThickness="0,2" BorderBrush="DarkGray" 
-					MouseDown="MainWinMouseDown" MouseMove="MainWinMouseMove" MouseUp="MainWinMouseUp" KeyDown="MainWinKeyDown" MouseWheel="MainWinMouseWheel"
-					>
-				<Grid ClipToBounds="True">
-					<Grid.ContextMenu>
-						<ContextMenu Name="Cm">
-							<MenuItem Command="mapViewer:CustomCommands.Fireball" />
-							<MenuItem Command="mapViewer:CustomCommands.Moonbeam" />
-							<MenuItem Command="mapViewer:CustomCommands.Wall" />
-							<MenuItem Command="mapViewer:CustomCommands.Measure" />
-						</ContextMenu>
-					</Grid.ContextMenu>
-					<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}" >
-						<ContentPresenter   Name="MapPresenterMain1" Focusable="true" Margin="10" SizeChanged="MainWinSizeChanged" />
-					</UserControl>
-					<UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}" >
-						<ContentPresenter   Name="MapPresenterMain2" Focusable="true" Margin="10" SizeChanged="MainWinSizeChanged" />
-					</UserControl>
-				</Grid>
-			</Border>
-		
-		</DockPanel>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Ribbon Margin="1,1,1,1" Grid.Row="0">
+			<Ribbon.ApplicationMenu>
+				<RibbonApplicationMenu >
+					<RibbonApplicationMenuItem Header="Open image" Click="ButtonOpen" Name="MenuItemOpen" ImageSource="Images\Open_file.png"/>
+				</RibbonApplicationMenu>
+			</Ribbon.ApplicationMenu>
+			<RibbonTab x:Name="PrivateTab" Header="Private" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
+				<RibbonGroup Name="Private">
+					<RibbonButton x:Name="BtnClear" Label="Clear mask" Click="ButtonClear" LargeImageSource="Images/Map_mask.png" />
+					<RibbonButton x:Name="BtnClearOverlay"  Label="Clear overlay" Click="ButtonClearOverlay" LargeImageSource="Images/Map_mask.png"/>
+					<RibbonButton x:Name="BtnSetScaleImage"  Label="Set scale..." Click="ButtonSetScaleImage"  LargeImageSource="Images/Map_measure.png"/>
+					<RibbonButton x:Name="BtnZoomToFit"  Label="Zoom to fit" Click="BtnZoomToFit_OnClick" LargeImageSource="Images/Map_fit.png"/>
+
+				</RibbonGroup>
+
+				<RibbonGroup Name="Public" >
+					<ComboBox Name="ComboBoxPublicScale"  Height="20" VerticalAlignment="Center" Width="120" SelectionChanged="ComboBoxPublicScale_OnSelectionChanged">
+						<ComboBoxItem x:Name="StdScale" Content="Public 20 mm/pix"/>
+						<ComboBoxItem x:Name="DoubleScale" Content="Public 10 mm/pix"/>
+						<ComboBoxItem x:Name="Linked" Content="Linked"/>
+					</ComboBox>
+					<RibbonButton x:Name="BtnPublish"  Label="Publish" Click="ButtonPublish" LargeImageSource="Images/Monitor.png" />
+				</RibbonGroup>
+				<RibbonGroup>
+					<RibbonButton Command="mapViewer:CustomCommands.Fireball" Label="Fireball" />
+			</RibbonGroup>
+			</RibbonTab>
+		</Ribbon>
+
+
+		<Border Grid.Row="1" BorderThickness="0"  BorderBrush="White" 
+					MouseDown="MainWinMouseDown" MouseMove="MainWinMouseMove" MouseUp="MainWinMouseUp" KeyDown="MainWinKeyDown" MouseWheel="MainWinMouseWheel" >
+			<Grid ClipToBounds="True" Margin="0, 0,0,0">
+				<Grid.ContextMenu>
+					<ContextMenu Name="Cm">
+						<MenuItem Command="mapViewer:CustomCommands.Fireball" />
+						<MenuItem Command="mapViewer:CustomCommands.Moonbeam" />
+						<MenuItem Command="mapViewer:CustomCommands.Wall" />
+						<MenuItem Command="mapViewer:CustomCommands.Measure" />
+					</ContextMenu>
+				</Grid.ContextMenu>
+				<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}" >
+					<ContentPresenter   Name="MapPresenterMain1" Focusable="true" Margin="10" SizeChanged="MainWinSizeChanged" />
+				</UserControl>
+				<UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}" Height="94" VerticalAlignment="Top" >
+					<ContentPresenter   Name="MapPresenterMain2" Focusable="true" Margin="10" SizeChanged="MainWinSizeChanged" />
+				</UserControl>
+			</Grid>
+		</Border>
+
 
 	</Grid>
 </Window>
