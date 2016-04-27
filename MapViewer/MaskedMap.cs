@@ -85,11 +85,11 @@ namespace MapViewer {
 				var screenWidthMM = float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthMM"]);
 				var screenWidthPix = float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthPix"]);
 				ScreenScaleMMperPix = screenWidthMM / screenWidthPix;
-				//ScreenScaleMMperM = float.Parse(ConfigurationManager.AppSettings["PublicScreenScaleMMperM"]);
 			}
 		}
 
 		public void Draw() {
+			// CanvasMapMask
 			CanvasMapMask.Children.Clear();
 			CanvasMapMask.LayoutTransform = new RotateTransform(RotationAngle);
 			CanvasMapMask.RenderTransform = DisplayTransform;
@@ -98,9 +98,6 @@ namespace MapViewer {
 				Margin = new Thickness(0, 0, 0, 0),
 				Source = MapImage,
 			};
-
-			CanvasMapMask.Background = new ImageBrush();
-
 			CanvasMapMask.Children.Add(backgroundImage);
 
 			var maskImage = new Image {
@@ -109,12 +106,28 @@ namespace MapViewer {
 				Opacity = MaskOpacity,
 				Source = BmpMask
 			};
-
-
 			CanvasMapMask.Children.Add(maskImage);
 
+			// CanvasOverlay
 			CanvasOverlay.RenderTransform = DisplayTransform;
 		}
+
+
+		public Rect VisibleRectInMap() {
+			var rect = new Rect(0.0, 0.0, CanvasMapMask.ActualWidth, CanvasMapMask.ActualHeight);
+
+			if (RotationAngle == 90.0 || RotationAngle == 270.0) {
+				rect = new Rect(0.0, 0.0, CanvasMapMask.ActualHeight, CanvasMapMask.ActualWidth);
+			}
+			
+			var inverse = DisplayTransform.Clone().Inverse;
+			if (inverse != null) {
+				var rectOut = inverse.TransformBounds(rect);
+				return rectOut;
+			}
+			return new Rect();
+		}
+
 
 		public void ScaleToWindow() {
 			if (!PublicView && MapImage != null) {
@@ -217,6 +230,20 @@ namespace MapViewer {
 			CanvasOverlay.Children.Add(shape);
 		}
 
+		public Rectangle OverlayRectPixel(Rect rect, Color color) {
+			var shape = new Rectangle {
+				Width = rect.Width,
+				Height = rect.Height,
+				Fill = new SolidColorBrush(color),
+				Opacity = 0.3
+			};
+
+			Canvas.SetLeft(shape, rect.X);
+			Canvas.SetTop(shape, rect.Y);
+			CanvasOverlay.Children.Add(shape);
+			return shape;
+		}
+
 		public void OverlayLine(Point pos1, Point pos2, float widthM, Color color) {
 			var size = widthM / ImageScaleMperPix;
 			var shape = new Line {
@@ -231,7 +258,6 @@ namespace MapViewer {
 			};
 			CanvasOverlay.Children.Add(shape);
 		}
-
 
 		public void ClearMask() {
 			if (BmpMask != null) {

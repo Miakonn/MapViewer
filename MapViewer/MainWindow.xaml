@@ -20,7 +20,6 @@
 		<CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Executed" CanExecute="ImageNeeded_CanExecute" />
 	</Window.CommandBindings>
 
-
 	<Grid  KeyDown="MainWinKeyDown">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
@@ -55,10 +54,9 @@
 			</RibbonTab>
 		</Ribbon>
 
-
-		<Border Grid.Row="1" BorderThickness="0"  BorderBrush="White" 
+		<Border Grid.Row="1" BorderThickness="0"  BorderBrush="White" Focusable="True" Loaded="Border_Loaded"
 					MouseDown="MainWinMouseDown" MouseMove="MainWinMouseMove" MouseUp="MainWinMouseUp" KeyDown="MainWinKeyDown" MouseWheel="MainWinMouseWheel" >
-			<Grid ClipToBounds="True" Margin="0, 0,0,0">
+			<Grid ClipToBounds="True" Margin="0, 0,0,0" >
 				<Grid.ContextMenu>
 					<ContextMenu Name="Cm">
 						<MenuItem Command="mapViewer:CustomCommands.Fireball" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
@@ -67,10 +65,10 @@
 						<MenuItem Command="mapViewer:CustomCommands.Measure" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 					</ContextMenu>
 				</Grid.ContextMenu>
-				<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}" >
+				<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}"  KeyDown="MainWinKeyDown">
 					<ContentPresenter   Name="MapPresenterMain1" Focusable="true" Margin="10" SizeChanged="MainWinSizeChanged" />
 				</UserControl>
-				<UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}" Height="94" VerticalAlignment="Top" >
+				<UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}" Height="94" VerticalAlignment="Top"   KeyDown="MainWinKeyDown">
 					<ContentPresenter   Name="MapPresenterMain2" Focusable="true" Margin="10" SizeChanged="MainWinSizeChanged" />
 				</UserControl>
 			</Grid>

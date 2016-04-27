@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Public Maps" Height="600" Width="700" Closing="PublicWindow_Closing"
 		 WindowStyle="None">
-	<Border BorderThickness="0,2" BorderBrush="DarkGray" MouseDown="PublicWin_OnMouseDown" MouseMove="PublicWin_OnMouseMove" MouseUp="PublicWin_OnMouseUp" KeyDown="PublicWinKeyDown" >
-		<Grid MouseDown="PublicWin_OnMouseDown" MouseMove="PublicWin_OnMouseMove" MouseUp="PublicWin_OnMouseUp" KeyDown="PublicWinKeyDown" >
-			<ContentPresenter Grid.Row="0"  Name="MapPresenterPublic1" Focusable="true" Margin="10" />
-			<ContentPresenter Grid.Row="0"  Name="MapPresenterPublic2" Focusable="true" Margin="10"  />
-    </Grid>
-		</Border>
+	<Border BorderThickness="0,2" BorderBrush="DarkGray"  >
+		<Grid >
+			<ContentPresenter Grid.Row="0"  Name="MapPresenterPublic1"  Margin="0" />
+			<ContentPresenter Grid.Row="0"  Name="MapPresenterPublic2"  Margin="0"  />
+		</Grid>
+	</Border>
 </Window>

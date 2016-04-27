@@ -2,13 +2,11 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using MessageBox = System.Windows.MessageBox;
 
 namespace MapViewer {
 	/// <summary>
@@ -21,6 +19,7 @@ namespace MapViewer {
 		private readonly MaskedMap _mapPrivate;
 		private readonly PublicWindow _publicWindow = new PublicWindow();
 		private Rectangle _dragRectangle;
+		private Rectangle _dragPublicRect;
 
 		private bool _isDraggingSelectionRect;
 		private bool _isMoving;
@@ -112,11 +111,18 @@ namespace MapViewer {
 			}
 		}
 
-		private void MainWinKeyDown(object sender, KeyEventArgs e) {
-			if (e.Key == Key.Escape) {
-				ClearDragSelectionRect();
-			}
+
+		private void MovePublic(Vector vector) {
+			_publicWindow.Map.Translate(vector);
+			_publicWindow.Map.Draw();
+			var rect = _publicWindow.Map.VisibleRectInMap();
+
+			Canvas.SetLeft(_dragPublicRect, rect.X);
+			Canvas.SetTop(_dragPublicRect, rect.Y);
+			_dragPublicRect.Width = rect.Width;
+			_dragPublicRect.Height = rect.Height;
 		}
+
 		#endregion
 
 		#region Public Methods
@@ -137,11 +143,39 @@ namespace MapViewer {
 
 		#endregion
 
-		#region UI event handler
+		#region Events
 
+		private void Border_Loaded(object sender, RoutedEventArgs e) {
+			var window = GetWindow(this);
+			if (window != null) {
+				window.KeyDown += MainWinKeyDown;
+			}
+		}
+
+		private void MainWinKeyDown(object sender, KeyEventArgs e) {
+			_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+			if (e.Key == Key.Escape) {
+				if (_isDraggingSelectionRect) {
+					ClearDragSelectionRect();
+				}
+			}
+			else if (e.Key == Key.Left) {
+				MovePublic(new Vector(_ctrlPressed ? 80 : 10, 0));
+			}
+			else if (e.Key == Key.Right) {
+				MovePublic(new Vector(_ctrlPressed ? -80 : -10, 0));
+			}
+			else if (e.Key == Key.Up) {
+				MovePublic(new Vector(0, _ctrlPressed ? 80 : 10));
+			}
+			else if (e.Key == Key.Down) {
+				MovePublic(new Vector(0, _ctrlPressed ? -80 : -10));
+			}
+		}
 
 		private void MainWinSizeChanged(object sender, SizeChangedEventArgs e) {
-			Update();
+			_mapPrivate.ScaleToWindow();
 		}
 
 		private void MainWinMouseDown(object sender, MouseButtonEventArgs e) {
@@ -218,13 +252,8 @@ namespace MapViewer {
 			_mapPrivate.Draw();
 		}
 
-	
-		#endregion
-
-
-
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-			System.Windows.Application.Current.Shutdown();
+			Application.Current.Shutdown();
 		}
 
 		private void ComboBoxPublicScale_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -249,15 +278,10 @@ namespace MapViewer {
 						_publicIsDirty = true;
 						break;
 					}
-				default:
-					break;
 			}
 
 		}
 
-
-
-
-	
+		#endregion
 	}
 }

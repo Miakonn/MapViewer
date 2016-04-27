@@ -50,6 +50,15 @@ namespace MapViewer {
 			_publicWindow.Map.PublishFrom(_mapPrivate, _publicIsDirty);
 			_publicWindow.Map.Draw();
 			_publicIsDirty = false;
+
+			var rect = _publicWindow.Map.VisibleRectInMap();
+			if (_dragPublicRect != null) {
+				_mapPrivate.CanvasOverlay.Children.Remove(_dragPublicRect);
+			}
+			if (!_publicWindow.Map.Linked) {
+				_dragPublicRect = _mapPrivate.OverlayRectPixel(rect, Colors.LightGreen);
+			}
+			Activate();
 		}
 
 		private void ClearMask_Executed(object sender, ExecutedRoutedEventArgs e) {
