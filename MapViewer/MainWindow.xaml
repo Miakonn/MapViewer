@@ -18,6 +18,8 @@
 		<CommandBinding Command="mapViewer:CustomCommands.SetScale" Executed="SetScale_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ScaleToFit" Executed="ScaleToFit_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Executed" CanExecute="ImageNeeded_CanExecute" />
 	</Window.CommandBindings>
 
 	<Grid  KeyDown="MainWinKeyDown">
@@ -48,8 +50,10 @@
 						<ComboBoxItem x:Name="DoubleScale" Content="Public 10 mm/pix"/>
 						<ComboBoxItem x:Name="Linked" Content="Linked"/>
 					</ComboBox>
-					<RibbonButton  Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor.png" />
+					<RibbonButton  Label="Add display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" />
+					<RibbonButton  Label="Remove display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" />
 					<RibbonButton  Label="Rotate" Command="mapViewer:CustomCommands.RotateMap" LargeImageSource="Images/Monitor_rotate.png" />
+					<RibbonButton  Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png" />
 				</RibbonGroup>
 			</RibbonTab>
 		</Ribbon>

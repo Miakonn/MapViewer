@@ -64,7 +64,7 @@ namespace MapViewer {
 			_dragRectangle = new Rectangle {
 				Width = 5,
 				Height = 5,
-				Fill = new SolidColorBrush(_ctrlPressed ? Colors.White : Colors.Black),
+				Fill = new SolidColorBrush(_ctrlPressed ? Colors.Black : Colors.White),
 				Opacity = 0.5
 			};
 
@@ -106,7 +106,7 @@ namespace MapViewer {
 
 		private void ApplyDragSelectionRect() {
 			if (_dragRectangle != null) {
-				_mapPrivate.RenderRectangle(GetElementRect(_dragRectangle), (byte)(_ctrlPressed ? 0 : 255));
+				_mapPrivate.RenderRectangle(GetElementRect(_dragRectangle), (byte)(_ctrlPressed ? 255 : 0));
 				ClearDragSelectionRect();
 			}
 		}

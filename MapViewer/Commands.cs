@@ -20,7 +20,8 @@ namespace MapViewer {
 		public static readonly RoutedUICommand ScaleToFit= new RoutedUICommand("Scale to fit", "Scale to fit", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand RotateMap = new RoutedUICommand("Rotate map", "Rotate map", typeof(CustomCommands), null);
-
+		public static readonly RoutedUICommand AddDisplay = new RoutedUICommand("Add display", "Add display", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand RemoveDisplay = new RoutedUICommand("Remove display", "Remove display", typeof(CustomCommands), null);
 	}
 
 	public partial class MainWindow {
@@ -44,20 +45,24 @@ namespace MapViewer {
 			_mapPrivate.ScaleToWindow();
 		}
 
-		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_publicWindow.Show();
-			_publicWindow.MaximizeToSecondaryMonitor();
-			_publicWindow.Map.PublishFrom(_mapPrivate, _publicIsDirty);
-			_publicWindow.Map.Draw();
-			_publicIsDirty = false;
 
+		private void UpdateVisibleRectangle() {
 			var rect = _publicWindow.Map.VisibleRectInMap();
 			if (_dragPublicRect != null) {
 				_mapPrivate.CanvasOverlay.Children.Remove(_dragPublicRect);
 			}
 			if (!_publicWindow.Map.Linked) {
 				_dragPublicRect = _mapPrivate.OverlayRectPixel(rect, Colors.LightGreen);
-			}
+			}			
+		}
+
+		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
+			_publicWindow.Map.PublishFrom(_mapPrivate, _publicIsDirty);
+			_publicWindow.Map.Draw();
+			_publicIsDirty = false;
+
+			UpdateVisibleRectangle();
+
 			Activate();
 		}
 
@@ -68,6 +73,10 @@ namespace MapViewer {
 
 		private void ClearOverlay_Executed(object sender, ExecutedRoutedEventArgs e) {
 			_mapPrivate.ClearOverlay();
+			if (_dragPublicRect != null) {
+				_mapPrivate.CanvasOverlay.Children.Add(_dragPublicRect);
+			}
+
 			_publicWindow.Map.ClearOverlay();
 		}
 
@@ -105,9 +114,20 @@ namespace MapViewer {
 		}
 
 		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_publicWindow.Map.RotationAngle = (_publicWindow.Map.RotationAngle + 90) % 360;
-			_publicWindow.Map.Draw();
+			//_publicWindow.Map.RotationAngle = (_publicWindow.Map.RotationAngle + 90) % 360;
+			_publicWindow.Map.RotateClockwise();
+			UpdateVisibleRectangle();
 		}
+
+		private void AddDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
+			_publicWindow.Show();
+			_publicWindow.MaximizeToSecondaryMonitor();
+		}
+
+		private void RemoveDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
+			_publicWindow.Visibility = Visibility.Hidden;
+		}
+
 
 
 		private void ImageNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {

@@ -13,7 +13,6 @@ namespace MapViewer {
 		#region Properties
 		private string _imagePath;
 
-
 		public BitmapImage MapImage;
 
 		public MatrixTransform DisplayTransform { get; set; }
@@ -31,8 +30,6 @@ namespace MapViewer {
 		public MapData MapData { get; set; }
 
 		public double ScreenScaleMMperM { get; set; }
-
-		public double RotationAngle { get; set; }
 
 		public float ImageScaleMperPix {
 			get {
@@ -55,7 +52,6 @@ namespace MapViewer {
 				MapData.Deserialize();
 
 				ScaleToWindow();
-				RotationAngle = 0;
 			}
 		}
 
@@ -64,7 +60,6 @@ namespace MapViewer {
 		}
 
 		private bool PublicView { get; set; }
-
 
 		public double Scale {
 			get { return DisplayTransform.Matrix.M11; }
@@ -91,18 +86,13 @@ namespace MapViewer {
 		public void Draw() {
 			// CanvasMapMask
 			CanvasMapMask.Children.Clear();
-			CanvasMapMask.LayoutTransform = new RotateTransform(RotationAngle);
 			CanvasMapMask.RenderTransform = DisplayTransform;
 			var backgroundImage = new Image {
-				RenderTransformOrigin = new Point(0.0, 0.0),
-				Margin = new Thickness(0, 0, 0, 0),
 				Source = MapImage,
 			};
 			CanvasMapMask.Children.Add(backgroundImage);
 
 			var maskImage = new Image {
-				RenderTransformOrigin = new Point(0.0, 0.0),
-				Margin = new Thickness(0, 0, 0, 0),
 				Opacity = MaskOpacity,
 				Source = BmpMask
 			};
@@ -112,14 +102,9 @@ namespace MapViewer {
 			CanvasOverlay.RenderTransform = DisplayTransform;
 		}
 
-
 		public Rect VisibleRectInMap() {
 			var rect = new Rect(0.0, 0.0, CanvasMapMask.ActualWidth, CanvasMapMask.ActualHeight);
-
-			if (RotationAngle == 90.0 || RotationAngle == 270.0) {
-				rect = new Rect(0.0, 0.0, CanvasMapMask.ActualHeight, CanvasMapMask.ActualWidth);
-			}
-			
+	
 			var inverse = DisplayTransform.Clone().Inverse;
 			if (inverse != null) {
 				var rectOut = inverse.TransformBounds(rect);
@@ -128,6 +113,24 @@ namespace MapViewer {
 			return new Rect();
 		}
 
+		public Point CenterInMap() {
+			var pos = new Point(CanvasMapMask.ActualWidth / 2, CanvasMapMask.ActualHeight/ 2);
+
+			var inverse = DisplayTransform.Clone().Inverse;
+			if (inverse != null) {
+				var posOut = inverse.Transform(pos);
+				return posOut;
+			}
+			return new Point();
+		}
+
+		public void RotateClockwise() {
+			var mat = DisplayTransform.Matrix;
+
+			var center= CenterInMap();
+			mat.RotateAtPrepend(90, center.X, center.Y);
+			DisplayTransform.Matrix = mat;
+		}
 
 		public void ScaleToWindow() {
 			if (!PublicView && MapImage != null) {
@@ -146,7 +149,7 @@ namespace MapViewer {
 				}
 
 				var scale = ScreenScaleMMperM * ImageScaleMperPix / ScreenScaleMMperPix;
-				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, 0, 0);
+				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, -MapImage.PixelWidth / 2.0, -MapImage.PixelHeight / 2.0);
 			}
 		}
 
@@ -270,16 +273,20 @@ namespace MapViewer {
 			CanvasOverlay.Children.Clear();
 		}
 
-		public void Zoom(double scale, Point pnt) {
+		public void Zoom(double scale, Point pos) {
 			var matrix = DisplayTransform.Matrix;
-			matrix.Scale(scale, scale); 
+			matrix.ScaleAt(scale, scale, pos.X, pos.Y); 
 			DisplayTransform.Matrix = matrix;
 
 		}
 
 		public void Translate(Vector move) {
+
 			var matrix = DisplayTransform.Matrix;
-			matrix.Translate(move.X, move.Y);
+			var x = (move.X * matrix.M11 + move.Y * matrix.M21) / Scale;
+			var y = (move.X * matrix.M12 + move.Y * matrix.M22) / Scale;
+			
+			matrix.Translate(x, y);
 			DisplayTransform.Matrix = matrix;
 		}
 

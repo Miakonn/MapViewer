@@ -134,6 +134,13 @@
   <ItemGroup>
     <Resource Include="Images\Monitor_rotate.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Monitor_add.png" />
+    <Resource Include="Images\Monitor_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Monitor_publish.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
