@@ -52,7 +52,7 @@ namespace MapViewer {
 				_mapPrivate.CanvasOverlay.Children.Remove(_dragPublicRect);
 			}
 			if (!_publicWindow.Map.Linked) {
-				_dragPublicRect = _mapPrivate.OverlayRectPixel(rect, Colors.LightGreen);
+				_dragPublicRect = _mapPrivate.OverlayRectPixel(rect, Colors.Red);
 			}			
 		}
 

@@ -22,6 +22,7 @@ namespace MapViewer {
 		private Rectangle _dragPublicRect;
 
 		private bool _isDraggingSelectionRect;
+		private bool _isDraggingPublicPos;
 		private bool _isMoving;
 		private Point _mouseDownPoint;
 		private Point _mouseUpPoint;
@@ -123,6 +124,7 @@ namespace MapViewer {
 			_dragPublicRect.Height = rect.Height;
 		}
 
+	
 		#endregion
 
 		#region Public Methods
@@ -184,7 +186,15 @@ namespace MapViewer {
 			_altPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
 			_shiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
 
-			if (e.ChangedButton == MouseButton.Left && _shiftPressed  && e.ClickCount == 1) {
+
+			var isPublicPos = _dragPublicRect != null && _dragPublicRect.IsMouseOver;
+			if (e.ChangedButton == MouseButton.Left && isPublicPos && e.ClickCount == 1) {
+				_isDraggingPublicPos= true;
+				_mouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
+				Trace.WriteLine("MouseDown=" + _mouseDownPoint);
+				e.Handled = true;
+			}
+			else if (e.ChangedButton == MouseButton.Left && _shiftPressed  && e.ClickCount == 1) {
 				_isDraggingSelectionRect = true;
 				_mouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
 				e.Handled = true;
@@ -209,7 +219,17 @@ namespace MapViewer {
 		}
 
 		private void MainWinMouseMove(object sender, MouseEventArgs e) {
-			if (_isDraggingSelectionRect) {
+			if (_isDraggingPublicPos) {
+				var curMouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
+				var scale = _mapPrivate.Scale;
+				var scale2 = _publicWindow.Map.Scale;
+				MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X) * scale2, (_mouseDownPoint.Y - curMouseDownPoint.Y) * scale2));
+				_mouseDownPoint = curMouseDownPoint;
+				Trace.WriteLine("MouseMOve=" + _mouseDownPoint);
+
+				e.Handled = true;
+			}
+			else if (_isDraggingSelectionRect) {
 				var curMouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
 				if (_dragRectangle == null) {
 					InitDragSelectionRect(_mouseDownPoint, curMouseDownPoint);
@@ -229,6 +249,10 @@ namespace MapViewer {
 		}
 
 		private void MainWinMouseUp(object sender, MouseButtonEventArgs e) {
+			if (e.ChangedButton == MouseButton.Left && _isDraggingPublicPos) {
+				_isDraggingPublicPos = false;
+			}
+
 			if (e.ChangedButton == MouseButton.Left && _shiftPressed) {
 				if (_isDraggingSelectionRect) {
 					ApplyDragSelectionRect();

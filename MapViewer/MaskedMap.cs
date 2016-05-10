@@ -237,8 +237,9 @@ namespace MapViewer {
 			var shape = new Rectangle {
 				Width = rect.Width,
 				Height = rect.Height,
-				Fill = new SolidColorBrush(color),
-				Opacity = 0.3
+				Stroke = new SolidColorBrush(color),
+				StrokeThickness = 20,
+				Opacity = 0.5
 			};
 
 			Canvas.SetLeft(shape, rect.X);
