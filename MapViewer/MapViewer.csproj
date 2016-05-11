@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BitmapUtils.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="DialogGetFloatValue.xaml.cs">
       <DependentUpon>DialogGetFloatValue.xaml</DependentUpon>

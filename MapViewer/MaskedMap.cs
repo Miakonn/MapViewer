@@ -46,10 +46,14 @@ namespace MapViewer {
 			set {
 				_imagePath = value;
 				MapImage = new BitmapImage(new Uri(_imagePath));
-				BmpMask = new WriteableBitmap((int)MapImage.Width, (int)MapImage.Height, MapImage.DpiX, MapImage.DpiY, PixelFormats.Pbgra32, null);
-
 				MapData = new MapData(_imagePath);
-				MapData.Deserialize();
+
+				Deserialize();
+
+				if (BmpMask == null) {
+					BmpMask = new WriteableBitmap((int)MapImage.Width, (int)MapImage.Height, MapImage.DpiX, MapImage.DpiY, PixelFormats.Pbgra32, null);
+				}
+
 
 				ScaleToWindow();
 			}
@@ -81,6 +85,11 @@ namespace MapViewer {
 				var screenWidthPix = float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthPix"]);
 				ScreenScaleMMperPix = screenWidthMM / screenWidthPix;
 			}
+		}
+
+
+		~MaskedMap() {
+			//Serialize();
 		}
 
 		public void Draw() {
@@ -210,6 +219,8 @@ namespace MapViewer {
 
 			MapData.ImageLengthM = mapSource.MapData.ImageLengthM;
 		
+			BitmapUtils.CopyingCanvas(mapSource.CanvasOverlay, CanvasOverlay);
+
 			if (Linked) {
 				ScaleToLinked(mapSource);
 			}
@@ -296,6 +307,22 @@ namespace MapViewer {
 			pos.Y += (int)DisplayTransform.Matrix.OffsetY;
 			return pos;
 		}
+
+
+		public void Serialize() {
+			MapData.Serialize();
+			BmpMask.Freeze();
+			BitmapUtils.Serialize(BmpMask as WriteableBitmap ,_imagePath + ".mask.png");
+			BitmapUtils.SerializeXaml(CanvasOverlay, _imagePath + ".canvas.xaml");
+		}
+
+		public void Deserialize() {
+			MapData.Deserialize();
+			BmpMask = BitmapUtils.Deserialize(_imagePath + ".mask.png");
+			BitmapUtils.DeserializeXaml(CanvasOverlay, _imagePath + ".canvas.xaml");
+
+		}
+
 
 	}
 }

@@ -22,6 +22,8 @@ namespace MapViewer {
 		public static readonly RoutedUICommand RotateMap = new RoutedUICommand("Rotate map", "Rotate map", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand AddDisplay = new RoutedUICommand("Add display", "Add display", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand RemoveDisplay = new RoutedUICommand("Remove display", "Remove display", typeof(CustomCommands), null);
+
+		public static readonly RoutedUICommand Save = new RoutedUICommand("Save", "Save", typeof(CustomCommands), null);
 	}
 
 	public partial class MainWindow {
@@ -43,6 +45,10 @@ namespace MapViewer {
 
 		private void ScaleToFit_Executed(object sender, ExecutedRoutedEventArgs e) {
 			_mapPrivate.ScaleToWindow();
+		}
+
+		private void Save_Executed(object sender, ExecutedRoutedEventArgs e) {
+			_mapPrivate.Serialize();
 		}
 
 

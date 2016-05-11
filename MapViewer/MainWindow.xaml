@@ -21,6 +21,7 @@
 		<CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Executed" CanExecute="ImageNeeded_CanExecute" />
 	</Window.CommandBindings>
 
 	<Grid  KeyDown="MainWinKeyDown">
@@ -37,6 +38,7 @@
 			</Ribbon.ApplicationMenu>
 			<RibbonTab x:Name="PrivateTab" Header="Private" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
 				<RibbonGroup Name="Private">
+					<RibbonButton Label="Save" Command="mapViewer:CustomCommands.Save" LargeImageSource="Images/Map_mask.png" />
 					<RibbonButton Label="Full mask" Command="mapViewer:CustomCommands.FullMask" LargeImageSource="Images/Map_mask.png" />
 					<RibbonButton Label="Clear mask" Command="mapViewer:CustomCommands.ClearMask" LargeImageSource="Images/Map_mask.png" />
 					<RibbonButton Label="Clear overlay" Command="mapViewer:CustomCommands.ClearOverlay" LargeImageSource="Images/Map_mask.png"/>
