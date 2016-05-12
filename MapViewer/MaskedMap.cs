@@ -258,10 +258,24 @@ namespace MapViewer {
 			else if (scaleNeedsToRecalculate) {
 				ScaleToReal();
 			}
-
 		}
 
-		public void OverlayCircle(Point pos, float radiusM, Color color) {
+
+		public void AddOverlayElement(UIElement elem, string uid) {
+			int indx = 0;
+			do {
+				elem.Uid = uid + indx.ToString();
+				if (BitmapUtils.FindElementByUID(CanvasOverlay, elem.Uid) == null) {
+					CanvasOverlay.Children.Add(elem);
+					break;
+				}
+				indx++;
+			} while (true);
+		}
+
+
+
+		public void OverlayCircle(Point pos, float radiusM, Color color, string uid) {
 			var size = radiusM / ImageScaleMperPix;
 			var shape = new Ellipse {
 				Width = 2 * size,
@@ -272,7 +286,7 @@ namespace MapViewer {
 
 			Canvas.SetLeft(shape, pos.X - size);
 			Canvas.SetTop(shape, pos.Y - size);
-			CanvasOverlay.Children.Add(shape);
+			AddOverlayElement(shape, uid);
 		}
 
 		public Rectangle OverlayRectPixel(Rect rect, Color color) {
@@ -287,23 +301,22 @@ namespace MapViewer {
 
 			Canvas.SetLeft(shape, rect.X);
 			Canvas.SetTop(shape, rect.Y);
-			CanvasOverlay.Children.Add(shape);
 			return shape;
 		}
 
-		public void OverlayLine(Point pos1, Point pos2, float widthM, Color color) {
+		public void OverlayLine(double x1, double y1, double x2, double y2, float widthM, Color color, string uid) {
 			var size = widthM / ImageScaleMperPix;
 			var shape = new Line {
-				X1 = pos1.X,
-				Y1 = pos1.Y,
-				X2 = pos2.X,
-				Y2 = pos2.Y,
+				X1 = x1,
+				Y1 = y1,
+				X2 = x2,
+				Y2 = y2,
 				StrokeThickness = size,
 				Stroke = new SolidColorBrush(color),
 				Opacity = 0.4
-				
+
 			};
-			CanvasOverlay.Children.Add(shape);
+			AddOverlayElement(shape, uid);
 		}
 
 		public void ClearMask() {
@@ -344,13 +357,13 @@ namespace MapViewer {
 		public void Serialize() {
 			MapData.Serialize();
 			BmpMask.Freeze();
-			BitmapUtils.Serialize(BmpMask as WriteableBitmap ,_imagePath + ".mask.png");
+			BitmapUtils.Serialize(BmpMask as WriteableBitmap ,_imagePath + ".mask");
 			BitmapUtils.SerializeXaml(CanvasOverlay, _imagePath + ".canvas.xaml");
 		}
 
 		public void Deserialize() {
 			MapData.Deserialize();
-			BmpMask = BitmapUtils.Deserialize(_imagePath + ".mask.png");
+			BmpMask = BitmapUtils.Deserialize(_imagePath + ".mask");
 			BitmapUtils.DeserializeXaml(CanvasOverlay, _imagePath + ".canvas.xaml");
 
 		}

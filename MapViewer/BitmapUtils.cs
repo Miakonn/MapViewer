@@ -87,5 +87,23 @@ namespace MapViewer {
 			}
 		}
 
+		public static UIElement FindHitElement(Canvas canvas) {
+			foreach (System.Windows.UIElement child in canvas.Children) {
+				if (child.Uid != "PublicView" && child.IsMouseOver) {
+					return child;
+				}
+			}
+			return null;
+		}
+
+		public static UIElement FindElementByUID(Canvas canvas, string uid) {
+			foreach (System.Windows.UIElement child in canvas.Children) {
+				if (child.Uid == uid) {
+					return child;
+				}
+			}
+			return null;
+		}
+
 	}
 }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
@@ -12,14 +8,15 @@ using System.Windows.Shapes;
 
 
 namespace MapViewer.Tools {
-	class Calibrate : ICanvasTool {
+	class DrawLine : ICanvasTool {
 
 		private MainWindow _mainWindow;
 		private Canvas _canvas;
 		private MaskedMap _map;
+
 		private Line _line;
 
-		public Calibrate(MainWindow mainWindow) {
+		public DrawLine(MainWindow mainWindow) {
 			_mainWindow = mainWindow;
 			_map = mainWindow._mapPrivate;
 			_canvas = _map.CanvasOverlay;
@@ -35,7 +32,7 @@ namespace MapViewer.Tools {
 				InitDraw(e.GetPosition(_canvas));
 			}
 			else {
-				UpdateDraw(e.GetPosition(_canvas)); 
+				UpdateDraw(e.GetPosition(_canvas));
 				EndDraw();
 			}
 		}
@@ -64,7 +61,7 @@ namespace MapViewer.Tools {
 				Y1 = pt1.Y,
 				X2 = pt1.X,
 				Y2 = pt1.Y,
-				Stroke = Brushes.Green,
+				Stroke = Brushes.Yellow,
 				StrokeThickness = 10,
 				Opacity = 0.5
 			};
@@ -81,20 +78,10 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-			_canvas.Children.Remove(_line);
-					
-			var dialog = new DialogGetFloatValue {
-				LeadText = "Length in m"
-			};
-
-			var result = dialog.ShowDialog();
-			if (!result.HasValue || !result.Value) {
-				return;
+			_map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.Yellow, "Line");
+			if (_mainWindow._publicWindow.IsVisible) {
+				_mainWindow._publicWindow.Map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.Yellow, "Line");
 			}
-
-			var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
-
-			_map.ImageScaleMperPix = (float) (dialog.Value / length);
 
 			Deactivate();
 		}

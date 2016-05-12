@@ -53,6 +53,10 @@ namespace MapViewer.Tools {
 
 		public void Deactivate() {
 			_mainWindow.ActiveTool = null;
+			if (_circle != null) {
+				_canvas.Children.Remove(_circle);
+			}
+			_circle = null;
 		}
 
 		#endregion

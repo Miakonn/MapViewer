@@ -47,6 +47,10 @@ namespace MapViewer.Tools {
 
 		public void Deactivate() {
 			_mainWindow.ActiveTool = null;
+			if (_line != null) {
+				_canvas.Children.Remove(_line);
+			}
+			_line = null;
 		}
 
 		#endregion

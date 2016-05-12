@@ -17,8 +17,10 @@ namespace MapViewer {
 		#region Attributes
 
 		public readonly MaskedMap _mapPrivate;
-		private readonly PublicWindow _publicWindow = new PublicWindow();
+		public readonly PublicWindow _publicWindow = new PublicWindow();
 		private Rectangle _dragPublicRect;
+
+		private UIElement _lastClickedElem;
 
 		private bool _isDraggingPublicPos;
 		private bool _isMoving;
@@ -146,13 +148,14 @@ namespace MapViewer {
 			}
 			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
 				var pos = e.GetPosition(_mapPrivate.CanvasMapMask);
-				_mapPrivate.OverlayCircle(pos, 25 * _mapPrivate.ImageScaleMperPix, Colors.GreenYellow);
+				_mapPrivate.OverlayCircle(pos, 25 * _mapPrivate.ImageScaleMperPix, Colors.GreenYellow, "Action");
 				if (_publicWindow.IsVisible) {
-					_publicWindow.Map.OverlayCircle(pos, 25*_publicWindow.Map.ImageScaleMperPix, Colors.GreenYellow);
+					_publicWindow.Map.OverlayCircle(pos, 25 * _publicWindow.Map.ImageScaleMperPix, Colors.GreenYellow, "Action");
 				}
 			}
 			else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
 				_mouseDownPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
+				_lastClickedElem = BitmapUtils.FindHitElement(_mapPrivate.CanvasOverlay);
 			}
 
 		}

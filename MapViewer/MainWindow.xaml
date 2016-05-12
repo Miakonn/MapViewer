@@ -9,7 +9,7 @@
 	<Window.CommandBindings>
 		<CommandBinding Command="mapViewer:CustomCommands.Fireball" Executed="Fireball_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Moonbeam" Executed="Moonbeam_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Wall" Executed="Wall_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DeleteElement" Executed="DeleteElement_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.FullMask" Executed="FullMask_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearOverlay_Executed" CanExecute="ImageNeeded_CanExecute" />
@@ -23,6 +23,7 @@
 		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.MaskRectangle" Executed="MaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.MaskCircle" Executed="MaskCircle_Executed" CanExecute="ImageNeeded_CanExecute" />
@@ -50,15 +51,19 @@
 					<RibbonButton Label="Zoom to fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png"/>
 				</RibbonGroup>
 
-				<RibbonGroup Name="Tools">
+				<RibbonGroup Name="Masking">
 					<RibbonButton Label="Calibrate" Command="mapViewer:CustomCommands.Calibrate" LargeImageSource="Images/Map_measure.png" />
 					<RibbonButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
 					<RibbonButton Label="Mask rect" Command="mapViewer:CustomCommands.MaskRectangle" LargeImageSource="Images/Map_mask.png" />
 					<RibbonButton Label="Unmask rect" Command="mapViewer:CustomCommands.UnmaskRectangle" LargeImageSource="Images/Map_mask.png" />
 					<RibbonButton Label="Mask circle" Command="mapViewer:CustomCommands.MaskCircle" LargeImageSource="Images/Map_mask.png" />
 					<RibbonButton Label="Unmask circle" Command="mapViewer:CustomCommands.UnmaskCircle" LargeImageSource="Images/Map_mask.png" />
-				</RibbonGroup>				
-				
+				</RibbonGroup>
+
+				<RibbonGroup Name="Spells">
+					<RibbonButton Label="Draw Line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/Map_measure.png" />
+				</RibbonGroup>
+
 				<RibbonGroup Name="Public" >
 					<ComboBox Name="ComboBoxPublicScale"  Height="20" VerticalAlignment="Center" Width="120" SelectionChanged="ComboBoxPublicScale_OnSelectionChanged">
 						<ComboBoxItem x:Name="StdScale" Content="Public 20 mm/pix"/>
@@ -80,7 +85,7 @@
 					<ContextMenu Name="Cm">
 						<MenuItem Command="mapViewer:CustomCommands.Fireball" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.Moonbeam" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-						<MenuItem Command="mapViewer:CustomCommands.Wall" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<MenuItem Command="mapViewer:CustomCommands.DeleteElement" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 					</ContextMenu>
 				</Grid.ContextMenu>
 				<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}"  KeyDown="MainWinKeyDown">

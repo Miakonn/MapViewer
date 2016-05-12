@@ -8,7 +8,7 @@ namespace MapViewer {
 
 		public static readonly RoutedUICommand Fireball = new RoutedUICommand("Fireball", "Fireball", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand Moonbeam = new RoutedUICommand("Moonbeam", "Moonbeam", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand Wall = new RoutedUICommand("Wall", "Wall", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete element", "Delete element", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand OpenImage = new RoutedUICommand("Open image", "Open image", typeof(CustomCommands), null);
@@ -26,6 +26,7 @@ namespace MapViewer {
 
 		public static readonly RoutedUICommand Calibrate = new RoutedUICommand("Calibrate", "Calibrate", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand Measure = new RoutedUICommand("Measure", "Measure", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DrawLine = new RoutedUICommand("Draw line", "Draw line", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand MaskRectangle = new RoutedUICommand("Mask rectangle", "Mask rectangle", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand UnmaskRectangle = new RoutedUICommand("Unmask rectangle", "Unmask rectangle", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand MaskCircle = new RoutedUICommand("Mask circle", "Mask circle", typeof(CustomCommands), null);
@@ -94,23 +95,33 @@ namespace MapViewer {
 
 
 		private void Fireball_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_mapPrivate.OverlayCircle(_mouseDownPoint, 7, Colors.OrangeRed);
+			_mapPrivate.OverlayCircle(_mouseDownPoint, 7, Colors.OrangeRed, "Fireball");
 			if (_publicWindow.IsVisible) {
-				_publicWindow.Map.OverlayCircle(_mouseDownPoint, 7, Colors.OrangeRed);
+				_publicWindow.Map.OverlayCircle(_mouseDownPoint, 7, Colors.OrangeRed, "Fireball");
 			}
 		}
 
 		private void Moonbeam_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_mapPrivate.OverlayCircle(_mouseDownPoint, 2, Colors.Yellow);
+			_mapPrivate.OverlayCircle(_mouseDownPoint, 2, Colors.Yellow, "Moonbeam");
 			if (_publicWindow.IsVisible) {
-				_publicWindow.Map.OverlayCircle(_mouseDownPoint, 2, Colors.Yellow);
+				_publicWindow.Map.OverlayCircle(_mouseDownPoint, 2, Colors.Yellow, "Moonbeam");
 			}
 		}
 
-		private void Wall_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_mapPrivate.OverlayLine(_mouseDownPoint, _mouseUpPoint, 2, Colors.Yellow);
+		private void DeleteElement_Executed(object sender, ExecutedRoutedEventArgs e) {
+
+
+			if (_lastClickedElem == null) {
+				return;
+			}
+
+			var uid = _lastClickedElem.Uid;
+			_mapPrivate.CanvasOverlay.Children.Remove(_lastClickedElem);
 			if (_publicWindow.IsVisible) {
-				_publicWindow.Map.OverlayLine(_mouseDownPoint, _mouseUpPoint, 2, Colors.Yellow);
+				var elemPublic = BitmapUtils.FindElementByUID(_publicWindow.Map.CanvasOverlay, uid);
+				if (elemPublic != null) {
+					_publicWindow.Map.CanvasOverlay.Children.Remove(elemPublic);
+				}
 			}
 		}
 
@@ -156,6 +167,11 @@ namespace MapViewer {
 
 		private void Calibrate_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var tool = new Tools.Calibrate(this);
+			ActiveTool = tool;
+		}
+
+		private void DrawLine_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var tool = new Tools.DrawLine(this);
 			ActiveTool = tool;
 		}
 
