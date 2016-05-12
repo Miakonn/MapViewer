@@ -16,12 +16,10 @@ namespace MapViewer {
 
 		#region Attributes
 
-		private readonly MaskedMap _mapPrivate;
+		public readonly MaskedMap _mapPrivate;
 		private readonly PublicWindow _publicWindow = new PublicWindow();
-		private Rectangle _dragRectangle;
 		private Rectangle _dragPublicRect;
 
-		private bool _isDraggingSelectionRect;
 		private bool _isDraggingPublicPos;
 		private bool _isMoving;
 		private Point _mouseDownPoint;
@@ -56,63 +54,11 @@ namespace MapViewer {
 			_publicWindow.Map.Draw();
 		}
 
-		/// <summary>
-		///     Initialize the rectangle used for drag selection.
-		/// </summary>
-		private void InitDragSelectionRect(Point pt1, Point pt2) {
-			var x = Math.Min(pt1.X, pt2.X);
-			var y = Math.Min(pt1.Y, pt2.Y);
-
-			_dragRectangle = new Rectangle {
-				Width = 5,
-				Height = 5,
-				Fill = new SolidColorBrush(_ctrlPressed ? Colors.Black : Colors.White),
-				Opacity = 0.5
-			};
-
-			Canvas.SetLeft(_dragRectangle, x);
-			Canvas.SetTop(_dragRectangle, y);
-			_mapPrivate.CanvasOverlay.Children.Add(_dragRectangle);
-		}
-
-		/// <summary>
-		///     Initialize the rectangle used for drag selection.
-		/// </summary>
-		private void ClearDragSelectionRect() {
-			_mapPrivate.CanvasOverlay.Children.Remove(_dragRectangle);
-			_dragRectangle = null;
-			_isDraggingSelectionRect = false;
-			_isMoving = false;
-		}
-
-		/// <summary>
-		///     Update the position and size of the rectangle used for drag  selection.
-		/// </summary>
-		private void UpdateDragSelectionRect(Point pt1, Point pt2) {
-			Trace.WriteLine("UpdateDragSelectionRect");
-			var x = Math.Min(pt1.X, pt2.X);
-			var y = Math.Min(pt1.Y, pt2.Y);
-			var width = Math.Abs(pt1.X - pt2.X);
-			var height = Math.Abs(pt1.Y - pt2.Y);
-			Canvas.SetLeft(_dragRectangle, x);
-			Canvas.SetTop(_dragRectangle, y);
-			_dragRectangle.Width = width;
-			_dragRectangle.Height = height;
-		}
-
 		private Int32Rect GetElementRect(FrameworkElement element) {
 			var buttonTransform = element.TransformToVisual(_mapPrivate.CanvasMapMask);
 			var point = buttonTransform.Transform(new Point());
 			return new Int32Rect((int)point.X, (int)point.Y, (int)element.ActualWidth, (int)element.ActualHeight);
 		}
-
-		private void ApplyDragSelectionRect() {
-			if (_dragRectangle != null) {
-				_mapPrivate.RenderRectangle(GetElementRect(_dragRectangle), (byte)(_ctrlPressed ? 255 : 0));
-				ClearDragSelectionRect();
-			}
-		}
-
 
 		private void MovePublic(Vector vector) {
 			_publicWindow.Map.Translate(vector);
@@ -157,6 +103,11 @@ namespace MapViewer {
 
 		private void MainWinKeyDown(object sender, KeyEventArgs e) {
 
+			if (e.Key == Key.Escape) {
+				if (ActiveTool != null) {
+					ActiveTool.Deactivate();
+				}
+			}
 			if (ActiveTool != null) {
 				ActiveTool.KeyDown(sender, e);
 				return;
@@ -164,23 +115,6 @@ namespace MapViewer {
 
 			_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
-			if (e.Key == Key.Escape) {
-				if (_isDraggingSelectionRect) {
-					ClearDragSelectionRect();
-				}
-			}
-			else if (e.Key == Key.Left) {
-				MovePublic(new Vector(_ctrlPressed ? 80 : 10, 0));
-			}
-			else if (e.Key == Key.Right) {
-				MovePublic(new Vector(_ctrlPressed ? -80 : -10, 0));
-			}
-			else if (e.Key == Key.Up) {
-				MovePublic(new Vector(0, _ctrlPressed ? 80 : 10));
-			}
-			else if (e.Key == Key.Down) {
-				MovePublic(new Vector(0, _ctrlPressed ? -80 : -10));
-			}
 		}
 
 		private void MainWinSizeChanged(object sender, SizeChangedEventArgs e) {
@@ -198,7 +132,6 @@ namespace MapViewer {
 			_altPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
 			_shiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
 
-
 			var isPublicPos = _dragPublicRect != null && _dragPublicRect.IsMouseOver;
 			if (e.ChangedButton == MouseButton.Left && isPublicPos && e.ClickCount == 1) {
 				_isDraggingPublicPos= true;
@@ -206,13 +139,7 @@ namespace MapViewer {
 				Trace.WriteLine("MouseDown=" + _mouseDownPoint);
 				e.Handled = true;
 			}
-			else if (e.ChangedButton == MouseButton.Left && _shiftPressed  && e.ClickCount == 1) {
-				_isDraggingSelectionRect = true;
-				_mouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
-				e.Handled = true;
-			}
 			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
-				_isDraggingSelectionRect = false;
 				_isMoving = true;
 				_mouseDownPoint = e.GetPosition(this);
 				e.Handled = true;
@@ -246,15 +173,6 @@ namespace MapViewer {
 
 				e.Handled = true;
 			}
-			else if (_isDraggingSelectionRect) {
-				var curMouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
-				if (_dragRectangle == null) {
-					InitDragSelectionRect(_mouseDownPoint, curMouseDownPoint);
-				}
-				UpdateDragSelectionRect(_mouseDownPoint, curMouseDownPoint);
-
-				e.Handled = true;
-			}
 			else if (_isMoving) {
 				var curMouseDownPoint = e.GetPosition(this);
 				Vector move = curMouseDownPoint - _mouseDownPoint;
@@ -276,14 +194,7 @@ namespace MapViewer {
 				_isDraggingPublicPos = false;
 			}
 
-			if (e.ChangedButton == MouseButton.Left && _shiftPressed) {
-				if (_isDraggingSelectionRect) {
-					ApplyDragSelectionRect();
-					ClearDragSelectionRect();
-					e.Handled = true;
-				}
-			}
-			else if (e.ChangedButton == MouseButton.Right) {
+			if (e.ChangedButton == MouseButton.Right) {
 				_mouseUpPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
 			}
 			else if (e.ChangedButton == MouseButton.Left) {

@@ -79,9 +79,11 @@ namespace MapViewer {
 		public static void CopyingCanvas(Canvas canvasSource, Canvas canvasDest) {
 			canvasDest.Children.Clear();
 			foreach (System.Windows.UIElement child in canvasSource.Children) {
-				var xaml = System.Windows.Markup.XamlWriter.Save(child);
-				var deepCopy = System.Windows.Markup.XamlReader.Parse(xaml) as UIElement;
-				canvasDest.Children.Add(deepCopy);
+				if (child.Uid != "PublicView") {
+					var xaml = System.Windows.Markup.XamlWriter.Save(child);
+					var deepCopy = System.Windows.Markup.XamlReader.Parse(xaml) as UIElement;
+					canvasDest.Children.Add(deepCopy);
+				}
 			}
 		}
 

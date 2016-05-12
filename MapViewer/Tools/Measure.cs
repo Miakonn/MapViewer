@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
@@ -14,12 +10,17 @@ using System.Windows.Shapes;
 namespace MapViewer.Tools {
 	class Measure : ICanvasTool {
 
-		public MainWindow OwnerWindow { get; set;}
-		public Canvas CanvasPrivate { get; set; }
-		public MaskedMap Map { get; set; }
+		private MainWindow _mainWindow;
+		private Canvas _canvas;
+		private MaskedMap _map;
 
 		private Line _line;
 
+		public Measure(MainWindow mainWindow) {
+			_mainWindow = mainWindow;
+			_map = mainWindow._mapPrivate;
+			_canvas = _map.CanvasOverlay;
+		}
 
 		#region ICanvasTool
 		public void Activate() {
@@ -28,16 +29,16 @@ namespace MapViewer.Tools {
 
 		public void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_line == null) {
-				InitDraw(e.GetPosition(CanvasPrivate));
+				InitDraw(e.GetPosition(_canvas));
 			}
 			else {
-				UpdateDraw(e.GetPosition(CanvasPrivate)); 
+				UpdateDraw(e.GetPosition(_canvas)); 
 				EndDraw();
 			}
 		}
 
 		public void MouseMove(object sender, MouseEventArgs e) {
-			UpdateDraw(e.GetPosition(CanvasPrivate));
+			UpdateDraw(e.GetPosition(_canvas));
 		}
 
 		public void MouseUp(object sender, MouseButtonEventArgs e) { }
@@ -45,7 +46,7 @@ namespace MapViewer.Tools {
 		public void KeyDown(object sender, KeyEventArgs e) { }
 
 		public void Deactivate() {
-			OwnerWindow.ActiveTool = null;
+			_mainWindow.ActiveTool = null;
 		}
 
 		#endregion
@@ -61,7 +62,7 @@ namespace MapViewer.Tools {
 				Opacity = 0.5
 			};
 
-			CanvasPrivate.Children.Add(_line);
+			_canvas.Children.Add(_line);
 		}
 
 		private void UpdateDraw(Point pt2) {
@@ -73,11 +74,11 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-			CanvasPrivate.Children.Remove(_line);
+			_canvas.Children.Remove(_line);
 
 			var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
-			var dist = Map.ImageScaleMperPix * length;
-			MessageBox.Show(string.Format("Length is {0} m", dist));
+			var dist = _map.ImageScaleMperPix * length;
+			MessageBox.Show(string.Format("Length is {0} m", dist.ToString("N1")));
 
 			Deactivate();
 		}

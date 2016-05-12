@@ -185,7 +185,41 @@ namespace MapViewer {
 			return Math.Max(Math.Min(val, max), min);
 		}
 
-		public void RenderRectangle(Int32Rect rect, byte opacity) {
+
+		private byte[] CreateColorData(int byteCount, byte opacity) {
+			var colorData = new byte[byteCount];
+			for (var i = 0; i < byteCount; i += 4) {
+				colorData[i] = 0;	// B
+				colorData[i + 1] = 0; // G
+				colorData[i + 2] = 0; // R
+				colorData[i + 3] = opacity; // A
+			}
+			return colorData;
+		}
+
+		public void MaskCircle(int centerX, int centerY, int radius, byte opacity) {
+			var bitmap = BmpMask as WriteableBitmap;
+			if (bitmap == null) {
+				return;
+			}
+
+			var y0 = Between(centerY - radius, 0, bitmap.PixelHeight);
+			var yMax = Between(centerY + radius, 0, bitmap.PixelHeight);
+
+			var byteCount = 4 * (2 * radius);
+			var colorData = CreateColorData(byteCount, opacity);
+
+			for (var y = y0; y < yMax; y++) {
+				var corda = (int)Math.Sqrt(radius * radius - (y - centerY) * (y - centerY));
+				var x0 = Between(centerX - corda, 0, bitmap.PixelWidth);
+				var xMax = Between(centerX + corda, 0, bitmap.PixelWidth);
+				var rectLine = new Int32Rect(x0, y, xMax - x0, 1);
+
+				bitmap.WritePixels(rectLine, colorData, rectLine.Width * 4, 0);
+			}
+		}
+
+		public void MaskRectangle(Int32Rect rect, byte opacity) {
 			var bitmap = BmpMask as WriteableBitmap;
 			if (bitmap == null) {
 				return;
@@ -197,14 +231,7 @@ namespace MapViewer {
 			var yMax = Between(rect.Y + rect.Height, 0, bitmap.PixelHeight);
 
 			var byteCount = 4 * (xMax - x0);
-
-			var colorData = new byte[byteCount];
-			for (var i = 0; i < byteCount; i += 4) {
-				colorData[i] = 0;	// B
-				colorData[i + 1] = 0; // G
-				colorData[i + 2] = 0; // R
-				colorData[i + 3] = opacity; // A
-			}
+			var colorData = CreateColorData(byteCount, opacity);
 
 			var rectLine = new Int32Rect(x0, y0, xMax - x0, 1);
 			for (var y = y0; y < yMax; y++) {
@@ -254,7 +281,8 @@ namespace MapViewer {
 				Height = rect.Height,
 				Stroke = new SolidColorBrush(color),
 				StrokeThickness = 20,
-				Opacity = 0.5
+				Opacity = 0.5,
+				Uid = "PublicView"
 			};
 
 			Canvas.SetLeft(shape, rect.X);
@@ -281,7 +309,7 @@ namespace MapViewer {
 		public void ClearMask() {
 			if (BmpMask != null) {
 				var rect = new Int32Rect(0, 0, BmpMask.PixelWidth, BmpMask.PixelHeight);
-				RenderRectangle(rect, 0);
+				MaskRectangle(rect, 0);
 			}
 		}
 

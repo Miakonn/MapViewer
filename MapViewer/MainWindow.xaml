@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mapViewer="clr-namespace:MapViewer"
-        Title="MapViewer - Private Map" Height="800" Width="1200" Closing="MainWindow_Closing"
+        Title="MapViewer - Private _map" Height="800" Width="1200" Closing="MainWindow_Closing"
 		WindowStyle="ThreeDBorderWindow" 
 		ResizeMode="CanResizeWithGrip">
 
@@ -22,7 +22,11 @@
 		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.MaskRectangle" Executed="MaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.MaskCircle" Executed="MaskCircle_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.UnmaskCircle" Executed="UnmaskCircle_Executed" CanExecute="ImageNeeded_CanExecute" />
 	</Window.CommandBindings>
 
 	<Grid  KeyDown="MainWinKeyDown">
@@ -49,6 +53,10 @@
 				<RibbonGroup Name="Tools">
 					<RibbonButton Label="Calibrate" Command="mapViewer:CustomCommands.Calibrate" LargeImageSource="Images/Map_measure.png" />
 					<RibbonButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
+					<RibbonButton Label="Mask rect" Command="mapViewer:CustomCommands.MaskRectangle" LargeImageSource="Images/Map_mask.png" />
+					<RibbonButton Label="Unmask rect" Command="mapViewer:CustomCommands.UnmaskRectangle" LargeImageSource="Images/Map_mask.png" />
+					<RibbonButton Label="Mask circle" Command="mapViewer:CustomCommands.MaskCircle" LargeImageSource="Images/Map_mask.png" />
+					<RibbonButton Label="Unmask circle" Command="mapViewer:CustomCommands.UnmaskCircle" LargeImageSource="Images/Map_mask.png" />
 				</RibbonGroup>				
 				
 				<RibbonGroup Name="Public" >

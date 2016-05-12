@@ -26,7 +26,10 @@ namespace MapViewer {
 
 		public static readonly RoutedUICommand Calibrate = new RoutedUICommand("Calibrate", "Calibrate", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand Measure = new RoutedUICommand("Measure", "Measure", typeof(CustomCommands), null);
-	
+		public static readonly RoutedUICommand MaskRectangle = new RoutedUICommand("Mask rectangle", "Mask rectangle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand UnmaskRectangle = new RoutedUICommand("Unmask rectangle", "Unmask rectangle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand MaskCircle = new RoutedUICommand("Mask circle", "Mask circle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand UnmaskCircle = new RoutedUICommand("Unmask circle", "Unmask circle", typeof(CustomCommands), null);
 	}
 
 	public partial class MainWindow {
@@ -114,7 +117,7 @@ namespace MapViewer {
 
 		private void FullMask_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var rect = new Int32Rect(0, 0, (int)_mapPrivate.Image.Width, (int)_mapPrivate.Image.Height);
-			_mapPrivate.RenderRectangle(rect, 255);
+			_mapPrivate.MaskRectangle(rect, 255);
 		}
 
 		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
@@ -142,26 +145,39 @@ namespace MapViewer {
 			e.CanExecute = true;
 		}
 		private void Spell_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = true;
+			e.CanExecute = (_mapPrivate != null && !string.IsNullOrWhiteSpace(_mapPrivate.ImageFile));
 		}
 
 		#region Tools
 		private void Measure_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.Measure();
-			tool.CanvasPrivate = _mapPrivate.CanvasOverlay;
-			tool.Map = _mapPrivate;
-			tool.OwnerWindow = this;
+			var tool = new Tools.Measure(this);
 			ActiveTool = tool;
 		}
 
 		private void Calibrate_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.Calibrate();
-			tool.CanvasPrivate = _mapPrivate.CanvasOverlay;
-			tool.Map = _mapPrivate;
-			tool.OwnerWindow = this;
+			var tool = new Tools.Calibrate(this);
 			ActiveTool = tool;
 		}
 
+		private void MaskRectangle_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var tool = new Tools.MaskRectangle(this, true);
+			ActiveTool = tool;
+		}
+
+		private void UnmaskRectangle_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var tool = new Tools.MaskRectangle(this, false);
+			ActiveTool = tool;
+		}
+
+		private void MaskCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var tool = new Tools.MaskCircle(this, true);
+			ActiveTool = tool;
+		}
+
+		private void UnmaskCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var tool = new Tools.MaskCircle(this, false);
+			ActiveTool = tool;
+		}
 
 		#endregion
 
