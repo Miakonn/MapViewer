@@ -129,6 +129,7 @@ namespace MapViewer {
 				ActiveTool.MouseDown(sender, e);
 				return;
 			}
+			_lastClickedElem = BitmapUtils.FindHitElement(_mapPrivate.CanvasOverlay);
 
 			_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 			_altPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
@@ -155,7 +156,6 @@ namespace MapViewer {
 			}
 			else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
 				_mouseDownPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
-				_lastClickedElem = BitmapUtils.FindHitElement(_mapPrivate.CanvasOverlay);
 			}
 
 		}

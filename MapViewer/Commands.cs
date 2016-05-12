@@ -35,7 +35,6 @@ namespace MapViewer {
 
 	public partial class MainWindow {
 
-
 		private void OpenImage_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var dialog = new OpenFileDialog();
 			dialog.Filter = "Image Files|*.jpg;*.bmp;*.png";
@@ -47,7 +46,7 @@ namespace MapViewer {
 			}
 		}
 
-		public void SetScale_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void SetScale_Executed(object sender, ExecutedRoutedEventArgs e) {
 			SetScaleDialog();
 		}
 
@@ -93,7 +92,6 @@ namespace MapViewer {
 			_publicWindow.Map.ClearOverlay();
 		}
 
-
 		private void Fireball_Executed(object sender, ExecutedRoutedEventArgs e) {
 			_mapPrivate.OverlayCircle(_mouseDownPoint, 7, Colors.OrangeRed, "Fireball");
 			if (_publicWindow.IsVisible) {
@@ -125,7 +123,6 @@ namespace MapViewer {
 			}
 		}
 
-
 		private void FullMask_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var rect = new Int32Rect(0, 0, (int)_mapPrivate.Image.Width, (int)_mapPrivate.Image.Height);
 			_mapPrivate.MaskRectangle(rect, 255);
@@ -146,7 +143,7 @@ namespace MapViewer {
 			_publicWindow.Visibility = Visibility.Hidden;
 		}
 
-
+		#region Can execute
 
 		private void ImageNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = (_mapPrivate != null && !string.IsNullOrWhiteSpace(_mapPrivate.ImageFile));
@@ -155,9 +152,12 @@ namespace MapViewer {
 		private void Allways_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = true;
 		}
+
 		private void Spell_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = (_mapPrivate != null && !string.IsNullOrWhiteSpace(_mapPrivate.ImageFile));
 		}
+
+		#endregion
 
 		#region Tools
 		private void Measure_Executed(object sender, ExecutedRoutedEventArgs e) {

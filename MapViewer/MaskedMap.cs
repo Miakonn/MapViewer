@@ -260,7 +260,6 @@ namespace MapViewer {
 			}
 		}
 
-
 		public void AddOverlayElement(UIElement elem, string uid) {
 			int indx = 0;
 			do {
@@ -272,8 +271,6 @@ namespace MapViewer {
 				indx++;
 			} while (true);
 		}
-
-
 
 		public void OverlayCircle(Point pos, float radiusM, Color color, string uid) {
 			var size = radiusM / ImageScaleMperPix;
@@ -301,6 +298,7 @@ namespace MapViewer {
 
 			Canvas.SetLeft(shape, rect.X);
 			Canvas.SetTop(shape, rect.Y);
+			CanvasOverlay.Children.Add(shape); 
 			return shape;
 		}
 
