@@ -31,6 +31,7 @@ namespace MapViewer {
 		private bool _altPressed; 
 		private bool _shiftPressed;
 
+		public ICanvasTool ActiveTool {get; set;}
 
 		private bool _publicIsDirty;
 	
@@ -155,6 +156,12 @@ namespace MapViewer {
 		}
 
 		private void MainWinKeyDown(object sender, KeyEventArgs e) {
+
+			if (ActiveTool != null) {
+				ActiveTool.KeyDown(sender, e);
+				return;
+			}
+
 			_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
 			if (e.Key == Key.Escape) {
@@ -181,6 +188,11 @@ namespace MapViewer {
 		}
 
 		private void MainWinMouseDown(object sender, MouseButtonEventArgs e) {
+
+			if (ActiveTool != null) {
+				ActiveTool.MouseDown(sender, e);
+				return;
+			}
 
 			_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 			_altPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
@@ -219,6 +231,11 @@ namespace MapViewer {
 		}
 
 		private void MainWinMouseMove(object sender, MouseEventArgs e) {
+			if (ActiveTool != null) {
+				ActiveTool.MouseMove(sender, e);
+				return;
+			}
+
 			if (_isDraggingPublicPos) {
 				var curMouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
 				var scale = _mapPrivate.Scale;
@@ -249,6 +266,12 @@ namespace MapViewer {
 		}
 
 		private void MainWinMouseUp(object sender, MouseButtonEventArgs e) {
+			if (ActiveTool != null) {
+				ActiveTool.MouseUp(sender, e);
+				return;
+			}
+
+
 			if (e.ChangedButton == MouseButton.Left && _isDraggingPublicPos) {
 				_isDraggingPublicPos = false;
 			}

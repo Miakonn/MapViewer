@@ -62,6 +62,9 @@
     <Compile Include="DialogGetFloatValue.xaml.cs">
       <DependentUpon>DialogGetFloatValue.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Calibrate.cs" />
+    <Compile Include="Tools\Measure.cs" />
+    <Compile Include="Tools\ICanvasTool.cs" />
     <Compile Include="MapData.cs" />
     <Compile Include="PublicWindow.xaml.cs">
       <DependentUpon>PublicWindow.xaml</DependentUpon>

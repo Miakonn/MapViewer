@@ -35,6 +35,10 @@ namespace MapViewer {
 			get {
 				return (MapData.ImageLengthM / MapImage.PixelWidth);
 			}
+
+			set {
+				MapData.ImageLengthM = value * MapImage.PixelWidth;
+			}
 		}
 
 		public Window ParentWindow { get; set; }

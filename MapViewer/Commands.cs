@@ -9,7 +9,6 @@ namespace MapViewer {
 		public static readonly RoutedUICommand Fireball = new RoutedUICommand("Fireball", "Fireball", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand Moonbeam = new RoutedUICommand("Moonbeam", "Moonbeam", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand Wall = new RoutedUICommand("Wall", "Wall", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand Measure = new RoutedUICommand("Measure", "Measure", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand OpenImage = new RoutedUICommand("Open image", "Open image", typeof(CustomCommands), null);
@@ -24,6 +23,10 @@ namespace MapViewer {
 		public static readonly RoutedUICommand RemoveDisplay = new RoutedUICommand("Remove display", "Remove display", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand Save = new RoutedUICommand("Save", "Save", typeof(CustomCommands), null);
+
+		public static readonly RoutedUICommand Calibrate = new RoutedUICommand("Calibrate", "Calibrate", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand Measure = new RoutedUICommand("Measure", "Measure", typeof(CustomCommands), null);
+	
 	}
 
 	public partial class MainWindow {
@@ -31,6 +34,7 @@ namespace MapViewer {
 
 		private void OpenImage_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var dialog = new OpenFileDialog();
+			dialog.Filter = "Image Files|*.jpg;*.bmp;*.png";
 			var result = dialog.ShowDialog();
 			if (result != null && result.Value) {
 				_mapPrivate.ImageFile = dialog.FileName;
@@ -50,7 +54,6 @@ namespace MapViewer {
 		private void Save_Executed(object sender, ExecutedRoutedEventArgs e) {
 			_mapPrivate.Serialize();
 		}
-
 
 		private void UpdateVisibleRectangle() {
 			var rect = _publicWindow.Map.VisibleRectInMap();
@@ -108,11 +111,6 @@ namespace MapViewer {
 			}
 		}
 
-		private void Measure_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var vect = _mouseUpPoint - _mouseDownPoint;
-			var dist = _mapPrivate.ImageScaleMperPix * vect.Length;
-			MessageBox.Show(string.Format("Length is {0} m", dist));
-		}
 
 		private void FullMask_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var rect = new Int32Rect(0, 0, (int)_mapPrivate.Image.Width, (int)_mapPrivate.Image.Height);
@@ -146,6 +144,26 @@ namespace MapViewer {
 		private void Spell_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = true;
 		}
+
+		#region Tools
+		private void Measure_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var tool = new Tools.Measure();
+			tool.CanvasPrivate = _mapPrivate.CanvasOverlay;
+			tool.Map = _mapPrivate;
+			tool.OwnerWindow = this;
+			ActiveTool = tool;
+		}
+
+		private void Calibrate_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var tool = new Tools.Calibrate();
+			tool.CanvasPrivate = _mapPrivate.CanvasOverlay;
+			tool.Map = _mapPrivate;
+			tool.OwnerWindow = this;
+			ActiveTool = tool;
+		}
+
+
+		#endregion
 
 
 	}
