@@ -24,6 +24,8 @@
 		<CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawCone" Executed="DrawCone_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawCircle" Executed="DrawCircle_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.MaskRectangle" Executed="MaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.MaskCircle" Executed="MaskCircle_Executed" CanExecute="ImageNeeded_CanExecute" />
@@ -61,7 +63,9 @@
 				</RibbonGroup>
 
 				<RibbonGroup Name="Spells">
-					<RibbonButton Label="Draw Line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/Map_measure.png" />
+					<RibbonButton Label="Draw line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/Map_measure.png" />
+					<RibbonButton Label="Draw cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/Map_measure.png" />
+					<RibbonButton Label="Draw circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/Map_measure.png" />
 				</RibbonGroup>
 
 				<RibbonGroup Name="Public" >
@@ -70,8 +74,8 @@
 						<ComboBoxItem x:Name="DoubleScale" Content="Public 10 mm/pix"/>
 						<ComboBoxItem x:Name="Linked" Content="Linked"/>
 					</ComboBox>
-					<RibbonButton  Label="Add display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" />
-					<RibbonButton  Label="Remove display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" />
+					<RibbonButton  Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" />
+					<RibbonButton  Label="Hide display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" />
 					<RibbonButton  Label="Rotate" Command="mapViewer:CustomCommands.RotateMap" LargeImageSource="Images/Monitor_rotate.png" />
 					<RibbonButton  Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png" />
 				</RibbonGroup>

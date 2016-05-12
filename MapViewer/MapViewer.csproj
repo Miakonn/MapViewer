@@ -63,7 +63,9 @@
       <DependentUpon>DialogGetFloatValue.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\Calibrate.cs" />
-    <Compile Include="Tools\Draw Line.cs" />
+    <Compile Include="Tools\DrawLine.cs" />
+    <Compile Include="Tools\DrawCircle.cs" />
+    <Compile Include="Tools\DrawCone.cs" />
     <Compile Include="Tools\MaskCircle.cs" />
     <Compile Include="Tools\Measure.cs" />
     <Compile Include="Tools\ICanvasTool.cs" />

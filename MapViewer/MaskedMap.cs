@@ -272,17 +272,16 @@ namespace MapViewer {
 			} while (true);
 		}
 
-		public void OverlayCircle(Point pos, float radiusM, Color color, string uid) {
-			var size = radiusM / ImageScaleMperPix;
+		public void OverlayCircle(Point pos, float radius, Color color, string uid) {
 			var shape = new Ellipse {
-				Width = 2 * size,
-				Height = 2 * size,
+				Width = 2 * radius,
+				Height = 2 * radius,
 				Fill = new SolidColorBrush(color),
 				Opacity = 0.4
 			};
 
-			Canvas.SetLeft(shape, pos.X - size);
-			Canvas.SetTop(shape, pos.Y - size);
+			Canvas.SetLeft(shape, pos.X - radius);
+			Canvas.SetTop(shape, pos.Y - radius);
 			AddOverlayElement(shape, uid);
 		}
 
@@ -311,6 +310,16 @@ namespace MapViewer {
 				Y2 = y2,
 				StrokeThickness = size,
 				Stroke = new SolidColorBrush(color),
+				Opacity = 0.4
+
+			};
+			AddOverlayElement(shape, uid);
+		}
+
+		public void OverlayPolygon(PointCollection points, Color color, string uid) {
+			var shape = new Polygon {
+				Points = points,
+				Fill = new SolidColorBrush(color),
 				Opacity = 0.4
 
 			};

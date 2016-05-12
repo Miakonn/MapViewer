@@ -27,10 +27,6 @@ namespace MapViewer {
 		private Point _mouseDownPoint;
 		private Point _mouseUpPoint;
 
-		private bool _ctrlPressed;
-		private bool _altPressed; 
-		private bool _shiftPressed;
-
 		public ICanvasTool ActiveTool {get; set;}
 
 		private bool _publicIsDirty;
@@ -114,9 +110,6 @@ namespace MapViewer {
 				ActiveTool.KeyDown(sender, e);
 				return;
 			}
-
-			_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-
 		}
 
 		private void MainWinSizeChanged(object sender, SizeChangedEventArgs e) {
@@ -131,15 +124,10 @@ namespace MapViewer {
 			}
 			_lastClickedElem = BitmapUtils.FindHitElement(_mapPrivate.CanvasOverlay);
 
-			_ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-			_altPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
-			_shiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-
 			var isPublicPos = _dragPublicRect != null && _dragPublicRect.IsMouseOver;
 			if (e.ChangedButton == MouseButton.Left && isPublicPos && e.ClickCount == 1) {
 				_isDraggingPublicPos= true;
 				_mouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
-				Trace.WriteLine("MouseDown=" + _mouseDownPoint);
 				e.Handled = true;
 			}
 			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
@@ -149,9 +137,9 @@ namespace MapViewer {
 			}
 			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
 				var pos = e.GetPosition(_mapPrivate.CanvasMapMask);
-				_mapPrivate.OverlayCircle(pos, 25 * _mapPrivate.ImageScaleMperPix, Colors.GreenYellow, "Action");
+				_mapPrivate.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
 				if (_publicWindow.IsVisible) {
-					_publicWindow.Map.OverlayCircle(pos, 25 * _publicWindow.Map.ImageScaleMperPix, Colors.GreenYellow, "Action");
+					_publicWindow.Map.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
 				}
 			}
 			else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
