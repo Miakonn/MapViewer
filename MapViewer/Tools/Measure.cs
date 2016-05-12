@@ -13,7 +13,7 @@ namespace MapViewer.Tools {
 		private MainWindow _mainWindow;
 		private Canvas _canvas;
 		private MaskedMap _map;
-
+		private ToolTip _tooltip;
 		private Line _line;
 
 		public Measure(MainWindow mainWindow) {
@@ -30,6 +30,9 @@ namespace MapViewer.Tools {
 		public void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_line == null) {
 				InitDraw(e.GetPosition(_canvas));
+				_tooltip = new ToolTip();
+				_canvas.ToolTip = _tooltip;
+				_tooltip.Content = "0.0 m";
 			}
 			else {
 				UpdateDraw(e.GetPosition(_canvas)); 
@@ -38,7 +41,11 @@ namespace MapViewer.Tools {
 		}
 
 		public void MouseMove(object sender, MouseEventArgs e) {
+			if (_line == null) {
+				return;
+			}
 			UpdateDraw(e.GetPosition(_canvas));
+			_tooltip.Content = string.Format(CalculateDistance() + " m");
 		}
 
 		public void MouseUp(object sender, MouseButtonEventArgs e) { }
@@ -51,9 +58,19 @@ namespace MapViewer.Tools {
 				_canvas.Children.Remove(_line);
 			}
 			_line = null;
+			_canvas.ToolTip = null;
 		}
 
 		#endregion
+
+		private string CalculateDistance() {
+			if (_line == null) {
+				return "0.0";
+			}
+			var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
+			var dist = _map.ImageScaleMperPix * length;
+			return dist.ToString("N1");
+		}
 
 		private void InitDraw(Point pt1) {
 			_line = new Line {
@@ -78,12 +95,6 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-			_canvas.Children.Remove(_line);
-
-			var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
-			var dist = _map.ImageScaleMperPix * length;
-			MessageBox.Show(string.Format("Length is {0} m", dist.ToString("N1")));
-
 			Deactivate();
 		}
 
