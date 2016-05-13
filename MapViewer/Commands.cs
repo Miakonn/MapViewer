@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
+using System.Windows.Controls.Ribbon;
 
 namespace MapViewer {
 	public static class CustomCommands {
@@ -165,51 +166,80 @@ namespace MapViewer {
 		#endregion
 
 		#region Tools
+
+		private bool CheckToggleState(object source) {
+			var button = source as RibbonToggleButton;
+			if (button != null) {
+				return (button.IsChecked.HasValue && button.IsChecked.Value);
+			}
+			return true;
+		}
+
 		private void Measure_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.Measure(this, e.OriginalSource);
-			ActiveTool = tool;
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				ActiveTool = new Tools.Measure(this, e.OriginalSource);
+			}
 		}
 
 		private void Calibrate_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.Calibrate(this, e.OriginalSource);
-			ActiveTool = tool;
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				ActiveTool = new Tools.Calibrate(this, e.OriginalSource);
+			}
 		}
 
 		private void MaskRectangle_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.MaskRectangle(this, e.OriginalSource, true);
-			ActiveTool = tool;
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				var tool = new Tools.MaskRectangle(this, e.OriginalSource, true);
+				ActiveTool = tool;
+			}
 		}
 
 		private void UnmaskRectangle_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.MaskRectangle(this, e.OriginalSource, false);
-			ActiveTool = tool;
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				var tool = new Tools.MaskRectangle(this, e.OriginalSource, false);
+				ActiveTool = tool;
+			}
 		}
 
 		private void MaskCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.MaskCircle(this, e.OriginalSource, true);
-			ActiveTool = tool;
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				ActiveTool = new Tools.MaskCircle(this, e.OriginalSource, true);
+			}
 		}
 
 		private void UnmaskCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.MaskCircle(this, e.OriginalSource, false);
-			ActiveTool = tool;
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				ActiveTool = new Tools.MaskCircle(this, e.OriginalSource, false);
+			}
 		}
 
 		#endregion
 		#region Spells
 		private void DrawCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.DrawCircle(this, e.OriginalSource);
-			ActiveTool = tool;
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				ActiveTool = new Tools.DrawCircle(this, e.OriginalSource);
+			}
 		}
 
 		private void DrawCone_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.DrawCone(this, e.OriginalSource);
-			ActiveTool = tool;
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				ActiveTool = new Tools.DrawCone(this, e.OriginalSource);
+			}
 		}
 
 		private void DrawLine_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.DrawLine(this, e.OriginalSource);
-			ActiveTool = tool;
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				ActiveTool = new Tools.DrawLine(this, e.OriginalSource);
+			}
 		}
 
 		#endregion
