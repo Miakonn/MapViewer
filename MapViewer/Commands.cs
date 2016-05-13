@@ -156,6 +156,21 @@ namespace MapViewer {
 			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile));
 		}
 
+		private void Publish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) &&
+				PublicWindow.IsVisible;
+		}
+
+		private void AddDisplay_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) && 
+				!PublicWindow.IsVisible;
+		}
+
+		private void RemoveDisplay_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = PublicWindow.IsVisible;
+		}
+
+
 		#endregion
 
 		#region Tools

@@ -158,7 +158,10 @@ namespace MapViewer {
 				}
 
 				var scale = ScreenScaleMMperM * ImageScaleMperPix / ScreenScaleMMperPix;
-				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, -MapImage.PixelWidth / 2.0, -MapImage.PixelHeight / 2.0);
+				var x0 = (CanvasOverlay.ActualWidth / 2) - scale * (MapImage.Width / 2);
+				var y0 = (CanvasOverlay.ActualHeight / 2) - scale * (MapImage.Height / 2);
+
+				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, x0 , y0);
 			}
 		}
 
