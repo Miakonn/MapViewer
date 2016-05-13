@@ -16,7 +16,6 @@ namespace MapViewer {
 		public static readonly RoutedUICommand PublishMap = new RoutedUICommand("Publish", "Publish", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ClearMask = new RoutedUICommand("Clear mask", "Clear mask", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ClearOverlay = new RoutedUICommand("Clear overlay", "Clear overlay", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand SetScale = new RoutedUICommand("Set scale", "Set scale", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ScaleToFit= new RoutedUICommand("Scale to fit", "Scale to fit", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand RotateMap = new RoutedUICommand("Rotate map", "Rotate map", typeof(CustomCommands), null);
@@ -47,10 +46,6 @@ namespace MapViewer {
 				_publicIsDirty = true;
 				Update();
 			}
-		}
-
-		private void SetScale_Executed(object sender, ExecutedRoutedEventArgs e) {
-			SetScaleDialog();
 		}
 
 		private void ScaleToFit_Executed(object sender, ExecutedRoutedEventArgs e) {

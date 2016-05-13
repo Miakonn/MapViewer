@@ -15,7 +15,6 @@
 		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearOverlay_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Executed" CanExecute="Allways_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.PublishMap" Executed="PublishMap_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.SetScale" Executed="SetScale_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ScaleToFit" Executed="ScaleToFit_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Executed" CanExecute="ImageNeeded_CanExecute" />

@@ -77,24 +77,6 @@ namespace MapViewer {
 
 		#endregion
 
-		#region Public Methods
-
-		public bool SetScaleDialog() {
-			var dialog = new DialogGetFloatValue {
-				LeadText = "Map width in m",
-				Value = MapPrivate.MapData.ImageLengthM
-			};
-
-			var result = dialog.ShowDialog();
-			if (!result.HasValue || !result.Value) {
-				return false;
-			}
-			MapPrivate.MapData.ImageLengthM = dialog.Value;
-			return true;
-		}
-
-		#endregion
-
 		#region Events
 
 		private void Border_Loaded(object sender, RoutedEventArgs e) {

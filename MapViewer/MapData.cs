@@ -5,13 +5,13 @@ using System.Xml.Serialization;
 
 namespace MapViewer {
 	public class MapData {
-		private float _imageLengthM;
+		private float _imageScaleMperPix;
 		private readonly string _xmlFilePath;
 
-		public float ImageLengthM {
-			get { return _imageLengthM; }
+		public float ImageScaleMperPix {
+			get { return _imageScaleMperPix; }
 			set {
-				_imageLengthM = value;
+				_imageScaleMperPix = value;
 				Serialize();
 			}
 		}
@@ -23,7 +23,7 @@ namespace MapViewer {
 		}
 
 		public void Copy(MapData source) {
-			ImageLengthM = source.ImageLengthM;
+			ImageScaleMperPix = source.ImageScaleMperPix;
 		}
 
 		public void Serialize() {

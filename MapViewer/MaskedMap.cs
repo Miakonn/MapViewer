@@ -35,11 +35,11 @@ namespace MapViewer {
 
 		public float ImageScaleMperPix {
 			get {
-				return (MapData.ImageLengthM / MapImage.PixelWidth);
+				return (MapData.ImageScaleMperPix);
 			}
 
 			set {
-				MapData.ImageLengthM = value * MapImage.PixelWidth;
+				MapData.ImageScaleMperPix = value;
 			}
 		}
 
@@ -153,7 +153,7 @@ namespace MapViewer {
 		private void ScaleToReal() {
 			if (PublicView && MapImage != null) {
 
-				if (MapData.ImageLengthM < 0.5) {
+				if (MapData.ImageScaleMperPix < 0.005) {
 					MessageBox.Show("Image not calibrated");
 					return;
 				}
@@ -245,7 +245,7 @@ namespace MapViewer {
 				MapImage = mapSource.MapImage.CloneCurrentValue();
 			}
 
-			MapData.ImageLengthM = mapSource.MapData.ImageLengthM;
+			MapData.ImageScaleMperPix = mapSource.MapData.ImageScaleMperPix;
 		
 			BitmapUtils.CopyingCanvas(mapSource.CanvasOverlay, CanvasOverlay);
 
@@ -357,7 +357,6 @@ namespace MapViewer {
 			return pos;
 		}
 
-
 		public void Serialize() {
 			MapData.Serialize();
 			BmpMask.Freeze();
@@ -372,25 +371,27 @@ namespace MapViewer {
 
 		}
 
-
 		private const string FolderName = "MapViewerFiles";
 
 		private static string CreateFilename(string original, string extension) {
-			var originalFolder = System.IO.Path.GetDirectoryName(original);
-			var originalFilename = System.IO.Path.GetFileName(original);
+			var originalFolder = Path.GetDirectoryName(original);
+			var originalFilename = Path.GetFileName(original);
 
-			var folder = System.IO.Path.Combine(originalFolder, FolderName);
-			if (!Directory.Exists(folder)) {
-				try {
-					Directory.CreateDirectory(folder);
+			if (originalFolder != null) {
+				var folder = Path.Combine(originalFolder, FolderName);
+				if (!Directory.Exists(folder)) {
+					try {
+						Directory.CreateDirectory(folder);
+					}
+					catch (Exception ex) {
+						MessageBox.Show(ex.Message);
+						return "";
+					}
 				}
-				catch (Exception ex) {
-					MessageBox.Show(ex.Message);
-					return "";
-				}
+
+				return Path.Combine(folder, originalFilename + extension);
 			}
-
-			return Path.Combine(folder, originalFilename + extension);
+			return "";
 		}
 
 	}
