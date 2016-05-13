@@ -166,49 +166,49 @@ namespace MapViewer {
 
 		#region Tools
 		private void Measure_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.Measure(this);
+			var tool = new Tools.Measure(this, e.OriginalSource);
 			ActiveTool = tool;
 		}
 
 		private void Calibrate_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.Calibrate(this);
+			var tool = new Tools.Calibrate(this, e.OriginalSource);
 			ActiveTool = tool;
 		}
 
 		private void MaskRectangle_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.MaskRectangle(this, true);
+			var tool = new Tools.MaskRectangle(this, e.OriginalSource, true);
 			ActiveTool = tool;
 		}
 
 		private void UnmaskRectangle_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.MaskRectangle(this, false);
+			var tool = new Tools.MaskRectangle(this, e.OriginalSource, false);
 			ActiveTool = tool;
 		}
 
 		private void MaskCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.MaskCircle(this, true);
+			var tool = new Tools.MaskCircle(this, e.OriginalSource, true);
 			ActiveTool = tool;
 		}
 
 		private void UnmaskCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.MaskCircle(this, false);
+			var tool = new Tools.MaskCircle(this, e.OriginalSource, false);
 			ActiveTool = tool;
 		}
 
 		#endregion
 		#region Spells
 		private void DrawCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.DrawCircle(this);
+			var tool = new Tools.DrawCircle(this, e.OriginalSource);
 			ActiveTool = tool;
 		}
 
 		private void DrawCone_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.DrawCone(this);
+			var tool = new Tools.DrawCone(this, e.OriginalSource);
 			ActiveTool = tool;
 		}
 
 		private void DrawLine_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var tool = new Tools.DrawLine(this);
+			var tool = new Tools.DrawLine(this, e.OriginalSource);
 			ActiveTool = tool;
 		}
 

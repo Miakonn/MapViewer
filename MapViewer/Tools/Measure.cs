@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-
+using System.Windows.Controls.Ribbon;
 
 namespace MapViewer.Tools {
 	class Measure : ICanvasTool {
@@ -14,12 +14,14 @@ namespace MapViewer.Tools {
 		private Canvas _canvas;
 		private MaskedMap _map;
 		private ToolTip _tooltip;
+		private RibbonToggleButton _button;
 		private Line _line;
 
-		public Measure(MainWindow mainWindow) {
+		public Measure(MainWindow mainWindow, object button) {
 			_mainWindow = mainWindow;
 			_map = mainWindow._mapPrivate;
 			_canvas = _map.CanvasOverlay;
+			_button = (RibbonToggleButton)button;
 		}
 
 		#region ICanvasTool
@@ -53,12 +55,16 @@ namespace MapViewer.Tools {
 		public void KeyDown(object sender, KeyEventArgs e) { }
 
 		public void Deactivate() {
-			_mainWindow.ActiveTool = null;
 			if (_line != null) {
 				_canvas.Children.Remove(_line);
 			}
 			_line = null;
 			_canvas.ToolTip = null;
+			if (_button != null) {
+				_button.IsChecked = false;
+			}
+			_button = null;
+
 		}
 
 		#endregion
@@ -95,7 +101,7 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-			Deactivate();
+			_mainWindow.ActiveTool = null;
 		}
 
 	}

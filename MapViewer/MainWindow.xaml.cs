@@ -26,8 +26,20 @@ namespace MapViewer {
 		private bool _isMoving;
 		private Point _mouseDownPoint;
 		private Point _mouseUpPoint;
+		private ICanvasTool _activeTool;
 
-		public ICanvasTool ActiveTool {get; set;}
+		public ICanvasTool ActiveTool {
+			get { 
+				return _activeTool; 
+			}
+
+			set {
+				if (_activeTool != null) {
+					_activeTool.Deactivate();
+				}
+				_activeTool = value;
+			}
+		}
 
 		private bool _publicIsDirty;
 	
@@ -103,7 +115,7 @@ namespace MapViewer {
 
 			if (e.Key == Key.Escape) {
 				if (ActiveTool != null) {
-					ActiveTool.Deactivate();
+					ActiveTool = null;
 				}
 			}
 			if (ActiveTool != null) {

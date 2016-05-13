@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Controls.Ribbon;
 
 
 namespace MapViewer.Tools {
@@ -14,17 +15,19 @@ namespace MapViewer.Tools {
 		private Canvas _canvas;
 		private MaskedMap _map;
 		private bool _mask;
+		private RibbonToggleButton _button;
 
 		private Rectangle _rect;
 
 		private Point _pnt1;
 		private Point _pnt2;
 
-		public MaskRectangle(MainWindow mainWindow, bool mask) {
+		public MaskRectangle(MainWindow mainWindow, object button, bool mask) {
 			_mask = mask;
 			_mainWindow = mainWindow;
 			_map = mainWindow._mapPrivate;
 			_canvas = _map.CanvasOverlay;
+			_button = button as RibbonToggleButton;
 		}
 
 
@@ -53,11 +56,15 @@ namespace MapViewer.Tools {
 		public void KeyDown(object sender, KeyEventArgs e) { }
 
 		public void Deactivate() {
-			_mainWindow.ActiveTool = null;
 			if (_rect != null) {
 				_canvas.Children.Remove(_rect);
 			}
 			_rect = null;
+
+			if (_button != null) {
+				_button.IsChecked = false;
+			}
+			_button = null;
 		}
 
 		#endregion

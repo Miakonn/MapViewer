@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Controls.Ribbon;
 
 namespace MapViewer.Tools {
 	public class MaskCircle : ICanvasTool {
@@ -13,17 +14,19 @@ namespace MapViewer.Tools {
 		private Canvas _canvas;
 		private MaskedMap _map;
 		private bool _mask;
+		private RibbonToggleButton _button;
 
 		private Ellipse _circle;
 
 		private Point _pnt1;
 		private Point _pnt2;
 
-		public MaskCircle(MainWindow mainWindow, bool mask) {
+		public MaskCircle(MainWindow mainWindow, object button, bool mask) {
 			_mask = mask;
 			_mainWindow = mainWindow;
 			_map = mainWindow._mapPrivate;
 			_canvas = _map.CanvasOverlay;
+			_button = (RibbonToggleButton)button;
 		}
 
 
@@ -52,11 +55,15 @@ namespace MapViewer.Tools {
 		public void KeyDown(object sender, KeyEventArgs e) { }
 
 		public void Deactivate() {
-			_mainWindow.ActiveTool = null;
 			if (_circle != null) {
 				_canvas.Children.Remove(_circle);
 			}
 			_circle = null;
+
+			if (_button != null) {
+				_button.IsChecked = false;
+			}
+			_button = null;
 		}
 
 		#endregion

@@ -54,18 +54,18 @@
 				</RibbonGroup>
 
 				<RibbonGroup Name="Masking">
-					<RibbonButton Label="Calibrate" Command="mapViewer:CustomCommands.Calibrate" LargeImageSource="Images/Map_measure.png" />
-					<RibbonButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
-					<RibbonButton Label="Mask rect" Command="mapViewer:CustomCommands.MaskRectangle" LargeImageSource="Images/Map_mask.png" />
-					<RibbonButton Label="Unmask rect" Command="mapViewer:CustomCommands.UnmaskRectangle" LargeImageSource="Images/Map_mask.png" />
-					<RibbonButton Label="Mask circle" Command="mapViewer:CustomCommands.MaskCircle" LargeImageSource="Images/Map_mask.png" />
-					<RibbonButton Label="Unmask circle" Command="mapViewer:CustomCommands.UnmaskCircle" LargeImageSource="Images/Map_mask.png" />
+					<RibbonToggleButton Label="Calibrate" Command="mapViewer:CustomCommands.Calibrate" LargeImageSource="Images/Map_measure.png" />
+					<RibbonToggleButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
+					<RibbonToggleButton Label="Mask rect" Command="mapViewer:CustomCommands.MaskRectangle" LargeImageSource="Images/Map_mask.png" />
+					<RibbonToggleButton Label="Unmask rect" Command="mapViewer:CustomCommands.UnmaskRectangle" LargeImageSource="Images/Map_mask.png" />
+					<RibbonToggleButton Label="Mask circle" Command="mapViewer:CustomCommands.MaskCircle" LargeImageSource="Images/Map_mask.png" />
+					<RibbonToggleButton Label="Unmask circle" Command="mapViewer:CustomCommands.UnmaskCircle" LargeImageSource="Images/Map_mask.png" />
 				</RibbonGroup>
 
 				<RibbonGroup Name="Spells">
-					<RibbonButton Label="Draw line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/Map_measure.png" />
-					<RibbonButton Label="Draw cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/Map_measure.png" />
-					<RibbonButton Label="Draw circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/Map_measure.png" />
+					<RibbonToggleButton Label="Draw line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/Map_measure.png" />
+					<RibbonToggleButton Label="Draw cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/Map_measure.png" />
+					<RibbonToggleButton Label="Draw circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/Map_measure.png" />
 				</RibbonGroup>
 
 				<RibbonGroup Name="Public" >
