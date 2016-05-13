@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,22 +7,18 @@ using System.Windows.Controls.Ribbon;
 
 namespace MapViewer.Tools {
 	public class MaskCircle : ICanvasTool {
-
-		private MainWindow _mainWindow;
-		private Canvas _canvas;
-		private MaskedMap _map;
-		private bool _mask;
+		private readonly Canvas _canvas;
+		private readonly MaskedMap _map;
+		private readonly bool _mask;
 		private RibbonToggleButton _button;
 
 		private Ellipse _circle;
 
 		private Point _pnt1;
-		private Point _pnt2;
 
 		public MaskCircle(MainWindow mainWindow, object button, bool mask) {
 			_mask = mask;
-			_mainWindow = mainWindow;
-			_map = mainWindow._mapPrivate;
+			_map = mainWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
@@ -41,7 +35,7 @@ namespace MapViewer.Tools {
 				InitDraw(_pnt1);
 			}
 			else {
-				_pnt2 = e.GetPosition(_canvas);
+				UpdateDraw(_pnt1, e.GetPosition(_canvas));
 				EndDraw();
 			}
 		}

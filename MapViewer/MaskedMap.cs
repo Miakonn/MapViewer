@@ -91,11 +91,6 @@ namespace MapViewer {
 			}
 		}
 
-
-		~MaskedMap() {
-			//Serialize();
-		}
-
 		public void Draw() {
 			// CanvasMapMask
 			CanvasMapMask.Children.Clear();
@@ -264,7 +259,7 @@ namespace MapViewer {
 			int indx = 0;
 			do {
 				elem.Uid = uid + indx.ToString();
-				if (BitmapUtils.FindElementByUID(CanvasOverlay, elem.Uid) == null) {
+				if (BitmapUtils.FindElementByUid(CanvasOverlay, elem.Uid) == null) {
 					CanvasOverlay.Children.Add(elem);
 					break;
 				}

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,16 +8,16 @@ using System.Windows.Controls.Ribbon;
 namespace MapViewer.Tools {
 	class DrawLine : ICanvasTool {
 
-		private MainWindow _mainWindow;
-		private Canvas _canvas;
-		private MaskedMap _map;
+		private readonly MainWindow _mainWindow;
+		private readonly Canvas _canvas;
+		private readonly MaskedMap _map;
 		private ToolTip _tooltip;
 		private RibbonToggleButton _button;
 		private Line _line;
 
 		public DrawLine(MainWindow mainWindow, object button) {
 			_mainWindow = mainWindow;
-			_map = mainWindow._mapPrivate;
+			_map = mainWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
@@ -102,8 +100,8 @@ namespace MapViewer.Tools {
 
 		private void EndDraw() {
 			_map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.Yellow, "Line");
-			if (_mainWindow._publicWindow.IsVisible) {
-				_mainWindow._publicWindow.Map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.Yellow, "Line");
+			if (_mainWindow.PublicWindow.IsVisible) {
+				_mainWindow.PublicWindow.Map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.Yellow, "Line");
 			}
 
 			_mainWindow.ActiveTool = null;

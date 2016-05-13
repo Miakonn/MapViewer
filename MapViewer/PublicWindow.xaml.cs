@@ -1,9 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace MapViewer
 {

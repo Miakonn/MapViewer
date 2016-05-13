@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,19 +8,18 @@ using System.Windows.Controls.Ribbon;
 namespace MapViewer.Tools {
 	public class DrawCircle : ICanvasTool {
 
-		private MainWindow _mainWindow;
-		private Canvas _canvas;
-		private MaskedMap _map;
+		private readonly MainWindow _mainWindow;
+		private readonly Canvas _canvas;
+		private readonly MaskedMap _map;
 		private RibbonToggleButton _button;
 
 		private Ellipse _circle;
 
 		private Point _pnt1;
-		private Point _pnt2;
 
 		public DrawCircle(MainWindow mainWindow, object button) {
 			_mainWindow = mainWindow;
-			_map = mainWindow._mapPrivate;
+			_map = mainWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
@@ -39,7 +36,7 @@ namespace MapViewer.Tools {
 				InitDraw(_pnt1);
 			}
 			else {
-				_pnt2 = e.GetPosition(_canvas);
+				UpdateDraw(_pnt1, e.GetPosition(_canvas));
 				EndDraw();
 			}
 		}
@@ -100,8 +97,8 @@ namespace MapViewer.Tools {
 			var center = GetElementCenter(_circle);
 			var radius = (int)(_circle.ActualWidth / 2);
 			_map.OverlayCircle(center, radius, Colors.Blue, "Circle");
-			if (_mainWindow._publicWindow.IsVisible) {
-				_mainWindow._publicWindow.Map.OverlayCircle(center, radius, Colors.Blue, "Circle");
+			if (_mainWindow.PublicWindow.IsVisible) {
+				_mainWindow.PublicWindow.Map.OverlayCircle(center, radius, Colors.Blue, "Circle");
 			}
 			_mainWindow.ActiveTool = null;
 		}

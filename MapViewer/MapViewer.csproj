@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>map_magnify.ico</ApplicationIcon>
+    <ApplicationIcon>Images\map_magnify.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -154,7 +154,7 @@
     <Resource Include="Images\Monitor_publish.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="map_magnify.ico" />
+    <Resource Include="Images\map_magnify.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\map_mask_circle.png" />

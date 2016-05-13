@@ -40,11 +40,10 @@ namespace MapViewer {
 	public partial class MainWindow {
 
 		private void OpenImage_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var dialog = new OpenFileDialog();
-			dialog.Filter = "Image Files|*.jpg;*.bmp;*.png";
+			var dialog = new OpenFileDialog {Filter = "Image Files|*.jpg;*.bmp;*.png"};
 			var result = dialog.ShowDialog();
 			if (result != null && result.Value) {
-				_mapPrivate.ImageFile = dialog.FileName;
+				MapPrivate.ImageFile = dialog.FileName;
 				_publicIsDirty = true;
 				Update();
 			}
@@ -55,26 +54,26 @@ namespace MapViewer {
 		}
 
 		private void ScaleToFit_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_mapPrivate.ScaleToWindow();
+			MapPrivate.ScaleToWindow();
 		}
 
 		private void Save_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_mapPrivate.Serialize();
+			MapPrivate.Serialize();
 		}
 
 		private void UpdateVisibleRectangle() {
-			var rect = _publicWindow.Map.VisibleRectInMap();
+			var rect = PublicWindow.Map.VisibleRectInMap();
 			if (_dragPublicRect != null) {
-				_mapPrivate.CanvasOverlay.Children.Remove(_dragPublicRect);
+				MapPrivate.CanvasOverlay.Children.Remove(_dragPublicRect);
 			}
-			if (!_publicWindow.Map.Linked) {
-				_dragPublicRect = _mapPrivate.OverlayRectPixel(rect, Colors.Red);
+			if (!PublicWindow.Map.Linked) {
+				_dragPublicRect = MapPrivate.OverlayRectPixel(rect, Colors.Red);
 			}			
 		}
 
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_publicWindow.Map.PublishFrom(_mapPrivate, _publicIsDirty);
-			_publicWindow.Map.Draw();
+			PublicWindow.Map.PublishFrom(MapPrivate, _publicIsDirty);
+			PublicWindow.Map.Draw();
 			_publicIsDirty = false;
 
 			UpdateVisibleRectangle();
@@ -83,32 +82,32 @@ namespace MapViewer {
 		}
 
 		private void ClearMask_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_mapPrivate.ClearMask();
-			_mapPrivate.Draw();
+			MapPrivate.ClearMask();
+			MapPrivate.Draw();
 		}
 
 		private void ClearOverlay_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_mapPrivate.ClearOverlay();
+			MapPrivate.ClearOverlay();
 			if (_dragPublicRect != null) {
-				_mapPrivate.CanvasOverlay.Children.Add(_dragPublicRect);
+				MapPrivate.CanvasOverlay.Children.Add(_dragPublicRect);
 			}
 
-			_publicWindow.Map.ClearOverlay();
+			PublicWindow.Map.ClearOverlay();
 		}
 
 		private void Fireball_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var radius = 7 / _mapPrivate.ImageScaleMperPix;
-			_mapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
-			if (_publicWindow.IsVisible) {
-				_publicWindow.Map.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
+			var radius = 7 / MapPrivate.ImageScaleMperPix;
+			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
+			if (PublicWindow.IsVisible) {
+				PublicWindow.Map.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
 			}
 		}
 
 		private void Moonbeam_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var radius = 2 / _mapPrivate.ImageScaleMperPix;
-			_mapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
-			if (_publicWindow.IsVisible) {
-				_publicWindow.Map.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
+			var radius = 2 / MapPrivate.ImageScaleMperPix;
+			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
+			if (PublicWindow.IsVisible) {
+				PublicWindow.Map.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
 			}
 		}
 
@@ -120,39 +119,39 @@ namespace MapViewer {
 			}
 
 			var uid = _lastClickedElem.Uid;
-			_mapPrivate.CanvasOverlay.Children.Remove(_lastClickedElem);
-			if (_publicWindow.IsVisible) {
-				var elemPublic = BitmapUtils.FindElementByUID(_publicWindow.Map.CanvasOverlay, uid);
+			MapPrivate.CanvasOverlay.Children.Remove(_lastClickedElem);
+			if (PublicWindow.IsVisible) {
+				var elemPublic = BitmapUtils.FindElementByUid(PublicWindow.Map.CanvasOverlay, uid);
 				if (elemPublic != null) {
-					_publicWindow.Map.CanvasOverlay.Children.Remove(elemPublic);
+					PublicWindow.Map.CanvasOverlay.Children.Remove(elemPublic);
 				}
 			}
 		}
 
 		private void FullMask_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var rect = new Int32Rect(0, 0, (int)_mapPrivate.Image.Width, (int)_mapPrivate.Image.Height);
-			_mapPrivate.MaskRectangle(rect, 255);
+			var rect = new Int32Rect(0, 0, (int)MapPrivate.Image.Width, (int)MapPrivate.Image.Height);
+			MapPrivate.MaskRectangle(rect, 255);
 		}
 
 		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
 			//_publicWindow.Map.RotationAngle = (_publicWindow.Map.RotationAngle + 90) % 360;
-			_publicWindow.Map.RotateClockwise();
+			PublicWindow.Map.RotateClockwise();
 			UpdateVisibleRectangle();
 		}
 
 		private void AddDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_publicWindow.Show();
-			_publicWindow.MaximizeToSecondaryMonitor();
+			PublicWindow.Show();
+			PublicWindow.MaximizeToSecondaryMonitor();
 		}
 
 		private void RemoveDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
-			_publicWindow.Visibility = Visibility.Hidden;
+			PublicWindow.Visibility = Visibility.Hidden;
 		}
 
 		#region Can execute
 
 		private void ImageNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (_mapPrivate != null && !string.IsNullOrWhiteSpace(_mapPrivate.ImageFile));
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile));
 		}
 
 		private void Allways_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -160,7 +159,7 @@ namespace MapViewer {
 		}
 
 		private void Spell_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (_mapPrivate != null && !string.IsNullOrWhiteSpace(_mapPrivate.ImageFile));
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile));
 		}
 
 		#endregion

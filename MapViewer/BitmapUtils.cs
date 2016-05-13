@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
-using System.Xml.Serialization;
 using System.Windows.Markup;
 
 
@@ -31,8 +27,9 @@ namespace MapViewer {
 				return null;
 			}
 			try {
-				var img = new BitmapImage(new Uri(filename, UriKind.Relative));
-				img.CreateOptions = BitmapCreateOptions.None;
+				var img = new BitmapImage(new Uri(filename, UriKind.Relative)) {
+					CreateOptions = BitmapCreateOptions.None
+				};
 				return new WriteableBitmap(img);
 			}
 			catch {
@@ -62,15 +59,15 @@ namespace MapViewer {
 					return;
 				}
 
-				var childrenList = canvasFile.Children.Cast<System.Windows.UIElement>().ToArray();
+				var childrenList = canvasFile.Children.Cast<UIElement>().ToArray();
 				canvasFile.Children.Clear();
-				foreach (System.Windows.UIElement child in childrenList) {
+				foreach (var child in childrenList) {
 					canvas.Children.Add(child);
 				}
 
 			}
 			catch (Exception ex) {
-				System.Windows.MessageBox.Show(ex.Message);
+				MessageBox.Show(ex.Message);
 				
 			}
 
@@ -78,32 +75,23 @@ namespace MapViewer {
 
 		public static void CopyingCanvas(Canvas canvasSource, Canvas canvasDest) {
 			canvasDest.Children.Clear();
-			foreach (System.Windows.UIElement child in canvasSource.Children) {
+			foreach (UIElement child in canvasSource.Children) {
 				if (child.Uid != "PublicView") {
-					var xaml = System.Windows.Markup.XamlWriter.Save(child);
-					var deepCopy = System.Windows.Markup.XamlReader.Parse(xaml) as UIElement;
-					canvasDest.Children.Add(deepCopy);
+					var xaml = XamlWriter.Save(child);
+					var deepCopy = XamlReader.Parse(xaml) as UIElement;
+					if (deepCopy != null) {
+						canvasDest.Children.Add(deepCopy);
+					}
 				}
 			}
 		}
 
 		public static UIElement FindHitElement(Canvas canvas) {
-			foreach (System.Windows.UIElement child in canvas.Children) {
-				if (child.Uid != "PublicView" && child.IsMouseOver) {
-					return child;
-				}
-			}
-			return null;
+			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid != "PublicView" && child.IsMouseOver);
 		}
 
-		public static UIElement FindElementByUID(Canvas canvas, string uid) {
-			foreach (System.Windows.UIElement child in canvas.Children) {
-				if (child.Uid == uid) {
-					return child;
-				}
-			}
-			return null;
+		public static UIElement FindElementByUid(Canvas canvas, string uid) {
+			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid == uid);
 		}
-
 	}
 }

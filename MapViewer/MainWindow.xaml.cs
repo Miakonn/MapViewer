@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -16,8 +14,8 @@ namespace MapViewer {
 
 		#region Attributes
 
-		public readonly MaskedMap _mapPrivate;
-		public readonly PublicWindow _publicWindow = new PublicWindow();
+		public readonly MaskedMap MapPrivate;
+		public readonly PublicWindow PublicWindow = new PublicWindow();
 		private Rectangle _dragPublicRect;
 
 		private UIElement _lastClickedElem;
@@ -25,7 +23,6 @@ namespace MapViewer {
 		private bool _isDraggingPublicPos;
 		private bool _isMoving;
 		private Point _mouseDownPoint;
-		private Point _mouseUpPoint;
 		private ICanvasTool _activeTool;
 
 		public ICanvasTool ActiveTool {
@@ -48,11 +45,11 @@ namespace MapViewer {
 		public MainWindow() {
 			InitializeComponent();
 
-			_mapPrivate = new MaskedMap(false) {
+			MapPrivate = new MaskedMap(false) {
 				ParentWindow = this,
 			};
-			MapPresenterMain1.Content = _mapPrivate.CanvasMapMask;
-			MapPresenterMain2.Content = _mapPrivate.CanvasOverlay;
+			MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
+			MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
 
 			ComboBoxPublicScale.SelectedIndex = 0;
 		}
@@ -60,20 +57,14 @@ namespace MapViewer {
 		#region Private methods
 
 		private void Update() {
-			_mapPrivate.Draw();
-			_publicWindow.Map.Draw();
-		}
-
-		private Int32Rect GetElementRect(FrameworkElement element) {
-			var buttonTransform = element.TransformToVisual(_mapPrivate.CanvasMapMask);
-			var point = buttonTransform.Transform(new Point());
-			return new Int32Rect((int)point.X, (int)point.Y, (int)element.ActualWidth, (int)element.ActualHeight);
+			MapPrivate.Draw();
+			PublicWindow.Map.Draw();
 		}
 
 		private void MovePublic(Vector vector) {
-			_publicWindow.Map.Translate(vector);
-			_publicWindow.Map.Draw();
-			var rect = _publicWindow.Map.VisibleRectInMap();
+			PublicWindow.Map.Translate(vector);
+			PublicWindow.Map.Draw();
+			var rect = PublicWindow.Map.VisibleRectInMap();
 
 			Canvas.SetLeft(_dragPublicRect, rect.X);
 			Canvas.SetTop(_dragPublicRect, rect.Y);
@@ -81,7 +72,6 @@ namespace MapViewer {
 			_dragPublicRect.Height = rect.Height;
 		}
 
-	
 		#endregion
 
 		#region Public Methods
@@ -89,14 +79,14 @@ namespace MapViewer {
 		public bool SetScaleDialog() {
 			var dialog = new DialogGetFloatValue {
 				LeadText = "Map width in m",
-				Value = _mapPrivate.MapData.ImageLengthM
+				Value = MapPrivate.MapData.ImageLengthM
 			};
 
 			var result = dialog.ShowDialog();
 			if (!result.HasValue || !result.Value) {
 				return false;
 			}
-			_mapPrivate.MapData.ImageLengthM = dialog.Value;
+			MapPrivate.MapData.ImageLengthM = dialog.Value;
 			return true;
 		}
 
@@ -120,12 +110,11 @@ namespace MapViewer {
 			}
 			if (ActiveTool != null) {
 				ActiveTool.KeyDown(sender, e);
-				return;
 			}
 		}
 
 		private void MainWinSizeChanged(object sender, SizeChangedEventArgs e) {
-			_mapPrivate.ScaleToWindow();
+			MapPrivate.ScaleToWindow();
 		}
 
 		private void MainWinMouseDown(object sender, MouseButtonEventArgs e) {
@@ -134,12 +123,12 @@ namespace MapViewer {
 				ActiveTool.MouseDown(sender, e);
 				return;
 			}
-			_lastClickedElem = BitmapUtils.FindHitElement(_mapPrivate.CanvasOverlay);
+			_lastClickedElem = BitmapUtils.FindHitElement(MapPrivate.CanvasOverlay);
 
 			var isPublicPos = _dragPublicRect != null && _dragPublicRect.IsMouseOver;
 			if (e.ChangedButton == MouseButton.Left && isPublicPos && e.ClickCount == 1) {
 				_isDraggingPublicPos= true;
-				_mouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
+				_mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
 				e.Handled = true;
 			}
 			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
@@ -148,14 +137,14 @@ namespace MapViewer {
 				e.Handled = true;
 			}
 			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
-				var pos = e.GetPosition(_mapPrivate.CanvasMapMask);
-				_mapPrivate.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
-				if (_publicWindow.IsVisible) {
-					_publicWindow.Map.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
+				var pos = e.GetPosition(MapPrivate.CanvasMapMask);
+				MapPrivate.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
+				if (PublicWindow.IsVisible) {
+					PublicWindow.Map.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
 				}
 			}
 			else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
-				_mouseDownPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
+				_mouseDownPoint = e.GetPosition(MapPrivate.CanvasMapMask);
 			}
 
 		}
@@ -167,20 +156,17 @@ namespace MapViewer {
 			}
 
 			if (_isDraggingPublicPos) {
-				var curMouseDownPoint = e.GetPosition(_mapPrivate.CanvasOverlay);
-				var scale = _mapPrivate.Scale;
-				var scale2 = _publicWindow.Map.Scale;
-				MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X) * scale2, (_mouseDownPoint.Y - curMouseDownPoint.Y) * scale2));
+				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
+				var scale = PublicWindow.Map.Scale;
+				MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X) * scale, (_mouseDownPoint.Y - curMouseDownPoint.Y) * scale));
 				_mouseDownPoint = curMouseDownPoint;
-				Trace.WriteLine("MouseMOve=" + _mouseDownPoint);
 
 				e.Handled = true;
 			}
 			else if (_isMoving) {
 				var curMouseDownPoint = e.GetPosition(this);
-				Vector move = curMouseDownPoint - _mouseDownPoint;
-				_mapPrivate.Translate(move);
-				//_mapPrivate.Draw();
+				var move = curMouseDownPoint - _mouseDownPoint;
+				MapPrivate.Translate(move);
 				_mouseDownPoint = curMouseDownPoint;
 				e.Handled = true;
 			}			
@@ -197,10 +183,7 @@ namespace MapViewer {
 				_isDraggingPublicPos = false;
 			}
 
-			if (e.ChangedButton == MouseButton.Right) {
-				_mouseUpPoint = e.GetPosition(_mapPrivate.CanvasMapMask);
-			}
-			else if (e.ChangedButton == MouseButton.Left) {
+			if (e.ChangedButton == MouseButton.Left) {
 				_isMoving = false;
 				e.Handled = true;
 			}
@@ -209,8 +192,8 @@ namespace MapViewer {
 		private void MainWinMouseWheel(object sender, MouseWheelEventArgs e) {
 			double scale = (1.0 + e.Delta / 600.0);
 
-			_mapPrivate.Zoom(scale, e.GetPosition(this));
-			_mapPrivate.Draw();
+			MapPrivate.Zoom(scale, e.GetPosition(this));
+			MapPrivate.Draw();
 		}
 
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
@@ -220,22 +203,22 @@ namespace MapViewer {
 		private void ComboBoxPublicScale_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
 			switch (ComboBoxPublicScale.SelectedIndex) {
 				case 0: {
-						_mapPrivate.Linked = false;
-						_publicWindow.Map.Linked = false;
-						_publicWindow.Map.ScreenScaleMMperM = 20.0;
+						MapPrivate.Linked = false;
+						PublicWindow.Map.Linked = false;
+						PublicWindow.Map.ScreenScaleMMperM = 20.0;
 						_publicIsDirty = true;
 						break;
 					}
 				case 1: {
-						_mapPrivate.Linked = false;
-						_publicWindow.Map.Linked = false;
-						_publicWindow.Map.ScreenScaleMMperM = 10.0;
+						MapPrivate.Linked = false;
+						PublicWindow.Map.Linked = false;
+						PublicWindow.Map.ScreenScaleMMperM = 10.0;
 						_publicIsDirty = true;
 						break;
 					}
 				case 2: {
-						_mapPrivate.Linked = true;
-						_publicWindow.Map.Linked = true;
+						MapPrivate.Linked = true;
+						PublicWindow.Map.Linked = true;
 						_publicIsDirty = true;
 						break;
 					}

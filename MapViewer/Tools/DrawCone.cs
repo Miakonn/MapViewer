@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,9 +8,9 @@ using System.Windows.Controls.Ribbon;
 namespace MapViewer.Tools {
 	class DrawCone : ICanvasTool {
 
-		private MainWindow _mainWindow;
-		private Canvas _canvas;
-		private MaskedMap _map;
+		private readonly MainWindow _mainWindow;
+		private readonly Canvas _canvas;
+		private readonly MaskedMap _map;
 		private ToolTip _tooltip;
 		private RibbonToggleButton _button;
 		private Polygon _shape;
@@ -21,7 +19,7 @@ namespace MapViewer.Tools {
 
 		public DrawCone(MainWindow mainWindow, object button) {
 			_mainWindow = mainWindow;
-			_map = mainWindow._mapPrivate;
+			_map = mainWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
@@ -116,8 +114,8 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			var points = CreatePointCollection();
 			_map.OverlayPolygon(points, Colors.Yellow, "Cone");
-			if (_mainWindow._publicWindow.IsVisible) {
-				_mainWindow._publicWindow.Map.OverlayPolygon(points, Colors.Green, "Cone");
+			if (_mainWindow.PublicWindow.IsVisible) {
+				_mainWindow.PublicWindow.Map.OverlayPolygon(points, Colors.Green, "Cone");
 			}
 
 			_mainWindow.ActiveTool = null;
