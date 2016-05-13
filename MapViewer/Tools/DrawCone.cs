@@ -115,7 +115,7 @@ namespace MapViewer.Tools {
 			var points = CreatePointCollection();
 			_map.OverlayPolygon(points, Colors.Yellow, "Cone");
 			if (_mainWindow.PublicWindow.IsVisible) {
-				_mainWindow.PublicWindow.Map.OverlayPolygon(points, Colors.Green, "Cone");
+				_mainWindow.MapPublic.OverlayPolygon(points, Colors.Green, "Cone");
 			}
 
 			_mainWindow.ActiveTool = null;

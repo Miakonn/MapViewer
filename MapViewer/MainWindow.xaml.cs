@@ -15,6 +15,7 @@ namespace MapViewer {
 		#region Attributes
 
 		public readonly MaskedMap MapPrivate;
+		public readonly MaskedMap MapPublic;
 		public readonly PublicWindow PublicWindow = new PublicWindow();
 		private Rectangle _dragPublicRect;
 
@@ -48,6 +49,8 @@ namespace MapViewer {
 			MapPrivate = new MaskedMap(false) {
 				ParentWindow = this,
 			};
+
+			MapPublic = PublicWindow.Map;
 			MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
 			MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
 
@@ -58,13 +61,13 @@ namespace MapViewer {
 
 		private void Update() {
 			MapPrivate.Draw();
-			PublicWindow.Map.Draw();
+			MapPublic.Draw();
 		}
 
 		private void MovePublic(Vector vector) {
-			PublicWindow.Map.Translate(vector);
-			PublicWindow.Map.Draw();
-			var rect = PublicWindow.Map.VisibleRectInMap();
+			MapPublic.Translate(vector);
+			MapPublic.Draw();
+			var rect = MapPublic.VisibleRectInMap();
 
 			Canvas.SetLeft(_dragPublicRect, rect.X);
 			Canvas.SetTop(_dragPublicRect, rect.Y);
@@ -140,7 +143,7 @@ namespace MapViewer {
 				var pos = e.GetPosition(MapPrivate.CanvasMapMask);
 				MapPrivate.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
 				if (PublicWindow.IsVisible) {
-					PublicWindow.Map.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
+					MapPublic.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
 				}
 			}
 			else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
@@ -157,7 +160,7 @@ namespace MapViewer {
 
 			if (_isDraggingPublicPos) {
 				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
-				var scale = PublicWindow.Map.Scale;
+				var scale = MapPublic.Scale;
 				MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X) * scale, (_mouseDownPoint.Y - curMouseDownPoint.Y) * scale));
 				_mouseDownPoint = curMouseDownPoint;
 
@@ -204,21 +207,21 @@ namespace MapViewer {
 			switch (ComboBoxPublicScale.SelectedIndex) {
 				case 0: {
 						MapPrivate.Linked = false;
-						PublicWindow.Map.Linked = false;
-						PublicWindow.Map.ScreenScaleMMperM = 20.0;
+						MapPublic.Linked = false;
+						MapPublic.ScreenScaleMMperM = 20.0;
 						_publicIsDirty = true;
 						break;
 					}
 				case 1: {
 						MapPrivate.Linked = false;
-						PublicWindow.Map.Linked = false;
-						PublicWindow.Map.ScreenScaleMMperM = 10.0;
+						MapPublic.Linked = false;
+						MapPublic.ScreenScaleMMperM = 10.0;
 						_publicIsDirty = true;
 						break;
 					}
 				case 2: {
 						MapPrivate.Linked = true;
-						PublicWindow.Map.Linked = true;
+						MapPublic.Linked = true;
 						_publicIsDirty = true;
 						break;
 					}

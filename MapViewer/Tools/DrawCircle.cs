@@ -98,7 +98,7 @@ namespace MapViewer.Tools {
 			var radius = (int)(_circle.ActualWidth / 2);
 			_map.OverlayCircle(center, radius, Colors.Blue, "Circle");
 			if (_mainWindow.PublicWindow.IsVisible) {
-				_mainWindow.PublicWindow.Map.OverlayCircle(center, radius, Colors.Blue, "Circle");
+				_mainWindow.MapPublic.OverlayCircle(center, radius, Colors.Blue, "Circle");
 			}
 			_mainWindow.ActiveTool = null;
 		}

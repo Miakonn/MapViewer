@@ -101,7 +101,7 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			_map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.Yellow, "Line");
 			if (_mainWindow.PublicWindow.IsVisible) {
-				_mainWindow.PublicWindow.Map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.Yellow, "Line");
+				_mainWindow.MapPublic.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.Yellow, "Line");
 			}
 
 			_mainWindow.ActiveTool = null;

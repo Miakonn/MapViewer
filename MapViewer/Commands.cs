@@ -62,18 +62,18 @@ namespace MapViewer {
 		}
 
 		private void UpdateVisibleRectangle() {
-			var rect = PublicWindow.Map.VisibleRectInMap();
+			var rect = MapPublic.VisibleRectInMap();
 			if (_dragPublicRect != null) {
 				MapPrivate.CanvasOverlay.Children.Remove(_dragPublicRect);
 			}
-			if (!PublicWindow.Map.Linked) {
+			if (!MapPublic.Linked) {
 				_dragPublicRect = MapPrivate.OverlayRectPixel(rect, Colors.Red);
 			}			
 		}
 
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
-			PublicWindow.Map.PublishFrom(MapPrivate, _publicIsDirty);
-			PublicWindow.Map.Draw();
+			MapPublic.PublishFrom(MapPrivate, _publicIsDirty);
+			MapPublic.Draw();
 			_publicIsDirty = false;
 
 			UpdateVisibleRectangle();
@@ -92,14 +92,14 @@ namespace MapViewer {
 				MapPrivate.CanvasOverlay.Children.Add(_dragPublicRect);
 			}
 
-			PublicWindow.Map.ClearOverlay();
+			MapPublic.ClearOverlay();
 		}
 
 		private void Fireball_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var radius = 7 / MapPrivate.ImageScaleMperPix;
 			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
 			if (PublicWindow.IsVisible) {
-				PublicWindow.Map.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
+				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace MapViewer {
 			var radius = 2 / MapPrivate.ImageScaleMperPix;
 			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
 			if (PublicWindow.IsVisible) {
-				PublicWindow.Map.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
+				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
 			}
 		}
 
@@ -121,9 +121,9 @@ namespace MapViewer {
 			var uid = _lastClickedElem.Uid;
 			MapPrivate.CanvasOverlay.Children.Remove(_lastClickedElem);
 			if (PublicWindow.IsVisible) {
-				var elemPublic = BitmapUtils.FindElementByUid(PublicWindow.Map.CanvasOverlay, uid);
+				var elemPublic = BitmapUtils.FindElementByUid(MapPublic.CanvasOverlay, uid);
 				if (elemPublic != null) {
-					PublicWindow.Map.CanvasOverlay.Children.Remove(elemPublic);
+					MapPublic.CanvasOverlay.Children.Remove(elemPublic);
 				}
 			}
 		}
@@ -134,8 +134,7 @@ namespace MapViewer {
 		}
 
 		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
-			//_publicWindow.Map.RotationAngle = (_publicWindow.Map.RotationAngle + 90) % 360;
-			PublicWindow.Map.RotateClockwise();
+			MapPublic.RotateClockwise();
 			UpdateVisibleRectangle();
 		}
 
