@@ -182,7 +182,7 @@ namespace MapViewer {
 		}
 
 
-		private byte[] CreateColorData(int byteCount, byte opacity) {
+		private static byte[] CreateColorData(int byteCount, byte opacity) {
 			var colorData = new byte[byteCount];
 			for (var i = 0; i < byteCount; i += 4) {
 				colorData[i] = 0;	// B
@@ -281,7 +281,7 @@ namespace MapViewer {
 			AddOverlayElement(shape, uid);
 		}
 
-		public Rectangle OverlayRectPixel(Rect rect, Color color) {
+		public Rectangle OverlayRectangle(Rect rect, Color color) {
 			var shape = new Rectangle {
 				Width = rect.Width,
 				Height = rect.Height,

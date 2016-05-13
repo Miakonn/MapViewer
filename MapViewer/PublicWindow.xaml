@@ -5,8 +5,9 @@
 		 WindowStyle="None">
 	<Border BorderThickness="0,2" BorderBrush="DarkGray"  >
 		<Grid >
-			<ContentPresenter Grid.Row="0"  Name="MapPresenterPublic1"  Margin="0" />
-			<ContentPresenter Grid.Row="0"  Name="MapPresenterPublic2"  Margin="0"  />
+			<ContentPresenter Grid.Row="0" Grid.Column="0" Name="ContentPresenter1"  Margin="0" />
+			<ContentPresenter Grid.Row="0" Grid.Column="0" Name="ContentPresenter2"  Margin="0" />
+			<ContentPresenter Grid.Row="0" Grid.Column="0" Name="ContentPresenter3"  Margin="0" />
 		</Grid>
 	</Border>
 </Window>

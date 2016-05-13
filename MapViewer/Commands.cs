@@ -63,13 +63,14 @@ namespace MapViewer {
 				MapPrivate.CanvasOverlay.Children.Remove(_dragPublicRect);
 			}
 			if (!MapPublic.Linked) {
-				_dragPublicRect = MapPrivate.OverlayRectPixel(rect, Colors.Red);
+				_dragPublicRect = MapPrivate.OverlayRectangle(rect, Colors.Red);
 			}			
 		}
 
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPublic.PublishFrom(MapPrivate, _publicIsDirty);
 			MapPublic.Draw();
+			PublicWindow.SetRuler(MapPublic.ImageScaleMperPix / MapPublic.Scale);
 			_publicIsDirty = false;
 
 			UpdateVisibleRectangle();
@@ -108,8 +109,6 @@ namespace MapViewer {
 		}
 
 		private void DeleteElement_Executed(object sender, ExecutedRoutedEventArgs e) {
-
-
 			if (_lastClickedElem == null) {
 				return;
 			}
