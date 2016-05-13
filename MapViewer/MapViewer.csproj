@@ -127,13 +127,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\map_magnify.ico" />
     <Resource Include="Images\Monitor.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Open_file.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Delete.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Map_mask.png" />
@@ -153,9 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Monitor_publish.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\map_magnify.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\map_mask_circle.png" />
