@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Image = System.Windows.Controls.Image;
+using Path = System.IO.Path;
 using Point = System.Windows.Point;
 
 namespace MapViewer {
@@ -50,7 +52,7 @@ namespace MapViewer {
 			set {
 				_imagePath = value;
 				MapImage = new BitmapImage(new Uri(_imagePath));
-				MapData = new MapData(_imagePath);
+				MapData = new MapData(CreateFilename(_imagePath, ".xml"));
 
 				Deserialize();
 
@@ -359,17 +361,37 @@ namespace MapViewer {
 		public void Serialize() {
 			MapData.Serialize();
 			BmpMask.Freeze();
-			BitmapUtils.Serialize(BmpMask as WriteableBitmap ,_imagePath + ".mask");
-			BitmapUtils.SerializeXaml(CanvasOverlay, _imagePath + ".canvas.xaml");
+			BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(_imagePath, ".mask"));
+			BitmapUtils.SerializeXaml(CanvasOverlay, CreateFilename(_imagePath, ".xaml"));
 		}
 
 		public void Deserialize() {
 			MapData.Deserialize();
-			BmpMask = BitmapUtils.Deserialize(_imagePath + ".mask");
-			BitmapUtils.DeserializeXaml(CanvasOverlay, _imagePath + ".canvas.xaml");
+			BmpMask = BitmapUtils.Deserialize(CreateFilename(_imagePath, ".mask"));
+			BitmapUtils.DeserializeXaml(CanvasOverlay, CreateFilename(_imagePath, ".xaml"));
 
 		}
 
+
+		private const string FolderName = "MapViewerFiles";
+
+		private static string CreateFilename(string original, string extension) {
+			var originalFolder = System.IO.Path.GetDirectoryName(original);
+			var originalFilename = System.IO.Path.GetFileName(original);
+
+			var folder = System.IO.Path.Combine(originalFolder, FolderName);
+			if (!Directory.Exists(folder)) {
+				try {
+					Directory.CreateDirectory(folder);
+				}
+				catch (Exception ex) {
+					MessageBox.Show(ex.Message);
+					return "";
+				}
+			}
+
+			return Path.Combine(folder, originalFilename + extension);
+		}
 
 	}
 }

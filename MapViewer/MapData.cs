@@ -18,8 +18,8 @@ namespace MapViewer {
 
 		public MapData() {}
 
-		public MapData(string imPath) {
-			_xmlFilePath= imPath + ".xml";
+		public MapData(string path) {
+			_xmlFilePath= path;
 		}
 
 		public void Copy(MapData source) {
