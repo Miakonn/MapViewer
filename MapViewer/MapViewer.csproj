@@ -156,6 +156,23 @@
   <ItemGroup>
     <Resource Include="map_magnify.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\map_mask_circle.png" />
+    <Resource Include="Images\map_mask_rect.png" />
+    <Resource Include="Images\map_unmask_circle.png" />
+    <Resource Include="Images\map_unmask_rect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\map.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Save_file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\draw_circle.png" />
+    <Resource Include="Images\draw_cone.png" />
+    <Resource Include="Images\draw_line.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
