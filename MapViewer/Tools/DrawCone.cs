@@ -75,7 +75,7 @@ namespace MapViewer.Tools {
 
 			_shape = new Polygon {
 				Points = CreatePointCollection(),
-				Fill = Brushes.Yellow,
+				Fill = Brushes.Green,
 				Opacity = 0.5
 			};
 
@@ -113,7 +113,7 @@ namespace MapViewer.Tools {
 
 		private void EndDraw() {
 			var points = CreatePointCollection();
-			_map.OverlayPolygon(points, Colors.Yellow, "Cone");
+			_map.OverlayPolygon(points, Colors.Green, "Cone");
 			if (_mainWindow.PublicWindow.IsVisible) {
 				_mainWindow.MapPublic.OverlayPolygon(points, Colors.Green, "Cone");
 			}

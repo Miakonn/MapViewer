@@ -35,9 +35,8 @@ namespace MapViewer {
 
 		public float ImageScaleMperPix {
 			get {
-				return (MapData.ImageScaleMperPix);
+				return MapData.ImageScaleMperPix;
 			}
-
 			set {
 				MapData.ImageScaleMperPix = value;
 			}

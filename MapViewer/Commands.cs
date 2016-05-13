@@ -29,6 +29,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand DrawLine = new RoutedUICommand("Draw line", "Draw line", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DrawCone = new RoutedUICommand("Draw cone", "Draw cone", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DrawCircle = new RoutedUICommand("Draw circle", "Draw circle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DrawRectangle = new RoutedUICommand("Draw rectangle", "Draw rectangle", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand MaskRectangle = new RoutedUICommand("Mask rectangle", "Mask rectangle", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand UnmaskRectangle = new RoutedUICommand("Unmask rectangle", "Unmask rectangle", typeof(CustomCommands), null);
@@ -235,6 +236,12 @@ namespace MapViewer {
 			}
 		}
 
+		private void DrawRectangle_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				ActiveTool = new Tools.DrawRectangle(this, e.OriginalSource);
+			}
+		}
 		#endregion
 
 	}

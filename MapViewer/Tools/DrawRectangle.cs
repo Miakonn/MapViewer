@@ -6,16 +6,20 @@ using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
 
 namespace MapViewer.Tools {
-	class DrawLine : ICanvasTool {
+	class DrawRectangle : ICanvasTool {
 
 		private readonly MainWindow _mainWindow;
 		private readonly Canvas _canvas;
 		private readonly MaskedMap _map;
 		private ToolTip _tooltip;
 		private RibbonToggleButton _button;
-		private Line _line;
+		private Polygon _shape;
+		private Point _pnt1;
+		private Point _pnt2;
+		private Point _pnt3;
+		private int _index =0;
 
-		public DrawLine(MainWindow mainWindow, object button) {
+		public DrawRectangle(MainWindow mainWindow, object button) {
 			_mainWindow = mainWindow;
 			_map = mainWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
@@ -24,24 +28,30 @@ namespace MapViewer.Tools {
 
 		#region ICanvasTool
 		public void Activate() {
-			_line = null;
+			_shape = null;
 		}
 
 		public void MouseDown(object sender, MouseButtonEventArgs e) {
-			if (_line == null) {
+			if (_shape == null) {
 				InitDraw(e.GetPosition(_canvas));
 				_tooltip = new ToolTip();
 				_canvas.ToolTip = _tooltip;
 				_tooltip.Content = "0.0 m";
+				_index = 1;
+			}
+			else if (_index == 1) {
+				_index++;
+				UpdateDraw(e.GetPosition(_canvas));
 			}
 			else {
+				_index++;
 				UpdateDraw(e.GetPosition(_canvas));
 				EndDraw();
 			}
 		}
 
 		public void MouseMove(object sender, MouseEventArgs e) {
-			if (_line == null) {
+			if (_shape == null) {
 				return;
 			}
 			UpdateDraw(e.GetPosition(_canvas));
@@ -53,10 +63,10 @@ namespace MapViewer.Tools {
 		public void KeyDown(object sender, KeyEventArgs e) { }
 
 		public void Deactivate() {
-			if (_line != null) {
-				_canvas.Children.Remove(_line);
+			if (_shape != null) {
+				_canvas.Children.Remove(_shape);
 			}
-			_line = null;
+			_shape = null;
 			_canvas.ToolTip = null;
 
 			if (_button != null) {
@@ -68,40 +78,72 @@ namespace MapViewer.Tools {
 		#endregion
 
 		private void InitDraw(Point pt1) {
-			_line = new Line {
-				X1 = pt1.X,
-				Y1 = pt1.Y,
-				X2 = pt1.X,
-				Y2 = pt1.Y,
-				Stroke = Brushes.OrangeRed,
-				StrokeThickness = 10,
+			_pnt1 = pt1;
+			_pnt2 = pt1;
+			_pnt3 = pt1;
+
+			_shape = new Polygon {
+				Points = CreatePointCollection(),
+				Fill = Brushes.Green,
 				Opacity = 0.5
 			};
 
-			_canvas.Children.Add(_line);
+			_canvas.Children.Add(_shape);
 		}
 
-		private void UpdateDraw(Point pt2) {
-			if (_line == null) {
+		private void UpdateDraw(Point pt) {
+			if (_index == 1) {
+				_pnt2 = pt;
+				_pnt3 = pt;
+			}
+			else if (_index == 2) {
+				_pnt3 = pt;
+			}
+
+			if (_shape == null) {
 				return;
 			}
-			_line.X2 = pt2.X;
-			_line.Y2 = pt2.Y;
+			_shape.Points = CreatePointCollection();
+		}
+
+		private PointCollection CreatePointCollection() {
+			var points = new PointCollection(4);
+			var vector = new Vector(_pnt1.X - _pnt2.X, _pnt1.Y - _pnt2.Y);
+			var vectorPerp = new Vector(vector.Y / 10, -vector.X / 10);
+
+			if (_pnt3 == _pnt2) {
+				_pnt3 = _pnt2 + vectorPerp;
+			}
+			
+			points.Add(_pnt1);
+			points.Add(_pnt2);
+			points.Add(_pnt3);
+			points.Add(_pnt3 + vector);
+
+			return points;
 		}
 
 		private string CalculateDistance() {
-			if (_line == null) {
+			if (_shape == null) {
 				return "0.0";
 			}
-			var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
+			
+			double length;
+			if (_index == 1) {
+				length = new Vector(_pnt1.X - _pnt2.X, _pnt1.Y - _pnt2.Y).Length;
+			}
+			else {
+				length = new Vector(_pnt2.X - _pnt3.X, _pnt2.Y - _pnt3.Y).Length;
+			}
 			var dist = _map.ImageScaleMperPix * length;
 			return dist.ToString("N1");
 		}
 
 		private void EndDraw() {
-			_map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.OrangeRed, "Line");
+			var points = CreatePointCollection();
+			_map.OverlayPolygon(points, Colors.Green, "Rect");
 			if (_mainWindow.PublicWindow.IsVisible) {
-				_mainWindow.MapPublic.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.OrangeRed, "Line");
+				_mainWindow.MapPublic.OverlayPolygon(points, Colors.Green, "Rect");
 			}
 
 			_mainWindow.ActiveTool = null;

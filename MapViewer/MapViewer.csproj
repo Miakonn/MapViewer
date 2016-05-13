@@ -66,6 +66,7 @@
     <Compile Include="Tools\DrawLine.cs" />
     <Compile Include="Tools\DrawCircle.cs" />
     <Compile Include="Tools\DrawCone.cs" />
+    <Compile Include="Tools\DrawRectangle.cs" />
     <Compile Include="Tools\MaskCircle.cs" />
     <Compile Include="Tools\Measure.cs" />
     <Compile Include="Tools\ICanvasTool.cs" />
@@ -172,6 +173,9 @@
     <Resource Include="Images\draw_circle.png" />
     <Resource Include="Images\draw_cone.png" />
     <Resource Include="Images\draw_line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\draw_rect.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
