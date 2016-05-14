@@ -23,7 +23,6 @@ namespace MapViewer {
 			} while (true);
 		}
 
-
 		#endregion
 
 		#region Elements
@@ -94,6 +93,38 @@ namespace MapViewer {
 			Canvas.SetLeft(shape, x1);
 			Canvas.SetTop(shape, y1);
 			AddOverlayElement(shape, uid);
+		}
+
+		public void MovePublicCursor(Point pnt) {
+			var elemCursor = CanvasOverlay.FindElementByUid("Cursor");
+
+			var size = 30 / Scale;
+
+			if (elemCursor == null) {
+				elemCursor = new Ellipse {
+					Width = size * 2,
+					Height = size * 2,
+					Stroke = new SolidColorBrush(Colors.Red),
+					StrokeThickness = (5 / Scale),
+					Opacity = 0.6,
+					Uid = "Cursor"
+				};
+				Canvas.SetLeft(elemCursor, pnt.X - size);
+				Canvas.SetTop(elemCursor, pnt.Y - size);
+
+				CanvasOverlay.Children.Add(elemCursor);
+			}
+			else {
+				Canvas.SetLeft(elemCursor, pnt.X - size);
+				Canvas.SetTop(elemCursor, pnt.Y - size);
+			}
+		}
+
+		public void DeletePublicCursor() {
+			var elemCursor = CanvasOverlay.FindElementByUid("Cursor");
+			if (elemCursor != null) {
+				CanvasOverlay.Children.Remove(elemCursor);
+			}
 		}
 
 		#endregion

@@ -121,17 +121,9 @@ namespace MapViewer {
 				_mouseDownPoint = e.GetPosition(this);
 				e.Handled = true;
 			}
-			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
-				var pos = e.GetPosition(MapPrivate.CanvasMapMask);
-				MapPrivate.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
-				if (PublicWindow.IsVisible) {
-					MapPublic.OverlayCircle(pos, 25, Colors.GreenYellow, "Action");
-				}
-			}
 			else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
 				_mouseDownPoint = e.GetPosition(MapPrivate.CanvasMapMask);
 			}
-
 		}
 
 		private void MainWinMouseMove(object sender, MouseEventArgs e) {
@@ -139,6 +131,7 @@ namespace MapViewer {
 				ActiveTool.MouseMove(sender, e);
 				return;
 			}
+			var ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
 			if (_isDraggingPublicPos) {
 				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
@@ -154,7 +147,14 @@ namespace MapViewer {
 				MapPrivate.Translate(move);
 				_mouseDownPoint = curMouseDownPoint;
 				e.Handled = true;
-			}			
+			}
+			else if (ctrlPressed) {
+				MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
+			}
+			else {
+				MapPublic.DeletePublicCursor();
+			}
+
 		}
 
 		private void MainWinMouseUp(object sender, MouseButtonEventArgs e) {

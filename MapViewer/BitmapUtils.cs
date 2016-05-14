@@ -90,7 +90,7 @@ namespace MapViewer {
 			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid != "PublicView" && child.IsMouseOver);
 		}
 
-		public static UIElement FindElementByUid(Canvas canvas, string uid) {
+		public static UIElement FindElementByUid(this Canvas canvas, string uid) {
 			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid == uid);
 		}
 	}
