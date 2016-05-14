@@ -12,10 +12,11 @@ namespace MapViewer.Tools {
 		private readonly Canvas _canvas;
 		private readonly MaskedMap _map;
 		private RibbonToggleButton _button;
-
-		private Ellipse _circle;
+		private ToolTip _tooltip;
+		private Ellipse _shape;
 
 		private Point _pnt1;
+		private Point _pnt2;
 
 		public DrawCircle(MainWindow mainWindow, object button) {
 			_mainWindow = mainWindow;
@@ -27,13 +28,16 @@ namespace MapViewer.Tools {
 
 		#region ICanvasTool
 		public void Activate() {
-			_circle = null;
+			_shape = null;
 		}
 
 		public void MouseDown(object sender, MouseButtonEventArgs e) {
-			if (_circle == null) {
+			if (_shape == null) {
 				_pnt1 = e.GetPosition(_canvas);
 				InitDraw(_pnt1);
+				_tooltip = new ToolTip();
+				_canvas.ToolTip = _tooltip;
+				_tooltip.Content = "";
 			}
 			else {
 				UpdateDraw(_pnt1, e.GetPosition(_canvas));
@@ -42,7 +46,11 @@ namespace MapViewer.Tools {
 		}
 
 		public void MouseMove(object sender, MouseEventArgs e) {
+			if (_shape == null) {
+				return;
+			}
 			UpdateDraw(_pnt1, e.GetPosition(_canvas));
+			_tooltip.Content = string.Format("r={0} m", CalculateDistance());
 		}
 
 		public void MouseUp(object sender, MouseButtonEventArgs e) { }
@@ -50,10 +58,10 @@ namespace MapViewer.Tools {
 		public void KeyDown(object sender, KeyEventArgs e) { }
 
 		public void Deactivate() {
-			if (_circle != null) {
-				_canvas.Children.Remove(_circle);
+			if (_shape != null) {
+				_canvas.Children.Remove(_shape);
 			}
-			_circle = null;
+			_shape = null;
 
 			if (_button != null) {
 				_button.IsChecked = false;
@@ -66,36 +74,46 @@ namespace MapViewer.Tools {
 		private void InitDraw(Point pt1) {
 			_pnt1 = pt1;
 
-			_circle = new Ellipse {
+			_shape = new Ellipse {
 				Width = 1,
 				Height = 1,
 				Fill = new SolidColorBrush(Colors.Blue),
 				Opacity = 0.5
 			};
 
-			Canvas.SetLeft(_circle, pt1.X);
-			Canvas.SetTop(_circle, pt1.Y);
-			_canvas.Children.Add(_circle);
+			Canvas.SetLeft(_shape, pt1.X);
+			Canvas.SetTop(_shape, pt1.Y);
+			_canvas.Children.Add(_shape);
 
 		}
 
 		private void UpdateDraw(Point pt1, Point pt2) {
-			if (_circle == null) {
+			if (_shape == null) {
 				return;
 			}
 
+			_pnt2 = pt2;
 			var radius = new Vector(pt1.X - pt2.X, pt1.Y - pt2.Y).Length;
 			var x = pt1.X - radius;
 			var y = pt1.Y - radius;
-			Canvas.SetLeft(_circle, x);
-			Canvas.SetTop(_circle, y);
-			_circle.Width = 2 * radius;
-			_circle.Height = 2 * radius;
+			Canvas.SetLeft(_shape, x);
+			Canvas.SetTop(_shape, y);
+			_shape.Width = 2 * radius;
+			_shape.Height = 2 * radius;
+		}
+
+		private string CalculateDistance() {
+			if (_shape == null) {
+				return "0.0";
+			}
+			var length = new Vector(_pnt1.X - _pnt2.X, _pnt1.Y - _pnt2.Y).Length;
+			var dist = _map.ImageScaleMperPix * length;
+			return dist.ToString("N1");
 		}
 
 		private void EndDraw() {
-			var center = GetElementCenter(_circle);
-			var radius = (int)(_circle.ActualWidth / 2);
+			var center = GetElementCenter(_shape);
+			var radius = (int)(_shape.ActualWidth / 2);
 			_map.OverlayCircle(center, radius, Colors.Blue, "Circle");
 			if (_mainWindow.PublicWindow.IsVisible) {
 				_mainWindow.MapPublic.OverlayCircle(center, radius, Colors.Blue, "Circle");

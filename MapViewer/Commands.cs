@@ -30,6 +30,8 @@ namespace MapViewer {
 		public static readonly RoutedUICommand DrawCone = new RoutedUICommand("Draw cone", "Draw cone", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DrawCircle = new RoutedUICommand("Draw circle", "Draw circle", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DrawRectangle = new RoutedUICommand("Draw rectangle", "Draw rectangle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DrawSquare = new RoutedUICommand("Draw square", "Draw square", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DrawText = new RoutedUICommand("Draw text", "Draw text", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand MaskRectangle = new RoutedUICommand("Mask rectangle", "Mask rectangle", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand UnmaskRectangle = new RoutedUICommand("Unmask rectangle", "Unmask rectangle", typeof(CustomCommands), null);
@@ -39,6 +41,46 @@ namespace MapViewer {
 
 	public partial class MainWindow {
 
+		private static bool CheckToggleState(object source) {
+			var button = source as RibbonToggleButton;
+			if (button != null) {
+				return (button.IsChecked.HasValue && button.IsChecked.Value);
+			}
+			return true;
+		}
+
+		#region Can execute
+
+		private void ImageNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile));
+		}
+
+		private void Allways_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = true;
+		}
+
+		private void Spell_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile));
+		}
+
+		private void Publish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) &&
+				PublicWindow.IsVisible;
+		}
+
+		private void AddDisplay_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) && 
+				!PublicWindow.IsVisible;
+		}
+
+		private void RemoveDisplay_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = PublicWindow.IsVisible;
+		}
+
+
+		#endregion
+
+		#region Assorted
 		private void OpenImage_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var dialog = new OpenFileDialog {Filter = "Image Files|*.jpg;*.bmp;*.png"};
 			var result = dialog.ShowDialog();
@@ -92,22 +134,6 @@ namespace MapViewer {
 			MapPublic.ClearOverlay();
 		}
 
-		private void Fireball_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var radius = 7 / MapPrivate.ImageScaleMperPix;
-			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
-			if (PublicWindow.IsVisible) {
-				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
-			}
-		}
-
-		private void Moonbeam_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var radius = 2 / MapPrivate.ImageScaleMperPix;
-			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
-			if (PublicWindow.IsVisible) {
-				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
-			}
-		}
-
 		private void DeleteElement_Executed(object sender, ExecutedRoutedEventArgs e) {
 			if (_lastClickedElem == null) {
 				return;
@@ -141,47 +167,9 @@ namespace MapViewer {
 		private void RemoveDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.Visibility = Visibility.Hidden;
 		}
-
-		#region Can execute
-
-		private void ImageNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile));
-		}
-
-		private void Allways_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = true;
-		}
-
-		private void Spell_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile));
-		}
-
-		private void Publish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) &&
-				PublicWindow.IsVisible;
-		}
-
-		private void AddDisplay_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) && 
-				!PublicWindow.IsVisible;
-		}
-
-		private void RemoveDisplay_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = PublicWindow.IsVisible;
-		}
-
-
 		#endregion
 
 		#region Tools
-
-		private bool CheckToggleState(object source) {
-			var button = source as RibbonToggleButton;
-			if (button != null) {
-				return (button.IsChecked.HasValue && button.IsChecked.Value);
-			}
-			return true;
-		}
 
 		private void Measure_Executed(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
@@ -228,6 +216,7 @@ namespace MapViewer {
 		}
 
 		#endregion
+
 		#region Spells
 		private void DrawCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
@@ -256,6 +245,37 @@ namespace MapViewer {
 				ActiveTool = new Tools.DrawRectangle(this, e.OriginalSource);
 			}
 		}
+
+		private void DrawSquare_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				ActiveTool = new Tools.DrawSquare(this, e.OriginalSource);
+			}
+		}
+
+		private void DrawText_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				ActiveTool = new Tools.DrawText(this, e.OriginalSource);
+			}
+		}
+
+		private void Fireball_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var radius = 7 / MapPrivate.ImageScaleMperPix;
+			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
+			if (PublicWindow.IsVisible) {
+				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
+			}
+		}
+
+		private void Moonbeam_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var radius = 2 / MapPrivate.ImageScaleMperPix;
+			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
+			if (PublicWindow.IsVisible) {
+				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
+			}
+		}
+
 		#endregion
 
 	}

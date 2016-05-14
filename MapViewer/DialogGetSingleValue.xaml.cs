@@ -5,24 +5,27 @@ namespace MapViewer {
 	/// <summary>
 	/// Interaction logic for DialogGetCalibration.xaml
 	/// </summary>
-	public partial class DialogGetFloatValue {
-		private float _value;
+	public partial class DialogGetSingleValue {
 
 		public string LeadText {
 			set { LabelHint.Content = value; }
 		}
 
-		public float Value {
-			get { return _value; }
-			set {
-				_value = value;
-				TextBoxValue.Text = _value.ToString(CultureInfo.InvariantCulture);
+		public float FloatValue {
+			get {
+				float val;
+				return float.TryParse(TextBoxValue.Text, out val) ? val : 0;
 			}
+			set { TextBoxValue.Text = value.ToString(CultureInfo.InvariantCulture); }
 		}
 
-		public DialogGetFloatValue() {
+		public string TextValue {
+			get { return TextBoxValue.Text; }
+			set {  TextBoxValue.Text =value; }
+		}
+
+		public DialogGetSingleValue() {
 			InitializeComponent();
-			
 		}
 
 		private void BtnCancel_Click(object sender, RoutedEventArgs e) {
@@ -31,10 +34,8 @@ namespace MapViewer {
 		}
 
 		private void BtnOk_Click(object sender, RoutedEventArgs e) {
-			if (float.TryParse(TextBoxValue.Text, out _value)) {
-				DialogResult = true;
-				Close();
-			}
+			DialogResult = true;
+			Close();
 		}
 	}
 }

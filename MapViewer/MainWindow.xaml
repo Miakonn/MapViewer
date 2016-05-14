@@ -22,10 +22,14 @@
 		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawCone" Executed="DrawCone_Executed" CanExecute="Spell_CanExecute" />
+
 		<CommandBinding Command="mapViewer:CustomCommands.DrawCircle" Executed="DrawCircle_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawCone" Executed="DrawCone_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.DrawRectangle" Executed="DrawRectangle_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawSquare" Executed="DrawSquare_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawText" Executed="DrawText_Executed" CanExecute="Spell_CanExecute" />
+
 		<CommandBinding Command="mapViewer:CustomCommands.MaskRectangle" Executed="MaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.MaskCircle" Executed="MaskCircle_Executed" CanExecute="ImageNeeded_CanExecute" />
@@ -67,6 +71,8 @@
 					<RibbonToggleButton Label="Draw cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/draw_cone.png" />
 					<RibbonToggleButton Label="Draw circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/draw_circle.png" />
 					<RibbonToggleButton Label="Draw rectangle" Command="mapViewer:CustomCommands.DrawRectangle" LargeImageSource="Images/draw_rect.png" />
+					<RibbonToggleButton Label="Draw square" Command="mapViewer:CustomCommands.DrawSquare" LargeImageSource="Images/draw_square.png" />
+					<RibbonToggleButton Label="Draw text" Command="mapViewer:CustomCommands.DrawText" LargeImageSource="Images/draw_text.png" />
 				</RibbonGroup>
 
 				<RibbonGroup Name="Public" >

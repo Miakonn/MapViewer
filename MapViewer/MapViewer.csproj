@@ -59,14 +59,17 @@
     </ApplicationDefinition>
     <Compile Include="BitmapUtils.cs" />
     <Compile Include="Commands.cs" />
-    <Compile Include="DialogGetFloatValue.xaml.cs">
-      <DependentUpon>DialogGetFloatValue.xaml</DependentUpon>
+    <Compile Include="DialogGetSingleValue.xaml.cs">
+      <DependentUpon>DialogGetSingleValue.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MaskedMapOverlay.cs" />
     <Compile Include="Tools\Calibrate.cs" />
     <Compile Include="Tools\DrawLine.cs" />
     <Compile Include="Tools\DrawCircle.cs" />
     <Compile Include="Tools\DrawCone.cs" />
     <Compile Include="Tools\DrawRectangle.cs" />
+    <Compile Include="Tools\DrawSquare.cs" />
+    <Compile Include="Tools\DrawText.cs" />
     <Compile Include="Tools\MaskCircle.cs" />
     <Compile Include="Tools\Measure.cs" />
     <Compile Include="Tools\ICanvasTool.cs" />
@@ -75,7 +78,7 @@
       <DependentUpon>PublicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\MaskRectangle.cs" />
-    <Page Include="DialogGetFloatValue.xaml">
+    <Page Include="DialogGetSingleValue.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -171,6 +174,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\draw_rect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\draw_square.png" />
+    <Resource Include="Images\draw_text.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

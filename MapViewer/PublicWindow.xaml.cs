@@ -31,7 +31,7 @@ namespace MapViewer
 
 			ContentPresenter1.Content = _map.CanvasMapMask;
 			ContentPresenter2.Content = _map.CanvasOverlay;
-		    ContentPresenter3.Content = _canvasRuler;
+			ContentPresenter3.Content = _canvasRuler;
 	    }
 
 	    public void MaximizeToSecondaryMonitor() {
