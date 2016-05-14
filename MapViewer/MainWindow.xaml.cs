@@ -1,8 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
@@ -19,7 +17,6 @@ namespace MapViewer {
 		public readonly PublicWindow PublicWindow = new PublicWindow();
 
 		private UIElement _lastClickedElem;
-
 		private bool _isDraggingPublicPos;
 		private bool _isMoving;
 		private Point _mouseDownPoint;
@@ -65,7 +62,7 @@ namespace MapViewer {
 
 		private void MovePublic(Vector vector) {
 			MapPublic.Translate(vector);
-			if (MapPublic.Linked) {
+			if (MapPublic.IsLinked) {
 				MapPrivate.DeleteShape("VisbileRect");
 			}
 			else {
@@ -189,22 +186,22 @@ namespace MapViewer {
 		private void ComboBoxPublicScale_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
 			switch (ComboBoxPublicScale.SelectedIndex) {
 				case 0: {
-						MapPrivate.Linked = false;
-						MapPublic.Linked = false;
+						MapPrivate.IsLinked = false;
+						MapPublic.IsLinked = false;
 						MapPublic.ScreenScaleMMperM = 20.0;
 						_publicIsDirty = true;
 						break;
 					}
 				case 1: {
-						MapPrivate.Linked = false;
-						MapPublic.Linked = false;
+						MapPrivate.IsLinked = false;
+						MapPublic.IsLinked = false;
 						MapPublic.ScreenScaleMMperM = 10.0;
 						_publicIsDirty = true;
 						break;
 					}
 				case 2: {
-						MapPrivate.Linked = true;
-						MapPublic.Linked = true;
+						MapPrivate.IsLinked = true;
+						MapPublic.IsLinked = true;
 						_publicIsDirty = true;
 						break;
 					}

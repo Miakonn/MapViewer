@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Image = System.Windows.Controls.Image;
 using Path = System.IO.Path;
 using Point = System.Windows.Point;
@@ -44,7 +43,9 @@ namespace MapViewer {
 
 		public Window ParentWindow { get; set; }
 
-		public bool Linked { get; set; }
+		public bool IsLinked { get; set; }
+
+		private bool IsPublic { get; set; }
 
 		public string ImageFile {
 			get { return _imagePath; }
@@ -64,11 +65,6 @@ namespace MapViewer {
 			}
 		}
 
-		public BitmapImage Image {
-			get { return MapImage; }
-		}
-
-		private bool PublicView { get; set; }
 
 		public double Scale {
 			get { return DisplayTransform.Matrix.M11; }
@@ -77,15 +73,15 @@ namespace MapViewer {
 		#endregion
 
 		public MaskedMap(bool publicView) {
-			PublicView = publicView;
-			MaskOpacity = PublicView ? 1.0 : 0.3;
+			IsPublic = publicView;
+			MaskOpacity = IsPublic ? 1.0 : 0.3;
 			DisplayTransform = new MatrixTransform(1.0, 0.0, 0.0, 1.0, 1.0, 1.0);
 
 			MapData = new MapData(null);
 
-			Linked = false;
+			IsLinked = false;
 
-			if (PublicView) {
+			if (IsPublic) {
 				var screenWidthMM = float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthMM"]);
 				var screenWidthPix = float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthPix"]);
 				ScreenScaleMMperPix = screenWidthMM / screenWidthPix;
@@ -145,15 +141,30 @@ namespace MapViewer {
 		}
 
 		public void ScaleToWindow() {
-			if (!PublicView && MapImage != null) {
+			if (!IsPublic && MapImage != null) {
 				var winSizePix = CanvasMapMask.RenderSize;
 				var scale = Math.Min(winSizePix.Width / MapImage.PixelWidth, winSizePix.Height / MapImage.PixelHeight);
 				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, 0, 0);
 			}
+			UpdatePublicViewRectangle();
+		}
+
+		public void Zoom(double scale, Point pos) {
+			var matrix = DisplayTransform.Matrix;
+			matrix.ScaleAt(scale, scale, pos.X, pos.Y);
+			DisplayTransform.Matrix = matrix;
+			UpdatePublicViewRectangle();
+		}
+
+		private void UpdatePublicViewRectangle() {
+			var mainWin = ParentWindow as MainWindow;
+			if (!IsPublic && !IsLinked && mainWin!= null) {
+				MoveVisibleRectangle(mainWin.MapPublic.VisibleRectInMap());
+			}			
 		}
 
 		private void ScaleToReal() {
-			if (PublicView && MapImage != null) {
+			if (IsPublic && MapImage != null) {
 
 				if (MapData.ImageScaleMperPix < 0.005) {
 					MessageBox.Show("Image not calibrated");
@@ -165,11 +176,12 @@ namespace MapViewer {
 				var y0 = (CanvasOverlay.ActualHeight / 2) - scale * (MapImage.Height / 2);
 
 				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, x0 , y0);
+				UpdatePublicViewRectangle();
 			}
 		}
 
 		private void ScaleToLinked(MaskedMap mapSource) {
-			if (PublicView && MapImage != null) {
+			if (IsPublic && MapImage != null) {
 				var thisWinSizePix = ParentWindow.RenderSize;
 				var otherWinSizePix = mapSource.ParentWindow.RenderSize;
 
@@ -253,7 +265,7 @@ namespace MapViewer {
 		
 			BitmapUtils.CopyingCanvas(mapSource.CanvasOverlay, CanvasOverlay);
 
-			if (Linked) {
+			if (IsLinked) {
 				ScaleToLinked(mapSource);
 			}
 			else if (scaleNeedsToRecalculate) {
@@ -267,12 +279,6 @@ namespace MapViewer {
 				var rect = new Int32Rect(0, 0, BmpMask.PixelWidth, BmpMask.PixelHeight);
 				MaskRectangle(rect, 0);
 			}
-		}
-
-		public void Zoom(double scale, Point pos) {
-			var matrix = DisplayTransform.Matrix;
-			matrix.ScaleAt(scale, scale, pos.X, pos.Y); 
-			DisplayTransform.Matrix = matrix;
 		}
 
 		public void Translate(Vector move) {

@@ -12,10 +12,10 @@ namespace MapViewer {
 		}
 
 		public void AddOverlayElement(UIElement elem, string uid) {
-			int indx = 0;
+			var indx = 0;
 			do {
-				elem.Uid = uid + indx.ToString();
-				if (BitmapUtils.FindElementByUid(CanvasOverlay, elem.Uid) == null) {
+				elem.Uid = uid + indx;
+				if (CanvasOverlay.FindElementByUid(elem.Uid) == null) {
 					CanvasOverlay.Children.Add(elem);
 					break;
 				}
