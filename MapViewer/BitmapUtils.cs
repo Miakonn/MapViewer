@@ -14,11 +14,16 @@ namespace MapViewer {
 			if (wbitmap == null) {
 				return;
 			}
-			using (FileStream stream = new FileStream(filename, FileMode.Create)) {
-				PngBitmapEncoder encoder = new PngBitmapEncoder();
-			
-				encoder.Frames.Add(BitmapFrame.Create(wbitmap));
-				encoder.Save(stream);
+			try {
+				using (FileStream stream = new FileStream(filename, FileMode.Create)) {
+					var encoder = new PngBitmapEncoder();
+
+					encoder.Frames.Add(BitmapFrame.Create(wbitmap));
+					encoder.Save(stream);
+				}
+			}
+			catch (Exception ex) {
+				MessageBox.Show(ex.Message);
 			}
 		}
 
@@ -27,23 +32,36 @@ namespace MapViewer {
 				return null;
 			}
 			try {
-				var img = new BitmapImage(new Uri(filename, UriKind.Relative)) {
-					CreateOptions = BitmapCreateOptions.None
-				};
-				return new WriteableBitmap(img);
+				var img= new BitmapImage();
+				img.BeginInit();
+				img.CacheOption = BitmapCacheOption.OnLoad;
+				img.UriSource = new Uri(filename, UriKind.Relative);
+				img.CreateOptions = BitmapCreateOptions.None;
+				img.EndInit();
+
+				var wbmp = new WriteableBitmap(img);
+				return wbmp;
 			}
-			catch {
+			catch (Exception ex) {
+				MessageBox.Show(ex.Message);
 				return null;
 			}
 		}
 
 		public static void SerializeXaml(Canvas canvas, string filename ) {
-			string mystrXAML = XamlWriter.Save(canvas);
-			FileStream filestream = File.Create(filename);
-			StreamWriter streamwriter = new StreamWriter(filestream);
-			streamwriter.Write(mystrXAML);
-			streamwriter.Close();
-			filestream.Close();
+			try {
+				var mystrXAML = XamlWriter.Save(canvas);
+				using (var filestream = File.Create(filename)) {
+					using (var streamwriter = new StreamWriter(filestream)) {
+						streamwriter.Write(mystrXAML);
+						streamwriter.Close();
+						filestream.Close();
+					}
+				}
+			}
+			catch (Exception ex) {
+				MessageBox.Show(ex.Message);				
+			}
 		}
 
 		public static void DeserializeXaml(Canvas canvas, string filename) {
@@ -52,19 +70,18 @@ namespace MapViewer {
 			}
 
 			try {
-				var stream = new StreamReader(filename);
+				using (var stream = new StreamReader(filename)) {
+					var canvasFile = XamlReader.Load(stream.BaseStream) as Canvas;
+					if (canvasFile == null || canvasFile.Children.Count == 0) {
+						return;
+					}
 
-				var canvasFile = XamlReader.Load(stream.BaseStream) as Canvas;
-				if (canvasFile == null || canvasFile.Children.Count == 0) {
-					return;
+					var childrenList = canvasFile.Children.Cast<UIElement>().ToArray();
+					canvasFile.Children.Clear();
+					foreach (var child in childrenList) {
+						canvas.Children.Add(child);
+					}
 				}
-
-				var childrenList = canvasFile.Children.Cast<UIElement>().ToArray();
-				canvasFile.Children.Clear();
-				foreach (var child in childrenList) {
-					canvas.Children.Add(child);
-				}
-
 			}
 			catch (Exception ex) {
 				MessageBox.Show(ex.Message);

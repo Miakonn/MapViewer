@@ -57,10 +57,15 @@ namespace MapViewer {
 				MapImage = new BitmapImage(new Uri(_imagePath));
 				MapData = new MapData(CreateFilename(_imagePath, ".xml"));
 
+				BmpMask = null;
+				CanvasOverlay.Children.Clear();
+
 				Deserialize();
 
-				BmpMask = new WriteableBitmap(MapImage.PixelWidth, MapImage.PixelHeight, MapImage.DpiX, MapImage.DpiY, PixelFormats.Pbgra32, null);
-				
+				if (BmpMask == null) {
+					BmpMask = new WriteableBitmap((int)MapImage.PixelWidth, (int)MapImage.PixelHeight, MapImage.DpiX, MapImage.DpiY, PixelFormats.Pbgra32, null);
+				}
+
 				ScaleToWindow();
 			}
 		}
@@ -126,7 +131,6 @@ namespace MapViewer {
 			CanvasMapMask.Children.Add(maskImage);
 
 			// CanvasOverlay
-			CanvasOverlay.Children.Clear();
 			CanvasOverlay.RenderTransform = DisplayTransform;
 		}
 
@@ -334,13 +338,13 @@ namespace MapViewer {
 		public void Serialize() {
 			MapData.Serialize();
 			BmpMask.Freeze();
-			BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(_imagePath, ".mask"));
+			BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(_imagePath, ".mask.png"));
 			BitmapUtils.SerializeXaml(CanvasOverlay, CreateFilename(_imagePath, ".xaml"));
 		}
 
 		public void Deserialize() {
 			MapData.Deserialize();
-			BmpMask = BitmapUtils.Deserialize(CreateFilename(_imagePath, ".mask"));
+			BmpMask = BitmapUtils.Deserialize(CreateFilename(_imagePath, ".mask.png"));
 			BitmapUtils.DeserializeXaml(CanvasOverlay, CreateFilename(_imagePath, ".xaml"));
 
 		}
