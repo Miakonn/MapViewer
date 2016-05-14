@@ -95,7 +95,7 @@ namespace MapViewer {
 		}
 
 		public void MovePublicCursor(Point pnt) {
-			var elemCursor = CanvasOverlay.FindElementByUid("Cursor");
+			var elemCursor = CanvasOverlay.FindElementByUid(MaskedMap.PublicCursorUid);
 
 			var size = 30 / Scale;
 
@@ -106,7 +106,7 @@ namespace MapViewer {
 					Stroke = new SolidColorBrush(Colors.Red),
 					StrokeThickness = (5 / Scale),
 					Opacity = 0.6,
-					Uid = "Cursor"
+					Uid = MaskedMap.PublicCursorUid
 				};
 				Canvas.SetLeft(elemCursor, pnt.X - size);
 				Canvas.SetTop(elemCursor, pnt.Y - size);
@@ -127,9 +127,9 @@ namespace MapViewer {
 		}
 
 		public void MoveVisibleRectangle(Rect rect) {
-			var shape = (Rectangle) CanvasOverlay.FindElementByUid("VisibleRect");
+			var shape = (Rectangle)CanvasOverlay.FindElementByUid(MaskedMap.PublicPositionUid);
 			if (shape == null) {
-				OverlayRectangle(rect, Colors.Red, "VisibleRect");
+				OverlayRectangle(rect, Colors.Red, MaskedMap.PublicPositionUid);
 			}
 			else {
 				Canvas.SetLeft(shape, rect.X);

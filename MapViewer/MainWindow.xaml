@@ -72,12 +72,12 @@
 
 				<RibbonGroup Name="Spells">
 					<RibbonButton Label="Clear overlay" Command="mapViewer:CustomCommands.ClearOverlay" LargeImageSource="Images/Map.png"/>
-					<RibbonToggleButton Label="Draw line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/draw_line.png" />
-					<RibbonToggleButton Label="Draw cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/draw_cone.png" />
-					<RibbonToggleButton Label="Draw circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/draw_circle.png" />
-					<RibbonToggleButton Label="Draw rectangle" Command="mapViewer:CustomCommands.DrawRectangle" LargeImageSource="Images/draw_rect.png" />
-					<RibbonToggleButton Label="Draw square" Command="mapViewer:CustomCommands.DrawSquare" LargeImageSource="Images/draw_square.png" />
-					<RibbonToggleButton Label="Draw text" Command="mapViewer:CustomCommands.DrawText" LargeImageSource="Images/draw_text.png" />
+					<RibbonToggleButton Label="Create line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/draw_line.png" />
+					<RibbonToggleButton Label="Create cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/draw_cone.png" />
+					<RibbonToggleButton Label="Create circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/draw_circle.png" />
+					<RibbonToggleButton Label="Create rectangle" Command="mapViewer:CustomCommands.DrawRectangle" LargeImageSource="Images/draw_rect.png" />
+					<RibbonToggleButton Label="Create square" Command="mapViewer:CustomCommands.DrawSquare" LargeImageSource="Images/draw_square.png" />
+					<RibbonToggleButton Label="Create text" Command="mapViewer:CustomCommands.DrawText" LargeImageSource="Images/draw_text.png" />
 				</RibbonGroup>
 
 				<RibbonGroup Name="Public" >

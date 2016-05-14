@@ -124,7 +124,7 @@ namespace MapViewer {
 			_publicIsDirty = false;
 
 			if (MapPublic.IsLinked) {
-				MapPrivate.DeleteShape("VisibleRect");
+				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());

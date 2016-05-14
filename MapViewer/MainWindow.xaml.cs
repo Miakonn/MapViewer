@@ -56,8 +56,8 @@ namespace MapViewer {
 		#region Private methods
 
 		private void CreateWindows() {
-			MapPrivate.Draw();
-			MapPublic.Draw();
+			MapPrivate.Create();
+			MapPublic.Create();
 		}
 
 		private void MovePublic(Vector vector) {
@@ -105,7 +105,7 @@ namespace MapViewer {
 			}
 			_lastClickedElem = BitmapUtils.FindHitElement(MapPrivate.CanvasOverlay);
 
-			var shape = MapPrivate.CanvasOverlay.FindElementByUid("VisibleRect");
+			var shape = MapPrivate.CanvasOverlay.FindElementByUid(MaskedMap.PublicPositionUid);
 
 			var isPublicPos = shape != null && shape.IsMouseOver;
 			if (e.ChangedButton == MouseButton.Left && isPublicPos && e.ClickCount == 1) {
@@ -129,7 +129,7 @@ namespace MapViewer {
 				MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
 			}
 			else {
-				MapPublic.DeleteShape("PubliCursor");
+				MapPublic.DeleteShape(MaskedMap.PublicCursorUid);
 			}
 
 			if (ActiveTool != null) {

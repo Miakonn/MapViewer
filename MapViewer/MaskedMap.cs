@@ -32,6 +32,9 @@ namespace MapViewer {
 
 		public double ScreenScaleMMperM { get; set; }
 
+		public const string PublicCursorUid = "Cursor";
+		public const string PublicPositionUid = "PublicPos";
+
 		public float ImageScaleMperPix {
 			get {
 				return MapData.ImageScaleMperPix;
@@ -56,18 +59,33 @@ namespace MapViewer {
 
 				Deserialize();
 
-				if (BmpMask == null) {
-					BmpMask = new WriteableBitmap((int)MapImage.Width, (int)MapImage.Height, MapImage.DpiX, MapImage.DpiY, PixelFormats.Pbgra32, null);
-				}
-
-
+				BmpMask = new WriteableBitmap(MapImage.PixelWidth, MapImage.PixelHeight, MapImage.DpiX, MapImage.DpiY, PixelFormats.Pbgra32, null);
+				
 				ScaleToWindow();
 			}
 		}
 
 
 		public double Scale {
-			get { return DisplayTransform.Matrix.M11; }
+			get {
+				if (MapImage != null) {
+					return DisplayTransform.Matrix.M11*MapImage.PixelHeight/MapImage.Height;
+				}
+				else {
+					return 1.0;
+				}
+			}
+		}
+
+		public double ScaleDpiFix {
+			get {
+				if (MapImage != null) {
+					return MapImage.PixelHeight / MapImage.Height;
+				}
+				else {
+					return 1.0;
+				}
+			}
 		}
 
 		#endregion
@@ -88,7 +106,8 @@ namespace MapViewer {
 			}
 		}
 
-		public void Draw() {
+		public void Create() {
+
 			// CanvasMapMask
 			CanvasMapMask.Children.Clear();
 			CanvasMapMask.RenderTransform = DisplayTransform;
@@ -107,6 +126,7 @@ namespace MapViewer {
 			CanvasMapMask.Children.Add(maskImage);
 
 			// CanvasOverlay
+			CanvasOverlay.Children.Clear();
 			CanvasOverlay.RenderTransform = DisplayTransform;
 		}
 
@@ -143,7 +163,8 @@ namespace MapViewer {
 		public void ScaleToWindow() {
 			if (!IsPublic && MapImage != null) {
 				var winSizePix = CanvasMapMask.RenderSize;
-				var scale = Math.Min(winSizePix.Width / MapImage.PixelWidth, winSizePix.Height / MapImage.PixelHeight);
+
+				var scale = Math.Min(winSizePix.Width / MapImage.Width, winSizePix.Height / MapImage.Height);
 				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, 0, 0);
 			}
 			UpdatePublicViewRectangle();
@@ -160,7 +181,7 @@ namespace MapViewer {
 			var mainWin = ParentWindow as MainWindow;
 			if (!IsPublic && !IsLinked && mainWin!= null) {
 				MoveVisibleRectangle(mainWin.MapPublic.VisibleRectInMap());
-			}			
+			}
 		}
 
 		private void ScaleToReal() {
@@ -211,6 +232,11 @@ namespace MapViewer {
 		}
 
 		public void MaskCircle(int centerX, int centerY, int radius, byte opacity) {
+
+			centerX = (int)(centerX * ScaleDpiFix);
+			centerY = (int)(centerY * ScaleDpiFix);
+			radius = (int)(radius * ScaleDpiFix);
+
 			var bitmap = BmpMask as WriteableBitmap;
 			if (bitmap == null) {
 				return;
@@ -233,6 +259,12 @@ namespace MapViewer {
 		}
 
 		public void MaskRectangle(Int32Rect rect, byte opacity) {
+
+			rect.X = (int)(rect.X * ScaleDpiFix);
+			rect.Y = (int)(rect.Y * ScaleDpiFix);
+			rect.Width = (int)(rect.Width * ScaleDpiFix);
+			rect.Height = (int)(rect.Height * ScaleDpiFix);
+
 			var bitmap = BmpMask as WriteableBitmap;
 			if (bitmap == null) {
 				return;
@@ -271,7 +303,7 @@ namespace MapViewer {
 			else if (scaleNeedsToRecalculate) {
 				ScaleToReal();
 			}
-			Draw();
+			Create();
 		}
 
 		public void ClearMask() {
@@ -289,6 +321,8 @@ namespace MapViewer {
 			
 			matrix.Translate(x, y);
 			DisplayTransform.Matrix = matrix;
+
+			System.Diagnostics.Trace.WriteLine(string.Format(" Scale = {0} Offset = {1},{2}", matrix.M11, matrix.OffsetX, matrix.OffsetY));
 		}
 
 		public Point TransformPoint(Point pos) {
