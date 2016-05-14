@@ -76,7 +76,7 @@ namespace MapViewer {
 		public static void CopyingCanvas(Canvas canvasSource, Canvas canvasDest) {
 			canvasDest.Children.Clear();
 			foreach (UIElement child in canvasSource.Children) {
-				if (child.Uid != "PublicView") {
+				if (child.Uid != "VisibleRect") {
 					var xaml = XamlWriter.Save(child);
 					var deepCopy = XamlReader.Parse(xaml) as UIElement;
 					if (deepCopy != null) {
@@ -87,7 +87,7 @@ namespace MapViewer {
 		}
 
 		public static UIElement FindHitElement(Canvas canvas) {
-			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid != "PublicView" && child.IsMouseOver);
+			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid != "VisibleRect" && child.IsMouseOver);
 		}
 
 		public static UIElement FindElementByUid(this Canvas canvas, string uid) {

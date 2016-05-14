@@ -87,7 +87,7 @@ namespace MapViewer {
 			if (result != null && result.Value) {
 				MapPrivate.ImageFile = dialog.FileName;
 				_publicIsDirty = true;
-				Update();
+				CreateWindows();
 			}
 		}
 
@@ -99,36 +99,29 @@ namespace MapViewer {
 			MapPrivate.Serialize();
 		}
 
-		private void UpdateVisibleRectangle() {
-			var rect = MapPublic.VisibleRectInMap();
-			if (_dragPublicRect != null) {
-				MapPrivate.CanvasOverlay.Children.Remove(_dragPublicRect);
-			}
-			if (!MapPublic.Linked) {
-				_dragPublicRect = MapPrivate.OverlayRectangle(rect, Colors.Red);
-			}			
-		}
-
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPublic.PublishFrom(MapPrivate, _publicIsDirty);
-			MapPublic.Draw();
 			PublicWindow.SetRuler(MapPublic.ImageScaleMperPix / MapPublic.Scale);
 			_publicIsDirty = false;
 
-			UpdateVisibleRectangle();
+			if (MapPublic.Linked) {
+				MapPrivate.DeleteShape("VisibleRect");
+			}
+			else {
+				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
+			}
 
 			Activate();
 		}
 
 		private void ClearMask_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ClearMask();
-			MapPrivate.Draw();
 		}
 
 		private void ClearOverlay_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ClearOverlay();
-			if (_dragPublicRect != null) {
-				MapPrivate.CanvasOverlay.Children.Add(_dragPublicRect);
+			if (!MapPublic.Linked) {
+				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 
 			MapPublic.ClearOverlay();
@@ -156,12 +149,18 @@ namespace MapViewer {
 
 		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPublic.RotateClockwise();
-			UpdateVisibleRectangle();
+			if (MapPublic.Linked) {
+				MapPrivate.DeleteShape("VisbileRect");
+			}
+			else {
+				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
+			}
 		}
 
 		private void AddDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.Show();
 			PublicWindow.MaximizeToSecondaryMonitor();
+			PublishMap_Executed(sender, e);
 		}
 
 		private void RemoveDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {

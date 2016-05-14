@@ -17,7 +17,6 @@ namespace MapViewer {
 		public readonly MaskedMap MapPrivate;
 		public readonly MaskedMap MapPublic;
 		public readonly PublicWindow PublicWindow = new PublicWindow();
-		private Rectangle _dragPublicRect;
 
 		private UIElement _lastClickedElem;
 
@@ -59,20 +58,19 @@ namespace MapViewer {
 
 		#region Private methods
 
-		private void Update() {
+		private void CreateWindows() {
 			MapPrivate.Draw();
 			MapPublic.Draw();
 		}
 
 		private void MovePublic(Vector vector) {
 			MapPublic.Translate(vector);
-			MapPublic.Draw();
-			var rect = MapPublic.VisibleRectInMap();
-
-			Canvas.SetLeft(_dragPublicRect, rect.X);
-			Canvas.SetTop(_dragPublicRect, rect.Y);
-			_dragPublicRect.Width = rect.Width;
-			_dragPublicRect.Height = rect.Height;
+			if (MapPublic.Linked) {
+				MapPrivate.DeleteShape("VisbileRect");
+			}
+			else {
+				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
+			}
 		}
 
 		#endregion
@@ -110,7 +108,9 @@ namespace MapViewer {
 			}
 			_lastClickedElem = BitmapUtils.FindHitElement(MapPrivate.CanvasOverlay);
 
-			var isPublicPos = _dragPublicRect != null && _dragPublicRect.IsMouseOver;
+			var shape = MapPrivate.CanvasOverlay.FindElementByUid("VisibleRect");
+
+			var isPublicPos = shape != null && shape.IsMouseOver;
 			if (e.ChangedButton == MouseButton.Left && isPublicPos && e.ClickCount == 1) {
 				_isDraggingPublicPos= true;
 				_mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
@@ -127,11 +127,18 @@ namespace MapViewer {
 		}
 
 		private void MainWinMouseMove(object sender, MouseEventArgs e) {
+			var ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+			if (ctrlPressed) {
+				MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
+			}
+			else {
+				MapPublic.DeleteShape("PubliCursor");
+			}
+
 			if (ActiveTool != null) {
 				ActiveTool.MouseMove(sender, e);
 				return;
 			}
-			var ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
 			if (_isDraggingPublicPos) {
 				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
@@ -148,12 +155,7 @@ namespace MapViewer {
 				_mouseDownPoint = curMouseDownPoint;
 				e.Handled = true;
 			}
-			else if (ctrlPressed) {
-				MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
-			}
-			else {
-				MapPublic.DeletePublicCursor();
-			}
+
 
 		}
 
@@ -175,10 +177,9 @@ namespace MapViewer {
 		}
 
 		private void MainWinMouseWheel(object sender, MouseWheelEventArgs e) {
-			double scale = (1.0 + e.Delta / 600.0);
+			var scale = (1.0 + e.Delta / 600.0);
 
 			MapPrivate.Zoom(scale, e.GetPosition(this));
-			MapPrivate.Draw();
 		}
 
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {

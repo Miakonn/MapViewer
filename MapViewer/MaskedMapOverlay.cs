@@ -40,20 +40,19 @@ namespace MapViewer {
 			AddOverlayElement(shape, uid);
 		}
 
-		public Rectangle OverlayRectangle(Rect rect, Color color) {
+		public void OverlayRectangle(Rect rect, Color color, string uid) {
 			var shape = new Rectangle {
 				Width = rect.Width,
 				Height = rect.Height,
 				Stroke = new SolidColorBrush(color),
-				StrokeThickness = 20,
+				StrokeThickness = 10 / Scale,
 				Opacity = 0.5,
-				Uid = "PublicView"
+				Uid = uid
 			};
 
 			Canvas.SetLeft(shape, rect.X);
 			Canvas.SetTop(shape, rect.Y);
 			CanvasOverlay.Children.Add(shape);
-			return shape;
 		}
 
 		public void OverlayLine(double x1, double y1, double x2, double y2, float widthM, Color color, string uid) {
@@ -120,12 +119,28 @@ namespace MapViewer {
 			}
 		}
 
-		public void DeletePublicCursor() {
-			var elemCursor = CanvasOverlay.FindElementByUid("Cursor");
-			if (elemCursor != null) {
-				CanvasOverlay.Children.Remove(elemCursor);
+		public void DeleteShape(string uid) {
+			var shape = CanvasOverlay.FindElementByUid(uid);
+			if (shape != null) {
+				CanvasOverlay.Children.Remove(shape);
 			}
 		}
+
+		public void MoveVisibleRectangle(Rect rect) {
+			var shape = (Rectangle) CanvasOverlay.FindElementByUid("VisibleRect");
+			if (shape == null) {
+				OverlayRectangle(rect, Colors.Red, "VisibleRect");
+			}
+			else {
+				Canvas.SetLeft(shape, rect.X);
+				Canvas.SetTop(shape, rect.Y);
+				shape.Width = rect.Width;
+				shape.Height = rect.Height;
+				shape.StrokeThickness = 10 / Scale;
+			}
+		}
+
+
 
 		#endregion
 

@@ -98,12 +98,15 @@ namespace MapViewer {
 			CanvasMapMask.RenderTransform = DisplayTransform;
 			var backgroundImage = new Image {
 				Source = MapImage,
+				Uid = "Map"
 			};
 			CanvasMapMask.Children.Add(backgroundImage);
 
 			var maskImage = new Image {
 				Opacity = MaskOpacity,
-				Source = BmpMask
+				Source = BmpMask,
+				Uid = "Mask"
+
 			};
 			CanvasMapMask.Children.Add(maskImage);
 
@@ -184,7 +187,6 @@ namespace MapViewer {
 			return Math.Max(Math.Min(val, max), min);
 		}
 
-
 		private static byte[] CreateColorData(int byteCount, byte opacity) {
 			var colorData = new byte[byteCount];
 			for (var i = 0; i < byteCount; i += 4) {
@@ -257,6 +259,7 @@ namespace MapViewer {
 			else if (scaleNeedsToRecalculate) {
 				ScaleToReal();
 			}
+			Draw();
 		}
 
 		public void ClearMask() {
@@ -266,13 +269,10 @@ namespace MapViewer {
 			}
 		}
 
-
-
 		public void Zoom(double scale, Point pos) {
 			var matrix = DisplayTransform.Matrix;
 			matrix.ScaleAt(scale, scale, pos.X, pos.Y); 
 			DisplayTransform.Matrix = matrix;
-
 		}
 
 		public void Translate(Vector move) {
