@@ -12,6 +12,7 @@ using Point = System.Windows.Point;
 namespace MapViewer {
 	public partial class MaskedMap {
 		#region Properties
+
 		private string _imagePath;
 
 		public BitmapImage MapImage;
@@ -63,34 +64,21 @@ namespace MapViewer {
 				Deserialize();
 
 				if (BmpMask == null) {
-					BmpMask = new WriteableBitmap((int)MapImage.PixelWidth, (int)MapImage.PixelHeight, MapImage.DpiX, MapImage.DpiY, PixelFormats.Pbgra32, null);
+					BmpMask = new WriteableBitmap(MapImage.PixelWidth, MapImage.PixelHeight, MapImage.DpiX, MapImage.DpiY, PixelFormats.Pbgra32, null);
 				}
 
 				ScaleToWindow();
 			}
 		}
 
-
 		public double Scale {
 			get {
-				if (MapImage != null) {
-					return DisplayTransform.Matrix.M11*MapImage.PixelHeight/MapImage.Height;
-				}
-				else {
-					return 1.0;
-				}
+				return MapImage != null ? DisplayTransform.Matrix.M11 : 1.0;
 			}
 		}
 
 		public double ScaleDpiFix {
-			get {
-				if (MapImage != null) {
-					return MapImage.PixelHeight / MapImage.Height;
-				}
-				else {
-					return 1.0;
-				}
-			}
+			get { return MapImage != null ? (MapImage.PixelHeight / MapImage.Height) : 1.0; }
 		}
 
 		#endregion
@@ -184,7 +172,7 @@ namespace MapViewer {
 		private void UpdatePublicViewRectangle() {
 			var mainWin = ParentWindow as MainWindow;
 			if (!IsPublic && !IsLinked && mainWin!= null) {
-				MoveVisibleRectangle(mainWin.MapPublic.VisibleRectInMap());
+				UpdateVisibleRectangle(mainWin.MapPublic.VisibleRectInMap());
 			}
 		}
 

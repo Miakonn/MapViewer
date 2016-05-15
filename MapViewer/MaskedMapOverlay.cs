@@ -126,7 +126,7 @@ namespace MapViewer {
 			}
 		}
 
-		public void MoveVisibleRectangle(Rect rect) {
+		public void UpdateVisibleRectangle(Rect rect) {
 			var shape = (Rectangle)CanvasOverlay.FindElementByUid(MaskedMap.PublicPositionUid);
 			if (shape == null) {
 				OverlayRectangle(rect, Colors.Red, MaskedMap.PublicPositionUid);

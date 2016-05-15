@@ -96,21 +96,21 @@ namespace MapViewer {
 		private void ScaleToFit_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ScaleToWindow();
 			if (!MapPrivate.IsLinked) {
-				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
+				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 		}
 
 		private void ZoomIn_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Zoom(1.2, new Point(0,0));
 			if (!MapPrivate.IsLinked) {
-				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
+				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 		}
 
 		private void ZoomOut_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Zoom(0.8, new Point(0, 0));
 			if (!MapPrivate.IsLinked) {
-				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
+				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 		}
 
@@ -127,7 +127,7 @@ namespace MapViewer {
 				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
 			}
 			else {
-				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
+				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 
 			Activate();
@@ -140,7 +140,7 @@ namespace MapViewer {
 		private void ClearOverlay_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ClearOverlay();
 			if (!MapPublic.IsLinked) {
-				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
+				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 
 			MapPublic.ClearOverlay();
@@ -172,7 +172,7 @@ namespace MapViewer {
 				MapPrivate.DeleteShape("VisbileRect");
 			}
 			else {
-				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
+				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 		}
 

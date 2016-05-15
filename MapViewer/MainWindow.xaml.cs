@@ -61,12 +61,12 @@ namespace MapViewer {
 		}
 
 		private void MovePublic(Vector vector) {
-			MapPublic.Translate(vector);
+			MapPublic.Translate(vector / MapPublic.ScaleDpiFix);
 			if (MapPublic.IsLinked) {
-				MapPrivate.DeleteShape("VisbileRect");
+				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
 			}
 			else {
-				MapPrivate.MoveVisibleRectangle(MapPublic.VisibleRectInMap());
+				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 		}
 
@@ -139,8 +139,7 @@ namespace MapViewer {
 
 			if (_isDraggingPublicPos) {
 				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
-				var scale = MapPublic.Scale;
-				MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X) * scale, (_mouseDownPoint.Y - curMouseDownPoint.Y) * scale));
+				MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y)) * MapPublic.Scale * MapPublic.ScaleDpiFix);
 				_mouseDownPoint = curMouseDownPoint;
 
 				e.Handled = true;
