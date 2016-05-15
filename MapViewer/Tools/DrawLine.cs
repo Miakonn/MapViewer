@@ -95,7 +95,7 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-			_map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.OrangeRed, "Line");
+			_map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2 / _map.ImageScaleMperPix, Colors.OrangeRed, "Line");
 			if (_privateWindow.PublicWindow.IsVisible) {
 				_privateWindow.MapPublic.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2 / _map.ImageScaleMperPix, Colors.OrangeRed, "Line");
 			}
