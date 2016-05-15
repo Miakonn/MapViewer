@@ -197,10 +197,29 @@ namespace MapViewer {
 
 		private void ScaleToLinked(MaskedMap mapSource) {
 			if (IsPublic && MapImage != null) {
-				var thisWinSizePix = ParentWindow.RenderSize;
-				var otherWinSizePix = mapSource.ParentWindow.RenderSize;
 
-				var scale = Math.Min(thisWinSizePix.Width / otherWinSizePix.Width, thisWinSizePix.Height / otherWinSizePix.Height);
+				var privateWindow = mapSource.ParentWindow as PrivateWindow;
+				if (privateWindow == null) {
+					return;
+				}
+				var privateWidth = privateWindow.DrawingSpace.ActualWidth;
+				var privateHeight = privateWindow.DrawingSpace.ActualHeight;
+				var privateAspectRatio = privateWidth/privateHeight;
+
+				var publicWinSizePix = ParentWindow.RenderSize;
+				var publicAspectRatio = publicWinSizePix.Width / publicWinSizePix.Height;
+
+				System.Diagnostics.Trace.WriteLine(string.Format("private aspect ratio={0}", privateAspectRatio));
+				System.Diagnostics.Trace.WriteLine(string.Format("public aspect ratio={0}", publicAspectRatio));
+
+				if (privateAspectRatio > publicAspectRatio) {
+					publicWinSizePix.Height = publicWinSizePix.Width / privateAspectRatio;
+				}
+				else {
+					publicWinSizePix.Width = publicWinSizePix.Height * privateAspectRatio;
+				}
+
+				var scale = Math.Min(publicWinSizePix.Width / privateWidth, publicWinSizePix.Height / privateHeight);
 
 				DisplayTransform = mapSource.DisplayTransform.CloneCurrentValue();
 

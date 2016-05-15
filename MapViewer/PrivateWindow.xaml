@@ -19,7 +19,7 @@
 		<CommandBinding Command="mapViewer:CustomCommands.ZoomIn" Executed="ZoomIn_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ZoomOut" Executed="ZoomOut_Executed" CanExecute="ImageNeeded_CanExecute" />
 
-		<CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Executed" CanExecute="Publish_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Executed" CanExecute="RotateMap_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Executed" CanExecute="AddDisplay_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Executed" CanExecute="RemoveDisplay_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Executed" CanExecute="ImageNeeded_CanExecute" />
@@ -40,7 +40,7 @@
 		<CommandBinding Command="mapViewer:CustomCommands.UnmaskCircle" Executed="UnmaskCircle_Executed" CanExecute="ImageNeeded_CanExecute" />
 	</Window.CommandBindings>
 
-	<Grid  KeyDown="PrivateWinKeyDown">
+	<Grid KeyDown="PrivateWinKeyDown">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
@@ -108,7 +108,7 @@
 
 		<Border Grid.Row="1" BorderThickness="0"  BorderBrush="White" Focusable="True" Loaded="Border_Loaded"
 					MouseDown="PrivateWinMouseDown" MouseMove="PrivateWinMouseMove" MouseUp="PrivateWinMouseUp" KeyDown="PrivateWinKeyDown" MouseWheel="PrivateWinMouseWheel" >
-			<Grid ClipToBounds="True" Margin="0, 0,0,0" >
+			<Grid Name="DrawingSpace"  ClipToBounds="True" >
 				<Grid.ContextMenu>
 					<ContextMenu Name="Cm">
 						<MenuItem Command="mapViewer:CustomCommands.Fireball" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />

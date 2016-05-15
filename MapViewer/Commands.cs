@@ -85,6 +85,9 @@ namespace MapViewer {
 			e.CanExecute = PublicWindow.IsVisible;
 		}
 
+		private void RotateMap_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile) && !MapPrivate.IsLinked);
+		}
 
 		#endregion
 
@@ -193,7 +196,7 @@ namespace MapViewer {
 		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPublic.RotateClockwise();
 			if (MapPublic.IsLinked) {
-				MapPrivate.DeleteShape("VisbileRect");
+				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());

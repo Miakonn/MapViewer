@@ -82,7 +82,6 @@ namespace MapViewer {
 		}
 
 		private void PrivateWinKeyDown(object sender, KeyEventArgs e) {
-
 			if (e.Key == Key.Escape) {
 				if (ActiveTool != null) {
 					ActiveTool = null;
