@@ -33,6 +33,8 @@ namespace MapViewer {
 
 		public double ScreenScaleMMperM { get; set; }
 
+		public bool ShowPublicCursor { get; set; }
+
 		public const string PublicCursorUid = "Cursor";
 		public const string PublicPositionUid = "PublicPos";
 
@@ -300,7 +302,7 @@ namespace MapViewer {
 
 		public void ClearMask() {
 			if (BmpMask != null) {
-				var rect = new Int32Rect(0, 0, BmpMask.PixelWidth, BmpMask.PixelHeight);
+				var rect = new Int32Rect(0, 0, (int)MapImage.Width, (int)MapImage.Height);
 				MaskRectangle(rect, 0);
 			}
 		}

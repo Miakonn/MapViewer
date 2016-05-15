@@ -65,9 +65,12 @@ namespace MapViewer {
 			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile));
 		}
 
-		private void Publish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) &&
-				PublicWindow.IsVisible;
+		public bool Publish_CanExecute() {
+			return (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) && PublicWindow.IsVisible;
+		}
+
+		public void Publish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = Publish_CanExecute();
 		}
 
 		private void AddDisplay_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -296,5 +299,15 @@ namespace MapViewer {
 
 		#endregion
 
+		#region Other
+
+		private void CheckBoxPublicCursor_OnChecked(object sender, RoutedEventArgs e) {
+			MapPublic.ShowPublicCursor = true;
+		}
+
+		private void CheckBoxPublicCursor_OnUnchecked(object sender, RoutedEventArgs e) {
+			MapPublic.ShowPublicCursor = false;
+		}
+		#endregion
 	}
 }

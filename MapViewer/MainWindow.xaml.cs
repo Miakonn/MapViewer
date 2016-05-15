@@ -88,6 +88,9 @@ namespace MapViewer {
 					ActiveTool = null;
 				}
 			}
+			if (e.Key == Key.F12 && Publish_CanExecute()) {
+				PublishMap_Executed(null, null);
+			}
 			if (ActiveTool != null) {
 				ActiveTool.KeyDown(sender, e);
 			}
@@ -124,13 +127,7 @@ namespace MapViewer {
 		}
 
 		private void MainWinMouseMove(object sender, MouseEventArgs e) {
-			var ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-			if (ctrlPressed) {
-				MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
-			}
-			else {
-				MapPublic.DeleteShape(MaskedMap.PublicCursorUid);
-			}
+			MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
 
 			if (ActiveTool != null) {
 				ActiveTool.MouseMove(sender, e);
@@ -199,6 +196,20 @@ namespace MapViewer {
 						break;
 					}
 				case 2: {
+						MapPrivate.IsLinked = false;
+						MapPublic.IsLinked = false;
+						MapPublic.ScreenScaleMMperM = 5.0;
+						_publicIsDirty = true;
+						break;
+					}
+				case 3: {
+						MapPrivate.IsLinked = false;
+						MapPublic.IsLinked = false;
+						MapPublic.ScreenScaleMMperM = 2.0;
+						_publicIsDirty = true;
+						break;
+					}
+				case 4: {
 						MapPrivate.IsLinked = true;
 						MapPublic.IsLinked = true;
 						_publicIsDirty = true;
@@ -209,5 +220,9 @@ namespace MapViewer {
 		}
 
 		#endregion
+
+		private void Tab_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
+			ActiveTool = null;
+		}
 	}
 }

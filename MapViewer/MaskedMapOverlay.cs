@@ -12,7 +12,14 @@ namespace MapViewer {
 		}
 
 		public void AddOverlayElement(UIElement elem, string uid) {
-			var indx = 0;
+
+			elem.Uid = uid;
+			if (CanvasOverlay.FindElementByUid(elem.Uid) == null) {
+				CanvasOverlay.Children.Add(elem);
+				return;
+			}
+
+			var indx = 1;
 			do {
 				elem.Uid = uid + indx;
 				if (CanvasOverlay.FindElementByUid(elem.Uid) == null) {
@@ -27,11 +34,25 @@ namespace MapViewer {
 
 		#region Elements
 
-		public void OverlayCircle(Point pos, float radius, Color color, string uid) {
+		public void OverlayCircle(Point pos, double radius, Color color, string uid) {
 			var shape = new Ellipse {
 				Width = 2 * radius,
 				Height = 2 * radius,
 				Fill = new SolidColorBrush(color),
+				Opacity = 0.4
+			};
+
+			Canvas.SetLeft(shape, pos.X - radius);
+			Canvas.SetTop(shape, pos.Y - radius);
+			AddOverlayElement(shape, uid);
+		}
+
+		public void OverlayRing(Point pos, double radius, Color color, string uid) {
+			var shape = new Ellipse {
+				Width = 2 * radius,
+				Height = 2 * radius,
+				Stroke = new SolidColorBrush(color),
+				StrokeThickness = (5 / Scale),
 				Opacity = 0.4
 			};
 
@@ -95,27 +116,20 @@ namespace MapViewer {
 		}
 
 		public void MovePublicCursor(Point pnt) {
-			var elemCursor = CanvasOverlay.FindElementByUid(MaskedMap.PublicCursorUid);
+			if (ShowPublicCursor) {
+				var elemCursor = CanvasOverlay.FindElementByUid(PublicCursorUid);
 
-			var size = 30 / Scale;
-
-			if (elemCursor == null) {
-				elemCursor = new Ellipse {
-					Width = size * 2,
-					Height = size * 2,
-					Stroke = new SolidColorBrush(Colors.Red),
-					StrokeThickness = (5 / Scale),
-					Opacity = 0.6,
-					Uid = MaskedMap.PublicCursorUid
-				};
-				Canvas.SetLeft(elemCursor, pnt.X - size);
-				Canvas.SetTop(elemCursor, pnt.Y - size);
-
-				CanvasOverlay.Children.Add(elemCursor);
+				var radius = 30 / Scale;
+				if (elemCursor == null) {
+					OverlayRing(pnt, radius, Colors.Red, PublicCursorUid);
+				}
+				else {
+					Canvas.SetLeft(elemCursor, pnt.X - radius);
+					Canvas.SetTop(elemCursor, pnt.Y - radius);
+				}
 			}
 			else {
-				Canvas.SetLeft(elemCursor, pnt.X - size);
-				Canvas.SetTop(elemCursor, pnt.Y - size);
+				DeleteShape(PublicCursorUid);
 			}
 		}
 
@@ -127,9 +141,9 @@ namespace MapViewer {
 		}
 
 		public void UpdateVisibleRectangle(Rect rect) {
-			var shape = (Rectangle)CanvasOverlay.FindElementByUid(MaskedMap.PublicPositionUid);
+			var shape = (Rectangle)CanvasOverlay.FindElementByUid(PublicPositionUid);
 			if (shape == null) {
-				OverlayRectangle(rect, Colors.Red, MaskedMap.PublicPositionUid);
+				OverlayRectangle(rect, Colors.Red, PublicPositionUid);
 			}
 			else {
 				Canvas.SetLeft(shape, rect.X);

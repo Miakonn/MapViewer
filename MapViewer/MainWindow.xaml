@@ -45,22 +45,19 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<Ribbon Margin="1,1,1,1" Grid.Row="0">
+		<Ribbon Margin="1,1,1,1" Grid.Row="0" SelectionChanged="Tab_OnSelectionChanged">
 			<Ribbon.ApplicationMenu>
 				<RibbonApplicationMenu >
 					<RibbonApplicationMenuItem Header="Open image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
 					<RibbonApplicationMenuItem Header="Save mask/overlay" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
 				</RibbonApplicationMenu>
 			</Ribbon.ApplicationMenu>
-			<RibbonTab x:Name="PrivateTab" Header="Private" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
-				<RibbonGroup Name="Private">
-					<RibbonButton Label="Zoom to fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png"/>
-					<RibbonButton Label="Zoom in" Command="mapViewer:CustomCommands.ZoomIn" LargeImageSource="Images/zoom_in.png"/>
-					<RibbonButton Label="Zoom out" Command="mapViewer:CustomCommands.ZoomOut" LargeImageSource="Images/zoom_out.png"/>
+			<RibbonTab x:Name="SetupTab" Header="Setup" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
+				<RibbonGroup Name="Calibration">
 					<RibbonToggleButton Label="Calibrate" Command="mapViewer:CustomCommands.Calibrate" LargeImageSource="Images/Map_measure.png" />
-					<RibbonToggleButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
 				</RibbonGroup>
-
+			</RibbonTab>
+			<RibbonTab x:Name="MaskingTab" Header="Masking" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
 				<RibbonGroup Name="Masking">
 					<RibbonButton Label="Mask all" Command="mapViewer:CustomCommands.FullMask" LargeImageSource="Images/Map_mask.png" />
 					<RibbonToggleButton Label="Mask rect" Command="mapViewer:CustomCommands.MaskRectangle" LargeImageSource="Images/Map_mask_rect.png" />
@@ -68,6 +65,14 @@
 					<RibbonButton Label="Unmask all" Command="mapViewer:CustomCommands.ClearMask" LargeImageSource="Images/map.png" />
 					<RibbonToggleButton Label="Unmask rect" Command="mapViewer:CustomCommands.UnmaskRectangle" LargeImageSource="Images/Map_unmask_rect.png" />
 					<RibbonToggleButton Label="Unmask circle" Command="mapViewer:CustomCommands.UnmaskCircle" LargeImageSource="Images/Map_unmask_circle.png" />
+				</RibbonGroup>
+			</RibbonTab>			
+			<RibbonTab x:Name="GamingTab" Header="Gaming" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
+				<RibbonGroup Name="Zooming">
+					<RibbonButton Label="Zoom to fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png"/>
+					<RibbonButton Label="Zoom in" Command="mapViewer:CustomCommands.ZoomIn" LargeImageSource="Images/zoom_in.png"/>
+					<RibbonButton Label="Zoom out" Command="mapViewer:CustomCommands.ZoomOut" LargeImageSource="Images/zoom_out.png"/>
+					<RibbonToggleButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
 				</RibbonGroup>
 
 				<RibbonGroup Name="Spells">
@@ -81,15 +86,20 @@
 				</RibbonGroup>
 
 				<RibbonGroup Name="Public" >
-					<ComboBox Name="ComboBoxPublicScale"  Height="20" VerticalAlignment="Center" Width="120" SelectionChanged="ComboBoxPublicScale_OnSelectionChanged">
-						<ComboBoxItem x:Name="StdScale" Content="Public 20 mm/pix"/>
-						<ComboBoxItem x:Name="DoubleScale" Content="Public 10 mm/pix"/>
+					<ComboBox Name="ComboBoxPublicScale"  Height="20" Margin="2,5,2,5" SelectionChanged="ComboBoxPublicScale_OnSelectionChanged" >
+						<ComboBoxItem x:Name="StdScale" Content="1:50"/>
+						<ComboBoxItem x:Name="DoubleScale" Content="1:100"/>
+						<ComboBoxItem x:Name="QuadScale" Content="1:200"/>
+						<ComboBoxItem x:Name="TenScale" Content="1:500"/>
 						<ComboBoxItem x:Name="Linked" Content="Linked"/>
 					</ComboBox>
-					<RibbonButton  Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" />
-					<RibbonButton  Label="Hide display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" />
-					<RibbonButton  Label="Rotate" Command="mapViewer:CustomCommands.RotateMap" LargeImageSource="Images/Monitor_rotate.png" />
-					<RibbonButton  Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png" />
+					<CheckBox Content="Show cursor"  Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked">
+
+					</CheckBox>					
+					<RibbonButton Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" />
+					<RibbonButton Label="Hide display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" />
+					<RibbonButton Label="Rotate" Command="mapViewer:CustomCommands.RotateMap" LargeImageSource="Images/Monitor_rotate.png" />
+					<RibbonButton Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png" />
 				</RibbonGroup>
 			</RibbonTab>
 		</Ribbon>
