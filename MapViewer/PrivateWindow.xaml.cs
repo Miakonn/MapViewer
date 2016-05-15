@@ -6,9 +6,9 @@ using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace MapViewer {
 	/// <summary>
-	///     Interaction logic for MainWindow.xaml
+	///     Interaction logic for PrivateWindow.xaml
 	/// </summary>
-	public partial class MainWindow {
+	public partial class PrivateWindow {
 
 		#region Attributes
 
@@ -39,7 +39,7 @@ namespace MapViewer {
 	
 		#endregion
 
-		public MainWindow() {
+		public PrivateWindow() {
 			InitializeComponent();
 
 			MapPrivate = new MaskedMap(false) {
@@ -77,11 +77,11 @@ namespace MapViewer {
 		private void Border_Loaded(object sender, RoutedEventArgs e) {
 			var window = GetWindow(this);
 			if (window != null) {
-				window.KeyDown += MainWinKeyDown;
+				window.KeyDown += PrivateWinKeyDown;
 			}
 		}
 
-		private void MainWinKeyDown(object sender, KeyEventArgs e) {
+		private void PrivateWinKeyDown(object sender, KeyEventArgs e) {
 
 			if (e.Key == Key.Escape) {
 				if (ActiveTool != null) {
@@ -96,11 +96,11 @@ namespace MapViewer {
 			}
 		}
 
-		private void MainWinSizeChanged(object sender, SizeChangedEventArgs e) {
+		private void PrivateWinSizeChanged(object sender, SizeChangedEventArgs e) {
 			MapPrivate.ScaleToWindow();
 		}
 
-		private void MainWinMouseDown(object sender, MouseButtonEventArgs e) {
+		private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e) {
 
 			if (ActiveTool != null) {
 				ActiveTool.MouseDown(sender, e);
@@ -126,7 +126,7 @@ namespace MapViewer {
 			}
 		}
 
-		private void MainWinMouseMove(object sender, MouseEventArgs e) {
+		private void PrivateWinMouseMove(object sender, MouseEventArgs e) {
 			MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
 
 			if (ActiveTool != null) {
@@ -152,7 +152,7 @@ namespace MapViewer {
 
 		}
 
-		private void MainWinMouseUp(object sender, MouseButtonEventArgs e) {
+		private void PrivateWinMouseUp(object sender, MouseButtonEventArgs e) {
 			if (ActiveTool != null) {
 				ActiveTool.MouseUp(sender, e);
 				return;
@@ -169,13 +169,13 @@ namespace MapViewer {
 			}
 		}
 
-		private void MainWinMouseWheel(object sender, MouseWheelEventArgs e) {
+		private void PrivateWinMouseWheel(object sender, MouseWheelEventArgs e) {
 			var scale = (1.0 + e.Delta / 600.0);
 
 			MapPrivate.Zoom(scale, e.GetPosition(this));
 		}
 
-		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+		private void PrivateWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
 			Application.Current.Shutdown();
 		}
 

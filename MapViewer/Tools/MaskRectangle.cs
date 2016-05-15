@@ -18,9 +18,9 @@ namespace MapViewer.Tools {
 
 		private Point _pnt1;
 
-		public MaskRectangle(MainWindow mainWindow, object button, bool mask) {
+		public MaskRectangle(PrivateWindow privateWindow, object button, bool mask) {
 			_mask = mask;
-			_map = mainWindow.MapPrivate;
+			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = button as RibbonToggleButton;
 		}

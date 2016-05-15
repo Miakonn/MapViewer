@@ -16,9 +16,9 @@ namespace MapViewer.Tools {
 
 		private Point _pnt1;
 
-		public MaskCircle(MainWindow mainWindow, object button, bool mask) {
+		public MaskCircle(PrivateWindow privateWindow, object button, bool mask) {
 			_mask = mask;
-			_map = mainWindow.MapPrivate;
+			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}

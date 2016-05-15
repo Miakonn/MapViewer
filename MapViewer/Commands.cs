@@ -44,7 +44,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand UnmaskCircle = new RoutedUICommand("Unmask circle", "Unmask circle", typeof(CustomCommands), null);
 	}
 
-	public partial class MainWindow {
+	public partial class PrivateWindow {
 
 		private static bool CheckToggleState(object source) {
 			var button = source as RibbonToggleButton;

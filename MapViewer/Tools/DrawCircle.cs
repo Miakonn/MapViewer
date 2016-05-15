@@ -8,7 +8,7 @@ using System.Windows.Controls.Ribbon;
 namespace MapViewer.Tools {
 	public class DrawCircle : ICanvasTool {
 
-		private readonly MainWindow _mainWindow;
+		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
 		private readonly MaskedMap _map;
 		private RibbonToggleButton _button;
@@ -18,9 +18,9 @@ namespace MapViewer.Tools {
 		private Point _pnt1;
 		private Point _pnt2;
 
-		public DrawCircle(MainWindow mainWindow, object button) {
-			_mainWindow = mainWindow;
-			_map = mainWindow.MapPrivate;
+		public DrawCircle(PrivateWindow privateWindow, object button) {
+			_privateWindow = privateWindow;
+			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
@@ -115,10 +115,10 @@ namespace MapViewer.Tools {
 			var center = GetElementCenter(_shape);
 			var radius = (int)(_shape.ActualWidth / 2);
 			_map.OverlayCircle(center, radius, Colors.Blue, "Circle");
-			if (_mainWindow.PublicWindow.IsVisible) {
-				_mainWindow.MapPublic.OverlayCircle(center, radius, Colors.Blue, "Circle");
+			if (_privateWindow.PublicWindow.IsVisible) {
+				_privateWindow.MapPublic.OverlayCircle(center, radius, Colors.Blue, "Circle");
 			}
-			_mainWindow.ActiveTool = null;
+			_privateWindow.ActiveTool = null;
 		}
 
 		private Point GetElementCenter(FrameworkElement element) {

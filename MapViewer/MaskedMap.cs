@@ -172,9 +172,9 @@ namespace MapViewer {
 		}
 
 		private void UpdatePublicViewRectangle() {
-			var mainWin = ParentWindow as MainWindow;
-			if (!IsPublic && !IsLinked && mainWin!= null) {
-				UpdateVisibleRectangle(mainWin.MapPublic.VisibleRectInMap());
+			var privateWin = ParentWindow as PrivateWindow;
+			if (!IsPublic && !IsLinked && privateWin!= null) {
+				UpdateVisibleRectangle(privateWin.MapPublic.VisibleRectInMap());
 			}
 		}
 

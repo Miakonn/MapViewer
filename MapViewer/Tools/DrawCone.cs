@@ -8,7 +8,7 @@ using System.Windows.Controls.Ribbon;
 namespace MapViewer.Tools {
 	class DrawCone : ICanvasTool {
 
-		private readonly MainWindow _mainWindow;
+		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
 		private readonly MaskedMap _map;
 		private ToolTip _tooltip;
@@ -17,9 +17,9 @@ namespace MapViewer.Tools {
 		private Point _pnt1;
 		private Point _pnt2;
 
-		public DrawCone(MainWindow mainWindow, object button) {
-			_mainWindow = mainWindow;
-			_map = mainWindow.MapPrivate;
+		public DrawCone(PrivateWindow privateWindow, object button) {
+			_privateWindow = privateWindow;
+			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
@@ -114,11 +114,11 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			var points = CreatePointCollection();
 			_map.OverlayPolygon(points, Colors.Green, "Cone");
-			if (_mainWindow.PublicWindow.IsVisible) {
-				_mainWindow.MapPublic.OverlayPolygon(points, Colors.Green, "Cone");
+			if (_privateWindow.PublicWindow.IsVisible) {
+				_privateWindow.MapPublic.OverlayPolygon(points, Colors.Green, "Cone");
 			}
 
-			_mainWindow.ActiveTool = null;
+			_privateWindow.ActiveTool = null;
 		}
 
 	}

@@ -8,16 +8,16 @@ using System.Windows.Controls.Ribbon;
 namespace MapViewer.Tools {
 	class Measure : ICanvasTool {
 
-		private readonly MainWindow _mainWindow;
+		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
 		private readonly MaskedMap _map;
 		private ToolTip _tooltip;
 		private RibbonToggleButton _button;
 		private Line _line;
 
-		public Measure(MainWindow mainWindow, object button) {
-			_mainWindow = mainWindow;
-			_map = mainWindow.MapPrivate;
+		public Measure(PrivateWindow privateWindow, object button) {
+			_privateWindow = privateWindow;
+			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
@@ -99,7 +99,7 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-			_mainWindow.ActiveTool = null;
+			_privateWindow.ActiveTool = null;
 		}
 
 	}

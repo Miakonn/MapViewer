@@ -8,16 +8,16 @@ using System.Windows.Controls.Ribbon;
 namespace MapViewer.Tools {
 	class DrawLine : ICanvasTool {
 
-		private readonly MainWindow _mainWindow;
+		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
 		private readonly MaskedMap _map;
 		private ToolTip _tooltip;
 		private RibbonToggleButton _button;
 		private Line _line;
 
-		public DrawLine(MainWindow mainWindow, object button) {
-			_mainWindow = mainWindow;
-			_map = mainWindow.MapPrivate;
+		public DrawLine(PrivateWindow privateWindow, object button) {
+			_privateWindow = privateWindow;
+			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
@@ -100,11 +100,11 @@ namespace MapViewer.Tools {
 
 		private void EndDraw() {
 			_map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2, Colors.OrangeRed, "Line");
-			if (_mainWindow.PublicWindow.IsVisible) {
-				_mainWindow.MapPublic.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2 / _map.ImageScaleMperPix, Colors.OrangeRed, "Line");
+			if (_privateWindow.PublicWindow.IsVisible) {
+				_privateWindow.MapPublic.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2 / _map.ImageScaleMperPix, Colors.OrangeRed, "Line");
 			}
 
-			_mainWindow.ActiveTool = null;
+			_privateWindow.ActiveTool = null;
 		}
 
 	}

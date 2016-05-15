@@ -9,15 +9,15 @@ using MapViewer.Dialogs;
 namespace MapViewer.Tools {
 	class Calibrate : ICanvasTool {
 
-		private readonly MainWindow _mainWindow;
+		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
 		private readonly MaskedMap _map;
 		private RibbonToggleButton _button;
 		private Line _line;
 
-		public Calibrate(MainWindow mainWindow, object button) {
-			_mainWindow = mainWindow;
-			_map = mainWindow.MapPrivate;
+		public Calibrate(PrivateWindow privateWindow, object button) {
+			_privateWindow = privateWindow;
+			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
@@ -90,7 +90,7 @@ namespace MapViewer.Tools {
 
 			var result = dialog.ShowDialog();
 			if (!result.HasValue || !result.Value) {
-				_mainWindow.ActiveTool = null;
+				_privateWindow.ActiveTool = null;
 				return;
 			}
 
@@ -98,7 +98,7 @@ namespace MapViewer.Tools {
 
 			_map.ImageScaleMperPix = (float) (dialog.FloatValue / length);
 
-			_mainWindow.ActiveTool = null;
+			_privateWindow.ActiveTool = null;
 		}
 
 	}

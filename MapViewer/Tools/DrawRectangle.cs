@@ -8,7 +8,7 @@ using System.Windows.Controls.Ribbon;
 namespace MapViewer.Tools {
 	class DrawRectangle : ICanvasTool {
 
-		private readonly MainWindow _mainWindow;
+		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
 		private readonly MaskedMap _map;
 		private ToolTip _tooltip;
@@ -19,9 +19,9 @@ namespace MapViewer.Tools {
 		private Point _pnt3;
 		private int _index =0;
 
-		public DrawRectangle(MainWindow mainWindow, object button) {
-			_mainWindow = mainWindow;
-			_map = mainWindow.MapPrivate;
+		public DrawRectangle(PrivateWindow privateWindow, object button) {
+			_privateWindow = privateWindow;
+			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
@@ -142,11 +142,11 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			var points = CreatePointCollection();
 			_map.OverlayPolygon(points, Colors.Green, "Rect");
-			if (_mainWindow.PublicWindow.IsVisible) {
-				_mainWindow.MapPublic.OverlayPolygon(points, Colors.Green, "Rect");
+			if (_privateWindow.PublicWindow.IsVisible) {
+				_privateWindow.MapPublic.OverlayPolygon(points, Colors.Green, "Rect");
 			}
 
-			_mainWindow.ActiveTool = null;
+			_privateWindow.ActiveTool = null;
 		}
 
 	}
