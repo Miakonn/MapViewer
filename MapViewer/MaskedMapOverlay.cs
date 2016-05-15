@@ -52,7 +52,7 @@ namespace MapViewer {
 				Width = 2 * radius,
 				Height = 2 * radius,
 				Stroke = new SolidColorBrush(color),
-				StrokeThickness = (8 / Scale),
+				StrokeThickness = 10 / Scale,
 				Opacity = 0.6
 			};
 
@@ -76,14 +76,13 @@ namespace MapViewer {
 			CanvasOverlay.Children.Add(shape);
 		}
 
-		public void OverlayLine(double x1, double y1, double x2, double y2, float widthM, Color color, string uid) {
-			var size = widthM / ImageScaleMperPix;
+		public void OverlayLine(double x1, double y1, double x2, double y2, float width, Color color, string uid) {
 			var shape = new Line {
 				X1 = x1,
 				Y1 = y1,
 				X2 = x2,
 				Y2 = y2,
-				StrokeThickness = size,
+				StrokeThickness = width,
 				Stroke = new SolidColorBrush(color),
 				Opacity = 0.4
 

@@ -83,7 +83,7 @@ namespace MapViewer.Tools {
 				X2 = pt1.X,
 				Y2 = pt1.Y,
 				Stroke = Brushes.Blue,
-				StrokeThickness = 10,
+				StrokeThickness = 10 / _map.Scale,
 				Opacity = 0.5
 			};
 
