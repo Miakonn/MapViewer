@@ -52,8 +52,8 @@ namespace MapViewer {
 				Width = 2 * radius,
 				Height = 2 * radius,
 				Stroke = new SolidColorBrush(color),
-				StrokeThickness = (5 / Scale),
-				Opacity = 0.4
+				StrokeThickness = (8 / Scale),
+				Opacity = 0.6
 			};
 
 			Canvas.SetLeft(shape, pos.X - radius);

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Configuration;
+using System.Globalization;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
@@ -25,6 +27,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand RemoveDisplay = new RoutedUICommand("Remove display", "Remove display", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand Save = new RoutedUICommand("Save", "Save", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand CalibrateDisplay = new RoutedUICommand("Calibrate display", "Calibrate display", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand Calibrate = new RoutedUICommand("Calibrate", "Calibrate", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand Measure = new RoutedUICommand("Measure", "Measure", typeof(CustomCommands), null);
@@ -119,6 +122,24 @@ namespace MapViewer {
 
 		private void Save_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Serialize();
+		}
+
+		private void CalibrateDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var dialog = new Dialogs.DialogCalibrateDisplay();
+
+			Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+			dialog.ScreenWidthMM = float.Parse(config.AppSettings.Settings["PublicScreenWidthMM"].Value);
+			dialog.ScreenWidthPix = float.Parse(config.AppSettings.Settings["PublicScreenWidthPix"].Value);
+
+			var result = dialog.ShowDialog();
+			if (!result.HasValue || !result.Value) {
+				return;
+			}
+			config.AppSettings.Settings["PublicScreenWidthMM"].Value = dialog.ScreenWidthMM.ToString(CultureInfo.InvariantCulture);
+			config.AppSettings.Settings["PublicScreenWidthPix"].Value = dialog.ScreenWidthPix.ToString(CultureInfo.InvariantCulture);
+
+			config.Save(ConfigurationSaveMode.Modified);
 		}
 
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {

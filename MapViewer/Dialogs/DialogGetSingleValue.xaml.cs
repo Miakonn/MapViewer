@@ -1,10 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows;
 
-namespace MapViewer {
-	/// <summary>
-	/// Interaction logic for DialogGetCalibration.xaml
-	/// </summary>
+namespace MapViewer.Dialogs {
 	public partial class DialogGetSingleValue {
 
 		public string LeadText {

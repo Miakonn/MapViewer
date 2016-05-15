@@ -24,6 +24,7 @@
 		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Executed" CanExecute="RemoveDisplay_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.CalibrateDisplay" Executed="CalibrateDisplay_Executed" CanExecute="Allways_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="Spell_CanExecute" />
 
 		<CommandBinding Command="mapViewer:CustomCommands.DrawCircle" Executed="DrawCircle_Executed" CanExecute="Spell_CanExecute" />
@@ -50,6 +51,7 @@
 				<RibbonApplicationMenu >
 					<RibbonApplicationMenuItem Header="Open image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
 					<RibbonApplicationMenuItem Header="Save mask/overlay" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
+					<RibbonApplicationMenuItem Header="Calibrate display" Command="mapViewer:CustomCommands.CalibrateDisplay" ImageSource="Images/Monitor_measure.png" />
 				</RibbonApplicationMenu>
 			</Ribbon.ApplicationMenu>
 			<RibbonTab x:Name="SetupTab" Header="Setup" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">

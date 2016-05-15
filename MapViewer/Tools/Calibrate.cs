@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
+using MapViewer.Dialogs;
 
 namespace MapViewer.Tools {
 	class Calibrate : ICanvasTool {
@@ -89,6 +90,7 @@ namespace MapViewer.Tools {
 
 			var result = dialog.ShowDialog();
 			if (!result.HasValue || !result.Value) {
+				_mainWindow.ActiveTool = null;
 				return;
 			}
 

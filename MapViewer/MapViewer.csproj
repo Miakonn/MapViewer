@@ -59,7 +59,10 @@
     </ApplicationDefinition>
     <Compile Include="BitmapUtils.cs" />
     <Compile Include="Commands.cs" />
-    <Compile Include="DialogGetSingleValue.xaml.cs">
+    <Compile Include="Dialogs\DialogCalibrateDisplay.xaml.cs">
+      <DependentUpon>DialogCalibrateDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogGetSingleValue.xaml.cs">
       <DependentUpon>DialogGetSingleValue.xaml</DependentUpon>
     </Compile>
     <Compile Include="MaskedMapOverlay.cs" />
@@ -78,7 +81,11 @@
       <DependentUpon>PublicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\MaskRectangle.cs" />
-    <Page Include="DialogGetSingleValue.xaml">
+    <Page Include="Dialogs\DialogCalibrateDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\DialogGetSingleValue.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -182,6 +189,9 @@
   <ItemGroup>
     <Resource Include="Images\zoom_in.png" />
     <Resource Include="Images\zoom_out.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\monitor_measure.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
