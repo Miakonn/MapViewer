@@ -308,7 +308,7 @@ namespace MapViewer {
 
 			MapData.ImageScaleMperPix = mapSource.MapData.ImageScaleMperPix;
 		
-			BitmapUtils.CopyingCanvas(mapSource.CanvasOverlay, CanvasOverlay);
+			mapSource.CanvasOverlay.CopyingCanvas(CanvasOverlay);
 
 			if (IsLinked) {
 				ScaleToLinked(mapSource);
@@ -348,14 +348,13 @@ namespace MapViewer {
 			MapData.Serialize();
 			BmpMask.Freeze();
 			BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(_imagePath, ".mask.png"));
-			BitmapUtils.SerializeXaml(CanvasOverlay, CreateFilename(_imagePath, ".xaml"));
+			CanvasOverlay.SerializeXaml(CreateFilename(_imagePath, ".xaml"));
 		}
 
 		public void Deserialize() {
 			MapData.Deserialize();
 			BmpMask = BitmapUtils.Deserialize(CreateFilename(_imagePath, ".mask.png"));
-			BitmapUtils.DeserializeXaml(CanvasOverlay, CreateFilename(_imagePath, ".xaml"));
-
+			CanvasOverlay.DeserializeXaml(CreateFilename(_imagePath, ".xaml"));
 		}
 
 		private const string FolderName = "MapViewerFiles";

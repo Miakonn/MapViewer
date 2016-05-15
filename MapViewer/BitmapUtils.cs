@@ -9,7 +9,6 @@ using System.Windows.Markup;
 
 namespace MapViewer {
 	public static class BitmapUtils {
-
 		public static void Serialize(WriteableBitmap wbitmap, string filename) {
 			if (wbitmap == null) {
 				return;
@@ -47,8 +46,10 @@ namespace MapViewer {
 				return null;
 			}
 		}
+	}
 
-		public static void SerializeXaml(Canvas canvas, string filename ) {
+	public static class CanvasUtils {
+		public static void SerializeXaml(this Canvas canvas, string filename ) {
 			try {
 				var mystrXAML = XamlWriter.Save(canvas);
 				using (var filestream = File.Create(filename)) {
@@ -64,7 +65,7 @@ namespace MapViewer {
 			}
 		}
 
-		public static void DeserializeXaml(Canvas canvas, string filename) {
+		public static void DeserializeXaml(this Canvas canvas, string filename) {
 			if (!File.Exists(filename)) {
 				return;
 			}
@@ -90,7 +91,7 @@ namespace MapViewer {
 
 		}
 
-		public static void CopyingCanvas(Canvas canvasSource, Canvas canvasDest) {
+		public static void CopyingCanvas(this Canvas canvasSource, Canvas canvasDest) {
 			canvasDest.Children.Clear();
 			foreach (UIElement child in canvasSource.Children) {
 				if (child.Uid != MaskedMap.PublicPositionUid) {
@@ -103,7 +104,7 @@ namespace MapViewer {
 			}
 		}
 
-		public static UIElement FindHitElement(Canvas canvas) {
+		public static UIElement FindHitElement(this Canvas canvas) {
 			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid != MaskedMap.PublicPositionUid && child.IsMouseOver);
 		}
 

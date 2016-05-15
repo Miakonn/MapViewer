@@ -106,7 +106,7 @@ namespace MapViewer {
 				ActiveTool.MouseDown(sender, e);
 				return;
 			}
-			_lastClickedElem = BitmapUtils.FindHitElement(MapPrivate.CanvasOverlay);
+			_lastClickedElem = MapPrivate.CanvasOverlay.FindHitElement();
 
 			var shape = MapPrivate.CanvasOverlay.FindElementByUid(MaskedMap.PublicPositionUid);
 
