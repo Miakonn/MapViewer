@@ -12,7 +12,6 @@ namespace MapViewer.Tools {
 		private readonly Canvas _canvas;
 		private readonly MaskedMap _map;
 		private RibbonToggleButton _button;
-		private ToolTip _tooltip;
 		private Ellipse _shape;
 
 		private Point _pnt1;
@@ -35,9 +34,6 @@ namespace MapViewer.Tools {
 			if (_shape == null) {
 				_pnt1 = e.GetPosition(_canvas);
 				InitDraw(_pnt1);
-				_tooltip = new ToolTip();
-				_canvas.ToolTip = _tooltip;
-				_tooltip.Content = "";
 			}
 			else {
 				UpdateDraw(_pnt1, e.GetPosition(_canvas));
@@ -50,7 +46,7 @@ namespace MapViewer.Tools {
 				return;
 			}
 			UpdateDraw(_pnt1, e.GetPosition(_canvas));
-			_tooltip.Content = string.Format("r={0} m", CalculateDistance());
+			_privateWindow.DisplayPopup(string.Format("r={0} m", CalculateDistance()));
 		}
 
 		public void MouseUp(object sender, MouseButtonEventArgs e) { }
@@ -67,6 +63,8 @@ namespace MapViewer.Tools {
 				_button.IsChecked = false;
 			}
 			_button = null;
+			_privateWindow.HidePopup();
+
 		}
 
 		#endregion

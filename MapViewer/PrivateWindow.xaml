@@ -46,6 +46,11 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
+		<Popup Name="PopupDisplay" PlacementTarget="{Binding ElementName=DrawingSpace}"
+			VerticalAlignment="Top" IsOpen="False" VerticalOffset="20"  HorizontalOffset="20" Placement="Relative">
+			<TextBlock Padding="4"  Name="TxtBlock"  Background="WhiteSmoke" >Dummy</TextBlock>
+		</Popup>
+
 		<Ribbon Margin="1,1,1,1" Grid.Row="0" SelectionChanged="Tab_OnSelectionChanged">
 			<Ribbon.ApplicationMenu>
 				<RibbonApplicationMenu >
@@ -109,6 +114,10 @@
 		<Border Grid.Row="1" BorderThickness="0"  BorderBrush="White" Focusable="True" Loaded="Border_Loaded"
 					MouseDown="PrivateWinMouseDown" MouseMove="PrivateWinMouseMove" MouseUp="PrivateWinMouseUp" KeyDown="PrivateWinKeyDown" MouseWheel="PrivateWinMouseWheel" >
 			<Grid Name="DrawingSpace"  ClipToBounds="True" >
+
+
+
+
 				<Grid.ContextMenu>
 					<ContextMenu Name="Cm">
 						<MenuItem Command="mapViewer:CustomCommands.Fireball" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
@@ -119,7 +128,7 @@
 				<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}"  KeyDown="PrivateWinKeyDown">
 					<ContentPresenter   Name="MapPresenterMain1" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
 				</UserControl>
-				<UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}" Height="94" VerticalAlignment="Top"   KeyDown="PrivateWinKeyDown">
+				<UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}"  KeyDown="PrivateWinKeyDown">
 					<ContentPresenter   Name="MapPresenterMain2" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
 				</UserControl>
 			</Grid>
@@ -127,4 +136,7 @@
 
 
 	</Grid>
+
+
+
 </Window>

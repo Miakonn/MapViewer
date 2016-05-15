@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -217,11 +218,29 @@ namespace MapViewer {
 			}
 
 		}
-
-		#endregion
-
 		private void Tab_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
 			ActiveTool = null;
 		}
+		#endregion
+
+
+#region Public methods
+
+
+		public void DisplayPopup(string text) {
+			PopupDisplay.IsOpen = true;
+			var popupText = PopupDisplay.Child as TextBlock;
+			if (popupText != null) {
+				popupText.Text = text;
+			}
+		}
+
+		public void HidePopup() {
+			PopupDisplay.IsOpen = false;
+		}
+
+#endregion region
+
+
 	}
 }
