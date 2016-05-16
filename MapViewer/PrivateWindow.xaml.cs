@@ -143,6 +143,15 @@ namespace MapViewer {
 
 				e.Handled = true;
 			}
+			else if (_cursorAction == CursorAction.MovingElement) {
+				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
+				var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
+				MapPrivate.MoveElement(_lastClickedElem,  move);
+				MapPublic.MoveElement(_lastClickedElem.Uid, move);
+				_mouseDownPoint = curMouseDownPoint;
+
+				e.Handled = true;
+			}
 			else if (_cursorAction == CursorAction.MovingMap) {
 				var curMouseDownPoint = e.GetPosition(this);
 				var move = curMouseDownPoint - _mouseDownPoint;

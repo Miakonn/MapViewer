@@ -30,6 +30,18 @@ namespace MapViewer {
 			} while (true);
 		}
 
+		public void MoveElement(UIElement elem, Vector move) {
+			Canvas.SetLeft(elem, Canvas.GetLeft(elem) - move.X);
+			Canvas.SetTop(elem, Canvas.GetTop(elem) - move.Y);
+		}
+
+		public void MoveElement(string uid, Vector move) {
+			var elem = CanvasOverlay.FindElementByUid(uid);
+			if (elem != null) {
+				MoveElement(elem, move);
+			}
+		}
+
 		#endregion
 
 		#region Elements
