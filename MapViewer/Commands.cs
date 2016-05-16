@@ -9,8 +9,9 @@ using System.Windows.Controls.Ribbon;
 namespace MapViewer {
 	public static class CustomCommands {
 
-		public static readonly RoutedUICommand Fireball = new RoutedUICommand("Fireball", "Fireball", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand Moonbeam = new RoutedUICommand("Moonbeam", "Moonbeam", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete element", "Delete element", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
 
@@ -305,19 +306,27 @@ namespace MapViewer {
 			}
 		}
 
-		private void Fireball_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void SpellCircular7m_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var radius = 7 / MapPrivate.ImageScaleMperPix;
-			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
+			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Spell7m");
 			if (PublicWindow.IsVisible) {
-				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Fireball");
+				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Spell7m");
 			}
 		}
 
-		private void Moonbeam_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var radius = 2 / MapPrivate.ImageScaleMperPix;
-			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
+		private void SpellCircular3m_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var radius = 3 / MapPrivate.ImageScaleMperPix;
+			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.LightSkyBlue, "Spell3m");
 			if (PublicWindow.IsVisible) {
-				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Moonbeam");
+				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.LightSkyBlue, "Spell3m");
+			}
+		}
+
+		private void SpellCircular2m_Executed(object sender, ExecutedRoutedEventArgs e) {
+			var radius = 2 / MapPrivate.ImageScaleMperPix;
+			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Spell2m");
+			if (PublicWindow.IsVisible) {
+				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Spell2m");
 			}
 		}
 

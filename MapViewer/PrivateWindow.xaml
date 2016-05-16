@@ -7,8 +7,9 @@
 		ResizeMode="CanResizeWithGrip">
 
 	<Window.CommandBindings>
-		<CommandBinding Command="mapViewer:CustomCommands.Fireball" Executed="Fireball_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Moonbeam" Executed="Moonbeam_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular7m" Executed="SpellCircular7m_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular3m" Executed="SpellCircular3m_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular2m" Executed="SpellCircular2m_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.DeleteElement" Executed="DeleteElement_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.FullMask" Executed="FullMask_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Executed" CanExecute="ImageNeeded_CanExecute" />
@@ -120,8 +121,9 @@
 
 				<Grid.ContextMenu>
 					<ContextMenu Name="Cm">
-						<MenuItem Command="mapViewer:CustomCommands.Fireball" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-						<MenuItem Command="mapViewer:CustomCommands.Moonbeam" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<MenuItem Command="mapViewer:CustomCommands.SpellCircular7m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<MenuItem Command="mapViewer:CustomCommands.SpellCircular3m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<MenuItem Command="mapViewer:CustomCommands.SpellCircular2m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.DeleteElement" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 					</ContextMenu>
 				</Grid.ContextMenu>
