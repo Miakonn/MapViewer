@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -11,6 +10,10 @@ namespace MapViewer {
 	/// </summary>
 	public partial class PrivateWindow {
 
+		private enum CursorAction {
+			None, MovingPublicPos, MovingMap, MovingElement
+		}
+
 		#region Attributes
 
 		public readonly MaskedMap MapPrivate;
@@ -18,8 +21,7 @@ namespace MapViewer {
 		public readonly PublicWindow PublicWindow = new PublicWindow();
 
 		private UIElement _lastClickedElem;
-		private bool _isDraggingPublicPos;
-		private bool _isMoving;
+		private CursorAction _cursorAction;
 		private Point _mouseDownPoint;
 		private ICanvasTool _activeTool;
 
@@ -106,19 +108,19 @@ namespace MapViewer {
 				ActiveTool.MouseDown(sender, e);
 				return;
 			}
-			_lastClickedElem = MapPrivate.CanvasOverlay.FindHitElement();
+			_lastClickedElem = MapPrivate.CanvasOverlay.FindElementHit();
 
-			var shape = MapPrivate.CanvasOverlay.FindElementByUid(MaskedMap.PublicPositionUid);
-
-			var isPublicPos = shape != null && shape.IsMouseOver;
-			if (e.ChangedButton == MouseButton.Left && isPublicPos && e.ClickCount == 1) {
-				_isDraggingPublicPos= true;
-				_mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
-				e.Handled = true;
-			}
-			else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
-				_isMoving = true;
-				_mouseDownPoint = e.GetPosition(this);
+			if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
+				if (_lastClickedElem != null) {
+					_mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
+					_cursorAction = _lastClickedElem.Uid == MaskedMap.PublicPositionUid
+						? CursorAction.MovingPublicPos
+						: CursorAction.MovingElement;
+				}
+				else {
+					_mouseDownPoint = e.GetPosition(this);
+					_cursorAction = CursorAction.MovingMap;
+				}
 				e.Handled = true;
 			}
 			else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
@@ -134,14 +136,14 @@ namespace MapViewer {
 				return;
 			}
 
-			if (_isDraggingPublicPos) {
+			if (_cursorAction == CursorAction.MovingPublicPos) {
 				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
 				MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y)) * MapPublic.Scale * MapPublic.ScaleDpiFix);
 				_mouseDownPoint = curMouseDownPoint;
 
 				e.Handled = true;
 			}
-			else if (_isMoving) {
+			else if (_cursorAction == CursorAction.MovingMap) {
 				var curMouseDownPoint = e.GetPosition(this);
 				var move = curMouseDownPoint - _mouseDownPoint;
 				MapPrivate.Translate(move);
@@ -158,15 +160,7 @@ namespace MapViewer {
 				return;
 			}
 
-
-			if (e.ChangedButton == MouseButton.Left && _isDraggingPublicPos) {
-				_isDraggingPublicPos = false;
-			}
-
-			if (e.ChangedButton == MouseButton.Left) {
-				_isMoving = false;
-				e.Handled = true;
-			}
+			_cursorAction = CursorAction.None;
 		}
 
 		private void PrivateWinMouseWheel(object sender, MouseWheelEventArgs e) {

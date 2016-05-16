@@ -174,7 +174,7 @@ namespace MapViewer {
 		}
 
 		private void DeleteElement_Executed(object sender, ExecutedRoutedEventArgs e) {
-			if (_lastClickedElem == null) {
+			if (_lastClickedElem == null ||_lastClickedElem.Uid== MaskedMap.PublicPositionUid) {
 				return;
 			}
 

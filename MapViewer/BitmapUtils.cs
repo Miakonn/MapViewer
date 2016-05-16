@@ -104,8 +104,8 @@ namespace MapViewer {
 			}
 		}
 
-		public static UIElement FindHitElement(this Canvas canvas) {
-			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid != MaskedMap.PublicPositionUid && child.IsMouseOver);
+		public static UIElement FindElementHit(this Canvas canvas) {
+			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.IsMouseOver);
 		}
 
 		public static UIElement FindElementByUid(this Canvas canvas, string uid) {
