@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MapViewer.Dialogs;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
@@ -221,9 +222,16 @@ namespace MapViewer {
 			}
 
 		}
+		
 		private void Tab_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
 			ActiveTool = null;
 		}
+	
+		private void HelpButton_OnClick(object sender, RoutedEventArgs e) {
+			var dialog = new DialogAbout();
+			dialog.ShowDialog();
+		}
+
 		#endregion
 
 

@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mapViewer="clr-namespace:MapViewer"
-        Title="MapViewer V1.3 - Private map" Height="800" Width="1200" Closing="PrivateWindow_Closing"
+        Title="MapViewer V1.4 - Private map" Height="800" Width="1200" Closing="PrivateWindow_Closing"
 		WindowStyle="ThreeDBorderWindow" 
 		ResizeMode="CanResizeWithGrip">
 
@@ -101,15 +101,16 @@
 						<ComboBoxItem x:Name="TenScale" Content="1:500"/>
 						<ComboBoxItem x:Name="Linked" Content="Linked"/>
 					</ComboBox>
-					<CheckBox Content="Show cursor"  Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked">
-
-					</CheckBox>					
+					<RibbonCheckBox Label="Show cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
 					<RibbonButton Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" />
 					<RibbonButton Label="Hide display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" />
 					<RibbonButton Label="Rotate" Command="mapViewer:CustomCommands.RotateMap" LargeImageSource="Images/Monitor_rotate.png" />
 					<RibbonButton Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png" />
 				</RibbonGroup>
 			</RibbonTab>
+			<Ribbon.HelpPaneContent>
+				<RibbonButton x:Name="HelpButton" SmallImageSource="Images\help.png" Click="HelpButton_OnClick"/>
+			</Ribbon.HelpPaneContent>
 		</Ribbon>
 
 		<Border Grid.Row="1" BorderThickness="0"  BorderBrush="White" Focusable="True" Loaded="Border_Loaded"

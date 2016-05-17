@@ -60,6 +60,9 @@
     </ApplicationDefinition>
     <Compile Include="BitmapUtils.cs" />
     <Compile Include="Commands.cs" />
+    <Compile Include="Dialogs\DialogAbout.xaml.cs">
+      <DependentUpon>DialogAbout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\DialogCalibrateDisplay.xaml.cs">
       <DependentUpon>DialogCalibrateDisplay.xaml</DependentUpon>
     </Compile>
@@ -82,6 +85,10 @@
       <DependentUpon>PublicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\MaskRectangle.cs" />
+    <Page Include="Dialogs\DialogAbout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\DialogCalibrateDisplay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -193,6 +200,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\monitor_measure.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\help.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

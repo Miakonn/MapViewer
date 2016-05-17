@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-using System.Globalization;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
@@ -79,7 +77,7 @@ namespace MapViewer {
 
 		private void AddDisplay_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) && 
-				!PublicWindow.IsVisible;
+				!PublicWindow.IsVisible && PublicWindow.IsCalibrated;
 		}
 
 		private void RemoveDisplay_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -89,6 +87,7 @@ namespace MapViewer {
 		private void RotateMap_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile) && !MapPrivate.IsLinked);
 		}
+
 
 		#endregion
 
@@ -129,21 +128,17 @@ namespace MapViewer {
 		}
 
 		private void CalibrateDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var dialog = new Dialogs.DialogCalibrateDisplay();
-
-			Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-			dialog.ScreenWidthMM = float.Parse(config.AppSettings.Settings["PublicScreenWidthMM"].Value);
-			dialog.ScreenWidthPix = float.Parse(config.AppSettings.Settings["PublicScreenWidthPix"].Value);
+			var dialog = new Dialogs.DialogCalibrateDisplay {
+				ScreenWidthMM = PublicWindow.ScreenWidthMM,
+				ScreenWidthPix = PublicWindow.ScreenWidthPix
+			};
 
 			var result = dialog.ShowDialog();
 			if (!result.HasValue || !result.Value) {
 				return;
 			}
-			config.AppSettings.Settings["PublicScreenWidthMM"].Value = dialog.ScreenWidthMM.ToString(CultureInfo.InvariantCulture);
-			config.AppSettings.Settings["PublicScreenWidthPix"].Value = dialog.ScreenWidthPix.ToString(CultureInfo.InvariantCulture);
-
-			config.Save(ConfigurationSaveMode.Modified);
+			PublicWindow.ScreenWidthMM = dialog.ScreenWidthMM;
+			PublicWindow.ScreenWidthPix = dialog.ScreenWidthPix;
 		}
 
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {

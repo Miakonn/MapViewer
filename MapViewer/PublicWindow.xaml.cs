@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +18,30 @@ namespace MapViewer
 		private readonly MaskedMap _map;
 
 	    private readonly Canvas _canvasRuler;
+
+		public float ScreenWidthMM {
+			get { return float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthMM"]); }
+			set {
+				var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+				config.AppSettings.Settings["PublicScreenWidthMM"].Value = value.ToString(CultureInfo.InvariantCulture);
+				config.Save(ConfigurationSaveMode.Modified);
+				ConfigurationManager.RefreshSection(config.AppSettings.SectionInformation.Name);
+			}
+		}
+
+		public float ScreenWidthPix {
+			get { return float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthPix"]); }
+			set {
+				var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+				config.AppSettings.Settings["PublicScreenWidthPix"].Value = value.ToString(CultureInfo.InvariantCulture);
+				config.Save(ConfigurationSaveMode.Modified);
+				ConfigurationManager.RefreshSection(config.AppSettings.SectionInformation.Name);
+			}
+		}
+
+		public bool IsCalibrated {
+			get { return (ScreenWidthMM > 0) && (ScreenWidthPix > 0); }
+		}
 
 	    public MaskedMap Map {
 		    get { return _map;  }

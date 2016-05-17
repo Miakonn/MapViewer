@@ -1,0 +1,20 @@
+﻿<Window x:Class="MapViewer.Dialogs.DialogAbout"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About" SizeToContent="WidthAndHeight"
+		ResizeMode="NoResize">
+	<Grid
+	                                                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto" />
+
+		</Grid.RowDefinitions>
+		<TextBlock Grid.Row="0"  HorizontalAlignment="Center" Margin="10,10,10,10" TextWrapping="Wrap" FontSize="34"  FontWeight="ExtraBold"  VerticalAlignment="Top"><Run Text="Miakonn's MapViewer"/></TextBlock>
+		<TextBlock Grid.Row="1"  HorizontalAlignment="Center" Margin="10,10,10,10" TextWrapping="Wrap" FontSize="24" FontWeight="ExtraBold"  VerticalAlignment="Top"><Run Text="by Anders Blom"/></TextBlock>
+
+
+		<Button Grid.Row="2" IsCancel="True" IsDefault="True" Margin="10,50,10,10" Content="Cancel" Width="75" Height="20"  RenderTransformOrigin="0.78,3.918"/>
+	</Grid>
+</Window>
