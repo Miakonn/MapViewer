@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
 using System.Windows.Controls.Ribbon;
+using MapViewer.Dialogs;
 
 namespace MapViewer {
 	public static class CustomCommands {
@@ -11,6 +12,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete element", "Delete element", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand SetColourElement = new RoutedUICommand("Set colour", "Set colour", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand OpenImage = new RoutedUICommand("Open image", "Open image", typeof(CustomCommands), null);
@@ -88,7 +90,9 @@ namespace MapViewer {
 			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile) && !MapPrivate.IsLinked);
 		}
 
-
+		private void ElementNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			e.CanExecute = (_lastClickedElem != null);
+		}
 		#endregion
 
 		#region Assorted
@@ -128,9 +132,10 @@ namespace MapViewer {
 		}
 
 		private void CalibrateDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var dialog = new Dialogs.DialogCalibrateDisplay {
+			var dialog = new DialogCalibrateDisplay {
 				ScreenWidthMM = PublicWindow.ScreenWidthMM,
-				ScreenWidthPix = PublicWindow.ScreenWidthPix
+				ScreenWidthPix = PublicWindow.ScreenWidthPix,
+				Owner = this
 			};
 
 			var result = dialog.ShowDialog();
@@ -183,6 +188,28 @@ namespace MapViewer {
 				}
 			}
 		}
+
+		private void SetColourElement_Executed(object sender, ExecutedRoutedEventArgs e) {
+			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+				return;
+			}
+
+			var dialog = new DialogColorPicker {Owner = this};
+			var result = dialog.ShowDialog();
+			if (!result.HasValue || !result.Value) {
+				return;
+			}
+
+			var uid = _lastClickedElem.Uid;
+			_lastClickedElem.SetColour(dialog.SelectedColor);
+			if (PublicWindow.IsVisible) {
+				var elemPublic = MapPublic.CanvasOverlay.FindElementByUid(uid);
+				if (elemPublic != null) {
+					elemPublic.SetColour(dialog.SelectedColor);
+				}
+			}
+		}
+
 
 		private void FullMask_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var rect = new Int32Rect(0, 0, (int)MapPrivate.MapImage.Width, (int)MapPrivate.MapImage.Height);

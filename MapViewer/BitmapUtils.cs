@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Windows.Shapes;
 
 
 namespace MapViewer {
@@ -110,6 +111,20 @@ namespace MapViewer {
 
 		public static UIElement FindElementByUid(this Canvas canvas, string uid) {
 			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid == uid);
+		}
+	}
+
+	public static class UiElementUtils {
+		public static void SetColour(this UIElement elem, System.Windows.Media.Brush brush) {
+			if (elem is Ellipse) {
+				((Ellipse) elem).Fill = brush;
+			}
+			else if (elem is Rectangle) {
+				((Rectangle)elem).Fill = brush;
+			}
+			else if (elem is Polygon) {
+				((Polygon)elem).Fill = brush;
+			}
 		}
 	}
 }

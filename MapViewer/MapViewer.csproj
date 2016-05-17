@@ -66,6 +66,9 @@
     <Compile Include="Dialogs\DialogCalibrateDisplay.xaml.cs">
       <DependentUpon>DialogCalibrateDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\DialogColorPicker.xaml.cs">
+      <DependentUpon>DialogColorPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\DialogGetSingleValue.xaml.cs">
       <DependentUpon>DialogGetSingleValue.xaml</DependentUpon>
     </Compile>
@@ -92,6 +95,10 @@
     <Page Include="Dialogs\DialogCalibrateDisplay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\DialogColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\DialogGetSingleValue.xaml">
       <SubType>Designer</SubType>

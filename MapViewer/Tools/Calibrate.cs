@@ -85,7 +85,8 @@ namespace MapViewer.Tools {
 			_canvas.Children.Remove(_line);
 					
 			var dialog = new DialogGetSingleValue {
-				LeadText = "Length in m"
+				LeadText = "Length in m",
+				Owner = _privateWindow
 			};
 
 			var result = dialog.ShowDialog();

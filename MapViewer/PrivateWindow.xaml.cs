@@ -229,6 +229,7 @@ namespace MapViewer {
 	
 		private void HelpButton_OnClick(object sender, RoutedEventArgs e) {
 			var dialog = new DialogAbout();
+			dialog.Owner = this;
 			dialog.ShowDialog();
 		}
 

@@ -24,11 +24,6 @@ namespace MapViewer.Dialogs {
 			InitializeComponent();
 		}
 
-		private void BtnCancel_Click(object sender, RoutedEventArgs e) {
-			DialogResult = false;
-			Close();
-		}
-
 		private void BtnOk_Click(object sender, RoutedEventArgs e) {
 			DialogResult = true;
 			Close();
