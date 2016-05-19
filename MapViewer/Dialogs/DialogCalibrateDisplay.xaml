@@ -4,9 +4,10 @@
         Title="Calibrate public display" SizeToContent="WidthAndHeight"
 		WindowStartupLocation="CenterOwner"
 		ResizeMode="NoResize">
-	<Grid Margin ="15">
+	<Grid Name ="CalibrateWindow" Margin ="15">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
@@ -14,14 +15,17 @@
 			<RowDefinition Height="*" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<Label Grid.Row="0" Grid.Column="0"  Name="LabelHint1" Content="Display width in pixels"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
-		<TextBox Grid.Row="0" Grid.Column="1"  Name="TextBoxValue1" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap"  VerticalAlignment="Top" Width="80"/>
-		<Label Grid.Row="1" Grid.Column="0" Name="LabelHint2" Content="Display width in mm"  HorizontalAlignment="Left"  VerticalAlignment="Top"/>
-		<TextBox Grid.Row="1" Grid.Column="1" Name="TextBoxValue2" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap"  VerticalAlignment="Top" Width="80"/>
+		<Label Grid.Row="0" Grid.Column="0"  Name="LabelHint1" Content="Display size in pixels"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+		<TextBox Grid.Row="0" Grid.Column="1"  Text="{Binding Path=ScreenWidthPix}" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap"  VerticalAlignment="Top" Width="80"/>
+		<TextBox Grid.Row="0" Grid.Column="2"  Name="TextBoxValue1H" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap"  VerticalAlignment="Top" Width="80"/>
+		<Label Grid.Row="1" Grid.Column="0" Name="LabelHint2" Content="Display size in mm"  HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+		<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScreenWidthMM}" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap"  VerticalAlignment="Top" Width="80"/>
+		<TextBox Grid.Row="1" Grid.Column="2" Name="TextBoxValue2H" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap"  VerticalAlignment="Top" Width="80"/>
 
-		<WrapPanel Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
-			<Button IsDefault="True" Name="BtnOk" Click="BtnOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
-			<Button IsCancel="True" MinWidth="60">_Cancel</Button>
+		<WrapPanel Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="10,15,0,10">
+			<Button Name="BtnFetch" Click="BtnFetch_OnClick" MinWidth="60" Margin="10,0,10,0">Auto calibrate</Button>
+			<Button IsCancel="True" MinWidth="60" Margin="10,0,10,0">_Cancel</Button>
+			<Button IsDefault="True" Name="BtnOk" Click="BtnOk_Click" MinWidth="60" Margin="10,0,10,0">_Ok</Button>
 		</WrapPanel>
 
 	</Grid>

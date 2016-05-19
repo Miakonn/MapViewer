@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using MapViewer.Utilities;
 
 namespace MapViewer
 {
@@ -19,28 +20,33 @@ namespace MapViewer
 
 	    private readonly Canvas _canvasRuler;
 
-		public float ScreenWidthMM {
-			get { return float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthMM"]); }
+	    public System.Drawing.Size MonitorResolution {
+		    get { return Settings.Default.PublicMonitorResolution; }
+		    set {
+			    Settings.Default.PublicMonitorResolution = value;
+				Settings.Default.Save();
+		    }
+	    }
+
+		public System.Drawing.Size MonitorSize {
+			get { return Settings.Default.PublicMonitorSize; }
 			set {
-				var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-				config.AppSettings.Settings["PublicScreenWidthMM"].Value = value.ToString(CultureInfo.InvariantCulture);
-				config.Save(ConfigurationSaveMode.Modified);
-				ConfigurationManager.RefreshSection(config.AppSettings.SectionInformation.Name);
+				Settings.Default.PublicMonitorSize = value;
+				Settings.Default.Save();
 			}
 		}
 
-		public float ScreenWidthPix {
-			get { return float.Parse(ConfigurationManager.AppSettings["PublicScreenWidthPix"]); }
-			set {
-				var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-				config.AppSettings.Settings["PublicScreenWidthPix"].Value = value.ToString(CultureInfo.InvariantCulture);
-				config.Save(ConfigurationSaveMode.Modified);
-				ConfigurationManager.RefreshSection(config.AppSettings.SectionInformation.Name);
-			}
+	    public double MonitorScaleMMperPixel { 
+			get { 
+				if ((MonitorResolution.Width > 0) && (MonitorSize.Width > 0)) {
+					return ((double)MonitorSize.Width / MonitorResolution.Width);
+				}
+				return 0;
+			} 
 		}
 
 		public bool IsCalibrated {
-			get { return (ScreenWidthMM > 0) && (ScreenWidthPix > 0); }
+			get { return MonitorScaleMMperPixel > 0; }
 		}
 
 	    public MaskedMap Map {
@@ -58,6 +64,24 @@ namespace MapViewer
 			ContentPresenter1.Content = _map.CanvasMapMask;
 			ContentPresenter2.Content = _map.CanvasOverlay;
 			ContentPresenter3.Content = _canvasRuler;
+
+
+		    if (MonitorSize.Width < 10) {			    
+				var mm = new MonitorManager();
+				var monitor = mm.GetLargestActiveMonitor();
+			    if (monitor != null) {
+				    if (monitor.ImageSize.HasValue) {
+						MonitorSize = monitor.ImageSize.Value;
+				    }
+				    if (monitor.MaximumResolution.HasValue) {
+						MonitorResolution = monitor.MaximumResolution.Value;
+				    }
+					
+			    }
+		    }
+
+
+
 	    }
 
 	    public void MaximizeToSecondaryMonitor() {

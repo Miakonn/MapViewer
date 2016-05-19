@@ -4,6 +4,7 @@ using System.Windows.Media;
 using Microsoft.Win32;
 using System.Windows.Controls.Ribbon;
 using MapViewer.Dialogs;
+using SizeInt = System.Drawing.Size;
 
 namespace MapViewer {
 	public static class CustomCommands {
@@ -133,8 +134,8 @@ namespace MapViewer {
 
 		private void CalibrateDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var dialog = new DialogCalibrateDisplay {
-				ScreenWidthMM = PublicWindow.ScreenWidthMM,
-				ScreenWidthPix = PublicWindow.ScreenWidthPix,
+				ScreenWidthMM = PublicWindow.MonitorSize.Width,
+				ScreenWidthPix = PublicWindow.MonitorResolution.Width,
 				Owner = this
 			};
 
@@ -142,8 +143,8 @@ namespace MapViewer {
 			if (!result.HasValue || !result.Value) {
 				return;
 			}
-			PublicWindow.ScreenWidthMM = dialog.ScreenWidthMM;
-			PublicWindow.ScreenWidthPix = dialog.ScreenWidthPix;
+			PublicWindow.MonitorSize = new SizeInt((int)dialog.ScreenWidthMM, 0);
+			PublicWindow.MonitorResolution = new SizeInt((int)dialog.ScreenWidthPix, 0);
 		}
 
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {

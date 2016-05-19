@@ -55,6 +55,7 @@ namespace MapViewer {
 			MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
 
 			ComboBoxPublicScale.SelectedIndex = 0;
+
 		}
 
 		#region Private methods
