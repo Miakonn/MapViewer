@@ -56,6 +56,7 @@ namespace MapViewer {
 
 			ComboBoxPublicScale.SelectedIndex = 0;
 
+			Settings.Default.Upgrade();
 		}
 
 		#region Private methods

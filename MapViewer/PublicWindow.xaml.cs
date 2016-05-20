@@ -39,7 +39,12 @@ namespace MapViewer
 	    public double MonitorScaleMMperPixel { 
 			get { 
 				if ((MonitorResolution.Width > 0) && (MonitorSize.Width > 0)) {
-					return ((double)MonitorSize.Width / MonitorResolution.Width);
+					var scaleX = ((double) MonitorSize.Width/MonitorResolution.Width);
+					if ((MonitorResolution.Height > 0) && (MonitorSize.Height > 0)) {
+						var scaleY = ((double)MonitorSize.Height / MonitorResolution.Height); 
+						return (scaleX + scaleY) / 2.0;
+					}
+					return scaleX;
 				}
 				return 0;
 			} 
@@ -66,19 +71,7 @@ namespace MapViewer
 			ContentPresenter3.Content = _canvasRuler;
 
 
-		    if (MonitorSize.Width < 10) {			    
-				var mm = new MonitorManager();
-				var monitor = mm.GetLargestActiveMonitor();
-			    if (monitor != null) {
-				    if (monitor.ImageSize.HasValue) {
-						MonitorSize = monitor.ImageSize.Value;
-				    }
-				    if (monitor.MaximumResolution.HasValue) {
-						MonitorResolution = monitor.MaximumResolution.Value;
-				    }
-					
-			    }
-		    }
+	
 
 
 

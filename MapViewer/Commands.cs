@@ -134,8 +134,8 @@ namespace MapViewer {
 
 		private void CalibrateDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var dialog = new DialogCalibrateDisplay {
-				ScreenWidthMM = PublicWindow.MonitorSize.Width,
-				ScreenWidthPix = PublicWindow.MonitorResolution.Width,
+				MonitorSize = PublicWindow.MonitorSize,
+				MonitorResolution = PublicWindow.MonitorResolution,
 				Owner = this
 			};
 
@@ -143,8 +143,8 @@ namespace MapViewer {
 			if (!result.HasValue || !result.Value) {
 				return;
 			}
-			PublicWindow.MonitorSize = new SizeInt((int)dialog.ScreenWidthMM, 0);
-			PublicWindow.MonitorResolution = new SizeInt((int)dialog.ScreenWidthPix, 0);
+			PublicWindow.MonitorSize = dialog.MonitorSize;
+			PublicWindow.MonitorResolution = dialog.MonitorResolution;
 		}
 
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
