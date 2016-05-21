@@ -10,7 +10,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6E9D3F50-80C4-444E-8199-35AC0B71B5FE}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{6E9D3F50-80C4-444E-8199-35AC0B71B5FE}.Debug|Any CPU.Build.0 = Debug|x64
 		{6E9D3F50-80C4-444E-8199-35AC0B71B5FE}.Release|Any CPU.ActiveCfg = Release|x64
+		{6E9D3F50-80C4-444E-8199-35AC0B71B5FE}.Release|Any CPU.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
