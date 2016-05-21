@@ -67,7 +67,7 @@ namespace MapViewer {
 		}
 
 		private void Spell_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile));
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile) && MapPrivate.ImageScaleMperPix > 0.0);
 		}
 
 		public bool Publish_CanExecute() {

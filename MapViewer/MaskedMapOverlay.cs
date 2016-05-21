@@ -99,6 +99,8 @@ namespace MapViewer {
 				Opacity = 0.4
 
 			};
+			Canvas.SetLeft(shape, 0);
+			Canvas.SetTop(shape, 0);
 			AddOverlayElement(shape, uid);
 		}
 
@@ -109,6 +111,8 @@ namespace MapViewer {
 				Opacity = 0.4
 
 			};
+			Canvas.SetLeft(shape, 0);
+			Canvas.SetTop(shape, 0);
 			AddOverlayElement(shape, uid);
 		}
 
@@ -164,8 +168,6 @@ namespace MapViewer {
 				shape.StrokeThickness = 10 / Scale;
 			}
 		}
-
-
 
 		#endregion
 
