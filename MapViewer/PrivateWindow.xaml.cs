@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using MapViewer.Dialogs;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -230,8 +232,7 @@ namespace MapViewer {
 		}
 	
 		private void HelpButton_OnClick(object sender, RoutedEventArgs e) {
-			var dialog = new DialogAbout();
-			dialog.Owner = this;
+			var dialog = new DialogAbout {Owner = this};
 			dialog.ShowDialog();
 		}
 
@@ -239,7 +240,6 @@ namespace MapViewer {
 
 
 #region Public methods
-
 
 		public void DisplayPopup(string text) {
 			PopupDisplay.IsOpen = true;
@@ -250,7 +250,12 @@ namespace MapViewer {
 		}
 
 		public void HidePopup() {
-			PopupDisplay.IsOpen = false;
+			var time = new DispatcherTimer { Interval = TimeSpan.FromSeconds(10) };
+			time.Start();
+			time.Tick += delegate {
+				PopupDisplay.IsOpen = false;
+				time.Stop();
+			};
 		}
 
 #endregion region
