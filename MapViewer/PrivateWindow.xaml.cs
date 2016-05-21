@@ -45,6 +45,7 @@ namespace MapViewer {
 
 		public PrivateWindow() {
 			InitializeComponent();
+			Settings.Default.Upgrade();
 
 			MapPrivate = new MaskedMap(false) {
 				ParentWindow = this,
@@ -56,7 +57,6 @@ namespace MapViewer {
 
 			ComboBoxPublicScale.SelectedIndex = 0;
 
-			Settings.Default.Upgrade();
 		}
 
 		#region Private methods
