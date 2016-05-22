@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using MapViewer.Dialogs;
+using MapViewer.Properties;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
@@ -47,7 +49,9 @@ namespace MapViewer {
 
 		public PrivateWindow() {
 			InitializeComponent();
-			Settings.Default.Upgrade();
+
+			var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+			Settings.Default.SettingsKey = Path.Combine(path, "Miakonn\\MapViewer\\user.config") ;
 
 			MapPrivate = new MaskedMap(false) {
 				ParentWindow = this,

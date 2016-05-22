@@ -33,7 +33,7 @@ namespace MapViewer.Utilities {
 				return compiler.StandardOutput.ReadToEnd();
 			}
 			catch (Exception ex) {
-				MessageBox.Show(ex.Message);
+				MessageBox.Show("Failed to run DumpEDID.exe: \n" + ex.Message);
 			}
 			return null;
 		}
@@ -72,7 +72,7 @@ namespace MapViewer.Utilities {
 		/// <summary>
 		/// Return Image Size in mm, fall back to Maximum Images Size
 		/// </summary>
-		public SizeInt? ImageSize {
+		public Size? ImageSize {
 			get {
 				var size = ParseSizeFloat10("Image Size");
 				if (!size.HasValue) {
@@ -85,7 +85,7 @@ namespace MapViewer.Utilities {
 		/// <summary>
 		/// Return Maximum Resolution in pixels
 		/// </summary>
-		public SizeInt? MaximumResolution {
+		public Size? MaximumResolution {
 			get {
 				return ParseSizeInt("Maximum Resolution");
 			}
@@ -96,23 +96,23 @@ namespace MapViewer.Utilities {
 		}
 
 
-		private SizeInt? ParseSizeFloat10(string key) {
+		private Size? ParseSizeFloat10(string key) {
 			if (_parameters.ContainsKey(key)) {
 				double width, height;
 				var parts = _parameters[key].Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 				if (parts.Length >= 3 && double.TryParse(parts[0], out width) && double.TryParse(parts[2], out height)) {
-					return new SizeInt((int)(10 * width), (int)(10 * height));
+					return new Size((int)(10 * width), (int)(10 * height));
 				}
 			}
 			return null;
 		}
 
-		private System.Drawing.Size? ParseSizeInt(string key) {
+		private System.Windows.Size? ParseSizeInt(string key) {
 			if (_parameters.ContainsKey(key)) {
 				int width, height;
 				var parts = _parameters[key].Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 				if (parts.Length >= 3 && int.TryParse(parts[0], out width) && int.TryParse(parts[2], out height)) {
-					return new System.Drawing.Size(width, height);
+					return new System.Windows.Size(width, height);
 				}
 			}
 			return null;

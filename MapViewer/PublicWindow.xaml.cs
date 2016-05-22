@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using MapViewer.Properties;
 using MapViewer.Utilities;
 
 namespace MapViewer
@@ -20,18 +21,20 @@ namespace MapViewer
 
 	    private readonly Canvas _canvasRuler;
 
-	    public System.Drawing.Size MonitorResolution {
-		    get { return Settings.Default.PublicMonitorResolution; }
+	    public Size MonitorResolution {
+			get { return new Size(Settings.Default.PublicMonitorResolutionWidth, Settings.Default.PublicMonitorResolutionHeight); }
 		    set {
-			    Settings.Default.PublicMonitorResolution = value;
+			    Settings.Default.PublicMonitorResolutionWidth = (int)value.Width;
+				Settings.Default.PublicMonitorResolutionHeight = (int)value.Height;
 				Settings.Default.Save();
 		    }
 	    }
 
-		public System.Drawing.Size MonitorSize {
-			get { return Settings.Default.PublicMonitorSize; }
+		public Size MonitorSize {
+			get { return new Size(Settings.Default.PublicMonitorSizeWidth, Settings.Default.PublicMonitorSizeHeight); }
 			set {
-				Settings.Default.PublicMonitorSize = value;
+				Settings.Default.PublicMonitorSizeWidth = (int)value.Width;
+				Settings.Default.PublicMonitorSizeHeight = (int)value.Height;
 				Settings.Default.Save();
 			}
 		}

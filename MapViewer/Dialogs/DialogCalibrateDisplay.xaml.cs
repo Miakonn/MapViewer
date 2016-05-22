@@ -8,15 +8,15 @@ namespace MapViewer.Dialogs {
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public int MonitorSizePixelWidth { get; set; }
-		public int MonitorSizePixelHeight { get; set; }
+		public double MonitorSizePixelWidth { get; set; }
+		public double MonitorSizePixelHeight { get; set; }
 
-		public int MonitorSizeMmWidth { get; set; }
-		public int MonitorSizeMmHeight { get; set; }
+		public double MonitorSizeMmWidth { get; set; }
+		public double MonitorSizeMmHeight { get; set; }
 
 
-		public SizeInt MonitorResolution {
-			get { return new SizeInt(MonitorSizePixelWidth, MonitorSizePixelHeight); }
+		public Size MonitorResolution {
+			get { return new Size(MonitorSizePixelWidth, MonitorSizePixelHeight); }
 			set {
 				MonitorSizePixelWidth = value.Width;
 				MonitorSizePixelHeight = value.Height;
@@ -25,8 +25,8 @@ namespace MapViewer.Dialogs {
 			}
 		}
 
-		public SizeInt MonitorSize {
-			get { return new SizeInt(MonitorSizeMmWidth, MonitorSizeMmHeight); }
+		public Size MonitorSize {
+			get { return new Size(MonitorSizeMmWidth, MonitorSizeMmHeight); }
 			set {
 				MonitorSizeMmWidth = value.Width;
 				MonitorSizeMmHeight = value.Height;
