@@ -156,7 +156,7 @@ namespace MapViewer
 		public void SetRuler(double screenScaleMperPix) {
 			_canvasRuler.Children.Clear();
 
-			if (screenScaleMperPix < 0.0001) {
+			if (screenScaleMperPix < 0.0001  || screenScaleMperPix > 1E6) {
 				return;
 			}
 			var y0 = ActualHeight/10;
