@@ -155,6 +155,7 @@ namespace MapViewer {
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPublic.PublishFrom(MapPrivate, _publicIsDirty);
 			PublicWindow.SetRuler(MapPublic.ImageScaleMperPix / MapPublic.Scale);
+			PublicWindow.DrawCompass();
 			_publicIsDirty = false;
 
 			if (MapPublic.IsLinked) {
@@ -224,6 +225,7 @@ namespace MapViewer {
 
 		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPublic.RotateClockwise();
+			PublicWindow.RotateClockwise();
 			if (MapPublic.IsLinked) {
 				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
 			}
@@ -236,6 +238,7 @@ namespace MapViewer {
 			PublicWindow.Show();
 			PublicWindow.MaximizeToSecondaryMonitor();
 			PublishMap_Executed(sender, e);
+
 		}
 
 		private void RemoveDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {

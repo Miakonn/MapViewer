@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MapViewer.Properties;
 using MapViewer.Utilities;
@@ -20,6 +21,8 @@ namespace MapViewer
 		private readonly MaskedMap _map;
 
 	    private readonly Canvas _canvasRuler;
+
+	    private MatrixTransform _compassTransform;
 
 	    public Size MonitorResolution {
 			get { return new Size(Settings.Default.PublicMonitorResolutionWidth, Settings.Default.PublicMonitorResolutionHeight); }
@@ -73,10 +76,7 @@ namespace MapViewer
 			ContentPresenter2.Content = _map.CanvasOverlay;
 			ContentPresenter3.Content = _canvasRuler;
 
-
-	
-
-
+		    _compassTransform = new MatrixTransform(0.25, 0.0, 0.0, 0.25, 0.0, 0.0);
 
 	    }
 
@@ -96,7 +96,31 @@ namespace MapViewer
 		    }
 	    }
 
-	    private static double CalcStep(double length, out int count) {
+
+	    public void RotateClockwise() {
+			var mat = _compassTransform.Matrix;
+
+			var center = new Point(270, 240);
+			mat.RotateAtPrepend(90, center.X, center.Y);
+			_compassTransform.Matrix = mat;
+		    
+	    }
+
+	    public void DrawCompass() {
+			
+			var compass = new Image {
+				RenderTransform = _compassTransform,
+				Opacity = 0.8,
+				Source = new BitmapImage(new Uri("pack://application:,,,/Images/Compass_rose_transparent.png")),
+				Uid = "Compass"
+			};
+			Canvas.SetLeft(compass, ActualWidth - 200);
+			Canvas.SetTop(compass, ActualHeight - 200);
+			_canvasRuler.Children.Add(compass);
+	    }
+
+		#region Ruler
+		private static double CalcStep(double length, out int count) {
 
 		    var factor = Math.Pow(10, Math.Floor(Math.Log10(length)) - 1);
 		    length /= factor;
@@ -146,7 +170,8 @@ namespace MapViewer
 					Y2 = y0 + step * i + step,
 					StrokeThickness = 14,
 					Stroke = new SolidColorBrush((i % 2 == 0) ? Colors.WhiteSmoke : Colors.Red),
-					Opacity = 1.0
+					Opacity = 1.0,
+					Uid = "Ruler"
 
 				};
 				_canvasRuler.Children.Add(shape);
@@ -170,6 +195,8 @@ namespace MapViewer
 			WriteRulerText(count * stepM, y0 - 5, false);
 			WriteRulerText(stepM, y0 + count * stepPix + 25, true);
 		}
+
+		#endregion
 
 		private void PublicWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
 			e.Cancel = true;

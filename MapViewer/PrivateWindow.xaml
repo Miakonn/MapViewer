@@ -104,8 +104,28 @@
 						<ComboBoxItem x:Name="Linked" Content="Linked"/>
 					</ComboBox>
 					<RibbonCheckBox Label="Show cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
-					<RibbonButton Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" />
-					<RibbonButton Label="Hide display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" />
+					<RibbonButton Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" >
+						<Button.Style>
+							<Style TargetType="{x:Type Button}">
+								<Style.Triggers>
+									<Trigger Property="IsEnabled" Value="False">
+										<Setter Property="Visibility" Value="Collapsed"/>
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+						</Button.Style>
+					</RibbonButton>
+					<RibbonButton Label="Hide display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" >
+						<Button.Style>
+							<Style TargetType="{x:Type Button}">
+								<Style.Triggers>
+									<Trigger Property="IsEnabled" Value="False">
+										<Setter Property="Visibility" Value="Collapsed"/>
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+						</Button.Style>
+					</RibbonButton>
 					<RibbonButton Label="Rotate" Command="mapViewer:CustomCommands.RotateMap" LargeImageSource="Images/Monitor_rotate.png" />
 					<RibbonButton Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png" />
 				</RibbonGroup>
