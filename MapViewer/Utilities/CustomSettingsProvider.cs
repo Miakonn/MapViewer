@@ -12,12 +12,12 @@ using System.Xml.Linq;
 
 
 namespace MapViewer.Utilities {
-	class CustomSettingsProvider : SettingsProvider {
-		const string NAME = "name";
-		const string SERIALIZE_AS = "serializeAs";
-		const string CONFIG = "configuration";
-		const string USER_SETTINGS = "userSettings";
-		const string SETTING = "setting";
+	internal class CustomSettingsProvider : SettingsProvider {
+		private const string NAME = "name";
+		private const string SerializeAs = "serializeAs";
+		private const string Config = "configuration";
+		private const string UserSettings = "userSettings";
+		private const string Setting = "setting";
 
 		/// <summary>
 		/// Loads the file into memory.
@@ -71,17 +71,13 @@ namespace MapViewer.Utilities {
 				var value = new SettingsPropertyValue(setting) {IsDirty = false};
 
 				//need the type of the value for the strong typing
-				var t = Type.GetType(setting.PropertyType.AssemblyQualifiedName);
-
-
-				if (SettingsDictionary.ContainsKey(setting.Name)) {
-					value.SerializedValue = SettingsDictionary[setting.Name].value;
+				if (setting.PropertyType != null && setting.PropertyType.AssemblyQualifiedName != null) {
+					var t = Type.GetType(setting.PropertyType.AssemblyQualifiedName);
+					value.SerializedValue = SettingsDictionary.ContainsKey(setting.Name) ? SettingsDictionary[setting.Name].value : setting.DefaultValue;
+					if (t != null) {
+						value.PropertyValue = Convert.ChangeType(value.SerializedValue, t);
+					}
 				}
-				else { //use defaults in the case where there are no settings yet
-					value.SerializedValue = setting.DefaultValue;
-				}
-
-				value.PropertyValue = Convert.ChangeType(value.SerializedValue, t);
 
 
 				values.Add(value);
@@ -133,15 +129,15 @@ namespace MapViewer.Utilities {
 			var configXml = XDocument.Load(UserConfigPath);
 
 			//get all of the <setting name="..." serializeAs="..."> elements.
-			var settingElements = configXml.Element(CONFIG).Element(USER_SETTINGS).Element(typeof(Properties.Settings).FullName).Elements(SETTING);
+			var settingElements = configXml.Element(Config).Element(UserSettings).Element(typeof(Properties.Settings).FullName).Elements(Setting);
 
 			//iterate through, adding them to the dictionary, (checking for nulls, xml no likey nulls)
 			//using "String" as default serializeAs...just in case, no real good reason.
 			foreach (var element in settingElements) {
 				var newSetting = new SettingStruct() {
 					name = element.Attribute(NAME) == null ? String.Empty : element.Attribute(NAME).Value,
-					serializeAs = element.Attribute(SERIALIZE_AS) == null ? "String" : element.Attribute(SERIALIZE_AS).Value,
-					value = element.Value ?? String.Empty
+					serializeAs = element.Attribute(SerializeAs) == null ? "String" : element.Attribute(SerializeAs).Value,
+					value = element.Value
 				};
 				SettingsDictionary.Add(element.Attribute(NAME).Value, newSetting);
 			}
@@ -155,8 +151,8 @@ namespace MapViewer.Utilities {
 			try {
 				var doc = new XDocument();
 				var declaration = new XDeclaration("1.0", "utf-8", "true");
-				var config = new XElement(CONFIG);
-				var userSettings = new XElement(USER_SETTINGS);
+				var config = new XElement(Config);
+				var userSettings = new XElement(UserSettings);
 				var group = new XElement(typeof (Properties.Settings).FullName);
 				userSettings.Add(group);
 				config.Add(userSettings);
@@ -177,16 +173,16 @@ namespace MapViewer.Utilities {
 			var import = XDocument.Load(UserConfigPath);
 
 			//get the settings group (e.g. <Company.Project.Desktop.Settings>)
-			var settingsSection = import.Element(CONFIG).Element(USER_SETTINGS).Element(typeof(Properties.Settings).FullName);
+			var settingsSection = import.Element(Config).Element(UserSettings).Element(typeof(Properties.Settings).FullName);
 
 			//iterate though the dictionary, either updating the value or adding the new setting.
 			foreach (var entry in SettingsDictionary) {
 				var setting = settingsSection.Elements().FirstOrDefault(e => e.Attribute(NAME).Value == entry.Key);
 				if (setting == null) //this can happen if a new setting is added via the .settings designer.
                 {
-					var newSetting = new XElement(SETTING);
+					var newSetting = new XElement(Setting);
 					newSetting.Add(new XAttribute(NAME, entry.Value.name));
-					newSetting.Add(new XAttribute(SERIALIZE_AS, entry.Value.serializeAs));
+					newSetting.Add(new XAttribute(SerializeAs, entry.Value.serializeAs));
 					newSetting.Value = (entry.Value.value ?? String.Empty);
 					settingsSection.Add(newSetting);
 				}
@@ -223,6 +219,6 @@ namespace MapViewer.Utilities {
 			internal string value;
 		}
 
-		bool _loaded;
+		private bool _loaded;
 	}
 }
