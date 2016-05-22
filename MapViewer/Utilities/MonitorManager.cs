@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 
 using SizeInt = System.Drawing.Size;
@@ -27,7 +28,8 @@ namespace MapViewer.Utilities {
 				compiler.StartInfo.RedirectStandardOutput = true;
 				compiler.StartInfo.CreateNoWindow = true;
 				compiler.Start();
-				compiler.WaitForExit();
+				Thread.Sleep(1000);
+				//compiler.WaitForExit();
 				return compiler.StandardOutput.ReadToEnd();
 			}
 			catch (Exception ex) {

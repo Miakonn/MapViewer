@@ -50,6 +50,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -94,6 +95,7 @@
       <DependentUpon>PublicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\MaskRectangle.cs" />
+    <Compile Include="Utilities\CustomSettingsProvider.cs" />
     <Compile Include="Utilities\MonitorManager.cs" />
     <Page Include="Dialogs\DialogAbout.xaml">
       <SubType>Designer</SubType>
@@ -155,11 +157,6 @@
     <None Include="Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
