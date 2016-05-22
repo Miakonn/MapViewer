@@ -17,6 +17,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand OpenImage = new RoutedUICommand("Open image", "Open image", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand ExitApp = new RoutedUICommand("Exit", "Exit", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand PublishMap = new RoutedUICommand("Publish", "Publish", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ClearMask = new RoutedUICommand("Clear mask", "Clear mask", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ClearOverlay = new RoutedUICommand("Clear overlay", "Clear overlay", typeof(CustomCommands), null);
@@ -105,6 +106,10 @@ namespace MapViewer {
 				_publicIsDirty = true;
 				CreateWindows();
 			}
+		}
+
+		private void ExitApp_Executed(object sender, ExecutedRoutedEventArgs e) {
+			Application.Current.Shutdown();
 		}
 
 		private void ScaleToFit_Executed(object sender, ExecutedRoutedEventArgs e) {
