@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Configuration;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +7,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MapViewer.Properties;
-using MapViewer.Utilities;
 
 namespace MapViewer
 {
@@ -22,7 +19,7 @@ namespace MapViewer
 
 	    private readonly Canvas _canvasRuler;
 
-	    private MatrixTransform _compassTransform;
+	    private readonly MatrixTransform _compassTransform;
 
 	    public Size MonitorResolution {
 			get { return new Size(Settings.Default.PublicMonitorResolutionWidth, Settings.Default.PublicMonitorResolutionHeight); }
@@ -45,9 +42,9 @@ namespace MapViewer
 	    public double MonitorScaleMMperPixel { 
 			get { 
 				if ((MonitorResolution.Width > 0) && (MonitorSize.Width > 0)) {
-					var scaleX = ((double) MonitorSize.Width/MonitorResolution.Width);
+					var scaleX = (MonitorSize.Width/MonitorResolution.Width);
 					if ((MonitorResolution.Height > 0) && (MonitorSize.Height > 0)) {
-						var scaleY = ((double)MonitorSize.Height / MonitorResolution.Height); 
+						var scaleY = (MonitorSize.Height / MonitorResolution.Height); 
 						return (scaleX + scaleY) / 2.0;
 					}
 					return scaleX;

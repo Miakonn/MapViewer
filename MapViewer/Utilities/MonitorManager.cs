@@ -22,6 +22,9 @@ namespace MapViewer.Utilities {
 			var compiler = new Process();
 			try {
 				var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+				if (path == null) {
+					return null;
+				}
 				compiler.StartInfo.FileName = Path.Combine(path, "DumpEDID\\DumpEDID.exe");
 				compiler.StartInfo.Arguments = "";
 				compiler.StartInfo.UseShellExecute = false;
@@ -107,12 +110,12 @@ namespace MapViewer.Utilities {
 			return null;
 		}
 
-		private System.Windows.Size? ParseSizeInt(string key) {
+		private Size? ParseSizeInt(string key) {
 			if (_parameters.ContainsKey(key)) {
 				int width, height;
 				var parts = _parameters[key].Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 				if (parts.Length >= 3 && int.TryParse(parts[0], out width) && int.TryParse(parts[2], out height)) {
-					return new System.Windows.Size(width, height);
+					return new Size(width, height);
 				}
 			}
 			return null;
