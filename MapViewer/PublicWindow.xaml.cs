@@ -95,8 +95,9 @@ namespace MapViewer
 
 
 	    public void RotateClockwise() {
-			var mat = _compassTransform.Matrix;
+			Map.RotateClockwise();
 
+			var mat = _compassTransform.Matrix;
 			var center = new Point(270, 240);
 			mat.RotateAtPrepend(90, center.X, center.Y);
 			_compassTransform.Matrix = mat;

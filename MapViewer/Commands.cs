@@ -224,7 +224,6 @@ namespace MapViewer {
 		}
 
 		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
-			MapPublic.RotateClockwise();
 			PublicWindow.RotateClockwise();
 			if (MapPublic.IsLinked) {
 				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);

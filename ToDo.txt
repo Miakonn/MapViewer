@@ -1,5 +1,6 @@
 
 
+*	Set Gaming till default tab
 
 
 *	rita element i båda fönstren
@@ -8,8 +9,7 @@
 
 * 	spara position
 
-*	kompassros
-
+*	loggning
 
 
 
