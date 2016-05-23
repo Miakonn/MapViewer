@@ -154,7 +154,7 @@ namespace MapViewer {
 
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPublic.PublishFrom(MapPrivate, _publicIsDirty);
-			PublicWindow.SetRuler(MapPublic.ImageScaleMperPix / MapPublic.Scale);
+			PublicWindow.SetRuler();
 			PublicWindow.DrawCompass();
 			_publicIsDirty = false;
 

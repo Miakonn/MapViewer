@@ -4,6 +4,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using log4net;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
+using log4net.Layout;
 using MapViewer.Dialogs;
 using MapViewer.Properties;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -66,6 +71,11 @@ namespace MapViewer {
 		}
 
 		#region Private methods
+
+
+
+
+
 
 		private void CreateWindows() {
 			MapPrivate.Create();
