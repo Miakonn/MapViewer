@@ -171,7 +171,7 @@ namespace MapViewer {
 		private void UpdatePublicViewRectangle() {
 			var privateWin = ParentWindow as PrivateWindow;
 			if (!IsPublic && !IsLinked && privateWin!= null) {
-				UpdateVisibleRectangle(privateWin.MapPublic.VisibleRectInMap());
+				UpdateVisibleRectangle(privateWin.MapPublic.VisibleRectInMap(), privateWin.MapPublic.ImageFile);
 			}
 		}
 
@@ -314,6 +314,7 @@ namespace MapViewer {
 				MapImage = mapSource.MapImage.CloneCurrentValue();
 			}
 
+			ImageFile = mapSource.ImageFile;
 			MapData.ImageScaleMperPix = mapSource.MapData.ImageScaleMperPix;
 		
 			mapSource.CanvasOverlay.CopyingCanvas(CanvasOverlay);

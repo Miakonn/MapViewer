@@ -72,11 +72,6 @@ namespace MapViewer {
 
 		#region Private methods
 
-
-
-
-
-
 		private void CreateWindows() {
 			MapPrivate.Create();
 			MapPublic.Create();
@@ -88,7 +83,7 @@ namespace MapViewer {
 				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
 			}
 			else {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
+				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap(), MapPublic.ImageFile);
 			}
 		}
 

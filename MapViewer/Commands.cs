@@ -114,23 +114,17 @@ namespace MapViewer {
 
 		private void ScaleToFit_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ScaleToWindow();
-			if (!MapPrivate.IsLinked) {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-			}
+			MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap(), MapPublic.ImageFile);
 		}
 
 		private void ZoomIn_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Zoom(1.2, new Point(0,0));
-			if (!MapPrivate.IsLinked) {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-			}
+			MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap(), MapPublic.ImageFile);
 		}
 
 		private void ZoomOut_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Zoom(0.8, new Point(0, 0));
-			if (!MapPrivate.IsLinked) {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-			}
+			MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap(), MapPublic.ImageFile);
 		}
 
 		private void Save_Executed(object sender, ExecutedRoutedEventArgs e) {
@@ -162,7 +156,7 @@ namespace MapViewer {
 				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
 			}
 			else {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
+				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap(), MapPublic.ImageFile);
 			}
 
 			Activate();
@@ -174,9 +168,7 @@ namespace MapViewer {
 
 		private void ClearOverlay_Executed(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ClearOverlay();
-			if (!MapPublic.IsLinked) {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-			}
+			MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap(), MapPublic.ImageFile);
 
 			MapPublic.ClearOverlay();
 		}
@@ -229,7 +221,7 @@ namespace MapViewer {
 				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
 			}
 			else {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
+				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap(), MapPublic.ImageFile);
 			}
 		}
 
