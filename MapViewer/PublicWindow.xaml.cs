@@ -15,13 +15,13 @@ namespace MapViewer
     /// </summary>
     public partial class PublicWindow {
 
-		private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		private readonly MaskedMap _map;
 
 	    private readonly Canvas _canvasRuler;
 
-	    private readonly MatrixTransform _compassTransform;
+	    private MatrixTransform _compassTransform;
 
 	    public Size MonitorResolution {
 			get { return new Size(Settings.Default.PublicMonitorResolutionWidth, Settings.Default.PublicMonitorResolutionHeight); }
@@ -107,6 +107,7 @@ namespace MapViewer
 	    }
 
 	    public void DrawCompass() {
+			_compassTransform = new MatrixTransform(0.25, 0.0, 0.0, 0.25, 0.0, 0.0);
 			
 			var compass = new Image {
 				RenderTransform = _compassTransform,
@@ -121,7 +122,7 @@ namespace MapViewer
 
 		#region Ruler
 		private static double CalcStep(double length, out int count) {
-			log.Debug("CalcStep length=" + length);
+			Log.Debug("CalcStep length=" + length);
 
 		    var factor = Math.Pow(10, Math.Floor(Math.Log10(length)) - 1);
 		    length /= factor;
@@ -181,7 +182,7 @@ namespace MapViewer
 	    }
 
 		public void SetRuler() {
-			log.Debug(string.Format("SetRuler ImageScaleMperPix={0} Scale={1}", Map.ImageScaleMperPix, Map.Scale));
+			Log.Debug(string.Format("SetRuler ImageScaleMperPix={0} Scale={1}", Map.ImageScaleMperPix, Map.Scale));
 
 			var screenScaleMperPix = Map.ImageScaleMperPix/Map.Scale;
 
@@ -195,9 +196,9 @@ namespace MapViewer
 			var lengthM = height * screenScaleMperPix;
 			int count;
 			var stepM = CalcStep(lengthM, out count);
-			log.Debug(string.Format("SetRuler stepM={0} count={1}", stepM, count));
+			Log.Debug(string.Format("SetRuler stepM={0} count={1}", stepM, count));
 			var stepPix = stepM / screenScaleMperPix;
-			log.Debug(string.Format("SetRuler stepPix={0} screenScaleMperPix={1}", stepPix, screenScaleMperPix));
+			Log.Debug(string.Format("SetRuler stepPix={0} screenScaleMperPix={1}", stepPix, screenScaleMperPix));
 
 			DrawRuler(count, stepPix, y0);
 			WriteRulerText(count * stepM, y0 - 5, false);

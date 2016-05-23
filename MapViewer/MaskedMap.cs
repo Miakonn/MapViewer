@@ -12,6 +12,8 @@ namespace MapViewer {
 	public partial class MaskedMap {
 		#region Properties
 
+		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private string _imagePath;
 
 		public BitmapImage MapImage;
@@ -56,6 +58,8 @@ namespace MapViewer {
 			get { return _imagePath; }
 			set {
 				_imagePath = value;
+
+				Log.InfoFormat("Loading image {0}", _imagePath);
 				MapImage = new BitmapImage(new Uri(_imagePath));
 				MapData = new MapData(CreateFilename(_imagePath, ".xml"));
 
@@ -173,6 +177,7 @@ namespace MapViewer {
 
 		private void ScaleToReal() {
 			if (IsPublic && MapImage != null) {
+				Log.DebugFormat("ScaleToReal {0} {1}", ScreenScaleMMperM, ImageScaleMperPix);
 
 				if (MapData.ImageScaleMperPix < 0.005) {
 					MessageBox.Show("Image not calibrated");
@@ -180,8 +185,11 @@ namespace MapViewer {
 				}
 
 				var publicWindow = ParentWindow as PublicWindow;
-
+				
 				if (publicWindow != null) {
+					Log.DebugFormat("ScaleToReal1 MonitorScaleMMperPixel={0}", publicWindow.MonitorScaleMMperPixel);
+					Log.DebugFormat("ScaleToReal2 CanvasOverlay.ActualWidth={0} MapImage.Width={1}", CanvasOverlay.ActualWidth, MapImage.Width);
+
 					var scale = ScreenScaleMMperM * ImageScaleMperPix /  publicWindow.MonitorScaleMMperPixel;
 					var x0 = (CanvasOverlay.ActualWidth / 2) - scale * (MapImage.Width / 2);
 					var y0 = (CanvasOverlay.ActualHeight / 2) - scale * (MapImage.Height / 2);
@@ -206,8 +214,8 @@ namespace MapViewer {
 				var publicWinSizePix = ParentWindow.RenderSize;
 				var publicAspectRatio = publicWinSizePix.Width / publicWinSizePix.Height;
 
-				System.Diagnostics.Trace.WriteLine(string.Format("private aspect ratio={0}", privateAspectRatio));
-				System.Diagnostics.Trace.WriteLine(string.Format("public aspect ratio={0}", publicAspectRatio));
+				Log.DebugFormat("ScaleToLinked private aspect ratio={0}", privateAspectRatio);
+				Log.DebugFormat("ScaleToLinked public aspect ratio={0}", publicAspectRatio);
 
 				if (privateAspectRatio > publicAspectRatio) {
 					publicWinSizePix.Height = publicWinSizePix.Width / privateAspectRatio;
@@ -217,6 +225,7 @@ namespace MapViewer {
 				}
 
 				var scale = Math.Min(publicWinSizePix.Width / privateWidth, publicWinSizePix.Height / privateHeight);
+				Log.DebugFormat("ScaleToLinked public scale={0}", scale);
 
 				DisplayTransform = mapSource.DisplayTransform.CloneCurrentValue();
 
@@ -296,6 +305,8 @@ namespace MapViewer {
 		}
 
 		public void PublishFrom(MaskedMap mapSource, bool scaleNeedsToRecalculate) {
+			Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
+
 			if (mapSource.BmpMask != null) {
 				BmpMask = mapSource.BmpMask.CloneCurrentValue();
 			}

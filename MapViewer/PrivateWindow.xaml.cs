@@ -5,10 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using log4net;
-using log4net.Appender;
-using log4net.Config;
-using log4net.Core;
-using log4net.Layout;
 using MapViewer.Dialogs;
 using MapViewer.Properties;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -25,6 +21,8 @@ namespace MapViewer {
 		}
 
 		#region Attributes
+
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		public readonly MaskedMap MapPrivate;
 		public readonly MaskedMap MapPublic;
@@ -57,6 +55,8 @@ namespace MapViewer {
 
 			var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 			Settings.Default.SettingsKey = Path.Combine(path, "Miakonn\\MapViewer\\user.config") ;
+
+			Log.Info("STARTING MapViewer ******************************************");
 
 			MapPrivate = new MaskedMap(false) {
 				ParentWindow = this,
