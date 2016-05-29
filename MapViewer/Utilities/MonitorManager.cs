@@ -49,7 +49,7 @@ namespace MapViewer.Utilities {
 			Monitor monitorLargest = null;
 			double valueLargest = -1;
 			foreach (var monitor in _edid.Monitors) {
-				if (monitor.ImageSize.HasValue && monitor.ImageSize.Value.Width > valueLargest) {
+                if (monitor.Active.HasValue && monitor.Active.Value && monitor.ImageSize.HasValue && monitor.ImageSize.Value.Width > valueLargest) {
 					monitorLargest = monitor;
 					valueLargest = monitor.ImageSize.Value.Width;
 				}
@@ -65,8 +65,8 @@ namespace MapViewer.Utilities {
 		public bool? Active {
 			get {
 				bool result;
-				if (_parameters.ContainsKey("Active") && bool.TryParse(_parameters["Active"], out result)) {
-					return result;
+				if (_parameters.ContainsKey("Active")) {
+					return _parameters["Active"].Contains("Yes");
 				}
 				return null;
 			}

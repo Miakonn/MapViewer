@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MapViewer.Properties;
+using log4net;
 
 namespace MapViewer
 {
