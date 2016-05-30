@@ -156,10 +156,6 @@ namespace MapViewer {
 		}
 
 		public void UpdateVisibleRectangle(Rect rect, string publicFileName) {
-			if (IsLinked || ImageFile != publicFileName) {
-				return;
-			}
-
 			var shape = (Rectangle)CanvasOverlay.FindElementByUid(PublicPositionUid);
 			if (shape == null) {
 				OverlayRectangle(rect, Colors.Red, PublicPositionUid);
