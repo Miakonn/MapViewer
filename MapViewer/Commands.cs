@@ -4,7 +4,6 @@ using System.Windows.Media;
 using Microsoft.Win32;
 using System.Windows.Controls.Ribbon;
 using MapViewer.Dialogs;
-using SizeInt = System.Drawing.Size;
 
 namespace MapViewer {
 	public static class CustomCommands {
