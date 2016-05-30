@@ -105,6 +105,12 @@ namespace MapViewer {
 				MapPrivate.ImageFile = dialog.FileName;
 				_publicIsDirty = true;
 				CreateWindows();
+				if (MapPrivate.IsCalibrated) {
+					GamingTab.IsSelected = true;
+				}
+				else {
+					SetupTab.IsSelected = true;
+				}
 			}
 		}
 
