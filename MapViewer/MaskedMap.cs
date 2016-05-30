@@ -25,6 +25,8 @@ namespace MapViewer {
 		public readonly Canvas CanvasMapMask = new Canvas();
 
 		public Canvas CanvasOverlay = new Canvas();
+		private Image _maskImage;
+		private Image _backgroundImage;
 
 		private double MaskOpacity { get; set; }
 
@@ -103,23 +105,52 @@ namespace MapViewer {
 			// CanvasMapMask
 			CanvasMapMask.Children.Clear();
 			CanvasMapMask.RenderTransform = DisplayTransform;
-			var backgroundImage = new Image {
+			_backgroundImage = new Image {
 				Source = MapImage,
 				Uid = "Map"
 			};
-			CanvasMapMask.Children.Add(backgroundImage);
+			CanvasMapMask.Children.Add(_backgroundImage);
 
-			var maskImage = new Image {
+			_maskImage = new Image {
 				Opacity = MaskOpacity,
 				Source = BmpMask,
 				Uid = "Mask"
 
 			};
-			CanvasMapMask.Children.Add(maskImage);
+			CanvasMapMask.Children.Add(_maskImage);
 
 			// CanvasOverlay
 			CanvasOverlay.RenderTransform = DisplayTransform;
 		}
+
+		public void PublishFrom(MaskedMap mapSource, bool scaleNeedsToRecalculate) {
+			Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
+
+			var changeImage = !string.Equals(ImageFile, mapSource.ImageFile);
+
+			if (mapSource.BmpMask != null && _maskImage != null) {
+				BmpMask = mapSource.BmpMask.CloneCurrentValue();
+				_maskImage.Source = BmpMask;
+			}
+			if (mapSource.MapImage != null && changeImage) {
+				MapImage = mapSource.MapImage.CloneCurrentValue();
+				_backgroundImage.Source = MapImage;
+				ImageFile = mapSource.ImageFile;
+				mapSource.CanvasOverlay.CopyingCanvas(CanvasOverlay);
+			}
+
+
+			MapData.ImageScaleMperPix = mapSource.MapData.ImageScaleMperPix;
+
+
+			if (IsLinked) {
+				ScaleToLinked(mapSource);
+			}
+			else if (scaleNeedsToRecalculate) {
+				ScaleToReal();
+			}
+		}
+
 
 		public Rect VisibleRectInMap() {
 			var rect = new Rect(0.0, 0.0, CanvasMapMask.ActualWidth, CanvasMapMask.ActualHeight);
@@ -232,6 +263,8 @@ namespace MapViewer {
 				var matrix = DisplayTransform.Matrix;
 				matrix.Scale(scale, scale);
 				DisplayTransform.Matrix = matrix;
+
+				CanvasMapMask.RenderTransform = DisplayTransform;
 			}			
 		}
 
@@ -304,28 +337,7 @@ namespace MapViewer {
 			}
 		}
 
-		public void PublishFrom(MaskedMap mapSource, bool scaleNeedsToRecalculate) {
-			Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
-
-			if (mapSource.BmpMask != null) {
-				BmpMask = mapSource.BmpMask.CloneCurrentValue();
-			}
-			if (mapSource.MapImage != null) {
-				MapImage = mapSource.MapImage.CloneCurrentValue();
-			}
-
-			MapData.ImageScaleMperPix = mapSource.MapData.ImageScaleMperPix;
-		
-			mapSource.CanvasOverlay.CopyingCanvas(CanvasOverlay);
-
-			if (IsLinked) {
-				ScaleToLinked(mapSource);
-			}
-			else if (scaleNeedsToRecalculate) {
-				ScaleToReal();
-			}
-			Create();
-		}
+	
 
 		public void ClearMask() {
 			if (BmpMask != null) {

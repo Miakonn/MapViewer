@@ -165,6 +165,7 @@ namespace MapViewer {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 
+			ActiveTool = null;
 			Activate();
 		}
 
