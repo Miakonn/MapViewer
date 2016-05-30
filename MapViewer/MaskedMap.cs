@@ -48,6 +48,10 @@ namespace MapViewer {
 			}
 		}
 
+		public bool IsCalibrated {
+			get { return ImageScaleMperPix > 0.0; } 
+		}
+
 		public Window ParentWindow { get; set; }
 
 		public bool IsLinked { get; set; }
