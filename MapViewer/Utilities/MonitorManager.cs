@@ -5,8 +5,8 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 
-using SizeInt = System.Drawing.Size;
 
 namespace MapViewer.Utilities {
 
@@ -14,11 +14,14 @@ namespace MapViewer.Utilities {
 	public class MonitorManager {
 		private readonly Edid _edid;
 
+		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
 		public MonitorManager() {
 			_edid = new Edid(RunDumpEdid());
 		}
 
 		private static string RunDumpEdid() {
+			Mouse.OverrideCursor = Cursors.Wait;
 			var compiler = new Process();
 			try {
 				var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
@@ -33,11 +36,13 @@ namespace MapViewer.Utilities {
 				compiler.Start();
 				Thread.Sleep(1000);
 				//compiler.WaitForExit();
+				Mouse.OverrideCursor = null;
 				return compiler.StandardOutput.ReadToEnd();
 			}
 			catch (Exception ex) {
 				MessageBox.Show("Failed to run DumpEDID.exe: \n" + ex.Message);
 			}
+			Mouse.OverrideCursor = null;
 			return null;
 		}
 
@@ -54,9 +59,14 @@ namespace MapViewer.Utilities {
 					valueLargest = monitor.ImageSize.Value.Width;
 				}
 			}
+			if (monitorLargest == null) {
+				Log.InfoFormat("Found no active monitors!");
+			}
+			else {
+				Log.InfoFormat("Selected monitor: " + monitorLargest.Parameters["Serial Number"]);
+			}
 			return monitorLargest;
 		}
-
 	}
 
 	public class Monitor {
@@ -64,9 +74,8 @@ namespace MapViewer.Utilities {
 
 		public bool? Active {
 			get {
-				bool result;
-				if (_parameters.ContainsKey("Active") && bool.TryParse(_parameters["Active"], out result)) {
-					return result;
+				if (_parameters.ContainsKey("Active")) {
+					return _parameters["Active"].Contains("Yes");
 				}
 				return null;
 			}
@@ -125,6 +134,7 @@ namespace MapViewer.Utilities {
 
 	internal class Edid {
 		private readonly List<Monitor> _monitors = new List<Monitor>();
+		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
 		public List<Monitor> Monitors {
 			get { return _monitors; }
@@ -138,18 +148,22 @@ namespace MapViewer.Utilities {
 		}
 
 		public Edid(string text) {
-			if (!string.IsNullOrWhiteSpace(text)) {
-				var lines = text.Split("\n\r".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-				Monitor monitor = null;
-				foreach (var line in lines) {
-					if (line.StartsWith("Active")) {
-						monitor = new Monitor();
-						_monitors.Add(monitor);
-						ParseLine(line, monitor);
-					}
-					else if (monitor != null) {
-						ParseLine(line, monitor);
-					}
+			text = text.Replace("\r\r\n", "\r\n");
+			if (string.IsNullOrWhiteSpace(text)) {
+				return;
+			}
+			Log.Info(text);
+			var lines = text.Split("\n\r".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+			Monitor monitor = null;
+			foreach (var line in lines) {
+				if (line.StartsWith("Active")) {
+					monitor = new Monitor();
+					_monitors.Add(monitor);
+					ParseLine(line, monitor);
+				}
+				else if (monitor != null) {
+					ParseLine(line, monitor);
 				}
 			}
 		}
