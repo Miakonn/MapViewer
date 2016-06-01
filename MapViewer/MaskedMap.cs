@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,8 +15,6 @@ namespace MapViewer {
 
 		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-		private string _imagePath;
-
 		public BitmapImage MapImage;
 
 		public MatrixTransform DisplayTransform { get; set; }
@@ -27,6 +26,8 @@ namespace MapViewer {
 		public Canvas CanvasOverlay = new Canvas();
 		private Image _maskImage;
 		private Image _backgroundImage;
+
+		private readonly BitmapPalette _maskPalette;
 
 		private double MaskOpacity { get; set; }
 
@@ -60,27 +61,7 @@ namespace MapViewer {
 
 		private bool IsPublic { get; set; }
 
-		public string ImageFile {
-			get { return _imagePath; }
-			set {
-				_imagePath = value;
-
-				Log.InfoFormat("Loading image {0}", _imagePath);
-				MapImage = new BitmapImage(new Uri(_imagePath));
-				MapData = new MapData(CreateFilename(_imagePath, ".xml"));
-
-				BmpMask = null;
-				CanvasOverlay.Children.Clear();
-
-				Deserialize();
-
-				if (BmpMask == null) {
-					BmpMask = new WriteableBitmap(MapImage.PixelWidth, MapImage.PixelHeight, MapImage.DpiX, MapImage.DpiY, PixelFormats.Pbgra32, null);
-				}
-
-				ScaleToWindow();
-			}
-		}
+		public string ImageFile { get; set; }
 
 		public double Scale {
 			get {
@@ -101,7 +82,31 @@ namespace MapViewer {
 
 			MapData = new MapData(null);
 
+			if (!IsPublic) {
+				_maskPalette = CreatePalette();
+			}
+
 			IsLinked = false;
+		}
+
+
+		public void LoadImage(string imagePath) {
+			ImageFile = imagePath;
+			Log.InfoFormat("Loading image {0}", ImageFile);
+			MapImage = new BitmapImage(new Uri(ImageFile));
+			MapData = new MapData(CreateFilename(ImageFile, ".xml"));
+
+			BmpMask = null;
+			CanvasOverlay.Children.Clear();
+
+			Deserialize();
+
+			if (BmpMask == null) {
+				BmpMask = new WriteableBitmap(MapImage.PixelWidth, MapImage.PixelHeight, MapImage.DpiX, MapImage.DpiY,
+					PixelFormats.Indexed8, _maskPalette);
+			}
+
+			ScaleToWindow();			
 		}
 
 		public void Create() {
@@ -126,6 +131,15 @@ namespace MapViewer {
 			// CanvasOverlay
 			CanvasOverlay.RenderTransform = DisplayTransform;
 		}
+
+		private static BitmapPalette CreatePalette() {
+			var colors = new List<Color> {Colors.Transparent};
+			for (var i = 1; i <= 255; i++) {
+				colors.Add(Colors.Black);
+			}
+			return new BitmapPalette(colors);
+		}
+
 
 		public void PublishFrom(MaskedMap mapSource, bool scaleNeedsToRecalculate) {
 			Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
@@ -276,18 +290,15 @@ namespace MapViewer {
 			return Math.Max(Math.Min(val, max), min);
 		}
 
-		private static byte[] CreateColorData(int byteCount, byte opacity) {
+		private static byte[] CreateColorData(int byteCount, byte colorIndex) {
 			var colorData = new byte[byteCount];
-			for (var i = 0; i < byteCount; i += 4) {
-				colorData[i] = 0;	// B
-				colorData[i + 1] = 0; // G
-				colorData[i + 2] = 0; // R
-				colorData[i + 3] = opacity; // A
+			for (var i = 0; i < byteCount; i ++) {
+				colorData[i] = colorIndex;	// B
 			}
 			return colorData;
 		}
 
-		public void MaskCircle(int centerX, int centerY, int radius, byte opacity) {
+		public void MaskCircle(int centerX, int centerY, int radius, byte colorIndex) {
 
 			centerX = (int)(centerX * ScaleDpiFix);
 			centerY = (int)(centerY * ScaleDpiFix);
@@ -301,8 +312,8 @@ namespace MapViewer {
 			var y0 = Between(centerY - radius, 0, bitmap.PixelHeight);
 			var yMax = Between(centerY + radius, 0, bitmap.PixelHeight);
 
-			var byteCount = 4 * (2 * radius);
-			var colorData = CreateColorData(byteCount, opacity);
+			var byteCount = (2 * radius);
+			var colorData = CreateColorData(byteCount, colorIndex);
 
 			for (var y = y0; y < yMax; y++) {
 				var corda = (int)Math.Sqrt(radius * radius - (y - centerY) * (y - centerY));
@@ -310,11 +321,12 @@ namespace MapViewer {
 				var xMax = Between(centerX + corda, 0, bitmap.PixelWidth);
 				var rectLine = new Int32Rect(x0, y, xMax - x0, 1);
 
-				bitmap.WritePixels(rectLine, colorData, rectLine.Width * 4, 0);
+				bitmap.WritePixels(rectLine, colorData, rectLine.Width, 0);
 			}
 		}
 
-		public void MaskRectangle(Int32Rect rect, byte opacity) {
+		public void MaskRectangle(Int32Rect rect, byte colorIndex) {
+
 
 			rect.X = (int)(rect.X * ScaleDpiFix);
 			rect.Y = (int)(rect.Y * ScaleDpiFix);
@@ -331,8 +343,8 @@ namespace MapViewer {
 			var xMax = Between(rect.X + rect.Width, 0, bitmap.PixelWidth);
 			var yMax = Between(rect.Y + rect.Height, 0, bitmap.PixelHeight);
 
-			var byteCount = 4 * (xMax - x0);
-			var colorData = CreateColorData(byteCount, opacity);
+			var byteCount = (xMax - x0);
+			var colorData = CreateColorData(byteCount, colorIndex);
 
 			var rectLine = new Int32Rect(x0, y0, xMax - x0, 1);
 			for (var y = y0; y < yMax; y++) {
@@ -340,8 +352,6 @@ namespace MapViewer {
 				bitmap.WritePixels(rectLine, colorData, byteCount, 0);
 			}
 		}
-
-	
 
 		public void ClearMask() {
 			if (BmpMask != null) {
@@ -371,14 +381,14 @@ namespace MapViewer {
 		public void Serialize() {
 			MapData.Serialize();
 			BmpMask.Freeze();
-			BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(_imagePath, ".mask.png"));
-			CanvasOverlay.SerializeXaml(CreateFilename(_imagePath, ".xaml"));
+			BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(ImageFile, ".mask.png"));
+			CanvasOverlay.SerializeXaml(CreateFilename(ImageFile, ".xaml"));
 		}
 
 		public void Deserialize() {
 			MapData.Deserialize();
-			BmpMask = BitmapUtils.Deserialize(CreateFilename(_imagePath, ".mask.png"));
-			CanvasOverlay.DeserializeXaml(CreateFilename(_imagePath, ".xaml"));
+			BmpMask = BitmapUtils.Deserialize(CreateFilename(ImageFile, ".mask.png"));
+			CanvasOverlay.DeserializeXaml(CreateFilename(ImageFile, ".xaml"));
 		}
 
 		private const string FolderName = "MapViewerFiles";

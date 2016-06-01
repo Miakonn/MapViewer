@@ -102,7 +102,7 @@ namespace MapViewer {
 			var dialog = new OpenFileDialog {Filter = "Image Files|*.jpg;*.bmp;*.png"};
 			var result = dialog.ShowDialog();
 			if (result != null && result.Value) {
-				MapPrivate.ImageFile = dialog.FileName;
+				MapPrivate.LoadImage(dialog.FileName);
 				_publicIsDirty = true;
 				CreateWindows();
 				if (MapPrivate.IsCalibrated) {
