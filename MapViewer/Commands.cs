@@ -115,6 +115,7 @@ namespace MapViewer {
 		}
 
 		private void ExitApp_Executed(object sender, ExecutedRoutedEventArgs e) {
+			Log.Info("Exiting");
 			Application.Current.Shutdown();
 		}
 

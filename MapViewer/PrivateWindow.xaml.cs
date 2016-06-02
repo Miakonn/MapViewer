@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,6 +44,7 @@ namespace MapViewer {
 					_activeTool.Deactivate();
 				}
 				_activeTool = value;
+				_cursorAction = CursorAction.None;
 			}
 		}
 
@@ -55,6 +57,8 @@ namespace MapViewer {
 
 			var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 			Settings.Default.SettingsKey = Path.Combine(path, "Miakonn\\MapViewer\\user.config") ;
+
+			Title = string.Format("Miakonn's MapViewer {0} - Private map", FileVersion);
 
 			Log.Info("STARTING MapViewer ******************************************");
 
@@ -72,10 +76,13 @@ namespace MapViewer {
 
 		#region Private methods
 
-
-
-
-
+		private string FileVersion {
+			get {
+				System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+				FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+				return fvi.FileVersion;
+			}
+		}
 
 		private void CreateWindows() {
 			MapPrivate.Create();
@@ -108,6 +115,7 @@ namespace MapViewer {
 				if (ActiveTool != null) {
 					ActiveTool = null;
 				}
+				_cursorAction = CursorAction.None;
 			}
 			if (e.Key == Key.F12 && Publish_CanExecute()) {
 				PublishMap_Executed(null, null);
@@ -148,12 +156,13 @@ namespace MapViewer {
 		}
 
 		private void PrivateWinMouseMove(object sender, MouseEventArgs e) {
-			MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
 
 			if (ActiveTool != null) {
 				ActiveTool.MouseMove(sender, e);
 				return;
 			}
+
+			MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
 
 			if (_cursorAction == CursorAction.MovingPublicPos) {
 				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
@@ -252,8 +261,7 @@ namespace MapViewer {
 
 		#endregion
 
-
-#region Public methods
+		#region Public methods
 
 		public void DisplayPopup(string text) {
 			PopupDisplay.IsOpen = true;
@@ -272,8 +280,7 @@ namespace MapViewer {
 			};
 		}
 
-#endregion region
-
+		#endregion region
 
 	}
 }

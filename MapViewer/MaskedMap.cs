@@ -89,7 +89,6 @@ namespace MapViewer {
 			IsLinked = false;
 		}
 
-
 		public void LoadImage(string imagePath) {
 			ImageFile = imagePath;
 			Log.InfoFormat("Loading image {0}", ImageFile);
@@ -140,7 +139,6 @@ namespace MapViewer {
 			return new BitmapPalette(colors);
 		}
 
-
 		public void PublishFrom(MaskedMap mapSource, bool scaleNeedsToRecalculate) {
 			Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
 
@@ -168,7 +166,6 @@ namespace MapViewer {
 				ScaleToReal();
 			}
 		}
-
 
 		public Rect VisibleRectInMap() {
 			var rect = new Rect(0.0, 0.0, CanvasMapMask.ActualWidth, CanvasMapMask.ActualHeight);

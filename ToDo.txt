@@ -1,6 +1,5 @@
 
 
-*	Set Gaming till default tab
 
 
 *	rita element i båda fönstren
@@ -8,8 +7,6 @@
 *	se till att delete element är utgråat om det ej kan användas
 
 * 	spara position
-
-*	loggning
 
 
 
