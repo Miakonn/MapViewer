@@ -74,17 +74,18 @@ namespace MapViewer {
 		}
 
 		public void OverlayRectangle(Rect rect, Color color, string uid) {
+			var thickness = 10 / Scale;
 			var shape = new Rectangle {
-				Width = rect.Width,
-				Height = rect.Height,
+				Width = rect.Width + 2 * thickness,
+				Height = rect.Height + 2 * thickness,
 				Stroke = new SolidColorBrush(color),
-				StrokeThickness = 10 / Scale,
+				StrokeThickness = thickness,
 				Opacity = 0.5,
 				Uid = uid
 			};
 
-			Canvas.SetLeft(shape, rect.X);
-			Canvas.SetTop(shape, rect.Y);
+			Canvas.SetLeft(shape, rect.X - thickness);
+			Canvas.SetTop(shape, rect.Y - thickness);
 			CanvasOverlay.Children.Add(shape);
 		}
 
@@ -161,11 +162,12 @@ namespace MapViewer {
 				OverlayRectangle(rect, Colors.Red, PublicPositionUid);
 			}
 			else {
-				Canvas.SetLeft(shape, rect.X);
-				Canvas.SetTop(shape, rect.Y);
-				shape.Width = rect.Width;
-				shape.Height = rect.Height;
-				shape.StrokeThickness = 10 / Scale;
+				var thickness = 10 / Scale; 
+				Canvas.SetLeft(shape, rect.X - thickness);
+				Canvas.SetTop(shape, rect.Y - thickness);
+				shape.Width = rect.Width + 2 * thickness;
+				shape.Height = rect.Height + 2 * thickness;
+				shape.StrokeThickness = thickness;
 			}
 		}
 
