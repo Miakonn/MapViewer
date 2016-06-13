@@ -21,7 +21,7 @@ namespace MapViewer
 
 	    private readonly Canvas _canvasRuler;
 
-	    private MatrixTransform _compassTransform;
+		private readonly RotateTransform _compassTransform;
 
 	    public Size MonitorResolution {
 			get { return new Size(Settings.Default.PublicMonitorResolutionWidth, Settings.Default.PublicMonitorResolutionHeight); }
@@ -75,7 +75,7 @@ namespace MapViewer
 			ContentPresenter2.Content = _map.CanvasOverlay;
 			ContentPresenter3.Content = _canvasRuler;
 
-		    _compassTransform = new MatrixTransform(0.25, 0.0, 0.0, 0.25, 0.0, 0.0);
+		    _compassTransform = new RotateTransform(0);
 
 	    }
 
@@ -98,27 +98,24 @@ namespace MapViewer
 
 	    public void RotateClockwise() {
 			Map.RotateClockwise();
-
-			var mat = _compassTransform.Matrix;
-			var center = new Point(270, 240);
-			mat.RotateAtPrepend(90, center.X, center.Y);
-			_compassTransform.Matrix = mat;
-	    }
+			_compassTransform.Angle = Map.TrfRotation.Angle;
+		}
 
 	    public void DrawCompass() {
-			var center = new Point(270, 240);
-			var mat =  new Matrix(0.25, 0.0, 0.0, 0.25, 0.0, 0.0);
-			mat.RotateAtPrepend(Map.TrfRotation.Angle, center.X, center.Y);
-			_compassTransform.Matrix = mat;
-
+		    var image = new BitmapImage(new Uri("pack://application:,,,/Images/Compass_rose.png"));
+			
+			_compassTransform.Angle = Map.TrfRotation.Angle;
+			_compassTransform.CenterX = image.Width / 2;
+			_compassTransform.CenterY = image.Height / 2;
+		    
 			var compass = new Image {
 				RenderTransform = _compassTransform,
-				Opacity = 0.8,
-				Source = new BitmapImage(new Uri("pack://application:,,,/Images/Compass_rose.png")),
+				Opacity = 1.0,
+				Source = image,
 				Uid = "Compass"
 			};
-			Canvas.SetLeft(compass, ActualWidth - 200);
-			Canvas.SetTop(compass, ActualHeight - 200);
+			Canvas.SetLeft(compass, ActualWidth - image.Width - 25);
+			Canvas.SetTop(compass, ActualHeight - image.Height - 25);
 			_canvasRuler.Children.Add(compass);
 	    }
 
