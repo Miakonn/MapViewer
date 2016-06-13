@@ -89,10 +89,19 @@ namespace MapViewer {
 			IsLinked = false;
 		}
 
+		public static BitmapImage BitmapFromUri(Uri source) {
+			var bitmap = new BitmapImage();
+			bitmap.BeginInit();
+			bitmap.UriSource = source;
+			bitmap.CacheOption = BitmapCacheOption.OnLoad;
+			bitmap.EndInit();
+			return bitmap;
+		}
+
 		public void LoadImage(string imagePath) {
 			ImageFile = imagePath;
 			Log.InfoFormat("Loading image {0}", ImageFile);
-			MapImage = new BitmapImage(new Uri(ImageFile));
+			MapImage = BitmapFromUri(new Uri(ImageFile));
 			MapData = new MapData(CreateFilename(ImageFile, ".xml"));
 
 			BmpMask = null;
