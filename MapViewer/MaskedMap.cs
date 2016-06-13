@@ -17,7 +17,11 @@ namespace MapViewer {
 
 		public BitmapImage MapImage;
 
-		public MatrixTransform DisplayTransform { get; set; }
+		public TransformGroup DisplayTransform { get; set; }
+
+		public RotateTransform TrfRotation { get; set; }
+		public ScaleTransform TrfScale { get; set; }
+		public TranslateTransform TrfTranslate { get; set; }
 
 		public BitmapSource BmpMask { get; set; }
 
@@ -65,7 +69,7 @@ namespace MapViewer {
 
 		public double Scale {
 			get {
-				return MapImage != null ? DisplayTransform.Matrix.M11 : 1.0;
+				return MapImage != null ? TrfScale.ScaleX : 1.0;
 			}
 		}
 
@@ -78,7 +82,15 @@ namespace MapViewer {
 		public MaskedMap(bool publicView) {
 			IsPublic = publicView;
 			MaskOpacity = IsPublic ? 1.0 : 0.3;
-			DisplayTransform = new MatrixTransform(1.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+			DisplayTransform = new TransformGroup();
+
+			TrfRotation = new RotateTransform(0.0);
+			TrfScale = new ScaleTransform(1.0, 1.0);
+			TrfTranslate = new TranslateTransform(0.0, 0.0);
+
+			DisplayTransform.Children.Add(TrfScale);
+			DisplayTransform.Children.Add(TrfTranslate);
+			DisplayTransform.Children.Add(TrfRotation);
 
 			MapData = new MapData(null);
 
@@ -160,6 +172,7 @@ namespace MapViewer {
 			if (mapSource.MapImage != null && changeImage) {
 				MapImage = mapSource.MapImage.CloneCurrentValue();
 				_backgroundImage.Source = MapImage;
+
 				ImageFile = mapSource.ImageFile;
 				mapSource.CanvasOverlay.CopyingCanvas(CanvasOverlay);
 			}
@@ -199,28 +212,38 @@ namespace MapViewer {
 		}
 
 		public void RotateClockwise() {
-			var mat = DisplayTransform.Matrix;
-
-			var center= CenterInMap();
-			mat.RotateAtPrepend(90, center.X, center.Y);
-			DisplayTransform.Matrix = mat;
+			TrfRotation.Angle += 90.0;
+			var winSizePix = CanvasMapMask.RenderSize;
+			TrfRotation.CenterX = winSizePix.Width / 2;
+			TrfRotation.CenterY = winSizePix.Height / 2;
 		}
 
 		public void ScaleToWindow() {
-			if (!IsPublic && MapImage != null) {
-				var winSizePix = CanvasMapMask.RenderSize;
-
-				var scale = Math.Min(winSizePix.Width / MapImage.Width, winSizePix.Height / MapImage.Height);
-				DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, 0, 0);
+			if (IsPublic || MapImage == null) {
+				return;
 			}
+
+			var winSizePix = CanvasMapMask.RenderSize;
+			var scale = Math.Min(winSizePix.Width / MapImage.Width, winSizePix.Height / MapImage.Height);
+			TrfScale.ScaleX = scale;
+			TrfScale.ScaleY = scale;
+			TrfTranslate.X = 0;
+			TrfTranslate.Y = 0;
 			UpdatePublicViewRectangle();
 		}
 
 		public void Zoom(double scale, Point pos) {
-			var matrix = DisplayTransform.Matrix;
-			matrix.ScaleAt(scale, scale, pos.X, pos.Y);
-			DisplayTransform.Matrix = matrix;
+			TrfScale.ScaleX *= scale;
+			TrfScale.ScaleY *= scale;
+			//TrfScale.CenterX = pos.X;
+			//TrfScale.CenterY = pos.Y;
+
 			UpdatePublicViewRectangle();
+		}
+
+		public void Translate(Vector move) {
+			TrfTranslate.X += move.X;
+			TrfTranslate.Y += move.Y;
 		}
 
 		private void UpdatePublicViewRectangle() {
@@ -241,15 +264,22 @@ namespace MapViewer {
 
 				var publicWindow = ParentWindow as PublicWindow;
 				
-				if (publicWindow != null) {
+				if (publicWindow != null) {	
+					var cp = new Point(CanvasOverlay.ActualWidth / 2, CanvasOverlay.ActualHeight / 2);
+					var center = (DisplayTransform.Inverse != null) ? DisplayTransform.Inverse.Transform(cp) : new Point(MapImage.Width / 2, MapImage.Height / 2);
+
 					Log.DebugFormat("ScaleToReal1 MonitorScaleMMperPixel={0}", publicWindow.MonitorScaleMMperPixel);
 					Log.DebugFormat("ScaleToReal2 CanvasOverlay.ActualWidth={0} MapImage.Width={1}", CanvasOverlay.ActualWidth, MapImage.Width);
+					Log.DebugFormat("ScaleToReal3 center={0} ", center);
 
 					var scale = ScreenScaleMMperM * ImageScaleMperPix /  publicWindow.MonitorScaleMMperPixel;
-					var x0 = (CanvasOverlay.ActualWidth / 2) - scale * (MapImage.Width / 2);
-					var y0 = (CanvasOverlay.ActualHeight / 2) - scale * (MapImage.Height / 2);
 
-					DisplayTransform.Matrix = new Matrix(scale, 0, 0, scale, x0 , y0);
+					TrfScale.CenterX =0;
+					TrfScale.CenterY = 0;
+					TrfScale.ScaleX = scale;
+					TrfScale.ScaleY = scale;
+					TrfTranslate.X = (CanvasOverlay.ActualWidth / 2) - scale * center.X;
+					TrfTranslate.Y = (CanvasOverlay.ActualHeight / 2) - scale * center.Y;
 				}
 				UpdatePublicViewRectangle();
 			}
@@ -284,9 +314,7 @@ namespace MapViewer {
 
 				DisplayTransform = mapSource.DisplayTransform.CloneCurrentValue();
 
-				var matrix = DisplayTransform.Matrix;
-				matrix.Scale(scale, scale);
-				DisplayTransform.Matrix = matrix;
+				TrfScale = new ScaleTransform(scale, scale);
 
 				CanvasMapMask.RenderTransform = DisplayTransform;
 			}			
@@ -364,24 +392,6 @@ namespace MapViewer {
 				var rect = new Int32Rect(0, 0, (int)MapImage.Width, (int)MapImage.Height);
 				MaskRectangle(rect, 0);
 			}
-		}
-
-		public void Translate(Vector move) {
-
-			var matrix = DisplayTransform.Matrix;
-			var x = (move.X * matrix.M11 + move.Y * matrix.M21) / Scale;
-			var y = (move.X * matrix.M12 + move.Y * matrix.M22) / Scale;
-			
-			matrix.Translate(x, y);
-			DisplayTransform.Matrix = matrix;
-
-			System.Diagnostics.Trace.WriteLine(string.Format(" Scale = {0} Offset = {1},{2}", matrix.M11, matrix.OffsetX, matrix.OffsetY));
-		}
-
-		public Point TransformPoint(Point pos) {
-			pos.X += (int)DisplayTransform.Matrix.OffsetX;
-			pos.Y += (int)DisplayTransform.Matrix.OffsetY;
-			return pos;
 		}
 
 		public void Serialize() {

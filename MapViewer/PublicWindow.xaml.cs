@@ -103,12 +103,14 @@ namespace MapViewer
 			var center = new Point(270, 240);
 			mat.RotateAtPrepend(90, center.X, center.Y);
 			_compassTransform.Matrix = mat;
-		    
 	    }
 
 	    public void DrawCompass() {
-			_compassTransform = new MatrixTransform(0.25, 0.0, 0.0, 0.25, 0.0, 0.0);
-			
+			var center = new Point(270, 240);
+			var mat =  new Matrix(0.25, 0.0, 0.0, 0.25, 0.0, 0.0);
+			mat.RotateAtPrepend(Map.TrfRotation.Angle, center.X, center.Y);
+			_compassTransform.Matrix = mat;
+
 			var compass = new Image {
 				RenderTransform = _compassTransform,
 				Opacity = 0.8,

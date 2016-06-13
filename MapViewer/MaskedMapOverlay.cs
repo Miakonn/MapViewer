@@ -81,8 +81,9 @@ namespace MapViewer {
 				Stroke = new SolidColorBrush(color),
 				StrokeThickness = thickness,
 				Opacity = 0.5,
-				Uid = uid
-			};
+				Uid = uid,
+				Visibility = (rect.Size == new Size()) ?  Visibility.Collapsed : Visibility.Visible
+		};
 
 			Canvas.SetLeft(shape, rect.X - thickness);
 			Canvas.SetTop(shape, rect.Y - thickness);
@@ -158,6 +159,7 @@ namespace MapViewer {
 
 		public void UpdateVisibleRectangle(Rect rect) {
 			var shape = (Rectangle)CanvasOverlay.FindElementByUid(PublicPositionUid);
+	
 			if (shape == null) {
 				OverlayRectangle(rect, Colors.Red, PublicPositionUid);
 			}
@@ -168,6 +170,7 @@ namespace MapViewer {
 				shape.Width = rect.Width + 2 * thickness;
 				shape.Height = rect.Height + 2 * thickness;
 				shape.StrokeThickness = thickness;
+				shape.Visibility = (rect.Size == new Size()) ? Visibility.Collapsed : Visibility.Visible;
 			}
 		}
 
