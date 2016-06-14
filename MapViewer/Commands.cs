@@ -160,6 +160,7 @@ namespace MapViewer {
 		}
 
 		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
+			MapPrivate.Serialize(); 
 			MapPublic.PublishFrom(MapPrivate, _publicIsDirty);
 			PublicWindow.SetRuler();
 			PublicWindow.DrawCompass();
@@ -245,7 +246,6 @@ namespace MapViewer {
 			PublicWindow.Show();
 			PublicWindow.MaximizeToSecondaryMonitor();
 			PublishMap_Executed(sender, e);
-
 		}
 
 		private void RemoveDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
