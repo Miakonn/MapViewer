@@ -6,6 +6,12 @@
 		WindowStyle="ThreeDBorderWindow" 
 		ResizeMode="CanResizeWithGrip">
 
+
+	<Window.InputBindings>
+		<KeyBinding Modifiers="Control" Key="S" Command="mapViewer:CustomCommands.Save" />
+		<KeyBinding Modifiers="Control" Key="O" Command="mapViewer:CustomCommands.OpenImage" />
+	</Window.InputBindings>
+
 	<Window.CommandBindings>
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular7m" Executed="SpellCircular7m_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular3m" Executed="SpellCircular3m_Executed" CanExecute="Spell_CanExecute" />
