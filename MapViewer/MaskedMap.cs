@@ -177,6 +177,8 @@ namespace MapViewer {
 
 				ImageFilePath = mapSource.ImageFilePath;
 				mapSource.CanvasOverlay.CopyingCanvas(CanvasOverlay);
+
+				ClearTransformExceptRotation();
 			}
 
 
@@ -189,6 +191,15 @@ namespace MapViewer {
 			else if (scaleNeedsToRecalculate) {
 				ScaleToReal();
 			}
+		}
+
+		private void ClearTransformExceptRotation() {
+			TrfScale.ScaleX = 1;
+			TrfScale.ScaleY = 1;
+			TrfScale.CenterX = 0;
+			TrfScale.CenterY = 0;
+			TrfTranslate.X = 0;
+			TrfTranslate.Y = 0;
 		}
 
 		public Rect VisibleRectInMap() {
@@ -271,8 +282,14 @@ namespace MapViewer {
 				
 				if (publicWindow != null) {	
 					var cp = new Point(CanvasOverlay.ActualWidth / 2, CanvasOverlay.ActualHeight / 2);
-					var center = (DisplayTransform.Inverse != null) ? DisplayTransform.Inverse.Transform(cp) : new Point(MapImage.Width / 2, MapImage.Height / 2);
-
+					Point center;
+					if ((TrfScale.Value.IsIdentity  &&  TrfTranslate.Value.IsIdentity) || !DisplayTransform.Value.HasInverse) {
+						center = new Point(MapImage.Width/2, MapImage.Height/2);
+					}
+					else {
+						// ReSharper disable once PossibleNullReferenceException
+						center = DisplayTransform.Inverse.Transform(cp);
+					}
 					Log.DebugFormat("ScaleToReal1 MonitorScaleMMperPixel={0}", publicWindow.MonitorScaleMMperPixel);
 					Log.DebugFormat("ScaleToReal2 CanvasOverlay.ActualWidth={0} MapImage.Width={1}", CanvasOverlay.ActualWidth, MapImage.Width);
 					Log.DebugFormat("ScaleToReal3 center={0} ", center);
