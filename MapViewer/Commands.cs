@@ -60,7 +60,7 @@ namespace MapViewer {
 		#region Can execute
 
 		private void ImageNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile));
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath));
 		}
 
 		private void Allways_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -68,11 +68,11 @@ namespace MapViewer {
 		}
 
 		private void Spell_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile) && MapPrivate.ImageScaleMperPix > 0.0);
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) && MapPrivate.ImageScaleMperPix > 0.0);
 		}
 
 		public bool Publish_CanExecute() {
-			return (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) && PublicWindow.IsVisible;
+			return (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath)) && PublicWindow.IsVisible;
 		}
 
 		public void Publish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -80,7 +80,7 @@ namespace MapViewer {
 		}
 
 		private void AddDisplay_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile)) && 
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath)) && 
 				!PublicWindow.IsVisible && PublicWindow.IsCalibrated;
 		}
 
@@ -89,7 +89,7 @@ namespace MapViewer {
 		}
 
 		private void RotateMap_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFile) && !MapPrivate.IsLinked);
+			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) && !MapPrivate.IsLinked);
 		}
 
 		private void ElementNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {

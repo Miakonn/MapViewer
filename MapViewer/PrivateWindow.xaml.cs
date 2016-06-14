@@ -91,7 +91,7 @@ namespace MapViewer {
 
 		private void MovePublic(Vector vector) {
 			MapPublic.Translate(vector / MapPublic.ScaleDpiFix);
-			if (MapPublic.IsLinked) {
+			if (MapPublic.IsLinked || !string.Equals(MapPublic.ImageFilePath, MapPrivate.ImageFilePath)) {
 				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
 			}
 			else {

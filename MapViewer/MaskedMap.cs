@@ -65,7 +65,7 @@ namespace MapViewer {
 
 		private bool IsPublic { get; set; }
 
-		public string ImageFile { get; set; }
+		public string ImageFilePath { get; set; }
 
 		public double Scale {
 			get {
@@ -111,13 +111,15 @@ namespace MapViewer {
 		}
 
 		public void LoadImage(string imagePath) {
-			ImageFile = imagePath;
-			Log.InfoFormat("Loading image {0}", ImageFile);
-			MapImage = BitmapFromUri(new Uri(ImageFile));
-			MapData = new MapData(CreateFilename(ImageFile, ".xml"));
+			ImageFilePath = imagePath;
+			Log.InfoFormat("Loading image {0}", ImageFilePath);
+			MapImage = BitmapFromUri(new Uri(ImageFilePath));
+			MapData = new MapData(CreateFilename(ImageFilePath, ".xml"));
 
 			BmpMask = null;
 			CanvasOverlay.Children.Clear();
+
+			UpdatePublicViewRectangle();
 
 			Deserialize();
 
@@ -163,7 +165,7 @@ namespace MapViewer {
 		public void PublishFrom(MaskedMap mapSource, bool scaleNeedsToRecalculate) {
 			Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
 
-			var changeImage = !string.Equals(ImageFile, mapSource.ImageFile);
+			var changeImage = !string.Equals(ImageFilePath, mapSource.ImageFilePath);
 
 			if (mapSource.BmpMask != null && _maskImage != null) {
 				BmpMask = mapSource.BmpMask.CloneCurrentValue();
@@ -173,7 +175,7 @@ namespace MapViewer {
 				MapImage = mapSource.MapImage.CloneCurrentValue();
 				_backgroundImage.Source = MapImage;
 
-				ImageFile = mapSource.ImageFile;
+				ImageFilePath = mapSource.ImageFilePath;
 				mapSource.CanvasOverlay.CopyingCanvas(CanvasOverlay);
 			}
 
@@ -248,8 +250,11 @@ namespace MapViewer {
 
 		private void UpdatePublicViewRectangle() {
 			var privateWin = ParentWindow as PrivateWindow;
-			if (!IsPublic && !IsLinked && privateWin!= null) {
+			if (!IsPublic && !IsLinked && privateWin != null && !string.Equals(ImageFilePath, privateWin.MapPrivate.ImageFilePath)) {
 				UpdateVisibleRectangle(privateWin.MapPublic.VisibleRectInMap());
+			}
+			else {
+				UpdateVisibleRectangle(new Rect());
 			}
 		}
 
@@ -397,14 +402,18 @@ namespace MapViewer {
 		public void Serialize() {
 			MapData.Serialize();
 			BmpMask.Freeze();
-			BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(ImageFile, ".mask.png"));
-			CanvasOverlay.SerializeXaml(CreateFilename(ImageFile, ".xaml"));
+			BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(ImageFilePath, ".mask.png"));
+			CanvasOverlay.SerializeXaml(CreateFilename(ImageFilePath, ".xaml"));
 		}
 
 		public void Deserialize() {
 			MapData.Deserialize();
-			BmpMask = BitmapUtils.Deserialize(CreateFilename(ImageFile, ".mask.png"));
-			CanvasOverlay.DeserializeXaml(CreateFilename(ImageFile, ".xaml"));
+			BmpMask = BitmapUtils.Deserialize(CreateFilename(ImageFilePath, ".mask.png"));
+			CanvasOverlay.DeserializeXaml(CreateFilename(ImageFilePath, ".xaml"));
+			var shape = CanvasOverlay.FindElementByUid(PublicPositionUid);
+			if (shape != null) {
+				CanvasOverlay.Children.Remove(shape);
+			}
 		}
 
 		private const string FolderName = "MapViewerFiles";
