@@ -382,8 +382,6 @@ namespace MapViewer {
 		}
 
 		public void MaskRectangle(Int32Rect rect, byte colorIndex) {
-
-
 			rect.X = (int)(rect.X * ScaleDpiFix);
 			rect.Y = (int)(rect.Y * ScaleDpiFix);
 			rect.Width = (int)(rect.Width * ScaleDpiFix);
@@ -408,6 +406,23 @@ namespace MapViewer {
 				bitmap.WritePixels(rectLine, colorData, byteCount, 0);
 			}
 		}
+
+		public void MaskPolygon(PointCollection pnts, byte colorIndex) {
+			var bitmap = BmpMask as WriteableBitmap;
+			if (bitmap == null) {
+				return;
+			}
+
+			var intPoints = new int[pnts.Count * 2];
+			for (var i = 0; i < pnts.Count; i++) {
+				intPoints[i * 2] = (int)pnts[i].X;
+				intPoints[i * 2 + 1] = (int)pnts[i].Y;
+			}
+
+			bitmap.FillPolygon(intPoints, colorIndex);	
+		}
+
+
 
 		public void ClearMask() {
 			if (BmpMask != null) {

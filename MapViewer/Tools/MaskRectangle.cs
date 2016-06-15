@@ -25,7 +25,6 @@ namespace MapViewer.Tools {
 			_button = button as RibbonToggleButton;
 		}
 
-
 		#region ICanvasTool
 		public void Activate() {
 			_rect = null;
@@ -70,7 +69,7 @@ namespace MapViewer.Tools {
 			_rect = new Rectangle {
 				Width = 5,
 				Height = 5,
-				Fill = new SolidColorBrush(_mask ? Colors.Black : Colors.White),
+				Fill = (_mask ? Brushes.Black : Brushes.White),
 				Opacity = 0.5
 			};
 

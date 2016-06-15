@@ -45,6 +45,8 @@ namespace MapViewer {
 		public static readonly RoutedUICommand UnmaskRectangle = new RoutedUICommand("Unmask rectangle", "Unmask rectangle", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand MaskCircle = new RoutedUICommand("Mask circle", "Mask circle", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand UnmaskCircle = new RoutedUICommand("Unmask circle", "Unmask circle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand MaskPolygon = new RoutedUICommand("Mask polygon", "Mask polygon", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand UnmaskPolygon = new RoutedUICommand("Unmask polygon", "Unmask polygon", typeof(CustomCommands), null);
 	}
 
 	public partial class PrivateWindow {
@@ -296,6 +298,22 @@ namespace MapViewer {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.MaskCircle(this, e.OriginalSource, false);
+			}
+		}
+
+		private void MaskPolygon_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				var tool = new Tools.MaskPolygon(this, e.OriginalSource, true);
+				ActiveTool = tool;
+			}
+		}
+
+		private void UnmaskPolygon_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
+			if (CheckToggleState(e.OriginalSource)) {
+				var tool = new Tools.MaskPolygon(this, e.OriginalSource, false);
+				ActiveTool = tool;
 			}
 		}
 

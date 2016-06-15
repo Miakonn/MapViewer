@@ -80,6 +80,7 @@
     <Compile Include="Tools\DrawLine.cs" />
     <Compile Include="Tools\DrawCircle.cs" />
     <Compile Include="Tools\DrawCone.cs" />
+    <Compile Include="Tools\MaskPolygon.cs" />
     <Compile Include="Tools\DrawRectangle.cs" />
     <Compile Include="Tools\DrawSquare.cs" />
     <Compile Include="Tools\DrawText.cs" />
@@ -157,6 +158,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\map_magnify.ico" />
+    <Resource Include="Images\map_mask_polygon.png" />
+    <Resource Include="Images\map_unmask_polygon.png" />
     <Resource Include="Images\Monitor.png" />
   </ItemGroup>
   <ItemGroup>
