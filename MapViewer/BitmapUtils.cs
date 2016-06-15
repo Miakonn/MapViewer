@@ -139,7 +139,6 @@ namespace MapViewer {
 				}
 			}
 		}
-
 	}
 
 	public static class CanvasUtils {

@@ -92,7 +92,7 @@ namespace MapViewer.Tools {
 			_shape = new Polygon {
 				Points = _pnts,
 				Fill = (_mask ? Brushes.Black : Brushes.White),
-				FillRule = FillRule.Nonzero,
+				FillRule = FillRule.EvenOdd,
 				StrokeThickness = 2,
 				Stroke = (_mask ? Brushes.Black : Brushes.White),
 				Opacity = 0.5
