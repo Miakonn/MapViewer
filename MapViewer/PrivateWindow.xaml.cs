@@ -49,14 +49,12 @@ namespace MapViewer {
 		}
 
 		private bool _publicIsDirty;
-	
+
 		#endregion
 
 		public PrivateWindow() {
 			InitializeComponent();
-
-			var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-			Settings.Default.SettingsKey = Path.Combine(path, "Miakonn\\MapViewer\\user.config") ;
+			InitSettings();
 
 			Title = string.Format("Miakonn's MapViewer {0} - Private map", FileVersion);
 
@@ -76,7 +74,7 @@ namespace MapViewer {
 
 		#region Private methods
 
-		private string FileVersion {
+		private static string FileVersion {
 			get {
 				System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
 				FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -263,6 +261,11 @@ namespace MapViewer {
 
 		#region Public methods
 
+		public void InitSettings() {
+			var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+			Settings.Default.SettingsKey = Path.Combine(path, "Miakonn\\MapViewer\\user.config");			
+		}
+
 		public void DisplayPopup(string text) {
 			PopupDisplay.IsOpen = true;
 			var popupText = PopupDisplay.Child as TextBlock;
@@ -278,6 +281,11 @@ namespace MapViewer {
 				PopupDisplay.IsOpen = false;
 				time.Stop();
 			};
+		}
+
+		public void AddToMru(string path) {
+			Settings.Default.MRU = path;
+			Settings.Default.Save();
 		}
 
 		#endregion region

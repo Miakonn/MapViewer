@@ -1,9 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
 using System.Windows.Controls.Ribbon;
 using MapViewer.Dialogs;
+using MapViewer.Properties;
 using SizeInt = System.Drawing.Size;
 
 namespace MapViewer {
@@ -31,6 +34,7 @@ namespace MapViewer {
 
 		public static readonly RoutedUICommand Save = new RoutedUICommand("Save", "Save", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand CalibrateDisplay = new RoutedUICommand("Calibrate display", "Calibrate display", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand OpenLastImage = new RoutedUICommand("Open last image", "Open last image", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand Calibrate = new RoutedUICommand("Calibrate", "Calibrate", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand Measure = new RoutedUICommand("Measure", "Measure", typeof(CustomCommands), null);
@@ -77,6 +81,18 @@ namespace MapViewer {
 			return (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath)) && PublicWindow.IsVisible;
 		}
 
+		public void OpenLastImage_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+			InitSettings();
+			try {
+				e.CanExecute = (!string.IsNullOrWhiteSpace(Settings.Default.MRU));
+				Mru1.Visibility = e.CanExecute ? Visibility.Visible : Visibility.Collapsed;
+				Mru1.Header = e.CanExecute ? Path.GetFileName(Settings.Default.MRU) : "";
+			}
+			catch (Exception) {
+				e.CanExecute = false;
+			}
+		}
+
 		public void Publish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = Publish_CanExecute();
 		}
@@ -116,7 +132,26 @@ namespace MapViewer {
 			}
 		}
 
+		private void OpenLastImage_Executed(object sender, ExecutedRoutedEventArgs e) {
+			if (Settings.Default.MRU == null) {
+				return;
+			}
+
+			MapPrivate.LoadImage(Settings.Default.MRU);
+			_publicIsDirty = true;
+			CreateWindows();
+			if (MapPrivate.IsCalibrated) {
+				GamingTab.IsSelected = true;
+			}
+			else {
+				SetupTab.IsSelected = true;
+			}
+			
+		}
+
 		private void ExitApp_Executed(object sender, ExecutedRoutedEventArgs e) {
+			AddToMru(MapPrivate.ImageFilePath);
+			Settings.Default.Save();
 			Log.Info("Exiting");
 			Application.Current.Shutdown();
 		}

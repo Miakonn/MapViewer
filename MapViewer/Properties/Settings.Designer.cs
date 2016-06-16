@@ -71,5 +71,17 @@ namespace MapViewer.Properties {
                 this["PublicMonitorSizeHeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MRU {
+            get {
+                return ((string)(this["MRU"]));
+            }
+            set {
+                this["MRU"] = value;
+            }
+        }
     }
 }

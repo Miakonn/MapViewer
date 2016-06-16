@@ -111,6 +111,10 @@ namespace MapViewer {
 		}
 
 		public void LoadImage(string imagePath) {
+			var privateWindow = ParentWindow as PrivateWindow;
+			if (privateWindow != null && !string.Equals(imagePath, ImageFilePath) && !string.IsNullOrWhiteSpace(ImageFilePath)) {
+				privateWindow.AddToMru(ImageFilePath);
+			}
 			ImageFilePath = imagePath;
 			Log.InfoFormat("Loading image {0}", ImageFilePath);
 			MapImage = BitmapFromUri(new Uri(ImageFilePath));
@@ -470,6 +474,5 @@ namespace MapViewer {
 			}
 			return "";
 		}
-
 	}
 }

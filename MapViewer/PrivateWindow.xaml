@@ -22,6 +22,7 @@
 		<CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearOverlay_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Executed" CanExecute="Allways_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.OpenLastImage" Executed="OpenLastImage_Executed" CanExecute="OpenLastImage_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.PublishMap" Executed="PublishMap_Executed" CanExecute="Publish_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ScaleToFit" Executed="ScaleToFit_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ZoomIn" Executed="ZoomIn_Executed" CanExecute="ImageNeeded_CanExecute" />
@@ -68,6 +69,7 @@
 					<RibbonApplicationMenuItem Header="Open image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
 					<RibbonApplicationMenuItem Header="Save mask/overlay" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
 					<RibbonApplicationMenuItem Header="Calibrate display" Command="mapViewer:CustomCommands.CalibrateDisplay" ImageSource="Images/Monitor_measure.png" />
+					<RibbonApplicationMenuItem Name="Mru1"  Header="Open last image" Command="mapViewer:CustomCommands.OpenLastImage"  />
 					<RibbonApplicationMenuItem Header="Exit" Command="mapViewer:CustomCommands.ExitApp" />
 				</RibbonApplicationMenu>
 			</Ribbon.ApplicationMenu>
