@@ -437,7 +437,6 @@ namespace MapViewer {
 
 		public void Serialize() {
 			MapData.Serialize();
-			BmpMask.Freeze();
 			BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(ImageFilePath, ".mask.png"));
 			CanvasOverlay.SerializeXaml(CreateFilename(ImageFilePath, ".xaml"));
 		}

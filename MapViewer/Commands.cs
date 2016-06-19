@@ -228,7 +228,8 @@ namespace MapViewer {
 		}
 
 		private void DeleteElement_Executed(object sender, ExecutedRoutedEventArgs e) {
-			if (_lastClickedElem == null ||_lastClickedElem.Uid== MaskedMap.PublicPositionUid) {
+			ActiveTool = null;
+			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
 				return;
 			}
 
@@ -243,6 +244,7 @@ namespace MapViewer {
 		}
 
 		private void SetColourElement_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
 			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
 				return;
 			}
@@ -262,7 +264,6 @@ namespace MapViewer {
 				}
 			}
 		}
-
 
 		private void FullMask_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var rect = new Int32Rect(0, 0, (int)MapPrivate.MapImage.Width, (int)MapPrivate.MapImage.Height);
@@ -398,6 +399,7 @@ namespace MapViewer {
 		}
 
 		private void SpellCircular7m_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
 			var radius = 7 / MapPrivate.ImageScaleMperPix;
 			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Spell7m");
 			if (PublicWindow.IsVisible) {
@@ -406,6 +408,7 @@ namespace MapViewer {
 		}
 
 		private void SpellCircular3m_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
 			var radius = 3 / MapPrivate.ImageScaleMperPix;
 			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.LightSkyBlue, "Spell3m");
 			if (PublicWindow.IsVisible) {
@@ -414,6 +417,7 @@ namespace MapViewer {
 		}
 
 		private void SpellCircular2m_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
 			var radius = 2 / MapPrivate.ImageScaleMperPix;
 			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Spell2m");
 			if (PublicWindow.IsVisible) {
