@@ -16,7 +16,7 @@ namespace MapViewer.Tools {
 		private RibbonToggleButton _button;
 		private Polygon _shape;
 		private readonly bool _mask;
-		private PointCollection _pnts = new PointCollection();
+		private readonly PointCollection _pnts = new PointCollection();
 
 		public MaskPolygon(PrivateWindow privateWindow, object button, bool mask) {
 			_privateWindow = privateWindow;
@@ -93,7 +93,7 @@ namespace MapViewer.Tools {
 				Points = _pnts,
 				Fill = (_mask ? Brushes.Black : Brushes.White),
 				FillRule = FillRule.EvenOdd,
-				StrokeThickness = 2,
+				StrokeThickness = 4,
 				Stroke = (_mask ? Brushes.Black : Brushes.White),
 				Opacity = 0.5
 			};

@@ -419,8 +419,8 @@ namespace MapViewer {
 
 			var intPoints = new int[pnts.Count * 2];
 			for (var i = 0; i < pnts.Count; i++) {
-				intPoints[i * 2] = (int)pnts[i].X;
-				intPoints[i * 2 + 1] = (int)pnts[i].Y;
+				intPoints[i * 2] = (int)(ScaleDpiFix * pnts[i].X);
+				intPoints[i * 2 + 1] = (int)(ScaleDpiFix * pnts[i].Y);
 			}
 
 			bitmap.FillPolygon(intPoints, colorIndex);	
