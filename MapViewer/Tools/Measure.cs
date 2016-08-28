@@ -10,20 +10,26 @@ namespace MapViewer.Tools {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
+		private readonly Canvas _canvasPublic;
 		private readonly MaskedMap _map;
+		private readonly MaskedMap _mapPublic;
 		private RibbonToggleButton _button;
 		private Line _line;
+		private Line _linePublic;
 
 		public Measure(PrivateWindow privateWindow, object button) {
 			_privateWindow = privateWindow;
 			_map = privateWindow.MapPrivate;
+			_mapPublic = privateWindow.MapPublic;
 			_canvas = _map.CanvasOverlay;
+			_canvasPublic = _mapPublic.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
 		}
 
 		#region ICanvasTool
 		public void Activate() {
 			_line = null;
+			_linePublic = null;
 		}
 
 		public void MouseDown(object sender, MouseButtonEventArgs e) {
@@ -40,6 +46,7 @@ namespace MapViewer.Tools {
 			if (_line == null) {
 				return;
 			}
+
 			UpdateDraw(e.GetPosition(_canvas));
 			_privateWindow.DisplayPopup(CalculateDistance() + " " + _map.Unit);
 		}
@@ -51,12 +58,17 @@ namespace MapViewer.Tools {
 		public void Deactivate() {
 			if (_line != null) {
 				_canvas.Children.Remove(_line);
+				_line = null;
 			}
-			_line = null;
+			if (_linePublic != null) {
+				_canvasPublic.Children.Remove(_linePublic);
+				_linePublic = null;
+			}
+
 			if (_button != null) {
 				_button.IsChecked = false;
+				_button = null;
 			}
-			_button = null;
 			_privateWindow.HidePopup();
 		}
 
@@ -81,8 +93,20 @@ namespace MapViewer.Tools {
 				StrokeThickness = 10 / _map.Scale,
 				Opacity = 0.5
 			};
-
 			_canvas.Children.Add(_line);
+
+			if (_mapPublic.ShowPublicCursor) {
+				_linePublic = new Line {
+					X1 = pt1.X,
+					Y1 = pt1.Y,
+					X2 = pt1.X,
+					Y2 = pt1.Y,
+					Stroke = Brushes.Blue,
+					StrokeThickness = 10/_map.Scale,
+					Opacity = 0.5
+				};
+				_canvasPublic.Children.Add(_linePublic);
+			}
 		}
 
 		private void UpdateDraw(Point pt2) {
@@ -91,6 +115,12 @@ namespace MapViewer.Tools {
 			}
 			_line.X2 = pt2.X;
 			_line.Y2 = pt2.Y;
+
+			if (_mapPublic.ShowPublicCursor) {
+				_linePublic.X2 = pt2.X;
+				_linePublic.Y2 = pt2.Y;
+			}
+
 		}
 
 		private void EndDraw() {
