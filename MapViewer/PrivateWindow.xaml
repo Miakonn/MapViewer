@@ -109,11 +109,16 @@
 
 				<RibbonGroup Name="Public" >
 					<ComboBox Name="ComboBoxPublicScale"  Height="20" Margin="2,5,2,5" SelectionChanged="ComboBoxPublicScale_OnSelectionChanged" >
-						<ComboBoxItem x:Name="StdScale" Content="1:50"/>
-						<ComboBoxItem x:Name="DoubleScale" Content="1:100"/>
-						<ComboBoxItem x:Name="QuadScale" Content="1:200"/>
-						<ComboBoxItem x:Name="TenScale" Content="1:500"/>
-						<ComboBoxItem x:Name="Linked" Content="Linked"/>
+						<ComboBoxItem Uid="Scale_1" Content="1:1"/>
+						<ComboBoxItem Uid="Scale_2" Content="1:2"/>
+						<ComboBoxItem Uid="Scale_5" Content="1:5"/>
+						<ComboBoxItem Uid="Scale_10" Content="1:10"/>
+						<ComboBoxItem Uid="Scale_20" Content="1:20"/>
+						<ComboBoxItem Uid="Scale_50" Content="1:50" IsSelected="True"/>
+						<ComboBoxItem Uid="Scale_100" Content="1:100"/>
+						<ComboBoxItem Uid="Scale_200" Content="1:200"/>
+						<ComboBoxItem Uid="Scale_500" Content="1:500"/>
+						<ComboBoxItem Uid="Linked" Content="Linked"/>
 					</ComboBox>
 					<RibbonCheckBox Label="Show cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
 					<RibbonButton Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" >

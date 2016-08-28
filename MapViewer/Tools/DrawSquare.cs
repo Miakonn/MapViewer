@@ -45,7 +45,7 @@ namespace MapViewer.Tools {
 			if (_shape == null) {
 				return;
 			} UpdateDraw(e.GetPosition(_canvas));
-			_privateWindow.DisplayPopup(string.Format("side={0} m", CalculateDistance()));
+			_privateWindow.DisplayPopup(string.Format("side={0} {1}", CalculateDistance(), _map.Unit));
 		}
 
 		public void MouseUp(object sender, MouseButtonEventArgs e) { }

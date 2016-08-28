@@ -146,9 +146,10 @@ namespace MapViewer
 	    private const double RulerMarginX = 20;
 
 	    private void WriteRulerText(double length, double yPos, bool topJustify ) {
+
 			var text = new TextBlock {
 				RenderTransform = new RotateTransform(-90),
-				Text = string.Format("{0} m", length),
+				Text = string.Format("{0} {1}", length, Map.Unit),
 				FontSize = 25,
 				Foreground = Brushes.Red,
 				FontWeight = FontWeights.UltraBold

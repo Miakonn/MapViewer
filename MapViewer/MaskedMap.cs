@@ -85,6 +85,15 @@ namespace MapViewer {
 			}
 		}
 
+		public string Unit {
+			get {
+				return MapData.Unit;
+			}
+			set {
+				MapData.Unit = value;
+			}
+		}
+
 		public bool IsCalibrated {
 			get { return ImageScaleMperPix > 0.0; } 
 		}
@@ -199,6 +208,7 @@ namespace MapViewer {
 		public void PublishFrom(MaskedMap mapSource, bool scaleNeedsToRecalculate) {
 			Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
 
+			Unit = mapSource.Unit;
 			var changeImage = !string.Equals(ImageFilePath, mapSource.ImageFilePath);
 
 			if (mapSource.BmpMask != null && _maskImage != null) {
@@ -313,8 +323,8 @@ namespace MapViewer {
 			if (IsPublic && MapImage != null) {
 				Log.DebugFormat("ScaleToReal {0} {1}", ScreenScaleMMperM, ImageScaleMperPix);
 
-				if (MapData.ImageScaleMperPix < 0.005) {
-					MessageBox.Show("Image not calibrated");
+				if (MapData.ImageScaleMperPix < 1E-15) {
+					MessageBox.Show("Image not calibrated!");
 					return;
 				}
 

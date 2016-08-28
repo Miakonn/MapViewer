@@ -43,7 +43,7 @@ namespace MapViewer.Tools {
 				return;
 			}
 			UpdateDraw(e.GetPosition(_canvas));
-			_privateWindow.DisplayPopup(string.Format(CalculateDistance() + " m"));
+			_privateWindow.DisplayPopup(CalculateDistance() + " " + _map.Unit);
 		}
 
 		public void MouseUp(object sender, MouseButtonEventArgs e) { }

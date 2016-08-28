@@ -68,8 +68,10 @@ namespace MapViewer {
 			MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
 			MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
 
-			ComboBoxPublicScale.SelectedIndex = 0;
 
+			MapPublic.ScreenScaleMMperM = 20.0;
+			MapPublic.IsLinked = false;
+			MapPrivate.IsLinked = false;
 		}
 
 		#region Private methods
@@ -209,45 +211,22 @@ namespace MapViewer {
 		}
 
 		private void ComboBoxPublicScale_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
-			switch (ComboBoxPublicScale.SelectedIndex) {
-				case 0: {
-						MapPrivate.IsLinked = false;
-						MapPublic.IsLinked = false;
-						MapPublic.ScreenScaleMMperM = 20.0;
-						_publicIsDirty = true;
-						break;
-					}
-				case 1: {
-						MapPrivate.IsLinked = false;
-						MapPublic.IsLinked = false;
-						MapPublic.ScreenScaleMMperM = 10.0;
-						_publicIsDirty = true;
-						break;
-					}
-				case 2: {
-						MapPrivate.IsLinked = false;
-						MapPublic.IsLinked = false;
-						MapPublic.ScreenScaleMMperM = 5.0;
-						_publicIsDirty = true;
-						break;
-					}
-				case 3: {
-						MapPrivate.IsLinked = false;
-						MapPublic.IsLinked = false;
-						MapPublic.ScreenScaleMMperM = 2.0;
-						_publicIsDirty = true;
-						break;
-					}
-				case 4: {
-						MapPrivate.IsLinked = true;
-						MapPublic.IsLinked = true;
-						_publicIsDirty = true;
-						break;
-					}
+			var selected = (ComboBoxItem)ComboBoxPublicScale.SelectedItem;
+			if (selected != null && MapPublic != null && MapPrivate != null) {
+				_publicIsDirty = true;
+				if (selected.Uid == "Linked") {
+					MapPrivate.IsLinked = true;
+					MapPublic.IsLinked = true;
+				}
+				else {
+					var value = selected.Uid.Substring(6);
+					MapPublic.ScreenScaleMMperM = 1000 / double.Parse(value);
+					MapPrivate.IsLinked = false;
+					MapPublic.IsLinked = false;
+				}
 			}
-
 		}
-		
+	
 		private void Tab_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
 			ActiveTool = null;
 		}

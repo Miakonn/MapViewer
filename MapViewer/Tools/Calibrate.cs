@@ -84,8 +84,10 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			_canvas.Children.Remove(_line);
 					
-			var dialog = new DialogGetSingleValue {
-				LeadText = "Length in m",
+			var dialog = new DialogGetDoubleValue {
+				LeadText1 = "Length",
+				LeadText2 = "Unit",
+				DefaultText2 = _map.Unit,
 				Owner = _privateWindow
 			};
 
@@ -97,7 +99,8 @@ namespace MapViewer.Tools {
 
 			var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
 
-			_map.ImageScaleMperPix = (float) (dialog.FloatValue / length);
+			_map.ImageScaleMperPix = (float) (dialog.FloatValue1 / length);
+			_map.Unit = dialog.TextValue2;
 
 			_privateWindow.ActiveTool = null;
 		}
