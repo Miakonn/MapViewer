@@ -139,13 +139,16 @@ namespace MapViewer {
 
 		public void MovePublicCursor(Point pnt) {
 			if (ShowPublicCursor) {
-				var elemCursor = CanvasOverlay.FindElementByUid(PublicCursorUid);
+				var elemCursor = CanvasOverlay.FindElementByUid(PublicCursorUid) as Ellipse;
 
 				var radius = 30 / Scale;
 				if (elemCursor == null) {
 					OverlayRing(pnt, radius, Colors.Red, PublicCursorUid);
 				}
 				else {
+					elemCursor.Width = 2 * radius;
+					elemCursor.Height = 2 * radius;
+					elemCursor.StrokeThickness = 10 / Scale;
 					Canvas.SetLeft(elemCursor, pnt.X - radius);
 					Canvas.SetTop(elemCursor, pnt.Y - radius);
 				}
