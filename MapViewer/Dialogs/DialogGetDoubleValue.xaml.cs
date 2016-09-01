@@ -9,7 +9,7 @@ namespace MapViewer.Dialogs {
 		}
 
 		public string LeadText2 {
-			set { LabelHint1.Content = value; }
+			set { LabelHint2.Content = value; }
 		}
 
 		public string DefaultText2 {
