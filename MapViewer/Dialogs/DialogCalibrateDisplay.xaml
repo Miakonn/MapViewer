@@ -15,6 +15,7 @@
 			<RowDefinition Height="*" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="*" />
+			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Label Grid.Row="0" Grid.Column="1"  Content="width"  HorizontalAlignment="Center" />
 		<Label Grid.Row="0" Grid.Column="2"  Content="height"  HorizontalAlignment="Center" />
@@ -25,8 +26,9 @@
 		<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=MonitorSizeMmWidth}" Height="23" TextWrapping="Wrap"   Width="70"  Margin="3"/>
 		<TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Path=MonitorSizeMmHeight}" Height="23" TextWrapping="Wrap"   Width="70"  Margin="3"/>
 
-		<WrapPanel Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="10,15,0,10">
-			<Button Name="BtnFetch" Click="BtnFetch_OnClick" MinWidth="60" Padding="5,0,5,0" Margin="10,0,10,0">Auto calibrate</Button>
+		<ComboBox Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Center" Width="186" Loaded="ComboBoxEdid_Loaded" SelectionChanged="ComboBoxEdid_SelectionChanged"/>
+
+		<WrapPanel Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="10,15,0,10">
 			<Button IsCancel="True" MinWidth="60" Margin="10,0,10,0">_Cancel</Button>
 			<Button IsDefault="True" Name="BtnOk" Click="BtnOk_Click" MinWidth="60" Margin="10,0,10,0">_Ok</Button>
 		</WrapPanel>

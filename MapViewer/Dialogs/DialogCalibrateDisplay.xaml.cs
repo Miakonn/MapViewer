@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using MapViewer.Utilities;
 using SizeInt = System.Drawing.Size;
 
@@ -14,6 +16,7 @@ namespace MapViewer.Dialogs {
 		public double MonitorSizeMmWidth { get; set; }
 		public double MonitorSizeMmHeight { get; set; }
 
+		private MonitorManager _monitorManager;
 
 		public Size MonitorResolution {
 			get { return new Size(MonitorSizePixelWidth, MonitorSizePixelHeight); }
@@ -33,10 +36,12 @@ namespace MapViewer.Dialogs {
 				OnPropertyChanged("MonitorSizeMmHeight");
 				OnPropertyChanged("MonitorSizeMmWidth");
 			}
-		}		
+		}
+
 		public DialogCalibrateDisplay() {
 			InitializeComponent();
 
+			_monitorManager = new MonitorManager();
 			CalibrateWindow.DataContext = this;
 		}
 
@@ -45,19 +50,6 @@ namespace MapViewer.Dialogs {
 			Close();
 		}
 
-		private void BtnFetch_OnClick(object sender, RoutedEventArgs e) {
-			var mm = new MonitorManager();
-			var monitor = mm.GetLargestActiveMonitor();
-			if (monitor != null) {
-				if (monitor.ImageSize.HasValue) {
-					MonitorSize = monitor.ImageSize.Value;
-				}
-				if (monitor.MaximumResolution.HasValue) {
-					MonitorResolution = monitor.MaximumResolution.Value;
-				}
-			}
-
-		}
 		// Create the OnPropertyChanged method to raise the event
 		protected void OnPropertyChanged(string name) {
 			PropertyChangedEventHandler handler = PropertyChanged;
@@ -66,6 +58,30 @@ namespace MapViewer.Dialogs {
 			}
 		}
 
+		private void ComboBoxEdid_Loaded(object sender, RoutedEventArgs e) {
+			var comboBox = sender as ComboBox;
 
+			if (comboBox != null) {
+
+				var list = _monitorManager.MonitorList;
+				list.Insert(0, "Select monitor");
+				comboBox.ItemsSource = list;
+				comboBox.SelectedIndex = 0;
+			}
+		}
+
+		private void ComboBoxEdid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			var comboBox = sender as ComboBox;
+
+			if ((comboBox == null) || (comboBox.SelectedIndex < 0)) {
+				return;
+			}
+
+			var monitor = _monitorManager.Monitors.Find(s => s.Name == (string) comboBox.SelectedValue);
+			if (monitor != null) {
+				MonitorResolution = monitor.MaximumResolution.HasValue ? monitor.MaximumResolution.Value : new Size();
+				MonitorSize = monitor.ImageSize.HasValue ? monitor.ImageSize.Value : new Size();
+			}
+		}
 	}
 }

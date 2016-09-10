@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -21,8 +22,6 @@ namespace MapViewer.Utilities {
 		}
 
 		private static string RunDumpEdid() {
-
-
 			Mouse.OverrideCursor = Cursors.Wait;
 			var process = new Process();
 			try {
@@ -53,6 +52,17 @@ namespace MapViewer.Utilities {
 			return null;
 		}
 
+		public List<string> MonitorList {
+			get {
+				return (from monitor in _edid.Monitors where !monitor.Active.HasValue || monitor.Active.Value select monitor.Name).ToList();
+			}
+		}
+
+		public List<Monitor> Monitors {
+			get {
+				return _edid.Monitors;
+			}
+		}
 
 		public Monitor GetLargestActiveMonitor() {
 			if (_edid.Monitors.Count == 0) {
@@ -119,10 +129,31 @@ namespace MapViewer.Utilities {
 			}
 		}
 
+		/// <summary>
+		/// Return some format of name
+		/// </summary>
+		public string Name {
+			get {
+				if (_parameters.ContainsKey("Monitor Name")) {
+					return _parameters["Monitor Name"];
+				}
+				if (_parameters.ContainsKey("Registry Key")) {
+					var param = _parameters["Registry Key"];
+					var parts = param.Split('\\');
+					if (parts.Length == 3) {
+						return parts[1];
+					}
+				}
+				if (_parameters.ContainsKey("ManufacturerID")) {
+					return _parameters["ManufacturerID"];
+				}
+				return "Unknown";
+			}
+		}
+
 		public Dictionary<string, string> Parameters {
 			get { return _parameters; }
 		}
-
 
 		private Size? ParseSizeFloat10(string key) {
 			if (_parameters.ContainsKey(key)) {
@@ -164,6 +195,9 @@ namespace MapViewer.Utilities {
 		}
 
 		public Edid(string text) {
+			if (string.IsNullOrWhiteSpace(text)) {
+				return;
+			}
 			text = text.Replace("\r\r\n", "\r\n");
 			if (string.IsNullOrWhiteSpace(text)) {
 				return;
@@ -184,6 +218,4 @@ namespace MapViewer.Utilities {
 			}
 		}
 	}
-
-
 }
