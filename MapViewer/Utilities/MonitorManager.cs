@@ -21,25 +21,32 @@ namespace MapViewer.Utilities {
 		}
 
 		private static string RunDumpEdid() {
+
+
 			Mouse.OverrideCursor = Cursors.Wait;
-			var compiler = new Process();
+			var process = new Process();
 			try {
 				var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 				if (path == null) {
 					return null;
 				}
-				compiler.StartInfo.FileName = Path.Combine(path, "DumpEDID\\DumpEDID.exe");
-				compiler.StartInfo.Arguments = "";
-				compiler.StartInfo.UseShellExecute = false;
-				compiler.StartInfo.RedirectStandardOutput = true;
-				compiler.StartInfo.CreateNoWindow = true;
-				compiler.Start();
+				process.StartInfo.FileName = Path.Combine(path, "DumpEDID\\DumpEDID.exe");
+				process.StartInfo.Arguments = "";
+				process.StartInfo.UseShellExecute = false;
+				process.StartInfo.RedirectStandardOutput = true;
+				process.StartInfo.CreateNoWindow = true;
+				process.Start();
 				Thread.Sleep(1000);
-				//compiler.WaitForExit();
 				Mouse.OverrideCursor = null;
-				return compiler.StandardOutput.ReadToEnd();
+
+#if DEBUG
+				return File.ReadAllText(Path.Combine(path, "Mickes-skärmar.txt"));
+#else 
+				return process.StandardOutput.ReadToEnd();
+#endif
 			}
 			catch (Exception ex) {
+				Log.Error("Failed to run DumpEDID.exe.", ex);
 				MessageBox.Show("Failed to run DumpEDID.exe: \n" + ex.Message);
 			}
 			Mouse.OverrideCursor = null;
@@ -62,8 +69,17 @@ namespace MapViewer.Utilities {
 			if (monitorLargest == null) {
 				Log.InfoFormat("Found no active monitors!");
 			}
-			else {
+			else  if (monitorLargest.Parameters.ContainsKey("Serial Number")) {
 				Log.InfoFormat("Selected monitor: " + monitorLargest.Parameters["Serial Number"]);
+			}
+			else if (monitorLargest.Parameters.ContainsKey("Serial Number")) {
+				Log.InfoFormat("Selected monitor: " + monitorLargest.Parameters["Serial Number"]);
+			}
+			else if (monitorLargest.Parameters.ContainsKey("Registry Key")) {
+				Log.InfoFormat("Selected monitor: " + monitorLargest.Parameters["Registry Key"]);
+			}
+			else {
+				Log.InfoFormat("Selected monitor: Unknown");
 			}
 			return monitorLargest;
 		}
