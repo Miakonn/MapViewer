@@ -68,7 +68,7 @@ namespace MapViewer.Tools {
 			_circle = new Ellipse {
 				Width = 1,
 				Height = 1,
-				Fill = new SolidColorBrush(_mask ? Colors.Black : Colors.White),
+				Fill = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
 				Opacity = 0.5
 			};
 
@@ -95,7 +95,7 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			var center = GetElementCenter(_circle);
 			var radius = (int) (_circle.ActualWidth / 2);
-			_map.MaskCircle((int)center.X, (int)center.Y, radius, (byte)(_mask ? 255 : 0));
+			_map.MaskCircle((int)center.X, (int)center.Y, radius, (byte)(_mask ? 3 : 0));
 			_canvas.Children.Remove(_circle);
 			_circle = null;
 		}

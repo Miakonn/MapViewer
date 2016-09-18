@@ -69,7 +69,7 @@ namespace MapViewer.Tools {
 			_rect = new Rectangle {
 				Width = 5,
 				Height = 5,
-				Fill = (_mask ? Brushes.Black : Brushes.White),
+				Fill = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
 				Opacity = 0.5
 			};
 

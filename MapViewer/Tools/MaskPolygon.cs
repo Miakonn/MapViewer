@@ -91,10 +91,10 @@ namespace MapViewer.Tools {
 
 			_shape = new Polygon {
 				Points = _pnts,
-				Fill = (_mask ? Brushes.Black : Brushes.White),
+				Fill = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
 				FillRule = FillRule.EvenOdd,
 				StrokeThickness = 4,
-				Stroke = (_mask ? Brushes.Black : Brushes.White),
+				Stroke = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
 				Opacity = 0.5
 			};
 

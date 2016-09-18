@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using MapViewer.Properties;
 using Image = System.Windows.Controls.Image;
 using Path = System.IO.Path;
 using Point = System.Windows.Point;
@@ -61,7 +62,7 @@ namespace MapViewer {
 		private Image _maskImage;
 		private Image _backgroundImage;
 
-		private readonly BitmapPalette _maskPalette;
+		private BitmapPalette _maskPalette;
 
 		private double MaskOpacity { get; set; }
 
@@ -75,6 +76,23 @@ namespace MapViewer {
 
 		public const string PublicCursorUid = "Cursor";
 		public const string PublicPositionUid = "PublicPos";
+
+
+		public Color MaskColor {
+			get {
+				var colorString = Settings.Default.MaskColor;
+				try {
+					var color = ColorConverter.ConvertFromString(colorString);
+					Log.Error("MaskColor= " + color);
+					return (Color?) color ?? Colors.Black;
+				}
+				catch (Exception ex) {
+					Log.Error("Failed to parse color: " + colorString);
+				}
+				return Colors.Black;
+			}
+		}
+
 
 		public float ImageScaleMperPix {
 			get {
@@ -134,7 +152,7 @@ namespace MapViewer {
 			MapData = new MapData(null);
 
 			if (!IsPublic) {
-				_maskPalette = CreatePalette();
+				CreatePalette();
 			}
 
 			IsLinked = false;
@@ -165,6 +183,7 @@ namespace MapViewer {
 			UpdatePublicViewRectangle();
 
 			Deserialize();
+			CreatePalette();
 
 			if (BmpMask == null) {
 				BmpMask = new WriteableBitmap(MapImage.PixelWidth, MapImage.PixelHeight, MapImage.DpiX, MapImage.DpiY,
@@ -197,12 +216,14 @@ namespace MapViewer {
 			CanvasOverlay.RenderTransform = DisplayTransform;
 		}
 
-		private static BitmapPalette CreatePalette() {
+		public void CreatePalette() {
 			var colors = new List<Color> {Colors.Transparent};
+			var color = MaskColor;
+
 			for (var i = 1; i <= 255; i++) {
-				colors.Add(Colors.Black);
+				colors.Add(color);
 			}
-			return new BitmapPalette(colors);
+			_maskPalette = new BitmapPalette(colors);
 		}
 
 		public void PublishFrom(MaskedMap mapSource, bool scaleNeedsToRecalculate) {

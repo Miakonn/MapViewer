@@ -71,7 +71,18 @@ namespace MapViewer.Properties {
                 this["PublicMonitorSizeHeight"] = value;
             }
         }
-        
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("Black")]
+		public string MaskColor {
+			get {
+				return ((string)(this["MaskColor"]));
+			}
+			set {
+				this["MaskColor"] = value;
+			}
+		}
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
