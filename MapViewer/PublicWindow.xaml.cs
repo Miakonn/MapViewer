@@ -93,6 +93,7 @@ namespace MapViewer
 		    if (IsLoaded) {
 			    WindowState = WindowState.Maximized;
 		    }
+			PublicBorder.Background = new SolidColorBrush(Map.MaskColor);
 	    }
 
 

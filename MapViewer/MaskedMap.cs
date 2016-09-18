@@ -83,10 +83,10 @@ namespace MapViewer {
 				var colorString = Settings.Default.MaskColor;
 				try {
 					var color = ColorConverter.ConvertFromString(colorString);
-					Log.Error("MaskColor= " + color);
+					Log.Info("MaskColor= " + color);
 					return (Color?) color ?? Colors.Black;
 				}
-				catch (Exception ex) {
+				catch {
 					Log.Error("Failed to parse color: " + colorString);
 				}
 				return Colors.Black;
@@ -186,7 +186,7 @@ namespace MapViewer {
 			CreatePalette();
 
 			if (BmpMask == null) {
-				BmpMask = new WriteableBitmap(MapImage.PixelWidth, MapImage.PixelHeight, MapImage.DpiX, MapImage.DpiY,
+				BmpMask = new WriteableBitmap(MapImage.PixelWidth+2, MapImage.PixelHeight+2, MapImage.DpiX, MapImage.DpiY,
 					PixelFormats.Indexed8, _maskPalette);
 			}
 

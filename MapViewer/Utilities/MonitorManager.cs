@@ -38,7 +38,7 @@ namespace MapViewer.Utilities {
 				Thread.Sleep(1000);
 				Mouse.OverrideCursor = null;
 
-#if DEBUG
+#if DEBUG_OFF
 				return File.ReadAllText(Path.Combine(path, "Mickes-skärmar.txt"));
 #else 
 				return process.StandardOutput.ReadToEnd();
