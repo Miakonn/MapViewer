@@ -45,6 +45,11 @@ namespace MapViewer {
 				}
 				_activeTool = value;
 				_cursorAction = CursorAction.None;
+				if (MapPublic != null && MapPublic.ShowPublicCursorTemporary) {
+					MapPublic.ShowPublicCursor = false;
+					MapPublic.ShowPublicCursorTemporary = false;
+				};
+
 			}
 		}
 
@@ -112,9 +117,7 @@ namespace MapViewer {
 
 		private void PrivateWinKeyDown(object sender, KeyEventArgs e) {
 			if (e.Key == Key.Escape) {
-				if (ActiveTool != null) {
-					ActiveTool = null;
-				}
+				ActiveTool = null;
 				_cursorAction = CursorAction.None;
 			}
 			if (e.Key == Key.F12 && Publish_CanExecute()) {

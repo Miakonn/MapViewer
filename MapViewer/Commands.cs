@@ -18,6 +18,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete element", "Delete element", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SetColourElement = new RoutedUICommand("Set colour", "Set colour", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand ShowPublicCursorTemporary = new RoutedUICommand("Show cursor temp.", "Show cursor temp.", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand OpenImage = new RoutedUICommand("Open image", "Open image", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ExitApp = new RoutedUICommand("Exit", "Exit", typeof(CustomCommands), null);
@@ -51,7 +52,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand UnmaskCircle = new RoutedUICommand("Unmask circle", "Unmask circle", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand MaskPolygon = new RoutedUICommand("Mask polygon", "Mask polygon", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand UnmaskPolygon = new RoutedUICommand("Unmask polygon", "Unmask polygon", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand UnmaskLineOfSight20m = new RoutedUICommand("Unmask sight 20m", "Unmask sight 20m", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand UnmaskLineOfSight20m = new RoutedUICommand("Unmask LOS 20m", "Unmask LOS 20m", typeof(CustomCommands), null);
 	}
 
 	public partial class PrivateWindow {
@@ -432,6 +433,12 @@ namespace MapViewer {
 			}
 		}
 
+		private void ShowPublicCursorTemporary_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
+			MapPublic.ShowPublicCursorTemporary = true;
+			MapPublic.ShowPublicCursor = true;
+		}
+
 		private void UnmaskLineOfSight20m_Executed(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			var radius = 20 / MapPrivate.ImageScaleMperPix;
@@ -442,10 +449,12 @@ namespace MapViewer {
 		#region Other
 
 		private void CheckBoxPublicCursor_OnChecked(object sender, RoutedEventArgs e) {
+			ActiveTool = null;
 			MapPublic.ShowPublicCursor = true;
 		}
 
 		private void CheckBoxPublicCursor_OnUnchecked(object sender, RoutedEventArgs e) {
+			ActiveTool = null;
 			MapPublic.ShowPublicCursor = false;
 		}
 		#endregion

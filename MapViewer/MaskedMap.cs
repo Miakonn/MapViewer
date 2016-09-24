@@ -73,6 +73,9 @@ namespace MapViewer {
 		public double ScreenScaleMMperM { get; set; }
 
 		public bool ShowPublicCursor { get; set; }
+		
+		public bool ShowPublicCursorTemporary { get; set; }
+
 
 		public const string PublicCursorUid = "Cursor";
 		public const string PublicPositionUid = "PublicPos";

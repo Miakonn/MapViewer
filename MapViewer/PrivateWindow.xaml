@@ -43,6 +43,7 @@
 		<CommandBinding Command="mapViewer:CustomCommands.DrawRectangle" Executed="DrawRectangle_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.DrawSquare" Executed="DrawSquare_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.DrawText" Executed="DrawText_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" Executed="ShowPublicCursorTemporary_Executed" CanExecute="Spell_CanExecute" />
 
 		<CommandBinding Command="mapViewer:CustomCommands.MaskRectangle" Executed="MaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
@@ -167,6 +168,8 @@
 						<MenuItem Command="mapViewer:CustomCommands.SpellCircular7m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.SpellCircular3m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.SpellCircular2m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<Separator />
+						<MenuItem Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<Separator />
 						<MenuItem Command="mapViewer:CustomCommands.DeleteElement"    CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.SetColourElement" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
