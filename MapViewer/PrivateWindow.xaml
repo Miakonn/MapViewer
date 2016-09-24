@@ -162,9 +162,12 @@
 
 				<Grid.ContextMenu>
 					<ContextMenu Name="Cm">
+						<MenuItem Command="mapViewer:CustomCommands.UnmaskLineOfSight20m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<Separator />
 						<MenuItem Command="mapViewer:CustomCommands.SpellCircular7m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.SpellCircular3m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.SpellCircular2m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<Separator />
 						<MenuItem Command="mapViewer:CustomCommands.DeleteElement"    CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.SetColourElement" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 					</ContextMenu>
