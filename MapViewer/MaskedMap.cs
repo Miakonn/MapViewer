@@ -495,7 +495,64 @@ namespace MapViewer {
 			bitmap.FillPolygon(intPoints, colorIndex);	
 		}
 
+		public static Color GetPixelColor(BitmapSource bitmap, int x, int y) {
+			if (x < 0 || x >= bitmap.PixelWidth || y < 0 || y >= bitmap.PixelHeight) {
+				return Colors.Black;
+			}
 
+			const int side = 1;
+			var bytesPerPixel = (bitmap.Format.BitsPerPixel + 7) / 8;
+			var stride = side * bytesPerPixel;
+			var bytes = new byte[side * side * bytesPerPixel];
+			var rect = new Int32Rect(x, y, side, side);
+
+			bitmap.CopyPixels(rect, bytes, stride, 0);
+
+			if (bitmap.Format == PixelFormats.Pbgra32) {
+				return Color.FromArgb(bytes[3], bytes[2], bytes[1], bytes[0]);
+			}
+			if (bitmap.Format == PixelFormats.Bgr32) {
+				return Color.FromArgb(0xFF, bytes[2], bytes[1], bytes[0]);
+			}
+			// handle other required formats
+			return Colors.Black;
+		}
+
+		const int DotRadius = 2;
+		const int DotSize = DotRadius * 2 + 1;
+
+		public static void WritePixel(WriteableBitmap bitmap, int x, int y, byte[] colorArr) {
+
+			if (x - DotRadius < 0 || y - DotRadius < 0 || x + DotRadius >= bitmap.PixelWidth || y + DotRadius >= bitmap.PixelHeight) {
+				return;
+			}
+			var rect = new Int32Rect(x-DotRadius, y-DotRadius, DotSize, DotSize);
+			bitmap.WritePixels(rect, colorArr, rect.Width, 0);
+		}
+
+		public void MaskLineOfSight(double centerX, double centerY, double radius, byte colorIndex) {
+			centerX = (int)(centerX * ScaleDpiFix);
+			centerY = (int)(centerY * ScaleDpiFix);
+			radius = (int)(radius * ScaleDpiFix);
+
+			var bitmap = BmpMask as WriteableBitmap;
+			if (bitmap == null) {
+				return;
+			}
+
+			var colorData = CreateColorData(DotSize * DotSize, colorIndex);
+			for (var angle = 0.0; angle <= 2 * Math.PI; angle+=0.01) {
+				for (var rad = 0.0; rad <= radius; rad += 4.0) {
+					var pntX = (int)(centerX + Math.Cos(angle) * rad);
+					var pntY = (int)(centerY + Math.Sin(angle) * rad);
+					var col = GetPixelColor(MapImage, pntX, pntY);
+					if ((col.R + col.G + col.B) < 128) {
+						break;
+					}
+					WritePixel(bitmap, pntX, pntY, colorData);
+				}
+			}
+		}
 
 		public void ClearMask() {
 			if (BmpMask != null) {

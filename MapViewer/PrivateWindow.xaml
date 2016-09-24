@@ -50,6 +50,7 @@
 		<CommandBinding Command="mapViewer:CustomCommands.UnmaskCircle" Executed="UnmaskCircle_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.MaskPolygon" Executed="MaskPolygon_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.UnmaskPolygon" Executed="UnmaskPolygon_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.UnmaskLineOfSight20m" Executed="UnmaskLineOfSight20m_Executed" CanExecute="ImageNeeded_CanExecute" />
 	</Window.CommandBindings>
 
 	<Grid KeyDown="PrivateWinKeyDown">

@@ -51,6 +51,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand UnmaskCircle = new RoutedUICommand("Unmask circle", "Unmask circle", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand MaskPolygon = new RoutedUICommand("Mask polygon", "Mask polygon", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand UnmaskPolygon = new RoutedUICommand("Unmask polygon", "Unmask polygon", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand UnmaskLineOfSight20m = new RoutedUICommand("Unmask sight 20m", "Unmask sight 20m", typeof(CustomCommands), null);
 	}
 
 	public partial class PrivateWindow {
@@ -215,7 +216,10 @@ namespace MapViewer {
 		}
 
 		private void ClearMask_Executed(object sender, ExecutedRoutedEventArgs e) {
-			MapPrivate.ClearMask();
+			var result =MessageBox.Show("Are you sure you want to clear the mask?" , "", MessageBoxButton.YesNo);
+			if (result == MessageBoxResult.Yes) {
+				MapPrivate.ClearMask();
+			}
 		}
 
 		private void ClearOverlay_Executed(object sender, ExecutedRoutedEventArgs e) {
@@ -266,8 +270,11 @@ namespace MapViewer {
 		}
 
 		private void FullMask_Executed(object sender, ExecutedRoutedEventArgs e) {
-			var rect = new Int32Rect(0, 0, (int)MapPrivate.MapImage.Width, (int)MapPrivate.MapImage.Height);
-			MapPrivate.MaskRectangle(rect, 255);
+			var result = MessageBox.Show("Are you sure you want to mask everything?", "", MessageBoxButton.YesNo);
+			if (result == MessageBoxResult.Yes) {
+				var rect = new Int32Rect(0, 0, (int)MapPrivate.MapImage.Width, (int)MapPrivate.MapImage.Height);
+				MapPrivate.MaskRectangle(rect, 255);
+			}
 		}
 
 		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
@@ -425,6 +432,11 @@ namespace MapViewer {
 			}
 		}
 
+		private void UnmaskLineOfSight20m_Executed(object sender, ExecutedRoutedEventArgs e) {
+			ActiveTool = null;
+			var radius = 20 / MapPrivate.ImageScaleMperPix;
+			MapPrivate.MaskLineOfSight(_mouseDownPoint.X, _mouseDownPoint.Y, radius, 0);
+		}
 		#endregion
 
 		#region Other

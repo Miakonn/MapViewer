@@ -1,12 +1,18 @@
 
 
-
+// Buggar
 
 *	se till att delete element är utgråat om det ej kan användas
 
+* 	problem med mask/unmask-verktygen vid bildkant
+
+*	kolla polyline-verktyget
+
+
+
+// Nya funktioner
+
 * 	spara position
-
-
 
 *	undo
 
@@ -21,3 +27,9 @@
 *	MRU files
 
 *	Rutnät
+
+*	kontext-menu, tillfällig public cursor
+
+*	mask/unmask ellipse
+
+*	visa rutan före publicering
