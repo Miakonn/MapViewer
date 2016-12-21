@@ -544,7 +544,7 @@ namespace MapViewer {
 			}
 
 			var colorData = CreateColorData(DotSize * DotSize, colorIndex);
-			for (var angle = 0.0; angle <= 2 * Math.PI; angle+=0.01) {
+			for (var angle = 0.0; angle <= 2 * Math.PI; angle+=0.005) {
 				for (var rad = 0.0; rad <= radius; rad += 4.0) {
 					var pntX = (int)(centerX + Math.Cos(angle) * rad);
 					var pntY = (int)(centerY + Math.Sin(angle) * rad);

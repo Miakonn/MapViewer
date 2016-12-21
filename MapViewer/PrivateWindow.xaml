@@ -119,6 +119,8 @@
 						<ComboBoxItem Uid="Scale_50" Content="1:50" IsSelected="True"/>
 						<ComboBoxItem Uid="Scale_100" Content="1:100"/>
 						<ComboBoxItem Uid="Scale_200" Content="1:200"/>
+						<ComboBoxItem Uid="Scale_300" Content="1:300"/>
+						<ComboBoxItem Uid="Scale_400" Content="1:400"/>
 						<ComboBoxItem Uid="Scale_500" Content="1:500"/>
 						<ComboBoxItem Uid="Linked" Content="Linked"/>
 					</ComboBox>
