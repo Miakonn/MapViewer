@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?define ReleasePath=..\MapViewer\Release ?>
+<?define EdidPath=..\DumpEdid ?>
+<?define DocPath=..\Documents ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="SetupMapViewer" Language="1033" Version="1.0.0.0" Manufacturer="Miakonn" UpgradeCode="795b7abe-8128-4447-91b7-51ea21154c80">
+	<Product Id="*" Name="Miakonn MapViewer" Language="1033" Version="1.14.0.0" Manufacturer="Miakonn" UpgradeCode="795b7abe-8128-4447-91b7-51ea21154c80">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -16,24 +18,35 @@
 
 		<Feature Id="ProductFeature" Title="SetupMapViewer" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentGroupRef Id="EdidComponents" />
 		</Feature>
 	</Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="Miakonns MapViewer" />
+				<Directory Id="INSTALLFOLDER" Name="Miakonns MapViewer" >
+					<Directory Id="EdidFolder" Name="DumpEDID" />
+				</Directory>
 			</Directory>
 		</Directory>
 	</Fragment>
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
 			<Component Id="ProductComponent" Guid="9016D18E-D088-4F43-AAFD-391AD11B6F8F">
 				<File Source="$(var.ReleasePath)\MapViewer.exe" />
 				<File Source="$(var.ReleasePath)\MapViewer.exe.config" />
 				<File Source="$(var.ReleasePath)\log4net.dll" />
+				<File Source="$(var.DocPath)\MiakonnMapViewer.pdf" />
+			</Component>
+		</ComponentGroup>
+		
+		<ComponentGroup Id="EdidComponents" Directory="EdidFolder">
+			<Component Id="EdidComponent" Guid="B9EC4713-5E8B-4BD1-BBFE-D0B95880EA41">
+				<File Source="$(var.EdidPath)\DumpEDID.exe" />
+				<File Source="$(var.EdidPath)\readme.txt" />
+				<File Source="$(var.EdidPath)\DumpEDID.chm" />
 			</Component>
 		</ComponentGroup>
 	</Fragment>
