@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?define ReleasePath=..\MapViewer\Release ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="SetupMapViewer" Language="1033" Version="1.0.0.0" Manufacturer="Miakonn" UpgradeCode="795b7abe-8128-4447-91b7-51ea21154c80">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<Media Id="1" Cabinet="MapViewer.cab" EmbedCab="yes" />
+	
+
+		<Condition Message="Operating System must be Windows Vista, 7 or higher.">
+			<![CDATA[Installed OR VersionNT >= 600]]>
+		</Condition>
+
+		<Feature Id="ProductFeature" Title="SetupMapViewer" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Miakonns MapViewer" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<Component Id="ProductComponent" Guid="9016D18E-D088-4F43-AAFD-391AD11B6F8F">
+				<File Source="$(var.ReleasePath)\MapViewer.exe" />
+				<File Source="$(var.ReleasePath)\MapViewer.exe.config" />
+				<File Source="$(var.ReleasePath)\log4net.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
