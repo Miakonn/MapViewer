@@ -161,6 +161,9 @@ namespace MapViewer {
 		private void PrivateWinMouseMove(object sender, MouseEventArgs e) {
 
 			if (ActiveTool != null) {
+				if (ActiveTool.ShowPublicCursor()) {
+					MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));					
+				}
 				ActiveTool.MouseMove(sender, e);
 				return;
 			}

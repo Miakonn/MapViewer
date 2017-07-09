@@ -57,6 +57,9 @@ namespace MapViewer.Tools {
 			_button = null;
 		}
 
+		public bool ShowPublicCursor() {
+			return false;
+		}
 		#endregion
 
 		private void InitDraw(Point pt1) {

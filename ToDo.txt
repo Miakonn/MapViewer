@@ -2,9 +2,7 @@
 
 // Buggar
 
-*	se till att delete element är utgråat om det ej kan användas
-
-* 	problem med mask/unmask-verktygen vid bildkant
+*	problem med mask/unmask-verktygen vid bildkant
 
 *	kolla polyline-verktyget
 
@@ -12,15 +10,13 @@
 
 // Nya funktioner
 
+*	reload image
+
 * 	spara position
 
 *	undo
 
 *	rondräknare
-
-*	figurordning
-
-*	rondräknare på formler
 
 * 	olika våningar?
 
@@ -33,3 +29,9 @@
 *	mask/unmask ellipse
 
 *	visa rutan före publicering
+
+
+// Låg prio
+*	figurordning
+
+*	rondräknare på formler

@@ -8,5 +8,6 @@ namespace MapViewer {
 		void MouseMove(object sender, MouseEventArgs e);
 		void KeyDown(object sender, KeyEventArgs e);
 		void Deactivate();
+		bool ShowPublicCursor();
 	}
 }
