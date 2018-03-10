@@ -161,39 +161,48 @@ namespace MapViewer {
 			IsLinked = false;
 		}
 
-		public static BitmapImage BitmapFromUri(Uri source) {
-			var bitmap = new BitmapImage();
-			bitmap.BeginInit();
-			bitmap.UriSource = source;
-			bitmap.CacheOption = BitmapCacheOption.OnLoad;
-			bitmap.EndInit();
-			return bitmap;
+		public void BitmapFromUri(Uri source) {
+			MapImage = new BitmapImage();
+			MapImage.BeginInit();
+			MapImage.UriSource = source;
+			MapImage.CacheOption = BitmapCacheOption.OnLoad;
+			MapImage.EndInit();
 		}
 
 		public void LoadImage(string imagePath) {
-			var privateWindow = ParentWindow as PrivateWindow;
-			if (privateWindow != null && !string.Equals(imagePath, ImageFilePath) && !string.IsNullOrWhiteSpace(ImageFilePath)) {
-				privateWindow.AddToMru(ImageFilePath);
+			try {
+				var privateWindow = ParentWindow as PrivateWindow;
+				if (privateWindow != null && !string.Equals(imagePath, ImageFilePath) && !string.IsNullOrWhiteSpace(ImageFilePath)) {
+					privateWindow.AddToMru(ImageFilePath);
+				}
+				ImageFilePath = imagePath;
+				Log.InfoFormat("Loading image {0}", ImageFilePath);
+				BitmapFromUri(new Uri(ImageFilePath));
+				MapData = new MapData(CreateFilename(ImageFilePath, ".xml"));
+
+				BmpMask = null;
+				CanvasOverlay.Children.Clear();
+
+				UpdatePublicViewRectangle();
+
+				Deserialize();
+				CreatePalette();
+
+				if (BmpMask == null) {
+					BmpMask = new WriteableBitmap(MapImage.PixelWidth + 2, MapImage.PixelHeight + 2, MapImage.DpiX, MapImage.DpiY,
+						PixelFormats.Indexed8, _maskPalette);
+				}
+
+				ScaleToWindow();
 			}
-			ImageFilePath = imagePath;
-			Log.InfoFormat("Loading image {0}", ImageFilePath);
-			MapImage = BitmapFromUri(new Uri(ImageFilePath));
-			MapData = new MapData(CreateFilename(ImageFilePath, ".xml"));
-
-			BmpMask = null;
-			CanvasOverlay.Children.Clear();
-
-			UpdatePublicViewRectangle();
-
-			Deserialize();
-			CreatePalette();
-
-			if (BmpMask == null) {
-				BmpMask = new WriteableBitmap(MapImage.PixelWidth+2, MapImage.PixelHeight+2, MapImage.DpiX, MapImage.DpiY,
-					PixelFormats.Indexed8, _maskPalette);
+			catch (Exception ex) {
+				Log.Error("LoadImage", ex);
+				MessageBox.Show("Failed to load image", ex.Message);
+				BmpMask = null;
+				MapImage = null;
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
 			}
-
-			ScaleToWindow();			
 		}
 
 		public void Create() {
@@ -236,7 +245,13 @@ namespace MapViewer {
 			var changeImage = !string.Equals(ImageFilePath, mapSource.ImageFilePath);
 
 			if (mapSource.BmpMask != null && _maskImage != null) {
-				BmpMask = mapSource.BmpMask.CloneCurrentValue();
+				try {
+					BmpMask = mapSource.BmpMask.CloneCurrentValue();
+				}
+				catch (Exception ex) {
+					Log.Error(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
 				_maskImage.Source = BmpMask;
 			}
 			if (mapSource.MapImage != null && changeImage) {

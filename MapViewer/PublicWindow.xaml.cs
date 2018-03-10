@@ -190,6 +190,7 @@ namespace MapViewer
 			_canvasRuler.Children.Clear();
 
 			if (screenScaleMperPix < 0.0001  || screenScaleMperPix > 1E6) {
+				Log.Error("Screen scale out of bounds!");
 				return;
 			}
 			var y0 = ActualHeight/10;

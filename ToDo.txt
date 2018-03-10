@@ -4,8 +4,6 @@
 
 *	problem med mask/unmask-verktygen vid bildkant
 
-*	kolla polyline-verktyget
-
 
 
 // Nya funktioner
@@ -20,11 +18,9 @@
 
 * 	olika våningar?
 
-*	MRU files
-
 *	Rutnät
 
-*	kontext-menu, tillfällig public cursor
+*	kontext-menu,
 
 *	mask/unmask ellipse
 
