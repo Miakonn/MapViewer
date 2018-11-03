@@ -188,6 +188,10 @@ namespace MapViewer {
 				Deserialize();
 				CreatePalette();
 
+				if (MapData.LastFigureScaleUsed != 0) {
+					ScreenScaleMMperM = 1000.0 / MapData.LastFigureScaleUsed;
+				}
+
 				if (BmpMask == null) {
 					BmpMask = new WriteableBitmap(MapImage.PixelWidth + 2, MapImage.PixelHeight + 2, MapImage.DpiX, MapImage.DpiY,
 						PixelFormats.Indexed8, _maskPalette);

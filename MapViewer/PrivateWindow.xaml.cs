@@ -72,11 +72,21 @@ namespace MapViewer {
 			MapPublic = PublicWindow.Map;
 			MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
 			MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
-
-
+			
 			MapPublic.ScreenScaleMMperM = 20.0;
+			MapPublic.MapData.LastFigureScaleUsed = 50;
 			MapPublic.IsLinked = false;
 			MapPrivate.IsLinked = false;
+		}
+
+		public void SetScale(int scale) {
+			if (scale == 0) {
+				ComboBoxPublicScale.Text = "Linked";
+			}
+			else {
+				var str =  "1:" + scale;
+				ComboBoxPublicScale.Text = str;
+			}
 		}
 
 		#region Private methods
@@ -220,13 +230,14 @@ namespace MapViewer {
 			var selected = (ComboBoxItem)ComboBoxPublicScale.SelectedItem;
 			if (selected != null && MapPublic != null && MapPrivate != null) {
 				_publicIsDirty = true;
-				if (selected.Uid == "Linked") {
+				var value = int.Parse(selected.Uid.Substring(6));
+				MapPrivate.MapData.LastFigureScaleUsed = value;
+				if (value == 0) {
 					MapPrivate.IsLinked = true;
 					MapPublic.IsLinked = true;
 				}
 				else {
-					var value = selected.Uid.Substring(6);
-					MapPublic.ScreenScaleMMperM = 1000 / double.Parse(value);
+					MapPublic.ScreenScaleMMperM = 1000.0 / value;
 					MapPrivate.IsLinked = false;
 					MapPublic.IsLinked = false;
 				}

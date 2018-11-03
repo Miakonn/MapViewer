@@ -125,6 +125,8 @@ namespace MapViewer {
 				MapPrivate.LoadImage(dialog.FileName);
 				_publicIsDirty = true;
 				CreateWindows();
+				SetScale(MapPrivate.MapData.LastFigureScaleUsed);
+
 				if (MapPrivate.IsCalibrated) {
 					GamingTab.IsSelected = true;
 				}
@@ -142,6 +144,7 @@ namespace MapViewer {
 			MapPrivate.LoadImage(Settings.Default.MRU);
 			_publicIsDirty = true;
 			CreateWindows();
+			SetScale(MapPrivate.MapData.LastFigureScaleUsed);
 			if (MapPrivate.IsCalibrated) {
 				GamingTab.IsSelected = true;
 			}

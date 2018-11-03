@@ -6,8 +6,9 @@ using System.Xml.Serialization;
 namespace MapViewer {
 	public class MapData {
 		private float _imageScaleMperPix;
+		private int _lastFigureScaleUsed;
 		private string _unit;
-
+		
 		private readonly string _xmlFilePath;
 
 		public string Unit {
@@ -26,6 +27,14 @@ namespace MapViewer {
 			}
 		}
 
+		public int LastFigureScaleUsed {
+			get { return _lastFigureScaleUsed; }
+			set {
+				_lastFigureScaleUsed = value;
+				Serialize();
+			}
+		}
+
 		public MapData() {
 			_unit = "m";
 		}
@@ -37,6 +46,7 @@ namespace MapViewer {
 		public void Copy(MapData source) {
 			ImageScaleMperPix = source.ImageScaleMperPix;
 			Unit = source.Unit;
+			LastFigureScaleUsed = source.LastFigureScaleUsed;
 		}
 
 		public void Serialize() {

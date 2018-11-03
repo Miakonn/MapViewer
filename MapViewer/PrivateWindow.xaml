@@ -120,10 +120,15 @@
 						<ComboBoxItem Uid="Scale_100" Content="1:100"/>
 						<ComboBoxItem Uid="Scale_200" Content="1:200"/>
 						<ComboBoxItem Uid="Scale_300" Content="1:300"/>
-						<ComboBoxItem Uid="Scale_400" Content="1:400"/>
 						<ComboBoxItem Uid="Scale_500" Content="1:500"/>
 						<ComboBoxItem Uid="Scale_1000" Content="1:1000"/>
-						<ComboBoxItem Uid="Linked" Content="Linked"/>
+						<ComboBoxItem Uid="Scale_2000" Content="1:2000"/>
+						<ComboBoxItem Uid="Scale_4000" Content="1:4000"/>
+						<ComboBoxItem Uid="Scale_8000" Content="1:8000"/>
+						<ComboBoxItem Uid="Scale_16000" Content="1:16000"/>
+						<ComboBoxItem Uid="Scale_32000" Content="1:32000"/>
+						<ComboBoxItem Uid="Scale_64000" Content="1:64000"/>
+						<ComboBoxItem Uid="Scale_0" Content="Linked"/>
 					</ComboBox>
 					<RibbonCheckBox Label="Show cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
 					<RibbonButton Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" >
