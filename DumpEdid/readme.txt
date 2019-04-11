@@ -1,7 +1,7 @@
 
 
-DumpEDID v1.05
-Copyright (c) 2006 - 2015 Nir Sofer
+DumpEDID v1.07
+Copyright (c) 2006 - 2018 Nir Sofer
 Web Site: http://www.nirsoft.net
 
 
@@ -52,6 +52,11 @@ If you want to Get the EDID records of a remote computer, you can specify
 the remote computer as parameter, for example:
 DumpEDID.exe \\remote01
 
+If you want to get only the active monitors, simply add -a to the
+command-line, for example:
+DumpEDID.exe -a
+DumpEDID.exe -a \\remote01
+
 
 
 System Requirement
@@ -66,6 +71,10 @@ Versions History
 ================
 
 
+* Version 1.07 - You can now add -a to the command-line in order to get
+  only the active monitors.
+* Version 1.06 - The 'Active' status is now taken from the Registry
+  (Control Subkey) when connecting a remote computer.
 * Version 1.05 - Added 'Active' field (Doesn't work on remote
   computer), which shows whether the monitor is active.
 * Version 1.02 - Added support for EDID Detailed Timing Descriptor, so

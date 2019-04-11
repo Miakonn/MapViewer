@@ -23,14 +23,14 @@ namespace MapViewer.Utilities {
 
 		private static string RunDumpEdid() {
 			Mouse.OverrideCursor = Cursors.Wait;
-			var process = new Process();
 			try {
 				var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 				if (path == null) {
 					return null;
 				}
+				var process = new Process();
 				process.StartInfo.FileName = Path.Combine(path, "DumpEDID\\DumpEDID.exe");
-				process.StartInfo.Arguments = "";
+				process.StartInfo.Arguments = "-a";
 				process.StartInfo.UseShellExecute = false;
 				process.StartInfo.RedirectStandardOutput = true;
 				process.StartInfo.CreateNoWindow = true;
