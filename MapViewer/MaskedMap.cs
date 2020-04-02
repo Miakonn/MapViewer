@@ -18,15 +18,12 @@ namespace MapViewer {
 
 		public BitmapImage MapImage;
 
-		private readonly TransformGroup _displayTransform;
-		public TransformGroup DisplayTransform {
-			get { return _displayTransform; }
-		}
+        public TransformGroup DisplayTransform { get; }
 
-		private readonly RotateTransform _trfRotation;
+        private readonly RotateTransform _trfRotation;
 		public RotateTransform TrfRotation {
-			get { return _trfRotation; }
-			set {
+			get => _trfRotation;
+            set {
 				_trfRotation.Angle = value.Angle;
 				_trfRotation.CenterX = value.CenterX;
 				_trfRotation.CenterY = value.CenterY;
@@ -35,8 +32,8 @@ namespace MapViewer {
 
 		private readonly ScaleTransform _trfScale;
 		public ScaleTransform TrfScale {
-			get { return _trfScale; }
-			set {
+			get => _trfScale;
+            set {
 				_trfScale.ScaleX = value.ScaleX;
 				_trfScale.ScaleY = value.ScaleY;
 				_trfScale.CenterX = value.CenterX;
@@ -47,8 +44,8 @@ namespace MapViewer {
 
 		private readonly TranslateTransform _trfTranslate;
 		public TranslateTransform TrfTranslate {
-			get { return _trfTranslate; }
-			set {
+			get => _trfTranslate;
+            set {
 				_trfTranslate.X = value.X;
 				_trfTranslate.Y = value.Y;
 			}
@@ -64,9 +61,7 @@ namespace MapViewer {
 
 		private BitmapPalette _maskPalette;
 
-		private double MaskOpacity { get; set; }
-
-		public float ScreenScaleMMperPix { get; set; }
+		private double MaskOpacity { get; }
 
 		public MapData MapData { get; set; }
 
@@ -96,53 +91,36 @@ namespace MapViewer {
 			}
 		}
 
-
-		public float ImageScaleMperPix {
-			get {
-				return MapData.ImageScaleMperPix;
-			}
-			set {
-				MapData.ImageScaleMperPix = value;
-			}
-		}
+        public float ImageScaleMperPix {
+			get => MapData.ImageScaleMperPix;
+            set => MapData.ImageScaleMperPix = value;
+        }
 
 		public string Unit {
-			get {
-				return MapData.Unit;
-			}
-			set {
-				MapData.Unit = value;
-			}
-		}
+			get => MapData.Unit;
+            set => MapData.Unit = value;
+        }
 
-		public bool IsCalibrated {
-			get { return ImageScaleMperPix > 0.0; } 
-		}
+		public bool IsCalibrated => ImageScaleMperPix > 0.0;
 
-		public Window ParentWindow { get; set; }
+        public Window ParentWindow { get; set; }
 
 		public bool IsLinked { get; set; }
 
-		private bool IsPublic { get; set; }
+		private bool IsPublic { get; }
 
 		public string ImageFilePath { get; set; }
 
-		public double Scale {
-			get {
-				return MapImage != null ? TrfScale.ScaleX : 1.0;
-			}
-		}
+		public double Scale => MapImage != null ? TrfScale.ScaleX : 1.0;
 
-		public double ScaleDpiFix {
-			get { return MapImage != null ? (MapImage.PixelHeight / MapImage.Height) : 1.0; }
-		}
+        public double ScaleDpiFix => MapImage != null ? (MapImage.PixelHeight / MapImage.Height) : 1.0;
 
-		#endregion
+        #endregion
 
 		public MaskedMap(bool publicView) {
 			IsPublic = publicView;
 			MaskOpacity = IsPublic ? 1.0 : 0.3;
-			_displayTransform = new TransformGroup();
+			DisplayTransform = new TransformGroup();
 
 			_trfRotation = new RotateTransform(0.0);
 			_trfScale = new ScaleTransform(1.0, 1.0);
@@ -171,8 +149,7 @@ namespace MapViewer {
 
 		public void LoadImage(string imagePath) {
 			try {
-				var privateWindow = ParentWindow as PrivateWindow;
-				if (privateWindow != null && !string.Equals(imagePath, ImageFilePath) && !string.IsNullOrWhiteSpace(ImageFilePath)) {
+                if (ParentWindow is PrivateWindow privateWindow && !string.Equals(imagePath, ImageFilePath) && !string.IsNullOrWhiteSpace(ImageFilePath)) {
 					privateWindow.AddToMru(ImageFilePath);
 				}
 				ImageFilePath = imagePath;
@@ -347,8 +324,7 @@ namespace MapViewer {
 		}
 
 		private void UpdatePublicViewRectangle() {
-			var privateWin = ParentWindow as PrivateWindow;
-			if (!IsPublic && !IsLinked && privateWin != null && !string.Equals(ImageFilePath, privateWin.MapPrivate.ImageFilePath)) {
+            if (!IsPublic && !IsLinked && ParentWindow is PrivateWindow privateWin && !string.Equals(ImageFilePath, privateWin.MapPrivate.ImageFilePath)) {
 				UpdateVisibleRectangle(privateWin.MapPublic.VisibleRectInMap());
 			}
 		}
@@ -371,9 +347,7 @@ namespace MapViewer {
 					return;
 				}
 
-				var publicWindow = ParentWindow as PublicWindow;
-				
-				if (publicWindow != null) {	
+                if (ParentWindow is PublicWindow publicWindow) {	
 					var cp = new Point(CanvasOverlay.ActualWidth / 2, CanvasOverlay.ActualHeight / 2);
 					Point center;
 					if ((TrfScale.Value.IsIdentity  &&  TrfTranslate.Value.IsIdentity) || !DisplayTransform.Value.HasInverse) {
@@ -426,14 +400,15 @@ namespace MapViewer {
 				var scale = Math.Min(publicWinSizePix.Width / privateWidth, publicWinSizePix.Height / privateHeight);
 				Log.DebugFormat("ScaleToLinked public scale={0}", scale);
 
-				TrfScale = mapSource.TrfScale;
+                TrfScale = mapSource.TrfScale;
 				TrfScale.ScaleX *= scale;
 				TrfScale.ScaleY *= scale;
 
-				TrfTranslate = mapSource.TrfTranslate;
+                TrfTranslate = new TranslateTransform(0, 0);
+                var offs = CenterInMap() - mapSource.CenterInMap();
+                TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
 
-
-				CanvasMapMask.RenderTransform = DisplayTransform;
+                CanvasMapMask.RenderTransform = DisplayTransform;
 			}
 		}
 
