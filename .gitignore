@@ -1,0 +1,16 @@
+Maps/
+.vs/
+*.bak
+Debug/
+Images/
+Release/
+packages/
+*.user
+*.suo
+
+
+
+
+
+
+
