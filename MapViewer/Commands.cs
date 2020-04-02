@@ -12,7 +12,10 @@ using SizeInt = System.Drawing.Size;
 namespace MapViewer {
 	public static class CustomCommands {
 
-		public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand Player = new RoutedUICommand("Player", "Player", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand NonPlayer = new RoutedUICommand("NonPlayer", "NonPlayer", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SetText = new RoutedUICommand("Set text", "Set text", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete element", "Delete element", typeof(CustomCommands), null);
@@ -71,7 +74,7 @@ namespace MapViewer {
 			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath));
 		}
 
-		private void Allways_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+		private void Always_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = true;
 		}
 
@@ -79,7 +82,11 @@ namespace MapViewer {
 			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) && MapPrivate.ImageScaleMperPix > 0.0);
 		}
 
-		public bool Publish_CanExecute() {
+        private void Player_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) && MapPrivate.ImageScaleMperPix > 0.0);
+        }
+
+        public bool Publish_CanExecute() {
 			return (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath)) && PublicWindow.IsVisible;
 		}
 
@@ -267,13 +274,31 @@ namespace MapViewer {
 			_lastClickedElem.SetColour(dialog.SelectedColor);
 			if (PublicWindow.IsVisible) {
 				var elemPublic = MapPublic.CanvasOverlay.FindElementByUid(uid);
-				if (elemPublic != null) {
-					elemPublic.SetColour(dialog.SelectedColor);
-				}
-			}
+                elemPublic?.SetColour(dialog.SelectedColor);
+            }
 		}
 
-		private void FullMask_Executed(object sender, ExecutedRoutedEventArgs e) {
+        private void SetText_Executed(object sender, ExecutedRoutedEventArgs e) {
+            ActiveTool = null;
+            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+                return;
+            }
+
+            var dialog = new DialogColorPicker { Owner = this };
+            var result = dialog.ShowDialog();
+            if (!result.HasValue || !result.Value) {
+                return;
+            }
+
+            var uid = _lastClickedElem.Uid;
+            _lastClickedElem.SetColour(dialog.SelectedColor);
+            if (PublicWindow.IsVisible) {
+                var elemPublic = MapPublic.CanvasOverlay.FindElementByUid(uid);
+                elemPublic?.SetColour(dialog.SelectedColor);
+            }
+        }
+
+        private void FullMask_Executed(object sender, ExecutedRoutedEventArgs e) {
 			var result = MessageBox.Show("Are you sure you want to mask everything?", "", MessageBoxButton.YesNo);
 			if (result == MessageBoxResult.Yes) {
 				var rect = new Int32Rect(0, 0, (int)MapPrivate.MapImage.Width, (int)MapPrivate.MapImage.Height);
@@ -435,8 +460,51 @@ namespace MapViewer {
 				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Spell2m");
 			}
 		}
+       private void CreatePlayer(Color color) {
+            ActiveTool = null;
+            var radius = 0.5 / MapPrivate.ImageScaleMperPix;
 
-		private void ShowPublicCursorTemporary_Executed(object sender, ExecutedRoutedEventArgs e) {
+            var dialog = new DialogGetSingleValue {
+                LeadText = "Text",
+                Owner = this
+            };
+
+            var result = dialog.ShowDialog();
+            if (!result.HasValue || !result.Value) {
+                return;
+            }
+            var parts = dialog.TextValue.Split(new[] { ',' }, 2);
+            string text = " ";
+            try {
+                if (parts.Length > 0 && !string.IsNullOrEmpty(parts[0])) {
+                    text = parts[0];
+                }
+
+                if (parts.Length == 2) {
+                    if (ColorConverter.ConvertFromString(parts[1]) is Color colorNew) {
+                        color = colorNew;
+                    }
+                }
+            }
+            catch { // ignored
+            }
+
+            MapPrivate.OverlayPlayer(_mouseDownPoint, radius, color, "Player", text);
+            if (PublicWindow.IsVisible) {
+                MapPublic.OverlayPlayer(_mouseDownPoint, radius, color, "Player", text);
+            }
+        }
+
+
+       private void Player_Executed(object sender, ExecutedRoutedEventArgs e) {
+           CreatePlayer(Colors.BlueViolet);
+       }
+
+        private void NonPlayer_Executed(object sender, ExecutedRoutedEventArgs e) {
+            CreatePlayer(Colors.Aquamarine);
+        }
+
+        private void ShowPublicCursorTemporary_Executed(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			MapPublic.ShowPublicCursorTemporary = true;
 			MapPublic.ShowPublicCursor = true;

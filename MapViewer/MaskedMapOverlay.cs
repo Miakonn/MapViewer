@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -59,7 +60,24 @@ namespace MapViewer {
 			AddOverlayElement(shape, uid);
 		}
 
-		public void OverlayRing(Point pos, double radius, Color color, string uid) {
+        public void OverlayPlayer(Point pos, double radius, Color color, string uid, string text) {
+            var brush = new SolidColorBrush(color);
+            var shape = new Ellipse {
+                Width = 2 * radius,
+                Height = 2 * radius,
+                Fill = brush,
+                Opacity = 1.0
+            };
+
+            var textBlock = new TextBlock { Text = text, Foreground = Brushes.Black, FontSize = 2*radius, Background = brush };
+            //The next line create a special brush that contains a bitmap rendering of the UI element
+            shape.Fill = new BitmapCacheBrush(textBlock);
+            Canvas.SetLeft(shape, pos.X - radius);
+            Canvas.SetTop(shape, pos.Y - radius);
+            AddOverlayElement(shape, uid);
+        }
+
+        public void OverlayRing(Point pos, double radius, Color color, string uid) {
 			var shape = new Ellipse {
 				Width = 2 * radius,
 				Height = 2 * radius,

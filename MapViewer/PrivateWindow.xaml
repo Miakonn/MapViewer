@@ -13,6 +13,9 @@
 	</Window.InputBindings>
 
 	<Window.CommandBindings>
+        <CommandBinding Command="mapViewer:CustomCommands.Player" Executed="Player_Executed" CanExecute="Player_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.NonPlayer" Executed="NonPlayer_Executed" CanExecute="Player_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SetText" Executed="SetText_Executed" CanExecute="ElementNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular7m" Executed="SpellCircular7m_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular3m" Executed="SpellCircular3m_Executed" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular2m" Executed="SpellCircular2m_Executed" CanExecute="Spell_CanExecute" />
@@ -21,7 +24,7 @@
 		<CommandBinding Command="mapViewer:CustomCommands.FullMask" Executed="FullMask_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearOverlay_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Executed" CanExecute="Allways_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Executed" CanExecute="Always_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.OpenLastImage" Executed="OpenLastImage_Executed" CanExecute="OpenLastImage_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.PublishMap" Executed="PublishMap_Executed" CanExecute="Publish_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ScaleToFit" Executed="ScaleToFit_Executed" CanExecute="ImageNeeded_CanExecute" />
@@ -33,8 +36,8 @@
 		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Executed" CanExecute="RemoveDisplay_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Executed" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.CalibrateDisplay" Executed="CalibrateDisplay_Executed" CanExecute="Allways_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ExitApp" Executed="ExitApp_Executed" CanExecute="Allways_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.CalibrateDisplay" Executed="CalibrateDisplay_Executed" CanExecute="Always_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ExitApp" Executed="ExitApp_Executed" CanExecute="Always_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="Spell_CanExecute" />
 
 		<CommandBinding Command="mapViewer:CustomCommands.DrawCircle" Executed="DrawCircle_Executed" CanExecute="Spell_CanExecute" />
@@ -175,7 +178,10 @@
 						<Separator />
 						<MenuItem Command="mapViewer:CustomCommands.SpellCircular7m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.SpellCircular3m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-						<MenuItem Command="mapViewer:CustomCommands.SpellCircular2m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.SpellCircular2m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <Separator />
+						<MenuItem Command="mapViewer:CustomCommands.Player" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.NonPlayer" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<Separator />
 						<MenuItem Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<Separator />
