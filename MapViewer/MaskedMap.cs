@@ -277,18 +277,32 @@ namespace MapViewer {
 			return new Rect();
 		}
 
-		public Point CenterInMap() {
-			var pos = new Point(CanvasMapMask.ActualWidth / 2, CanvasMapMask.ActualHeight/ 2);
+        public Point CenterInMap() {
+            var pos = new Point(CanvasMapMask.ActualWidth / 2, CanvasMapMask.ActualHeight / 2);
+            var inverse = DisplayTransform.Inverse;
+            if (inverse != null) {
+                var posOut = inverse.Transform(pos);
+                return posOut;
+            }
+            return new Point(); 
+        }
 
-			var inverse = DisplayTransform.Inverse;
-			if (inverse != null) {
-				var posOut = inverse.Transform(pos);
-				return posOut;
-			}
-			return new Point();
-		}
+        public Point CenterInCanvas() {
+            var pos = new Point(CanvasMapMask.ActualWidth / 2, CanvasMapMask.ActualHeight / 2);
+            return pos;
+        }
 
-		public void RotateClockwise() {
+
+        public Point GetPosInMap(Point pos) {
+            var inverse = DisplayTransform.Inverse;
+            if (inverse != null) {
+                var posOut = inverse.Transform(pos);
+                return posOut;
+            }
+            return new Point();
+        }
+        
+        public void RotateClockwise() {
 			TrfRotation.Angle += 90.0;
 			var winSizePix = CanvasMapMask.RenderSize;
 			TrfRotation.CenterX = winSizePix.Width / 2;
@@ -310,12 +324,31 @@ namespace MapViewer {
 		}
 
 		public void Zoom(double scale, Point pos) {
-			TrfScale.ScaleX *= scale;
-			TrfScale.ScaleY *= scale;
-			//TrfScale.CenterX = pos.X;
-			//TrfScale.CenterY = pos.Y;
+            //Trace.WriteLine("***********************************");
+            //Trace.WriteLine("Canvas size:" + CanvasMapMask.RenderSize);
+            //Trace.WriteLine("Map size   :" + MapImage.PixelWidth + "," + MapImage.PixelHeight);
 
-			UpdatePublicViewRectangle();
+            //Trace.WriteLine("pos in Canvas" + pos);
+
+            //var posInImage = GetPosInMap(pos);
+            //Trace.WriteLine("pos in Map" + posInImage);
+
+            var posCenterBefore = CenterInMap();
+            TrfScale.ScaleX *= scale;
+			TrfScale.ScaleY *= scale;
+            TrfTranslate = new TranslateTransform();
+
+            //Trace.WriteLine("CenterInMap wo" + CenterInMap());
+            //Trace.WriteLine("scale " + scale);
+
+            //Trace.WriteLine("TrfScale " + TrfScale.Value);
+
+            var offs = CenterInMap() - posCenterBefore;
+
+            TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
+            //Trace.WriteLine("Center In Map new" + CenterInMap());
+
+            UpdatePublicViewRectangle();
 		}
 
 		public void Translate(Vector move) {
@@ -404,7 +437,7 @@ namespace MapViewer {
 				TrfScale.ScaleX *= scale;
 				TrfScale.ScaleY *= scale;
 
-                TrfTranslate = new TranslateTransform(0, 0);
+                TrfTranslate = new TranslateTransform();
                 var offs = CenterInMap() - mapSource.CenterInMap();
                 TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
 

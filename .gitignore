@@ -7,10 +7,4 @@ Release/
 packages/
 *.user
 *.suo
-
-
-
-
-
-
-
+/MonitorInfoView
