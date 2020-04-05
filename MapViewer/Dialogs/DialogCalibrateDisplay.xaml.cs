@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using MapViewer.Utilities;
-using SizeInt = System.Drawing.Size;
 
 namespace MapViewer.Dialogs {
 	public partial class DialogCalibrateDisplay : INotifyPropertyChanged {
@@ -16,11 +14,11 @@ namespace MapViewer.Dialogs {
 		public double MonitorSizeMmWidth { get; set; }
 		public double MonitorSizeMmHeight { get; set; }
 
-		private MonitorManager _monitorManager;
+		private readonly MonitorManager _monitorManager;
 
 		public Size MonitorResolution {
-			get { return new Size(MonitorSizePixelWidth, MonitorSizePixelHeight); }
-			set {
+			get => new Size(MonitorSizePixelWidth, MonitorSizePixelHeight);
+            set {
 				MonitorSizePixelWidth = value.Width;
 				MonitorSizePixelHeight = value.Height;
 				OnPropertyChanged("MonitorSizePixelWidth");
@@ -29,8 +27,8 @@ namespace MapViewer.Dialogs {
 		}
 
 		public Size MonitorSize {
-			get { return new Size(MonitorSizeMmWidth, MonitorSizeMmHeight); }
-			set {
+			get => new Size(MonitorSizeMmWidth, MonitorSizeMmHeight);
+            set {
 				MonitorSizeMmWidth = value.Width;
 				MonitorSizeMmHeight = value.Height;
 				OnPropertyChanged("MonitorSizeMmHeight");
@@ -52,18 +50,13 @@ namespace MapViewer.Dialogs {
 
 		// Create the OnPropertyChanged method to raise the event
 		protected void OnPropertyChanged(string name) {
-			PropertyChangedEventHandler handler = PropertyChanged;
-			if (handler != null) {
-				handler(this, new PropertyChangedEventArgs(name));
-			}
-		}
+			var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
 
 		private void ComboBoxEdid_Loaded(object sender, RoutedEventArgs e) {
-			var comboBox = sender as ComboBox;
-
-			if (comboBox != null) {
-
-				var list = _monitorManager.MonitorList;
+            if (sender is ComboBox comboBox) {
+                var list = _monitorManager.MonitorList;
 				list.Insert(0, "Select monitor");
 				comboBox.ItemsSource = list;
 				comboBox.SelectedIndex = 0;
@@ -79,8 +72,8 @@ namespace MapViewer.Dialogs {
 
 			var monitor = _monitorManager.Monitors.Find(s => s.Name == (string) comboBox.SelectedValue);
 			if (monitor != null) {
-				MonitorResolution = monitor.MaximumResolution.HasValue ? monitor.MaximumResolution.Value : new Size();
-				MonitorSize = monitor.ImageSize.HasValue ? monitor.ImageSize.Value : new Size();
+				MonitorResolution = monitor.MaximumResolution ?? new Size();
+				MonitorSize = monitor.ImageSize ?? new Size();
 			}
 		}
 	}
