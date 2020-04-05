@@ -5,6 +5,16 @@
 		ResizeMode="NoResize"
 		WindowStartupLocation="CenterOwner"
 		SizeToContent="WidthAndHeight" Loaded="ColorPicker_Loaded">
+
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PresentationFramework.Aero;component/themes/Aero.Normalcolor.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
     <Grid>
 		<ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="colorList" SelectionChanged="ColorPicker_SelectionChanged">
 			<ListBox.ItemsPanel>

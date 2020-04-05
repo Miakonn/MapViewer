@@ -4,6 +4,15 @@
         Title="DialogGetSingleValue"  SizeToContent="WidthAndHeight"
 		WindowStartupLocation="CenterOwner"
 		ResizeMode="NoResize">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PresentationFramework.Aero;component/themes/Aero.Normalcolor.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
     <Grid Margin="15">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />

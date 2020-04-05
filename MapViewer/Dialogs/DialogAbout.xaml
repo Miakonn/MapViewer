@@ -4,8 +4,16 @@
         Title="About" SizeToContent="WidthAndHeight"
 		WindowStartupLocation="CenterOwner"
 		ResizeMode="NoResize">
-	<Grid
-	                                                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PresentationFramework.Aero;component/themes/Aero.Normalcolor.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>

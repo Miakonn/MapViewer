@@ -4,7 +4,17 @@
         Title="Calibrate public display" SizeToContent="WidthAndHeight"
 		WindowStartupLocation="CenterOwner"
 		ResizeMode="NoResize">
-	<Grid Name ="CalibrateWindow" Margin ="15">
+
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PresentationFramework.Aero;component/themes/Aero.Normalcolor.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Name ="CalibrateWindow" Margin ="15">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition Width="*" />

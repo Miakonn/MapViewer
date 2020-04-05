@@ -7,6 +7,14 @@
 		ResizeMode="CanResizeWithGrip">
 
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PresentationFramework.Aero;component/themes/Aero.Normalcolor.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
 	<Window.InputBindings>
 		<KeyBinding Modifiers="Control" Key="S" Command="mapViewer:CustomCommands.Save" />
 		<KeyBinding Modifiers="Control" Key="O" Command="mapViewer:CustomCommands.OpenImage" />
