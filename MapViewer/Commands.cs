@@ -7,7 +7,6 @@ using Microsoft.Win32;
 using System.Windows.Controls.Ribbon;
 using MapViewer.Dialogs;
 using MapViewer.Properties;
-using SizeInt = System.Drawing.Size;
 
 namespace MapViewer {
 	public static class CustomCommands {
@@ -19,7 +18,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete element", "Delete element", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand SetColourElement = new RoutedUICommand("Set colour", "Set colour", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("Set colour", "Set colour", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ShowPublicCursorTemporary = new RoutedUICommand("Show cursor temp.", "Show cursor temp.", typeof(CustomCommands), null);
 
@@ -61,8 +60,7 @@ namespace MapViewer {
 	public partial class PrivateWindow {
 
 		private static bool CheckToggleState(object source) {
-			var button = source as RibbonToggleButton;
-			if (button != null) {
+            if (source is RibbonToggleButton button) {
 				return (button.IsChecked.HasValue && button.IsChecked.Value);
 			}
 			return true;
@@ -258,7 +256,7 @@ namespace MapViewer {
 			}
 		}
 
-		private void SetColourElement_Execute(object sender, ExecutedRoutedEventArgs e) {
+		private void SetColorElement_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
 				return;
@@ -318,7 +316,7 @@ namespace MapViewer {
 
 		private void AddDisplay_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.Show();
-			PublicWindow.MaximizeToSecondaryMonitor();
+			PublicWindow.MaximizeToSelectedMonitor();
 			PublishMap_Execute(sender, e);
 		}
 
@@ -497,7 +495,7 @@ namespace MapViewer {
 
 
        private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
-           CreatePlayer(Colors.BlueViolet);
+           CreatePlayer(Colors.LightBlue);
        }
 
         private void NonPlayer_Execute(object sender, ExecutedRoutedEventArgs e) {

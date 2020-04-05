@@ -94,5 +94,17 @@ namespace MapViewer.Properties {
                 this["MaskColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int DisplayPublicNumber {
+            get {
+                return ((int)(this["DisplayPublicNumber"]));
+            }
+            set {
+                this["DisplayPublicNumber"] = value;
+            }
+        }
     }
 }

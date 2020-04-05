@@ -1,7 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
+using MapViewer.Properties;
 using MapViewer.Utilities;
+using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace MapViewer.Dialogs {
 	public partial class DialogCalibrateDisplay : INotifyPropertyChanged {
@@ -76,5 +81,29 @@ namespace MapViewer.Dialogs {
 				MonitorSize = monitor.ImageSize ?? new Size();
 			}
 		}
-	}
+
+        private void ComboBoxDisplayNumber_Loaded(object sender, RoutedEventArgs e) {
+            if (sender is ComboBox comboBox) {
+                var displayNo = Screen.AllScreens.Length;
+                var list = new List<string>();
+
+                for (int i = 1; i <= displayNo; i++) {
+                    list.Add($"Public is display {i}");
+                }
+                comboBox.ItemsSource = list;
+                comboBox.SelectedIndex = Settings.Default.DisplayPublicNumber - 1;
+            }
+        }
+
+        private void ComboBoxDisplayNumbed_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var comboBox = sender as ComboBox;
+
+            if ((comboBox == null) || (comboBox.SelectedIndex < 0)) {
+                return;
+            }
+
+            Settings.Default.DisplayPublicNumber = comboBox.SelectedIndex + 1;
+            Settings.Default.Save();
+        }
+    }
 }

@@ -17,15 +17,13 @@ namespace MapViewer
 
 		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-		private readonly MaskedMap _map;
-
-	    private readonly Canvas _canvasRuler;
+        private readonly Canvas _canvasRuler;
 
 		private readonly RotateTransform _compassTransform;
 
 	    public Size MonitorResolution {
-			get { return new Size(Settings.Default.PublicMonitorResolutionWidth, Settings.Default.PublicMonitorResolutionHeight); }
-		    set {
+			get => new Size(Settings.Default.PublicMonitorResolutionWidth, Settings.Default.PublicMonitorResolutionHeight);
+            set {
 			    Settings.Default.PublicMonitorResolutionWidth = (int)value.Width;
 				Settings.Default.PublicMonitorResolutionHeight = (int)value.Height;
 				Settings.Default.Save();
@@ -33,8 +31,8 @@ namespace MapViewer
 	    }
 
 		public Size MonitorSize {
-			get { return new Size(Settings.Default.PublicMonitorSizeWidth, Settings.Default.PublicMonitorSizeHeight); }
-			set {
+			get => new Size(Settings.Default.PublicMonitorSizeWidth, Settings.Default.PublicMonitorSizeHeight);
+            set {
 				Settings.Default.PublicMonitorSizeWidth = (int)value.Width;
 				Settings.Default.PublicMonitorSizeHeight = (int)value.Height;
 				Settings.Default.Save();
@@ -55,37 +53,33 @@ namespace MapViewer
 			} 
 		}
 
-		public bool IsCalibrated {
-			get { return MonitorScaleMMperPixel > 0; }
-		}
+		public bool IsCalibrated => MonitorScaleMMperPixel > 0;
 
-	    public MaskedMap Map {
-		    get { return _map;  }
-	    }
+        public MaskedMap Map { get; }
 
-	    public PublicWindow() {
+        public PublicWindow() {
             InitializeComponent();
 			
-			_map = new MaskedMap(true) {
+			Map = new MaskedMap(true) {
 				ParentWindow = this,
 			};
 			_canvasRuler = new Canvas();
 
-			ContentPresenter1.Content = _map.CanvasMapMask;
-			ContentPresenter2.Content = _map.CanvasOverlay;
+			ContentPresenter1.Content = Map.CanvasMapMask;
+			ContentPresenter2.Content = Map.CanvasOverlay;
 			ContentPresenter3.Content = _canvasRuler;
 
 		    _compassTransform = new RotateTransform(0);
 
 	    }
 
-	    public void MaximizeToSecondaryMonitor() {
-		    var screen2 = Screen.AllScreens.FirstOrDefault(screen => screen.Primary == false);
-		    if (screen2 == null) {
-			    return;
-		    }
+	    public void MaximizeToSelectedMonitor() {
+            var screen = SelectScreen();
+            if (screen == null) {
+                return;
+            }
 
-		    var rect = screen2.WorkingArea;
+		    var rect = screen.WorkingArea;
 			Top = rect.Top;
 		    Left = rect.Left;
 		    Width = rect.Width;
@@ -95,9 +89,20 @@ namespace MapViewer
 		    }
 			PublicBorder.Background = new SolidColorBrush(Map.MaskColor);
 	    }
+        
+        public Screen SelectScreen() {
+            if (Settings.Default.DisplayPublicNumber == 1) {
+                return Screen.PrimaryScreen;
+            }
+            var screens = Screen.AllScreens.Where(screen => !screen.Primary).ToArray();
+            if ((Settings.Default.DisplayPublicNumber - 2) < screens.Length) {
+                return screens[Settings.Default.DisplayPublicNumber - 2];
+            }
+            return null;
+        }
 
 
-	    public void RotateClockwise() {
+        public void RotateClockwise() {
 			Map.RotateClockwise();
 			_compassTransform.Angle = Map.TrfRotation.Angle;
 		}
@@ -150,7 +155,7 @@ namespace MapViewer
 
 			var text = new TextBlock {
 				RenderTransform = new RotateTransform(-90),
-				Text = string.Format("{0} {1}", length, Map.Unit),
+				Text = $"{length} {Map.Unit}",
 				FontSize = 25,
 				Foreground = Brushes.Red,
 				FontWeight = FontWeights.UltraBold
@@ -183,7 +188,7 @@ namespace MapViewer
 	    }
 
 		public void SetRuler() {
-			Log.Debug(string.Format("SetRuler ImageScaleMperPix={0} Scale={1}", Map.ImageScaleMperPix, Map.Scale));
+			Log.Debug($"SetRuler ImageScaleMperPix={Map.ImageScaleMperPix} Scale={Map.Scale}");
 
 			var screenScaleMperPix = Map.ImageScaleMperPix/Map.Scale;
 
@@ -196,11 +201,10 @@ namespace MapViewer
 			var y0 = ActualHeight/10;
 		    var height = ActualHeight - 2 * y0;
 			var lengthM = height * screenScaleMperPix;
-			int count;
-			var stepM = CalcStep(lengthM, out count);
-			Log.Debug(string.Format("SetRuler stepM={0} count={1}", stepM, count));
+            var stepM = CalcStep(lengthM, out var count);
+			Log.Debug($"SetRuler stepM={stepM} count={count}");
 			var stepPix = stepM / screenScaleMperPix;
-			Log.Debug(string.Format("SetRuler stepPix={0} screenScaleMperPix={1}", stepPix, screenScaleMperPix));
+			Log.Debug($"SetRuler stepPix={stepPix} screenScaleMperPix={screenScaleMperPix}");
 
 			DrawRuler(count, stepPix, y0);
 			WriteRulerText(count * stepM, y0 - 5, false);
