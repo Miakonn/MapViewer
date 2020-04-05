@@ -21,48 +21,48 @@
 	</Window.InputBindings>
 
 	<Window.CommandBindings>
-        <CommandBinding Command="mapViewer:CustomCommands.Player" Executed="Player_Executed" CanExecute="Player_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.NonPlayer" Executed="NonPlayer_Executed" CanExecute="Player_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.SetText" Executed="SetText_Executed" CanExecute="ElementNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular7m" Executed="SpellCircular7m_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular3m" Executed="SpellCircular3m_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular2m" Executed="SpellCircular2m_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DeleteElement" Executed="DeleteElement_Executed" CanExecute="ElementNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.SetColourElement" Executed="SetColourElement_Executed" CanExecute="ElementNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.FullMask" Executed="FullMask_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearOverlay_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Executed" CanExecute="Always_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.OpenLastImage" Executed="OpenLastImage_Executed" CanExecute="OpenLastImage_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.PublishMap" Executed="PublishMap_Executed" CanExecute="Publish_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ScaleToFit" Executed="ScaleToFit_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ZoomIn" Executed="ZoomIn_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ZoomOut" Executed="ZoomOut_Executed" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.Player" Executed="Player_Execute" CanExecute="Player_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.NonPlayer" Executed="NonPlayer_Execute" CanExecute="Player_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SetText" Executed="SetText_Execute" CanExecute="ElementNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular7m" Executed="SpellCircular7m_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular3m" Executed="SpellCircular3m_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular2m" Executed="SpellCircular2m_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DeleteElement" Executed="DeleteElement_Execute" CanExecute="ElementNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.SetColourElement" Executed="SetColourElement_Execute" CanExecute="ElementNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.FullMask" Executed="FullMask_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearOverlay_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Execute" CanExecute="Always_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.OpenLastImage" Executed="OpenLastImage_Execute" CanExecute="OpenLastImage_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.PublishMap" Executed="PublishMap_Execute" CanExecute="Publish_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ScaleToFit" Executed="ScaleToFit_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ZoomIn" Executed="ZoomIn_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ZoomOut" Executed="ZoomOut_Execute" CanExecute="ImageNeeded_CanExecute" />
 
-		<CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Executed" CanExecute="RotateMap_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Executed" CanExecute="AddDisplay_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Executed" CanExecute="RemoveDisplay_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.CalibrateDisplay" Executed="CalibrateDisplay_Executed" CanExecute="Always_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ExitApp" Executed="ExitApp_Executed" CanExecute="Always_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Execute" CanExecute="RotateMap_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Execute" CanExecute="AddDisplay_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Execute" CanExecute="RemoveDisplay_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.CalibrateDisplay" Executed="CalibrateDisplay_Execute" CanExecute="Always_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ExitApp" Executed="ExitApp_Execute" CanExecute="Always_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Execute" CanExecute="Spell_CanExecute" />
 
-		<CommandBinding Command="mapViewer:CustomCommands.DrawCircle" Executed="DrawCircle_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawCone" Executed="DrawCone_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawRectangle" Executed="DrawRectangle_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawSquare" Executed="DrawSquare_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawText" Executed="DrawText_Executed" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" Executed="ShowPublicCursorTemporary_Executed" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawCircle" Executed="DrawCircle_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawCone" Executed="DrawCone_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawRectangle" Executed="DrawRectangle_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawSquare" Executed="DrawSquare_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DrawText" Executed="DrawText_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" Executed="ShowPublicCursorTemporary_Execute" CanExecute="Spell_CanExecute" />
 
-		<CommandBinding Command="mapViewer:CustomCommands.MaskRectangle" Executed="MaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.MaskCircle" Executed="MaskCircle_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.UnmaskCircle" Executed="UnmaskCircle_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.MaskPolygon" Executed="MaskPolygon_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.UnmaskPolygon" Executed="UnmaskPolygon_Executed" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.UnmaskLineOfSight20m" Executed="UnmaskLineOfSight20m_Executed" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.MaskRectangle" Executed="MaskRectangle_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.MaskCircle" Executed="MaskCircle_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.UnmaskCircle" Executed="UnmaskCircle_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.MaskPolygon" Executed="MaskPolygon_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.UnmaskPolygon" Executed="UnmaskPolygon_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.UnmaskLineOfSight20m" Executed="UnmaskLineOfSight20m_Execute" CanExecute="ImageNeeded_CanExecute" />
 	</Window.CommandBindings>
 
 	<Grid KeyDown="PrivateWinKeyDown">

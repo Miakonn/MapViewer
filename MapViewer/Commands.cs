@@ -125,7 +125,7 @@ namespace MapViewer {
 		#endregion
 
 		#region Assorted
-		private void OpenImage_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void OpenImage_Execute(object sender, ExecutedRoutedEventArgs e) {
 			var dialog = new OpenFileDialog {Filter = "Image Files|*.jpg;*.bmp;*.png"};
 			var result = dialog.ShowDialog();
 			if (result != null && result.Value) {
@@ -143,7 +143,7 @@ namespace MapViewer {
 			}
 		}
 
-		private void OpenLastImage_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void OpenLastImage_Execute(object sender, ExecutedRoutedEventArgs e) {
 			if (Settings.Default.MRU == null) {
 				return;
 			}
@@ -161,39 +161,39 @@ namespace MapViewer {
 			
 		}
 
-		private void ExitApp_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
 			AddToMru(MapPrivate.ImageFilePath);
 			Settings.Default.Save();
 			Log.Info("Exiting");
 			Application.Current.Shutdown();
 		}
 
-		private void ScaleToFit_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void ScaleToFit_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ScaleToWindow();
 			if (!MapPrivate.IsLinked) {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 		}
 
-		private void ZoomIn_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void ZoomIn_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Zoom(1.2, new Point(0,0));
 			if (!MapPrivate.IsLinked) {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 		}
 
-		private void ZoomOut_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void ZoomOut_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Zoom(0.8, new Point(0, 0));
 			if (!MapPrivate.IsLinked) {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}
 		}
 
-		private void Save_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void Save_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Serialize();
 		}
 
-		private void CalibrateDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void CalibrateDisplay_Execute(object sender, ExecutedRoutedEventArgs e) {
 			var dialog = new DialogCalibrateDisplay {
 				MonitorSize = PublicWindow.MonitorSize,
 				MonitorResolution = PublicWindow.MonitorResolution,
@@ -208,7 +208,7 @@ namespace MapViewer {
 			PublicWindow.MonitorResolution = dialog.MonitorResolution;
 		}
 
-		private void PublishMap_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void PublishMap_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Serialize(); 
 			MapPublic.PublishFrom(MapPrivate, _publicIsDirty);
 			PublicWindow.SetRuler();
@@ -226,14 +226,14 @@ namespace MapViewer {
 			Activate();
 		}
 
-		private void ClearMask_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void ClearMask_Execute(object sender, ExecutedRoutedEventArgs e) {
 			var result =MessageBox.Show("Are you sure you want to clear the mask?" , "", MessageBoxButton.YesNo);
 			if (result == MessageBoxResult.Yes) {
 				MapPrivate.ClearMask();
 			}
 		}
 
-		private void ClearOverlay_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void ClearOverlay_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ClearOverlay();
 			if (!MapPublic.IsLinked) {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
@@ -242,7 +242,7 @@ namespace MapViewer {
 			MapPublic.ClearOverlay();
 		}
 
-		private void DeleteElement_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void DeleteElement_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
 				return;
@@ -258,7 +258,7 @@ namespace MapViewer {
 			}
 		}
 
-		private void SetColourElement_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void SetColourElement_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
 				return;
@@ -278,7 +278,7 @@ namespace MapViewer {
             }
 		}
 
-        private void SetText_Executed(object sender, ExecutedRoutedEventArgs e) {
+        private void SetText_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
             if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
                 return;
@@ -298,7 +298,7 @@ namespace MapViewer {
             }
         }
 
-        private void FullMask_Executed(object sender, ExecutedRoutedEventArgs e) {
+        private void FullMask_Execute(object sender, ExecutedRoutedEventArgs e) {
 			var result = MessageBox.Show("Are you sure you want to mask everything?", "", MessageBoxButton.YesNo);
 			if (result == MessageBoxResult.Yes) {
 				var rect = new Int32Rect(0, 0, (int)MapPrivate.MapImage.Width, (int)MapPrivate.MapImage.Height);
@@ -306,7 +306,7 @@ namespace MapViewer {
 			}
 		}
 
-		private void RotateMap_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void RotateMap_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.RotateClockwise();
 			if (MapPublic.IsLinked) {
 				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
@@ -316,34 +316,34 @@ namespace MapViewer {
 			}
 		}
 
-		private void AddDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void AddDisplay_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.Show();
 			PublicWindow.MaximizeToSecondaryMonitor();
-			PublishMap_Executed(sender, e);
+			PublishMap_Execute(sender, e);
 		}
 
-		private void RemoveDisplay_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void RemoveDisplay_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.Visibility = Visibility.Hidden;
 		}
 		#endregion
 
 		#region Tools
 
-		private void Measure_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void Measure_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.Measure(this, e.OriginalSource);
 			}
 		}
 
-		private void Calibrate_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void Calibrate_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.Calibrate(this, e.OriginalSource);
 			}
 		}
 
-		private void MaskRectangle_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void MaskRectangle_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				var tool = new Tools.MaskRectangle(this, e.OriginalSource, true);
@@ -351,7 +351,7 @@ namespace MapViewer {
 			}
 		}
 
-		private void UnmaskRectangle_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void UnmaskRectangle_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				var tool = new Tools.MaskRectangle(this, e.OriginalSource, false);
@@ -359,21 +359,21 @@ namespace MapViewer {
 			}
 		}
 
-		private void MaskCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void MaskCircle_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.MaskCircle(this, e.OriginalSource, true);
 			}
 		}
 
-		private void UnmaskCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void UnmaskCircle_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.MaskCircle(this, e.OriginalSource, false);
 			}
 		}
 
-		private void MaskPolygon_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void MaskPolygon_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				var tool = new Tools.MaskPolygon(this, e.OriginalSource, true);
@@ -381,7 +381,7 @@ namespace MapViewer {
 			}
 		}
 
-		private void UnmaskPolygon_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void UnmaskPolygon_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				var tool = new Tools.MaskPolygon(this, e.OriginalSource, false);
@@ -392,49 +392,49 @@ namespace MapViewer {
 		#endregion
 
 		#region Spells
-		private void DrawCircle_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void DrawCircle_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.DrawCircle(this, e.OriginalSource);
 			}
 		}
 
-		private void DrawCone_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void DrawCone_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.DrawCone(this, e.OriginalSource);
 			}
 		}
 
-		private void DrawLine_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void DrawLine_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.DrawLine(this, e.OriginalSource);
 			}
 		}
 
-		private void DrawRectangle_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void DrawRectangle_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.DrawRectangle(this, e.OriginalSource);
 			}
 		}
 
-		private void DrawSquare_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void DrawSquare_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.DrawSquare(this, e.OriginalSource);
 			}
 		}
 
-		private void DrawText_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void DrawText_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.DrawText(this, e.OriginalSource);
 			}
 		}
 
-		private void SpellCircular7m_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void SpellCircular7m_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			var radius = 7 / MapPrivate.ImageScaleMperPix;
 			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Spell7m");
@@ -443,7 +443,7 @@ namespace MapViewer {
 			}
 		}
 
-		private void SpellCircular3m_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void SpellCircular3m_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			var radius = 3 / MapPrivate.ImageScaleMperPix;
 			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.LightSkyBlue, "Spell3m");
@@ -452,7 +452,7 @@ namespace MapViewer {
 			}
 		}
 
-		private void SpellCircular2m_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void SpellCircular2m_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			var radius = 2 / MapPrivate.ImageScaleMperPix;
 			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Spell2m");
@@ -496,21 +496,21 @@ namespace MapViewer {
         }
 
 
-       private void Player_Executed(object sender, ExecutedRoutedEventArgs e) {
+       private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
            CreatePlayer(Colors.BlueViolet);
        }
 
-        private void NonPlayer_Executed(object sender, ExecutedRoutedEventArgs e) {
+        private void NonPlayer_Execute(object sender, ExecutedRoutedEventArgs e) {
             CreatePlayer(Colors.Aquamarine);
         }
 
-        private void ShowPublicCursorTemporary_Executed(object sender, ExecutedRoutedEventArgs e) {
+        private void ShowPublicCursorTemporary_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			MapPublic.ShowPublicCursorTemporary = true;
 			MapPublic.ShowPublicCursor = true;
 		}
 
-		private void UnmaskLineOfSight20m_Executed(object sender, ExecutedRoutedEventArgs e) {
+		private void UnmaskLineOfSight20m_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			var radius = 20 / MapPrivate.ImageScaleMperPix;
 			MapPrivate.MaskLineOfSight(_mouseDownPoint.X, _mouseDownPoint.Y, radius, 0);

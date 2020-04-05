@@ -131,7 +131,7 @@ namespace MapViewer {
 				_cursorAction = CursorAction.None;
 			}
 			if (e.Key == Key.F12 && Publish_CanExecute()) {
-				PublishMap_Executed(null, null);
+				PublishMap_Execute(null, null);
 			}
 			if (ActiveTool != null) {
 				ActiveTool.KeyDown(sender, e);
@@ -218,7 +218,7 @@ namespace MapViewer {
 
 		private void PrivateWinMouseWheel(object sender, MouseWheelEventArgs e) {
 			var scale = (1.0 + e.Delta / 600.0);
-
+               
 			MapPrivate.Zoom(scale, e.GetPosition(this));
 		}
 
