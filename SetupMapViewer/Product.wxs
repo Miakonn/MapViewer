@@ -38,7 +38,8 @@
 				<File Source="$(var.ReleasePath)\MapViewer.exe" />
 				<File Source="$(var.ReleasePath)\MapViewer.exe.config" />
 				<File Source="$(var.ReleasePath)\log4net.dll" />
-				<File Source="$(var.DocPath)\MiakonnMapViewer.pdf" />
+        <File Source="$(var.ReleasePath)\PresentationFramework.Aero.dll" />
+        <File Source="$(var.DocPath)\MiakonnMapViewer.pdf" />
 			</Component>
 		</ComponentGroup>
 		
