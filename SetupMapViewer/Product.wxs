@@ -5,7 +5,7 @@
 <?define DocPath=..\Documents ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Miakonn MapViewer" Language="1033" Version="1.14.0.0" Manufacturer="Miakonn" UpgradeCode="795b7abe-8128-4447-91b7-51ea21154c80">
+	<Product Id="*" Name="Miakonn MapViewer" Language="1033" Version="1.20.0.0" Manufacturer="Miakonn" UpgradeCode="795b7abe-8128-4447-91b7-51ea21154c80">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
