@@ -269,10 +269,10 @@ namespace MapViewer {
 			}
 
 			var uid = _lastClickedElem.Uid;
-			_lastClickedElem.SetColour(dialog.SelectedColor);
+			_lastClickedElem.SetColor(dialog.SelectedColor);
 			if (PublicWindow.IsVisible) {
 				var elemPublic = MapPublic.CanvasOverlay.FindElementByUid(uid);
-                elemPublic?.SetColour(dialog.SelectedColor);
+                elemPublic?.SetColor(dialog.SelectedColor);
             }
 		}
 
@@ -289,10 +289,10 @@ namespace MapViewer {
             }
 
             var uid = _lastClickedElem.Uid;
-            _lastClickedElem.SetColour(dialog.SelectedColor);
+            _lastClickedElem.SetColor(dialog.SelectedColor);
             if (PublicWindow.IsVisible) {
                 var elemPublic = MapPublic.CanvasOverlay.FindElementByUid(uid);
-                elemPublic?.SetColour(dialog.SelectedColor);
+                elemPublic?.SetColor(dialog.SelectedColor);
             }
         }
 

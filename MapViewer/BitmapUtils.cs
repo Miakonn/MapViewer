@@ -10,15 +10,15 @@ using System.Windows.Shapes;
 
 namespace MapViewer {
 	public static class BitmapUtils {
-		public static void Serialize(WriteableBitmap wbitmap, string filename) {
-			if (wbitmap == null) {
+		public static void Serialize(WriteableBitmap wBitMap, string filename) {
+			if (wBitMap == null) {
 				return;
 			}
 			try {
 				using (var stream = new FileStream(filename, FileMode.Create)) {
 					var encoder = new PngBitmapEncoder();
 
-					encoder.Frames.Add(BitmapFrame.Create(wbitmap));
+					encoder.Frames.Add(BitmapFrame.Create(wBitMap));
 					encoder.Save(stream);
 				}
 			}
@@ -39,8 +39,8 @@ namespace MapViewer {
 				img.CreateOptions = BitmapCreateOptions.None;
 				img.EndInit();
 
-				var wbmp = new WriteableBitmap(img);
-				return wbmp;
+				var wBmp = new WriteableBitmap(img);
+				return wBmp;
 			}
 			catch (Exception ex) {
 				MessageBox.Show(ex.Message);
@@ -60,7 +60,7 @@ namespace MapViewer {
 		/// Draws a filled polygon
 		/// Add the first point also at the end of the array if the line should be closed.
 		/// </summary>
-		/// <param name="bmp">The WriteableBitmap.</param>
+		/// <param name="bmp">The writable bitmap.</param>
 		/// <param name="points">The points of the polygon in x and y pairs, therefore the array is interpreted as (x1, y1, x2, y2, ..., xn, yn).</param>
 		/// <param name="color">The color for the line.</param>
 		public static void FillPolygon(this WriteableBitmap bmp, int[] points, byte color) {
@@ -100,10 +100,10 @@ namespace MapViewer {
 					float vxj = points[i];
 					float vyj = points[i + 1];
 
-					// Is the scanline between the two points
+					// Is the scan line between the two points
 					if (vyi < y && vyj >= y
 					 || vyj < y && vyi >= y) {
-						// Compute the intersection of the scanline with the edge (line between two points)
+						// Compute the intersection of the scan line with the edge (line between two points)
 						intersectionsX[intersectionCount++] = (int)(vxi + (y - vyi) / (vyj - vyi) * (vxj - vxi));
 					}
 					vxi = vxj;
@@ -144,12 +144,12 @@ namespace MapViewer {
 	public static class CanvasUtils {
 		public static void SerializeXaml(this Canvas canvas, string filename ) {
 			try {
-				var mystrXAML = XamlWriter.Save(canvas);
-				using (var filestream = File.Create(filename)) {
-					using (var streamwriter = new StreamWriter(filestream)) {
-						streamwriter.Write(mystrXAML);
-						streamwriter.Close();
-						filestream.Close();
+				var strXAML = XamlWriter.Save(canvas);
+				using (var fileStream = File.Create(filename)) {
+					using (var streamWriter = new StreamWriter(fileStream)) {
+						streamWriter.Write(strXAML);
+						streamWriter.Close();
+						fileStream.Close();
 					}
 				}
 			}
@@ -189,8 +189,7 @@ namespace MapViewer {
 			foreach (UIElement child in canvasSource.Children) {
 				if (child.Uid != MaskedMap.PublicPositionUid) {
 					var xaml = XamlWriter.Save(child);
-					var deepCopy = XamlReader.Parse(xaml) as UIElement;
-					if (deepCopy != null) {
+                    if (XamlReader.Parse(xaml) is UIElement deepCopy) {
 						canvasDest.Children.Add(deepCopy);
 					}
 				}
@@ -207,15 +206,15 @@ namespace MapViewer {
 	}
 
 	public static class UiElementUtils {
-		public static void SetColour(this UIElement elem, System.Windows.Media.Brush brush) {
-			if (elem is Ellipse) {
-				((Ellipse) elem).Fill = brush;
+		public static void SetColor(this UIElement elem, System.Windows.Media.Brush brush) {
+			if (elem is Ellipse ellipse) {
+				ellipse.Fill = brush;
 			}
-			else if (elem is Rectangle) {
-				((Rectangle)elem).Fill = brush;
+			else if (elem is Rectangle rectangle) {
+				rectangle.Fill = brush;
 			}
-			else if (elem is Polygon) {
-				((Polygon)elem).Fill = brush;
+			else if (elem is Polygon polygon) {
+				polygon.Fill = brush;
 			}
 		}
 	}
