@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -69,7 +68,9 @@ namespace MapViewer {
                 Opacity = 1.0
             };
 
-            var textBlock = new TextBlock { Text = text, Foreground = Brushes.Black, FontSize = 2*radius, Background = brush };
+            var font = new FontFamily("Arial");
+
+            var textBlock = new TextBlock { FontFamily = font, Text = text, Foreground = Brushes.Black, FontSize = 1.8*radius, Background = brush };
             //The next line create a special brush that contains a bitmap rendering of the UI element
             shape.Fill = new BitmapCacheBrush(textBlock);
             Canvas.SetLeft(shape, pos.X - radius);
