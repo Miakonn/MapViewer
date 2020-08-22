@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using MapViewer.Properties;
 using Image = System.Windows.Controls.Image;
 using Path = System.IO.Path;
@@ -606,6 +607,19 @@ namespace MapViewer {
 				CanvasOverlay.Children.Remove(shape);
 			}
 		}
+
+
+        public void FixPlayerSizes() {
+            var shapes = CanvasOverlay.FindElementsByUid("Player");
+            foreach (var element in shapes) {
+                if (element is Ellipse ellipse) {
+                    if (ellipse.Width < 20) {
+                        ellipse.Width = 20;
+                    }
+                }
+            }
+        }
+
 
 		private const string FolderName = "MapViewerFiles";
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -203,7 +205,11 @@ namespace MapViewer {
 		public static UIElement FindElementByUid(this Canvas canvas, string uid) {
 			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid == uid);
 		}
-	}
+
+        public static IEnumerable<UIElement> FindElementsByUid(this Canvas canvas, string uid) {
+            return canvas.Children.Cast<UIElement>().Where(child => child.Uid == uid);
+        }
+    }
 
 	public static class UiElementUtils {
 		public static void SetColor(this UIElement elem, System.Windows.Media.Brush brush) {

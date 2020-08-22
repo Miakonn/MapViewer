@@ -207,9 +207,10 @@ namespace MapViewer {
 		}
 
 		private void PublishMap_Execute(object sender, ExecutedRoutedEventArgs e) {
-			MapPrivate.Serialize(); 
+			MapPrivate.Serialize();
 			MapPublic.PublishFrom(MapPrivate, _publicIsDirty);
 			PublicWindow.SetRuler();
+            MapPublic.FixPlayerSizes();
 			PublicWindow.DrawCompass();
 			_publicIsDirty = false;
 

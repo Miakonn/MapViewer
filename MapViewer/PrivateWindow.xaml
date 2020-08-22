@@ -195,7 +195,8 @@
 						<Separator />
 						<MenuItem Command="mapViewer:CustomCommands.DeleteElement"    CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.SetColorElement" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-					</ContextMenu>
+                        <MenuItem Command="mapViewer:CustomCommands.SetText" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                    </ContextMenu>
 				</Grid.ContextMenu>
 				<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}"  KeyDown="PrivateWinKeyDown">
 					<ContentPresenter   Name="MapPresenterMain1" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
