@@ -21,6 +21,7 @@ namespace MapViewer {
 			None, MovingPublicPos, MovingMap, MovingElement
 		}
 
+
 		#region Attributes
 
 		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -35,11 +36,9 @@ namespace MapViewer {
 		private ICanvasTool _activeTool;
 
 		public ICanvasTool ActiveTool {
-			get { 
-				return _activeTool; 
-			}
+			get => _activeTool;
 
-			set {
+            set {
 				if (_activeTool != null) {
 					_activeTool.Deactivate();
 				}
@@ -61,7 +60,7 @@ namespace MapViewer {
 			InitializeComponent();
 			InitSettings();
 
-			Title = string.Format("Miakonn's MapViewer {0} - Private map", FileVersion);
+			Title = $"Miakonn's MapViewer {FileVersion} - Private map";
 
 			Log.Info("STARTING MapViewer ******************************************");
 
@@ -243,8 +242,48 @@ namespace MapViewer {
 				}
 			}
 		}
-	
-		private void Tab_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
+
+        private void ComboBoxPlayerSize_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var selected = (ComboBoxItem)ComboBoxPlayerSize.SelectedItem;
+            if (selected != null && MapPublic != null && MapPrivate != null) {
+                switch (selected.Uid) {
+                    case "PlayerSize_1m":
+                        MapPublic.PlayerSizeMeter = 1;
+                        MapPublic.PlayerSizePixel = 0;
+                        MapPrivate.PlayerSizeMeter = 1;
+                        MapPrivate.PlayerSizePixel = 0;
+                        break;
+                    case "PlayerSize_20p":
+                        MapPublic.PlayerSizeMeter = 0;
+                        MapPublic.PlayerSizePixel = 20;
+                        MapPrivate.PlayerSizeMeter = 0;
+                        MapPrivate.PlayerSizePixel = 20;
+                        break;
+                    case "PlayerSize_25p":
+                        MapPublic.PlayerSizeMeter = 0;
+                        MapPublic.PlayerSizePixel = 25;
+                        MapPrivate.PlayerSizeMeter = 0;
+                        MapPrivate.PlayerSizePixel = 25;
+                        break;
+                    case "PlayerSize_30p":
+                        MapPublic.PlayerSizeMeter = 0;
+                        MapPublic.PlayerSizePixel = 30;
+                        MapPrivate.PlayerSizeMeter = 0;
+                        MapPrivate.PlayerSizePixel = 30;
+                        break;
+                    case "PlayerSize_35p":
+                        MapPublic.PlayerSizeMeter = 0;
+                        MapPublic.PlayerSizePixel = 35;
+                        MapPrivate.PlayerSizeMeter = 0;
+                        MapPrivate.PlayerSizePixel = 35;
+                        break;
+                }
+                MapPrivate.FixPlayerSizes();
+                MapPublic.FixPlayerSizes();
+            }
+        }
+
+        private void Tab_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
 			ActiveTool = null;
 		}
 	

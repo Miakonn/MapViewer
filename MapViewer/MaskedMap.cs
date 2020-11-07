@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using MapViewer.Properties;
 using Image = System.Windows.Controls.Image;
 using Path = System.IO.Path;
@@ -20,6 +19,9 @@ namespace MapViewer {
 		public BitmapImage MapImage;
 
         public TransformGroup DisplayTransform { get; }
+
+        public double PlayerSizePixel { get; set; } //  == 0 means fixed in meter 
+        public double PlayerSizeMeter { get; set; } //  == 0 means dynamic in pixel 
 
         private readonly RotateTransform _trfRotation;
 		public RotateTransform TrfRotation {
@@ -132,6 +134,9 @@ namespace MapViewer {
 			DisplayTransform.Children.Add(TrfRotation);
 
 			MapData = new MapData(null);
+
+            PlayerSizeMeter = 0;
+            PlayerSizePixel = 20;
 
 			if (!IsPublic) {
 				CreatePalette();
@@ -343,6 +348,7 @@ namespace MapViewer {
             //Trace.WriteLine("scale " + scale);
 
             //Trace.WriteLine("TrfScale " + TrfScale.Value);
+            FixPlayerSizes();
 
             var offs = CenterInMap() - posCenterBefore;
 
@@ -350,7 +356,7 @@ namespace MapViewer {
             //Trace.WriteLine("Center In Map new" + CenterInMap());
 
             UpdatePublicViewRectangle();
-		}
+ 		}
 
 		public void Translate(Vector move) {
 			TrfTranslate.X += move.X;
@@ -609,16 +615,6 @@ namespace MapViewer {
 		}
 
 
-        public void FixPlayerSizes() {
-            var shapes = CanvasOverlay.FindElementsByUid("Player");
-            foreach (var element in shapes) {
-                if (element is Ellipse ellipse) {
-                    if (ellipse.Width < 20) {
-                        ellipse.Width = 20;
-                    }
-                }
-            }
-        }
 
 
 		private const string FolderName = "MapViewerFiles";

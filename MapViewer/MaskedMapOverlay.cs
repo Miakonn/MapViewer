@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -59,22 +62,30 @@ namespace MapViewer {
 			AddOverlayElement(shape, uid);
 		}
 
-        public void OverlayPlayer(Point pos, double radius, Color color, string uid, string text) {
+        public void OverlayPlayer(Point pos, Color color, string uid, string text) {
             var brush = new SolidColorBrush(color);
+            double size = 1;
+            if (PlayerSizeMeter != 0) {
+                size = PlayerSizeMeter / ImageScaleMperPix;
+            }
+            else {
+                size = PlayerSizePixel / Scale;
+            }
+
             var shape = new Ellipse {
-                Width = 2 * radius,
-                Height = 2 * radius,
+                Width = size,
+                Height = size,
                 Fill = brush,
                 Opacity = 1.0
             };
 
             var font = new FontFamily("Arial");
 
-            var textBlock = new TextBlock { FontFamily = font, Text = text, Foreground = Brushes.Black, FontSize = 1.8*radius, Background = brush };
+            var textBlock = new TextBlock { FontFamily = font, Text = text, Foreground = Brushes.Black, FontSize = 0.9*size, Background = brush };
             //The next line create a special brush that contains a bitmap rendering of the UI element
             shape.Fill = new BitmapCacheBrush(textBlock);
-            Canvas.SetLeft(shape, pos.X - radius);
-            Canvas.SetTop(shape, pos.Y - radius);
+            Canvas.SetLeft(shape, pos.X - size / 2.0);
+            Canvas.SetTop(shape, pos.Y - size / 2.0);
             AddOverlayElement(shape, uid);
         }
 
@@ -201,8 +212,30 @@ namespace MapViewer {
 			}
 		}
 
-		#endregion
+        public void FixPlayerSizes() {
+            var shapes = CanvasOverlay.FindElementsByUidPrefix("Player");
+            foreach (var element in shapes) {
+                if (element is Ellipse ellipse) {
+                    var oldSize = ellipse.Width;
+                    double newSize = ellipse.Width;
+                    if (PlayerSizeMeter != 0) {
+                        newSize = PlayerSizeMeter / ImageScaleMperPix;
+                    }
+                    else if (ellipse.Width * Scale < PlayerSizePixel || ellipse.Width * Scale > PlayerSizePixel) {
+                        newSize = PlayerSizePixel / Scale;
+                    }
 
-		
-	}
+                    if (Math.Abs(newSize - oldSize) > 1.0E-9) {
+                        ellipse.Width = newSize;
+                        ellipse.Height = newSize;
+                        MoveElement(ellipse, new Vector((newSize - oldSize) / 2, (newSize - oldSize) / 2));
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+
+    }
 }

@@ -461,8 +461,6 @@ namespace MapViewer {
 		}
        private void CreatePlayer(Color color) {
             ActiveTool = null;
-            var radius = 0.5 / MapPrivate.ImageScaleMperPix;
-
             var dialog = new DialogGetSingleValue {
                 LeadText = "Text",
                 Owner = this
@@ -488,9 +486,9 @@ namespace MapViewer {
             catch { // ignored
             }
 
-            MapPrivate.OverlayPlayer(_mouseDownPoint, radius, color, "Player", text);
+            MapPrivate.OverlayPlayer(_mouseDownPoint, color, "Player", text);
             if (PublicWindow.IsVisible) {
-                MapPublic.OverlayPlayer(_mouseDownPoint, radius, color, "Player", text);
+                MapPublic.OverlayPlayer(_mouseDownPoint, color, "Player", text);
             }
         }
 

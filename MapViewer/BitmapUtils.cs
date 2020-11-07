@@ -206,8 +206,8 @@ namespace MapViewer {
 			return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid == uid);
 		}
 
-        public static IEnumerable<UIElement> FindElementsByUid(this Canvas canvas, string uid) {
-            return canvas.Children.Cast<UIElement>().Where(child => child.Uid == uid);
+        public static IEnumerable<UIElement> FindElementsByUidPrefix(this Canvas canvas, string uid) {
+            return canvas.Children.Cast<UIElement>().Where(child => child.Uid.StartsWith(uid));
         }
     }
 

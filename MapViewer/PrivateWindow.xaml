@@ -141,7 +141,14 @@
 						<ComboBoxItem Uid="Scale_64000" Content="1:64000"/>
 						<ComboBoxItem Uid="Scale_0" Content="Linked"/>
 					</ComboBox>
-					<RibbonCheckBox Label="Show cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
+                    <ComboBox Name="ComboBoxPlayerSize"  Height="20" Margin="2,5,2,5" SelectionChanged="ComboBoxPlayerSize_OnSelectionChanged" >
+                        <ComboBoxItem Uid="PlayerSize_1m" Content="1m"/>
+                        <ComboBoxItem Uid="PlayerSize_20p" Content="20 pixel"  IsSelected="True"/>
+                        <ComboBoxItem Uid="PlayerSize_25p" Content="25 pixel"/>
+                        <ComboBoxItem Uid="PlayerSize_30p" Content="30 pixel"/>
+                        <ComboBoxItem Uid="PlayerSize_35p" Content="35 pixel"/>
+                    </ComboBox>
+                    <RibbonCheckBox Label="Show cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
 					<RibbonButton Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" >
 						<Button.Style>
 							<Style TargetType="{x:Type Button}">
