@@ -100,6 +100,7 @@
     <Compile Include="Tools\MaskRectangle.cs" />
     <Compile Include="Utilities\CustomSettingsProvider.cs" />
     <Compile Include="Utilities\MonitorManager.cs" />
+    <Compile Include="Utilities\UiElementUtils.cs" />
     <Page Include="Dialogs\DialogAbout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

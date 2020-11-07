@@ -213,6 +213,7 @@ namespace MapViewer {
 
 			// CanvasOverlay
 			CanvasOverlay.RenderTransform = DisplayTransform;
+            FixPlayerSizes();
 		}
 
 		public void CreatePalette() {

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,11 +8,10 @@ namespace MapViewer.Dialogs {
 	/// <summary>
 	/// Interaction logic for DialogColorPicker.xaml
 	/// </summary>
-	public partial class DialogColorPicker : Window {
+	public partial class DialogColorPicker {
 		public Brush SelectedColor { get; set; }
 		private readonly string[] _selectedColors = { "Red", "Orange", "Yellow", "YellowGreen", "Green", "Turquoise", "Blue", "Purple" };
 
-	
 		public DialogColorPicker() {
 			InitializeComponent();
 		}
@@ -22,12 +20,6 @@ namespace MapViewer.Dialogs {
 
 			var listSelected = (from colorName in _selectedColors from color in list where color.Name == colorName select color).ToList();
 			colorList.ItemsSource = listSelected;
-
-
-
-			//SolidColorBrush[] list2 = { Brushes.Red, Brushes.Orange, Brushes.Yellow, Brushes.GreenYellow, Brushes.Green, Brushes.Turquoise, Brushes.Blue, Brushes.Purple };
-			colorList.ItemsSource = listSelected;
-
 		}
 
 		private void ColorPicker_SelectionChanged(object sender, SelectionChangedEventArgs e) {

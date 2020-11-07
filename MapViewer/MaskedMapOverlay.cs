@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using MapViewer.Utilities;
 
 namespace MapViewer {
 	public partial class MaskedMap {
@@ -62,9 +63,9 @@ namespace MapViewer {
 			AddOverlayElement(shape, uid);
 		}
 
-        public void OverlayPlayer(Point pos, Color color, string uid, string text) {
+        public void OverlayPlayer(Point pos, Color color, string text) {
             var brush = new SolidColorBrush(color);
-            double size = 1;
+            double size;
             if (PlayerSizeMeter != 0) {
                 size = PlayerSizeMeter / ImageScaleMperPix;
             }
@@ -79,13 +80,10 @@ namespace MapViewer {
                 Opacity = 1.0
             };
 
-            var font = new FontFamily("Arial");
-
-            var textBlock = new TextBlock { FontFamily = font, Text = text, Foreground = Brushes.Black, FontSize = 0.9*size, Background = brush };
-            //The next line create a special brush that contains a bitmap rendering of the UI element
-            shape.Fill = new BitmapCacheBrush(textBlock);
+            shape.Fill = UiElementUtils.CreateTextBrush(text, size, brush);
             Canvas.SetLeft(shape, pos.X - size / 2.0);
             Canvas.SetTop(shape, pos.Y - size / 2.0);
+            string uid = "Player" + "_" + text;
             AddOverlayElement(shape, uid);
         }
 

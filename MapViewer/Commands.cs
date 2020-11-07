@@ -7,13 +7,13 @@ using Microsoft.Win32;
 using System.Windows.Controls.Ribbon;
 using MapViewer.Dialogs;
 using MapViewer.Properties;
+using MapViewer.Utilities;
 
 namespace MapViewer {
 	public static class CustomCommands {
 
         public static readonly RoutedUICommand Player = new RoutedUICommand("Player", "Player", typeof(CustomCommands), null);
         public static readonly RoutedUICommand NonPlayer = new RoutedUICommand("NonPlayer", "NonPlayer", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand SetText = new RoutedUICommand("Set text", "Set text", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
@@ -277,26 +277,6 @@ namespace MapViewer {
             }
 		}
 
-        private void SetText_Execute(object sender, ExecutedRoutedEventArgs e) {
-            ActiveTool = null;
-            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
-                return;
-            }
-
-            var dialog = new DialogColorPicker { Owner = this };
-            var result = dialog.ShowDialog();
-            if (!result.HasValue || !result.Value) {
-                return;
-            }
-
-            var uid = _lastClickedElem.Uid;
-            _lastClickedElem.SetColor(dialog.SelectedColor);
-            if (PublicWindow.IsVisible) {
-                var elemPublic = MapPublic.CanvasOverlay.FindElementByUid(uid);
-                elemPublic?.SetColor(dialog.SelectedColor);
-            }
-        }
-
         private void FullMask_Execute(object sender, ExecutedRoutedEventArgs e) {
 			var result = MessageBox.Show("Are you sure you want to mask everything?", "", MessageBoxButton.YesNo);
 			if (result == MessageBoxResult.Yes) {
@@ -486,9 +466,9 @@ namespace MapViewer {
             catch { // ignored
             }
 
-            MapPrivate.OverlayPlayer(_mouseDownPoint, color, "Player", text);
+            MapPrivate.OverlayPlayer(_mouseDownPoint, color, text);
             if (PublicWindow.IsVisible) {
-                MapPublic.OverlayPlayer(_mouseDownPoint, color, "Player", text);
+                MapPublic.OverlayPlayer(_mouseDownPoint, color, text);
             }
         }
 
@@ -498,7 +478,7 @@ namespace MapViewer {
        }
 
         private void NonPlayer_Execute(object sender, ExecutedRoutedEventArgs e) {
-            CreatePlayer(Colors.Aquamarine);
+            CreatePlayer(Colors.Orange);
         }
 
         private void ShowPublicCursorTemporary_Execute(object sender, ExecutedRoutedEventArgs e) {

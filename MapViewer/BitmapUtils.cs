@@ -7,7 +7,12 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Shapes;
+using Brush = System.Drawing.Brush;
+using Brushes = System.Drawing.Brushes;
+using FontFamily = System.Drawing.FontFamily;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 
 namespace MapViewer {
@@ -210,18 +215,4 @@ namespace MapViewer {
             return canvas.Children.Cast<UIElement>().Where(child => child.Uid.StartsWith(uid));
         }
     }
-
-	public static class UiElementUtils {
-		public static void SetColor(this UIElement elem, System.Windows.Media.Brush brush) {
-			if (elem is Ellipse ellipse) {
-				ellipse.Fill = brush;
-			}
-			else if (elem is Rectangle rectangle) {
-				rectangle.Fill = brush;
-			}
-			else if (elem is Polygon polygon) {
-				polygon.Fill = brush;
-			}
-		}
-	}
 }
