@@ -278,8 +278,8 @@ namespace MapViewer {
                         MapPrivate.PlayerSizePixel = 35;
                         break;
                 }
-                MapPrivate.FixPlayerSizes();
-                MapPublic.FixPlayerSizes();
+                MapPrivate.UpdatePlayerElementSizes();
+                MapPublic.UpdatePlayerElementSizes();
             }
         }
 

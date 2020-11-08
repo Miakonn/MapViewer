@@ -210,7 +210,7 @@ namespace MapViewer {
 			}
 		}
 
-        public void FixPlayerSizes() {
+        public void UpdatePlayerElementSizes() {
             var shapes = CanvasOverlay.FindElementsByUidPrefix("Player");
             foreach (var element in shapes) {
                 if (element is Ellipse ellipse) {

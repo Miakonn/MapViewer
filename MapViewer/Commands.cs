@@ -210,7 +210,7 @@ namespace MapViewer {
 			MapPrivate.Serialize();
 			MapPublic.PublishFrom(MapPrivate, _publicIsDirty);
 			PublicWindow.SetRuler();
-            MapPublic.FixPlayerSizes();
+            MapPublic.UpdatePlayerElementSizes();
 			PublicWindow.DrawCompass();
 			_publicIsDirty = false;
 

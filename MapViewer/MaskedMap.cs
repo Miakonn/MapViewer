@@ -213,7 +213,7 @@ namespace MapViewer {
 
 			// CanvasOverlay
 			CanvasOverlay.RenderTransform = DisplayTransform;
-            FixPlayerSizes();
+            UpdatePlayerElementSizes();
 		}
 
 		public void CreatePalette() {
@@ -349,7 +349,7 @@ namespace MapViewer {
             //Trace.WriteLine("scale " + scale);
 
             //Trace.WriteLine("TrfScale " + TrfScale.Value);
-            FixPlayerSizes();
+            UpdatePlayerElementSizes();
 
             var offs = CenterInMap() - posCenterBefore;
 
