@@ -39,16 +39,13 @@ namespace MapViewer {
 			get => _activeTool;
 
             set {
-				if (_activeTool != null) {
-					_activeTool.Deactivate();
-				}
-				_activeTool = value;
+                _activeTool?.Deactivate();
+                _activeTool = value;
 				_cursorAction = CursorAction.None;
 				if (MapPublic != null && MapPublic.ShowPublicCursorTemporary) {
 					MapPublic.ShowPublicCursor = false;
 					MapPublic.ShowPublicCursorTemporary = false;
-				};
-
+				}
 			}
 		}
 
@@ -132,10 +129,9 @@ namespace MapViewer {
 			if (e.Key == Key.F12 && Publish_CanExecute()) {
 				PublishMap_Execute(null, null);
 			}
-			if (ActiveTool != null) {
-				ActiveTool.KeyDown(sender, e);
-			}
-		}
+
+            ActiveTool?.KeyDown(sender, e);
+        }
 
 		private void PrivateWinSizeChanged(object sender, SizeChangedEventArgs e) {
 			MapPrivate.ScaleToWindow();
@@ -217,7 +213,6 @@ namespace MapViewer {
 
 		private void PrivateWinMouseWheel(object sender, MouseWheelEventArgs e) {
 			var scale = (1.0 + e.Delta / 600.0);
-               
 			MapPrivate.Zoom(scale, e.GetPosition(this));
 		}
 

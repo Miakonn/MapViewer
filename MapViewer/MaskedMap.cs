@@ -321,8 +321,7 @@ namespace MapViewer {
 				return;
 			}
 
-			var winSizePix = CanvasMapMask.RenderSize;
-			var scale = Math.Min(winSizePix.Width / MapImage.Width, winSizePix.Height / MapImage.Height);
+            var scale = GetMinScale();
 			TrfScale.ScaleX = scale;
 			TrfScale.ScaleY = scale;
 			TrfTranslate.X = 0;
@@ -330,33 +329,28 @@ namespace MapViewer {
 			UpdatePublicViewRectangle();
 		}
 
+        public double GetMinScale() {
+			var winSizePix = CanvasMapMask.RenderSize;
+			return Math.Min(winSizePix.Width / MapImage.Width, winSizePix.Height / MapImage.Height);
+        }
+
 		public void Zoom(double scale, Point pos) {
-            //Trace.WriteLine("***********************************");
-            //Trace.WriteLine("Canvas size:" + CanvasMapMask.RenderSize);
-            //Trace.WriteLine("Map size   :" + MapImage.PixelWidth + "," + MapImage.PixelHeight);
-
-            //Trace.WriteLine("pos in Canvas" + pos);
-
-            //var posInImage = GetPosInMap(pos);
-            //Trace.WriteLine("pos in Map" + posInImage);
-
             var posCenterBefore = CenterInMap();
             TrfScale.ScaleX *= scale;
 			TrfScale.ScaleY *= scale;
-            TrfTranslate = new TranslateTransform();
 
-            //Trace.WriteLine("CenterInMap wo" + CenterInMap());
-            //Trace.WriteLine("scale " + scale);
+            if (TrfScale.ScaleX < GetMinScale()) {
+                ScaleToWindow();
+                UpdatePlayerElementSizes();
+            }
+            else {
+                TrfTranslate = new TranslateTransform();
+                var offs = CenterInMap() - posCenterBefore;
+                UpdatePlayerElementSizes();
 
-            //Trace.WriteLine("TrfScale " + TrfScale.Value);
-            UpdatePlayerElementSizes();
-
-            var offs = CenterInMap() - posCenterBefore;
-
-            TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
-            //Trace.WriteLine("Center In Map new" + CenterInMap());
-
-            UpdatePublicViewRectangle();
+                TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
+            }
+            //UpdatePublicViewRectangle();
  		}
 
 		public void Translate(Vector move) {
@@ -365,10 +359,14 @@ namespace MapViewer {
 		}
 
 		private void UpdatePublicViewRectangle() {
-            if (!IsPublic && !IsLinked && ParentWindow is PrivateWindow privateWin && !string.Equals(ImageFilePath, privateWin.MapPrivate.ImageFilePath)) {
-				UpdateVisibleRectangle(privateWin.MapPublic.VisibleRectInMap());
-			}
-		}
+            if (ParentWindow is PrivateWindow privateWin) {
+                bool equalImages = !string.Equals(ImageFilePath, privateWin.MapPrivate.ImageFilePath);
+
+                if (!IsPublic && !IsLinked && equalImages) {
+                    UpdateVisibleRectangle(privateWin.MapPublic.VisibleRectInMap());
+                }
+            }
+        }
 
 
 		public void DumpDisplayTransform(string label) {
