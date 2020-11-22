@@ -62,7 +62,7 @@ namespace MapViewer.Tools {
 				_button.IsChecked = false;
 			}
 			_button = null;
-			_privateWindow.HidePopup();
+			_privateWindow.HidePopup(3);
 		}
 
 		public bool ShowPublicCursor() {
