@@ -11,7 +11,6 @@ using MapViewer.Utilities;
 
 namespace MapViewer {
 	public static class CustomCommands {
-
         public static readonly RoutedUICommand Player = new RoutedUICommand("Player", "Player", typeof(CustomCommands), null);
         public static readonly RoutedUICommand NonPlayer = new RoutedUICommand("NonPlayer", "NonPlayer", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
@@ -19,6 +18,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete element", "Delete element", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("Set colour", "Set colour", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SendTo = new RoutedUICommand("Set colour", "Set colour", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ShowPublicCursorTemporary = new RoutedUICommand("Show cursor temp.", "Show cursor temp.", typeof(CustomCommands), null);
 
@@ -233,13 +233,17 @@ namespace MapViewer {
 		}
 
 		private void ClearOverlay_Execute(object sender, ExecutedRoutedEventArgs e) {
-			MapPrivate.ClearOverlay();
-			if (!MapPublic.IsLinked) {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-			}
+            var result = MessageBox.Show("Are you sure you want to clear the overlay?", "", MessageBoxButton.YesNo);
+            if (result != MessageBoxResult.Yes) {
+                return;
+            }
+            MapPrivate.ClearOverlay();
+            if (!MapPublic.IsLinked) {
+                MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
+            }
 
-			MapPublic.ClearOverlay();
-		}
+            MapPublic.ClearOverlay();
+        }
 
 		private void DeleteElement_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
@@ -439,7 +443,8 @@ namespace MapViewer {
 				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Spell2m");
 			}
 		}
-       private void CreatePlayer(Color color) {
+
+        private void CreatePlayer(Color color) {
             ActiveTool = null;
             var dialog = new DialogGetSingleValue {
                 LeadText = "Text",
@@ -472,8 +477,7 @@ namespace MapViewer {
             }
         }
 
-
-       private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
+        private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
            CreatePlayer(Colors.LightBlue);
        }
 

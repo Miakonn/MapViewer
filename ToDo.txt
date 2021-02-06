@@ -4,6 +4,7 @@
 
 *	problem med mask/unmask-verktygen vid bildkant
 
+*  	reload image, no overlay
 
 
 // Nya funktioner
@@ -25,6 +26,8 @@
 *	mask/unmask ellipse
 
 *	visa rutan före publicering
+
+*	send to back på element. (z-order)
 
 
 // Låg prio
