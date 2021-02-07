@@ -28,6 +28,7 @@
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular2m" Executed="SpellCircular2m_Execute" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.DeleteElement" Executed="DeleteElement_Execute" CanExecute="ElementNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.SetColorElement" Executed="SetColorElement_Execute" CanExecute="ElementNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SendToBack" Executed="SendToBack_Execute" CanExecute="ElementNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.FullMask" Executed="FullMask_Execute" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Execute" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearOverlay_Execute" CanExecute="ImageNeeded_CanExecute" />
@@ -201,6 +202,7 @@
 						<Separator />
 						<MenuItem Command="mapViewer:CustomCommands.DeleteElement"    CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.SetColorElement" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.SendToBack" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                     </ContextMenu>
 				</Grid.ContextMenu>
 				<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}"  KeyDown="PrivateWinKeyDown">

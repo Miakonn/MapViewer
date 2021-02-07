@@ -18,7 +18,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete element", "Delete element", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("Set colour", "Set colour", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand SendTo = new RoutedUICommand("Set colour", "Set colour", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SendToBack = new RoutedUICommand("Send to back", "Send to back", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ShowPublicCursorTemporary = new RoutedUICommand("Show cursor temp.", "Show cursor temp.", typeof(CustomCommands), null);
 
@@ -280,6 +280,18 @@ namespace MapViewer {
                 elemPublic?.SetColor(dialog.SelectedColor);
             }
 		}
+
+        private void SendToBack_Execute(object sender, ExecutedRoutedEventArgs e) {
+            ActiveTool = null;
+            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+                return;
+            }
+            var uid = _lastClickedElem.Uid;
+            MapPrivate.SendToBack(uid);
+            if (PublicWindow.IsVisible) {
+                MapPublic.SendToBack(uid);
+            }
+        }
 
         private void FullMask_Execute(object sender, ExecutedRoutedEventArgs e) {
 			var result = MessageBox.Show("Are you sure you want to mask everything?", "", MessageBoxButton.YesNo);

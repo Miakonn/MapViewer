@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -45,6 +43,15 @@ namespace MapViewer {
 				MoveElement(elem, move);
 			}
 		}
+
+        public void SendToBack(string uid) {
+            var elem = CanvasOverlay.FindElementByUid(uid);
+            if (elem != null) {
+                CanvasOverlay.Children.Remove(elem);
+                CanvasOverlay.Children.Insert(0, elem);
+            }
+        }
+
 
 		#endregion
 
