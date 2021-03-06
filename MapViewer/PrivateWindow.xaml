@@ -142,6 +142,7 @@
 						<ComboBoxItem Uid="Scale_0" Content="Linked"/>
 					</ComboBox>
                     <ComboBox Name="ComboBoxPlayerSize"  Height="20" Margin="2,5,2,5" SelectionChanged="ComboBoxPlayerSize_OnSelectionChanged" >
+                        <ComboBoxItem Uid="PlayerSize_0.7m" Content="0.7m"/>
                         <ComboBoxItem Uid="PlayerSize_1m" Content="1m"/>
                         <ComboBoxItem Uid="PlayerSize_20p" Content="20 pixel"  IsSelected="True"/>
                         <ComboBoxItem Uid="PlayerSize_25p" Content="25 pixel"/>

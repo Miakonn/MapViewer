@@ -253,6 +253,12 @@ namespace MapViewer {
             var selected = (ComboBoxItem)ComboBoxPlayerSize.SelectedItem;
             if (selected != null && MapPublic != null && MapPrivate != null) {
                 switch (selected.Uid) {
+                    case "PlayerSize_0.7m":
+                        MapPublic.PlayerSizeMeter = 0.7;
+                        MapPublic.PlayerSizePixel = 0;
+                        MapPrivate.PlayerSizeMeter = 0.7;
+                        MapPrivate.PlayerSizePixel = 0;
+                        break;
                     case "PlayerSize_1m":
                         MapPublic.PlayerSizeMeter = 1;
                         MapPublic.PlayerSizePixel = 0;
