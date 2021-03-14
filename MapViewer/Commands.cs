@@ -124,11 +124,15 @@ namespace MapViewer {
 
 		#region Assorted
 		private void OpenImage_Execute(object sender, ExecutedRoutedEventArgs e) {
-			var dialog = new OpenFileDialog {Filter = "Image Files|*.jpg;*.bmp;*.png"};
-			var result = dialog.ShowDialog();
+            var dialog = new OpenFileDialog {
+                Filter = "Image Files|*.jpg;*.bmp;*.png",
+                Multiselect = true
+            };
+
+            var result = dialog.ShowDialog();
 			if (result != null && result.Value) {
 				MapPrivate.LoadImage(dialog.FileName);
-				_publicIsDirty = true;
+                _publicIsDirty = true;
 				CreateWindows();
 				SetScale(MapPrivate.MapData.LastFigureScaleUsed);
 
@@ -147,17 +151,17 @@ namespace MapViewer {
 			}
 
 			MapPrivate.LoadImage(Settings.Default.MRU);
-			_publicIsDirty = true;
+            _publicIsDirty = true;
 			CreateWindows();
 			SetScale(MapPrivate.MapData.LastFigureScaleUsed);
-			if (MapPrivate.IsCalibrated) {
-				GamingTab.IsSelected = true;
-			}
-			else {
-				SetupTab.IsSelected = true;
-			}
+            if (MapPrivate.IsCalibrated) {
+            	GamingTab.IsSelected = true;
+            }
+            else {
+            	SetupTab.IsSelected = true;
+            }
 			
-		}
+        }
 
 		private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
 			AddToMru(MapPrivate.ImageFilePath);

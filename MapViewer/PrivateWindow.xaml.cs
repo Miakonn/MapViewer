@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -26,7 +27,11 @@ namespace MapViewer {
 
 		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-		public readonly MaskedMap MapPrivate;
+//        public readonly List<MaskedMap> MapPrivateList = new List<MaskedMap>();
+        public MaskedMap MapPrivate;
+
+  //      public int Level = 0;
+
 		public readonly MaskedMap MapPublic;
 		public readonly PublicWindow PublicWindow = new PublicWindow();
 
@@ -62,9 +67,7 @@ namespace MapViewer {
 
 			Log.Info("STARTING MapViewer ******************************************");
 
-			MapPrivate = new MaskedMap(false) {
-				ParentWindow = this,
-			};
+            MapPrivate = new MaskedMap(false, this);
 
 			MapPublic = PublicWindow.Map;
 			MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
@@ -142,7 +145,7 @@ namespace MapViewer {
         }
 
 		private void PrivateWinSizeChanged(object sender, SizeChangedEventArgs e) {
-			MapPrivate.ScaleToWindow();
+			MapPrivate?.ScaleToWindow();
 		}
 
 		private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e) {

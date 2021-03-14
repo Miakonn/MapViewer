@@ -120,8 +120,10 @@ namespace MapViewer {
 
         #endregion
 
-		public MaskedMap(bool publicView) {
+		public MaskedMap(bool publicView, Window parent) {
 			IsPublic = publicView;
+            ParentWindow = parent;
+
 			MaskOpacity = IsPublic ? 1.0 : 0.3;
 			DisplayTransform = new TransformGroup();
 

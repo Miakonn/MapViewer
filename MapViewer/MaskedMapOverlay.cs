@@ -219,6 +219,9 @@ namespace MapViewer {
 
         public void UpdatePlayerElementSizes() {
             var shapes = CanvasOverlay.FindElementsByUidPrefix("Player");
+            if (Scale == 0) {
+                return;
+            }
             foreach (var element in shapes) {
                 if (element is Ellipse ellipse) {
                     var oldSize = ellipse.Width;

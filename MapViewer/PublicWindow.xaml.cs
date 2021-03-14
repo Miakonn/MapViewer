@@ -59,10 +59,8 @@ namespace MapViewer
 
         public PublicWindow() {
             InitializeComponent();
-			
-			Map = new MaskedMap(true) {
-				ParentWindow = this,
-			};
+
+            Map = new MaskedMap(true, this);
 			_canvasRuler = new Canvas();
 
 			ContentPresenter1.Content = Map.CanvasMapMask;
