@@ -130,40 +130,55 @@ namespace MapViewer {
             };
 
             var result = dialog.ShowDialog();
-			if (result != null && result.Value) {
-				MapPrivate.LoadImage(dialog.FileName);
-                _publicIsDirty = true;
-				CreateWindows();
-				SetScale(MapPrivate.MapData.LastFigureScaleUsed);
+            if (result == null || !result.Value) {
+                return;
+            }
 
-				if (MapPrivate.IsCalibrated) {
-					GamingTab.IsSelected = true;
-				}
-				else {
-					SetupTab.IsSelected = true;
-				}
-			}
-		}
+            MapPrivate = new MaskedMap(false, this);
+            MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
+            MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
+
+            MapPrivate.LoadImage(dialog.FileName);
+            MapPrivate.ScaleToWindow(MapPresenterMain1);
+
+            _publicIsDirty = true;
+            MapPrivate.Create();
+            SetScale(MapPrivate.MapData.LastFigureScaleUsed);
+
+            if (MapPrivate.IsCalibrated) {
+                GamingTab.IsSelected = true;
+            }
+            else {
+                SetupTab.IsSelected = true;
+            }
+        }
 
 		private void OpenLastImage_Execute(object sender, ExecutedRoutedEventArgs e) {
 			if (Settings.Default.MRU == null) {
 				return;
 			}
 
-			MapPrivate.LoadImage(Settings.Default.MRU);
+            MapPrivate = new MaskedMap(false, this);
+
+            MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
+            MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
+
+            MapPrivate.LoadImage(Settings.Default.MRU);
+            MapPrivate.ScaleToWindow(MapPresenterMain1);
+
             _publicIsDirty = true;
-			CreateWindows();
-			SetScale(MapPrivate.MapData.LastFigureScaleUsed);
+            MapPrivate.Create();
+
+            SetScale(MapPrivate.MapData.LastFigureScaleUsed);
             if (MapPrivate.IsCalibrated) {
             	GamingTab.IsSelected = true;
             }
             else {
             	SetupTab.IsSelected = true;
             }
-			
         }
 
-		private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
+        private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
 			AddToMru(MapPrivate.ImageFilePath);
 			Settings.Default.Save();
 			Log.Info("Exiting");
@@ -171,7 +186,7 @@ namespace MapViewer {
 		}
 
 		private void ScaleToFit_Execute(object sender, ExecutedRoutedEventArgs e) {
-			MapPrivate.ScaleToWindow();
+			MapPrivate.ScaleToWindow(MapPresenterMain1);
 			if (!MapPrivate.IsLinked) {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}

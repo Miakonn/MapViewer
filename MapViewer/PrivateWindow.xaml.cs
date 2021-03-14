@@ -32,7 +32,7 @@ namespace MapViewer {
 
   //      public int Level = 0;
 
-		public readonly MaskedMap MapPublic;
+		public MaskedMap MapPublic;
 		public readonly PublicWindow PublicWindow = new PublicWindow();
 
 		private UIElement _lastClickedElem;
@@ -67,17 +67,12 @@ namespace MapViewer {
 
 			Log.Info("STARTING MapViewer ******************************************");
 
-            MapPrivate = new MaskedMap(false, this);
-
 			MapPublic = PublicWindow.Map;
-			MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
-			MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
-			
-			MapPublic.ScreenScaleMMperM = 20.0;
+            MapPublic.ScreenScaleMMperM = 20.0;
 			MapPublic.MapData.LastFigureScaleUsed = 50;
 			MapPublic.IsLinked = false;
-			MapPrivate.IsLinked = false;
-		}
+            MapPublic.Create();
+        }
 
 		public void SetScale(int scale) {
 			if (scale == 0) {
@@ -97,11 +92,6 @@ namespace MapViewer {
 				FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 				return fvi.FileVersion;
 			}
-		}
-
-		private void CreateWindows() {
-			MapPrivate.Create();
-			MapPublic.Create();
 		}
 
 		private void MovePublic(Vector vector) {
@@ -145,7 +135,7 @@ namespace MapViewer {
         }
 
 		private void PrivateWinSizeChanged(object sender, SizeChangedEventArgs e) {
-			MapPrivate?.ScaleToWindow();
+			MapPrivate?.ScaleToWindow(MapPresenterMain2);
 		}
 
 		private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e) {

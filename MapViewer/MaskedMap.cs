@@ -181,9 +181,7 @@ namespace MapViewer {
 					BmpMask = new WriteableBitmap(MapImage.PixelWidth + 2, MapImage.PixelHeight + 2, MapImage.DpiX, MapImage.DpiY,
 						PixelFormats.Indexed8, _maskPalette);
 				}
-
-				ScaleToWindow();
-			}
+            }
 			catch (Exception ex) {
 				Log.Error("LoadImage", ex);
 				MessageBox.Show("Failed to load image", ex.Message);
@@ -318,22 +316,25 @@ namespace MapViewer {
 			TrfRotation.CenterY = winSizePix.Height / 2;
 		}
 
-		public void ScaleToWindow() {
-			if (IsPublic || MapImage == null) {
-				return;
-			}
+        public void ScaleToWindow(UIElement element) {
+            if (IsPublic || MapImage == null) {
+                return;
+            }
 
-            var scale = GetMinScale();
-			TrfScale.ScaleX = scale;
-			TrfScale.ScaleY = scale;
-			TrfTranslate.X = 0;
-			TrfTranslate.Y = 0;
-			UpdatePublicViewRectangle();
-		}
+            var scale = GetMinScale(element);
+            TrfScale.ScaleX = scale;
+            TrfScale.ScaleY = scale;
+            TrfTranslate.X = 0;
+            TrfTranslate.Y = 0;
+            UpdatePublicViewRectangle();
+        }
 
-        public double GetMinScale() {
-			var winSizePix = CanvasMapMask.RenderSize;
-			return Math.Min(winSizePix.Width / MapImage.Width, winSizePix.Height / MapImage.Height);
+
+        public double GetMinScale(UIElement element) {
+            if (element == null || element.RenderSize.Width == 0) {
+                return Math.Min(500 / MapImage.Width, 500 / MapImage.Height);
+            }
+            return Math.Min(element.RenderSize.Width / MapImage.Width, element.RenderSize.Height / MapImage.Height);
         }
 
 		public void Zoom(double scale, Point pos) {
@@ -341,8 +342,8 @@ namespace MapViewer {
             TrfScale.ScaleX *= scale;
 			TrfScale.ScaleY *= scale;
 
-            if (TrfScale.ScaleX < GetMinScale()) {
-                ScaleToWindow();
+            if (TrfScale.ScaleX < GetMinScale(CanvasMapMask)) {
+                ScaleToWindow(CanvasMapMask);
                 UpdatePlayerElementSizes();
             }
             else {
