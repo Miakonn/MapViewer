@@ -362,7 +362,7 @@ namespace MapViewer {
 		}
 
 		private void UpdatePublicViewRectangle() {
-            if (ParentWindow is PrivateWindow privateWin) {
+            if (ParentWindow is PrivateWindow privateWin && privateWin.MapPrivate != null) {
                 bool equalImages = !string.Equals(ImageFilePath, privateWin.MapPrivate.ImageFilePath);
 
                 if (!IsPublic && !IsLinked && equalImages) {

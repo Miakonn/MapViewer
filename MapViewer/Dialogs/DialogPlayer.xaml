@@ -1,0 +1,50 @@
+﻿<Window x:Class="MapViewer.Dialogs.DialogPlayer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DialogColorPicker" 
+		ResizeMode="NoResize"
+		WindowStartupLocation="CenterOwner"
+		SizeToContent="WidthAndHeight" Loaded="Player_Loaded">
+
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PresentationFramework.Aero;component/themes/Aero.Normalcolor.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" MinHeight="20"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Dummy"  Name="LabelHint" HorizontalAlignment="Left" />
+        <TextBox Grid.Row="0" Grid.Column="1" Name="TextBoxValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  Width="80"/>
+        <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="colorList" SelectionChanged="PlayerColorPicker_SelectionChanged">
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel IsItemsHost="True" Orientation="Horizontal"/>
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Rectangle Fill="{Binding Name}" Width="20" Height="20" Stroke="#FF211E1E" OpacityMask="Black" StrokeThickness="1" />
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+        <WrapPanel Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button IsDefault="True" Name="BtnOk" Click="BtnOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
+            <Button IsCancel="True" MinWidth="60">_Cancel</Button>
+        </WrapPanel>
+
+</Grid>
+</Window>

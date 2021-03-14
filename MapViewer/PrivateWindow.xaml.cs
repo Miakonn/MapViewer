@@ -33,6 +33,15 @@ namespace MapViewer {
   //      public int Level = 0;
 
 		public MaskedMap MapPublic;
+        public List<MaskedMap> MapList = new List<MaskedMap>();
+
+        public int Level {
+            get => _level;
+            set => _level = Math.Max(Math.Min(value, LevelNumber - 1), 0);
+        }
+
+        public int LevelNumber => MapList.Count;
+
 		public readonly PublicWindow PublicWindow = new PublicWindow();
 
 		private UIElement _lastClickedElem;
@@ -56,8 +65,9 @@ namespace MapViewer {
 		}
 
 		private bool _publicIsDirty;
+        private int _level;
 
-		#endregion
+        #endregion
 
 		public PrivateWindow() {
 			InitializeComponent();
@@ -67,7 +77,7 @@ namespace MapViewer {
 
 			Log.Info("STARTING MapViewer ******************************************");
 
-			MapPublic = PublicWindow.Map;
+            MapPublic = PublicWindow.Map;
             MapPublic.ScreenScaleMMperM = 20.0;
 			MapPublic.MapData.LastFigureScaleUsed = 50;
 			MapPublic.IsLinked = false;

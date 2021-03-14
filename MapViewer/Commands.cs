@@ -30,8 +30,10 @@ namespace MapViewer {
 		public static readonly RoutedUICommand ScaleToFit= new RoutedUICommand("Scale to fit", "Scale to fit", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ZoomIn = new RoutedUICommand("Zoom in", "Zoom in", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ZoomOut = new RoutedUICommand("Zoom out", "Zoom out", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand LevelDown = new RoutedUICommand("Level down", "Level up", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand LevelUp = new RoutedUICommand("Level up", "Level down", typeof(CustomCommands), null);
 
-		public static readonly RoutedUICommand RotateMap = new RoutedUICommand("Rotate map", "Rotate map", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand RotateMap = new RoutedUICommand("Rotate map", "Rotate map", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand AddDisplay = new RoutedUICommand("Add display", "Add display", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand RemoveDisplay = new RoutedUICommand("Remove display", "Remove display", typeof(CustomCommands), null);
 
@@ -72,7 +74,11 @@ namespace MapViewer {
 			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath));
 		}
 
-		private void Always_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+        private void ImagesNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) && LevelNumber > 1);
+        }
+
+        private void Always_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = true;
 		}
 
@@ -134,17 +140,38 @@ namespace MapViewer {
                 return;
             }
 
-            MapPrivate = new MaskedMap(false, this);
+            MapList.Clear();
+
+            foreach (var filename in dialog.FileNames) {
+               var map = new MaskedMap(false, this);
+               map.LoadImage(filename);
+               MapList.Add(map);
+            }
+
+            Level = 0;
+
+            MapPrivate = MapList[Level];
+            InitMap();
+        }
+
+		private void OpenLastImage_Execute(object sender, ExecutedRoutedEventArgs e) {
+			if (Settings.Default.MRU == null) {
+				return;
+			}
+            MapPrivate.LoadImage(Settings.Default.MRU);
+            InitMap();
+        }
+
+        private void InitMap() {
             MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
             MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
 
-            MapPrivate.LoadImage(dialog.FileName);
             MapPrivate.ScaleToWindow(MapPresenterMain1);
 
             _publicIsDirty = true;
             MapPrivate.Create();
-            SetScale(MapPrivate.MapData.LastFigureScaleUsed);
 
+            SetScale(MapPrivate.MapData.LastFigureScaleUsed);
             if (MapPrivate.IsCalibrated) {
                 GamingTab.IsSelected = true;
             }
@@ -153,30 +180,7 @@ namespace MapViewer {
             }
         }
 
-		private void OpenLastImage_Execute(object sender, ExecutedRoutedEventArgs e) {
-			if (Settings.Default.MRU == null) {
-				return;
-			}
 
-            MapPrivate = new MaskedMap(false, this);
-
-            MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
-            MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
-
-            MapPrivate.LoadImage(Settings.Default.MRU);
-            MapPrivate.ScaleToWindow(MapPresenterMain1);
-
-            _publicIsDirty = true;
-            MapPrivate.Create();
-
-            SetScale(MapPrivate.MapData.LastFigureScaleUsed);
-            if (MapPrivate.IsCalibrated) {
-            	GamingTab.IsSelected = true;
-            }
-            else {
-            	SetupTab.IsSelected = true;
-            }
-        }
 
         private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
 			AddToMru(MapPrivate.ImageFilePath);
@@ -210,7 +214,18 @@ namespace MapViewer {
 			MapPrivate.Serialize();
 		}
 
-		private void CalibrateDisplay_Execute(object sender, ExecutedRoutedEventArgs e) {
+        private void LevelUp_Execute(object sender, ExecutedRoutedEventArgs e) {
+            Level = Level + 1;
+            MapPrivate = MapList[Level];
+            InitMap();
+        }
+
+        private void LevelDown_Execute(object sender, ExecutedRoutedEventArgs e) {
+            Level = Level - 1;
+            MapPrivate = MapList[Level];
+            InitMap();
+        }
+        private void CalibrateDisplay_Execute(object sender, ExecutedRoutedEventArgs e) {
 			var dialog = new DialogCalibrateDisplay {
 				MonitorSize = PublicWindow.MonitorSize,
 				MonitorResolution = PublicWindow.MonitorResolution,

@@ -18,7 +18,10 @@
 	<Window.InputBindings>
 		<KeyBinding Modifiers="Control" Key="S" Command="mapViewer:CustomCommands.Save" />
 		<KeyBinding Modifiers="Control" Key="O" Command="mapViewer:CustomCommands.OpenImage" />
-	</Window.InputBindings>
+
+        <KeyBinding Key="PageDown" Command="mapViewer:CustomCommands.LevelDown" />
+        <KeyBinding Key="PageUp" Command="mapViewer:CustomCommands.LevelUp" />
+    </Window.InputBindings>
 
 	<Window.CommandBindings>
         <CommandBinding Command="mapViewer:CustomCommands.Player" Executed="Player_Execute" CanExecute="Player_CanExecute" />
@@ -38,8 +41,10 @@
 		<CommandBinding Command="mapViewer:CustomCommands.ScaleToFit" Executed="ScaleToFit_Execute" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ZoomIn" Executed="ZoomIn_Execute" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ZoomOut" Executed="ZoomOut_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.LevelDown" Executed="LevelDown_Execute" CanExecute="ImagesNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.LevelUp" Executed="LevelUp_Execute" CanExecute="ImagesNeeded_CanExecute" />
 
-		<CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Execute" CanExecute="RotateMap_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Execute" CanExecute="RotateMap_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Execute" CanExecute="AddDisplay_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Execute" CanExecute="RemoveDisplay_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Execute" CanExecute="ImageNeeded_CanExecute" />
