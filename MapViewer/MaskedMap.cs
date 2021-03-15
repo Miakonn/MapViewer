@@ -20,6 +20,10 @@ namespace MapViewer {
 
         public TransformGroup DisplayTransform { get; }
 
+
+        public bool Initiated = false;
+
+
         public double PlayerSizePixel { get; set; } //  == 0 means fixed in meter 
         public double PlayerSizeMeter { get; set; } //  == 0 means dynamic in pixel 
 
@@ -112,6 +116,10 @@ namespace MapViewer {
 
 		private bool IsPublic { get; }
 
+        private long GroupId { get; set; }
+
+        private long MapId { get; set; }
+
 		public string ImageFilePath { get; set; }
 
 		public double Scale => MapImage != null ? TrfScale.ScaleX : 1.0;
@@ -120,9 +128,11 @@ namespace MapViewer {
 
         #endregion
 
-		public MaskedMap(bool publicView, Window parent) {
+		public MaskedMap(bool publicView, Window parent, long groupId) {
 			IsPublic = publicView;
             ParentWindow = parent;
+            GroupId = groupId;
+            MapId = DateTime.Now.Ticks;
 
 			MaskOpacity = IsPublic ? 1.0 : 0.3;
 			DisplayTransform = new TransformGroup();
@@ -193,6 +203,7 @@ namespace MapViewer {
 		}
 
 		public void Create() {
+            Initiated = true;
 
 			// CanvasMapMask
 			CanvasMapMask.Children.Clear();
@@ -230,7 +241,8 @@ namespace MapViewer {
 			Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
 
 			Unit = mapSource.Unit;
-			var changeImage = !string.Equals(ImageFilePath, mapSource.ImageFilePath);
+			var newImageLoaded = MapId != mapSource.MapId;
+            var newGroupLoaded = GroupId != mapSource.GroupId;
 
 			if (mapSource.BmpMask != null && _maskImage != null) {
 				try {
@@ -242,19 +254,22 @@ namespace MapViewer {
 				}
 				_maskImage.Source = BmpMask;
 			}
-			if (mapSource.MapImage != null && changeImage) {
-				MapImage = mapSource.MapImage.CloneCurrentValue();
-				_backgroundImage.Source = MapImage;
+            if (mapSource.MapImage != null) {
+                if (newImageLoaded) {
+                    MapImage = mapSource.MapImage.CloneCurrentValue();
+                    _backgroundImage.Source = MapImage;
+                    ImageFilePath = mapSource.ImageFilePath;
+                    mapSource.CanvasOverlay.CopyingCanvas(CanvasOverlay);
+                    MapId = mapSource.MapId;
+                }
 
-				ImageFilePath = mapSource.ImageFilePath;
-				mapSource.CanvasOverlay.CopyingCanvas(CanvasOverlay);
+                if (newGroupLoaded) {
+                    ClearTransformExceptRotation();
+                    GroupId = mapSource.GroupId;
+                }
+            }
 
-				ClearTransformExceptRotation();
-			}
-
-
-			MapData.ImageScaleMperPix = mapSource.MapData.ImageScaleMperPix;
-
+            MapData.ImageScaleMperPix = mapSource.MapData.ImageScaleMperPix;
 
 			if (IsLinked) {
 				ScaleToLinked(mapSource);
@@ -264,7 +279,13 @@ namespace MapViewer {
 			}
 		}
 
-		private void ClearTransformExceptRotation() {
+        public void CopyTransform(MaskedMap source) {
+            TrfTranslate = source.TrfTranslate;
+            TrfRotation = source.TrfRotation;
+            TrfScale = source.TrfScale;
+        }
+
+        private void ClearTransformExceptRotation() {
 			TrfScale.ScaleX = 1;
 			TrfScale.ScaleY = 1;
 			TrfScale.CenterX = 0;

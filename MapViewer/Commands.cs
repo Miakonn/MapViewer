@@ -32,6 +32,8 @@ namespace MapViewer {
 		public static readonly RoutedUICommand ZoomOut = new RoutedUICommand("Zoom out", "Zoom out", typeof(CustomCommands), null);
         public static readonly RoutedUICommand LevelDown = new RoutedUICommand("Level down", "Level up", typeof(CustomCommands), null);
         public static readonly RoutedUICommand LevelUp = new RoutedUICommand("Level up", "Level down", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand LevelDownPublish = new RoutedUICommand("Level down publish", "Level up publish", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand LevelUpPublish = new RoutedUICommand("Level up publish", "Level down publish", typeof(CustomCommands), null);
 
         public static readonly RoutedUICommand RotateMap = new RoutedUICommand("Rotate map", "Rotate map", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand AddDisplay = new RoutedUICommand("Add display", "Add display", typeof(CustomCommands), null);
@@ -141,9 +143,10 @@ namespace MapViewer {
             }
 
             MapList.Clear();
+            long groupId = DateTime.Now.Ticks;
 
             foreach (var filename in dialog.FileNames) {
-               var map = new MaskedMap(false, this);
+               var map = new MaskedMap(false, this, groupId);
                map.LoadImage(filename);
                MapList.Add(map);
             }
@@ -151,18 +154,22 @@ namespace MapViewer {
             Level = 0;
 
             MapPrivate = MapList[Level];
-            InitMap();
+            InitPrivateWindow();
         }
 
 		private void OpenLastImage_Execute(object sender, ExecutedRoutedEventArgs e) {
 			if (Settings.Default.MRU == null) {
 				return;
 			}
+
+            if (MapPrivate == null) {
+                MapPrivate = new MaskedMap(false, this, DateTime.Now.Ticks);
+            }
             MapPrivate.LoadImage(Settings.Default.MRU);
-            InitMap();
+            InitPrivateWindow();
         }
 
-        private void InitMap() {
+        private void InitPrivateWindow() {
             MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
             MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
 
@@ -180,7 +187,23 @@ namespace MapViewer {
             }
         }
 
+        private void SwitchToNewMap(MaskedMap newMap) {
+            var oldMap = MapPrivate;
+            MapPrivate = newMap;
 
+            if (oldMap != null && oldMap != MapPrivate) {
+                MapPrivate.MapData.Copy(oldMap.MapData);
+                MapPrivate.CopyTransform(oldMap);
+            }
+
+            if (!MapPrivate.Initiated) {
+                MapPrivate.Create();
+            }
+
+            MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
+            MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
+            _publicIsDirty = false;
+        }
 
         private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
 			AddToMru(MapPrivate.ImageFilePath);
@@ -215,16 +238,25 @@ namespace MapViewer {
 		}
 
         private void LevelUp_Execute(object sender, ExecutedRoutedEventArgs e) {
-            Level = Level + 1;
-            MapPrivate = MapList[Level];
-            InitMap();
+            Level += 1;
+            SwitchToNewMap(MapList[Level]);
+        }
+
+        private void LevelUpPublish_Execute(object sender, ExecutedRoutedEventArgs e) {
+            LevelUp_Execute(sender, e);
+            PublishMap_Execute(sender, e);
         }
 
         private void LevelDown_Execute(object sender, ExecutedRoutedEventArgs e) {
-            Level = Level - 1;
-            MapPrivate = MapList[Level];
-            InitMap();
+            Level -= 1;
+            SwitchToNewMap(MapList[Level]);
         }
+
+        private void LevelDownPublish_Execute(object sender, ExecutedRoutedEventArgs e) {
+            LevelDown_Execute(sender, e);
+            PublishMap_Execute(sender, e);
+        }
+
         private void CalibrateDisplay_Execute(object sender, ExecutedRoutedEventArgs e) {
 			var dialog = new DialogCalibrateDisplay {
 				MonitorSize = PublicWindow.MonitorSize,

@@ -60,7 +60,7 @@ namespace MapViewer
         public PublicWindow() {
             InitializeComponent();
 
-            Map = new MaskedMap(true, this);
+            Map = new MaskedMap(true, this, DateTime.Now.Ticks);
 			_canvasRuler = new Canvas();
 
 			ContentPresenter1.Content = Map.CanvasMapMask;

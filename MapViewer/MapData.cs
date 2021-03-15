@@ -12,38 +12,40 @@ namespace MapViewer {
 		private readonly string _xmlFilePath;
 
 		public string Unit {
-			get { return _unit;  }
-			set {
+			get => _unit;
+            set {
 				_unit = value;
 				Serialize();
 			}
 		}
 
 		public float ImageScaleMperPix {
-			get { return _imageScaleMperPix; }
-			set {
+			get => _imageScaleMperPix;
+            set {
 				_imageScaleMperPix = value;
 				Serialize();
 			}
 		}
 
 		public int LastFigureScaleUsed {
-			get { return _lastFigureScaleUsed; }
-			set {
+			get => _lastFigureScaleUsed;
+            set {
 				_lastFigureScaleUsed = value;
 				Serialize();
 			}
 		}
 
-		public MapData() {
+        // ReSharper disable once UnusedMember.Global
+        public MapData() {
 			_unit = "m";
 		}
 
 		public MapData(string path) {
 			_xmlFilePath= path;
+            _unit = "m";
 		}
 
-		public void Copy(MapData source) {
+        public void Copy(MapData source) {
 			ImageScaleMperPix = source.ImageScaleMperPix;
 			Unit = source.Unit;
 			LastFigureScaleUsed = source.LastFigureScaleUsed;

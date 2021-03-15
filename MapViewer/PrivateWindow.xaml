@@ -19,8 +19,15 @@
 		<KeyBinding Modifiers="Control" Key="S" Command="mapViewer:CustomCommands.Save" />
 		<KeyBinding Modifiers="Control" Key="O" Command="mapViewer:CustomCommands.OpenImage" />
 
-        <KeyBinding Key="PageDown" Command="mapViewer:CustomCommands.LevelDown" />
+        <KeyBinding Modifiers="Control" Key="PageDown" Command="mapViewer:CustomCommands.LevelDownPublish" />
+        <KeyBinding Modifiers="Control" Key="PageUp" Command="mapViewer:CustomCommands.LevelUpPublish" />
+
+                <KeyBinding Key="PageDown" Command="mapViewer:CustomCommands.LevelDown" />
         <KeyBinding Key="PageUp" Command="mapViewer:CustomCommands.LevelUp" />
+
+        <KeyBinding Key="F12" Command="mapViewer:CustomCommands.PublishMap" />
+
+
     </Window.InputBindings>
 
 	<Window.CommandBindings>
@@ -43,6 +50,8 @@
 		<CommandBinding Command="mapViewer:CustomCommands.ZoomOut" Executed="ZoomOut_Execute" CanExecute="ImageNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelDown" Executed="LevelDown_Execute" CanExecute="ImagesNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelUp" Executed="LevelUp_Execute" CanExecute="ImagesNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.LevelDownPublish" Executed="LevelDownPublish_Execute" CanExecute="ImagesNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.LevelUpPublish" Executed="LevelUpPublish_Execute" CanExecute="ImagesNeeded_CanExecute" />
 
         <CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Execute" CanExecute="RotateMap_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Execute" CanExecute="AddDisplay_CanExecute" />

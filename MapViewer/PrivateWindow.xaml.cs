@@ -13,10 +13,7 @@ using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace MapViewer {
-	/// <summary>
-	///     Interaction logic for PrivateWindow.xaml
-	/// </summary>
-	public partial class PrivateWindow {
+    public partial class PrivateWindow {
 
 		private enum CursorAction {
 			None, MovingPublicMapPos, MovingPrivateMap, MovingElement
@@ -27,14 +24,9 @@ namespace MapViewer {
 
 		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-//        public readonly List<MaskedMap> MapPrivateList = new List<MaskedMap>();
         public MaskedMap MapPrivate;
-
-  //      public int Level = 0;
-
 		public MaskedMap MapPublic;
         public List<MaskedMap> MapList = new List<MaskedMap>();
-
         public int Level {
             get => _level;
             set => _level = Math.Max(Math.Min(value, LevelNumber - 1), 0);
@@ -345,5 +337,5 @@ namespace MapViewer {
 
 		#endregion region
 
-	}
+    }
 }
