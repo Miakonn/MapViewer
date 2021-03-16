@@ -56,7 +56,7 @@ namespace MapViewer {
 			}
 		}
 
-		private bool _publicIsDirty;
+        public bool PublicNeedsRescaling { get; private set; }
         private int _level;
 
         #endregion
@@ -229,7 +229,7 @@ namespace MapViewer {
 		private void ComboBoxPublicScale_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
 			var selected = (ComboBoxItem)ComboBoxPublicScale.SelectedItem;
 			if (selected != null && MapPublic != null && MapPrivate != null) {
-				_publicIsDirty = true;
+				PublicNeedsRescaling = true;
 				var value = int.Parse(selected.Uid.Substring(6));
 				MapPrivate.MapData.LastFigureScaleUsed = value;
 				if (value == 0) {

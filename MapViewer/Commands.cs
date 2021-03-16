@@ -175,7 +175,7 @@ namespace MapViewer {
 
             MapPrivate.ScaleToWindow(MapPresenterMain1);
 
-            _publicIsDirty = true;
+            PublicNeedsRescaling = true;
             MapPrivate.Create();
 
             SetScale(MapPrivate.MapData.LastFigureScaleUsed);
@@ -202,7 +202,7 @@ namespace MapViewer {
 
             MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
             MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
-            _publicIsDirty = false;
+            PublicNeedsRescaling = false;
         }
 
         private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -270,15 +270,16 @@ namespace MapViewer {
 			}
 			PublicWindow.MonitorSize = dialog.MonitorSize;
 			PublicWindow.MonitorResolution = dialog.MonitorResolution;
-		}
+            PublicNeedsRescaling = true;
+        }
 
 		private void PublishMap_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Serialize();
-			MapPublic.PublishFrom(MapPrivate, _publicIsDirty);
+			MapPublic.PublishFrom(MapPrivate, PublicNeedsRescaling);
 			PublicWindow.SetRuler();
             MapPublic.UpdatePlayerElementSizes();
 			PublicWindow.DrawCompass();
-			_publicIsDirty = false;
+			PublicNeedsRescaling = false;
 
 			if (MapPublic.IsLinked) {
 				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);

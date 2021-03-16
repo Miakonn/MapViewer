@@ -22,10 +22,11 @@
         <KeyBinding Modifiers="Control" Key="PageDown" Command="mapViewer:CustomCommands.LevelDownPublish" />
         <KeyBinding Modifiers="Control" Key="PageUp" Command="mapViewer:CustomCommands.LevelUpPublish" />
 
-                <KeyBinding Key="PageDown" Command="mapViewer:CustomCommands.LevelDown" />
+        <KeyBinding Key="PageDown" Command="mapViewer:CustomCommands.LevelDown" />
         <KeyBinding Key="PageUp" Command="mapViewer:CustomCommands.LevelUp" />
 
         <KeyBinding Key="F12" Command="mapViewer:CustomCommands.PublishMap" />
+        <KeyBinding Key="Home" Command="mapViewer:CustomCommands.ScaleToFit" />
 
 
     </Window.InputBindings>
@@ -107,7 +108,7 @@
 			</RibbonTab>
 			<RibbonTab x:Name="GamingTab" Header="Gaming" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
 				<RibbonGroup Name="Zooming">
-					<RibbonButton Label="Zoom to fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png"/>
+					<RibbonButton Label="Zoom to fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png" ToolTip="Home"/>
 					<RibbonButton Label="Zoom in" Command="mapViewer:CustomCommands.ZoomIn" LargeImageSource="Images/zoom_in.png"/>
 					<RibbonButton Label="Zoom out" Command="mapViewer:CustomCommands.ZoomOut" LargeImageSource="Images/zoom_out.png"/>
 					<RibbonToggleButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
@@ -164,7 +165,8 @@
                         <ComboBoxItem Uid="PlayerSize_35p" Content="35 pixel"/>
                     </ComboBox>
                     <RibbonCheckBox Label="Show cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
-					<RibbonButton Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" >
+					<RibbonButton Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" 
+                                  ToolTip="F12">
 						<Button.Style>
 							<Style TargetType="{x:Type Button}">
 								<Style.Triggers>
