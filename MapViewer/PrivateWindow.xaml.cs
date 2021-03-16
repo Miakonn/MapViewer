@@ -34,7 +34,11 @@ namespace MapViewer {
 
         public int LevelNumber => MapList.Count;
 
-		public readonly PublicWindow PublicWindow = new PublicWindow();
+        public MaskedMap MapAbove => Level < LevelNumber - 1 ? MapList[Level + 1] : null;
+
+        public MaskedMap MapBelow => Level > 0 ? MapList[Level - 1] : null;
+
+        public readonly PublicWindow PublicWindow = new PublicWindow();
 
 		private UIElement _lastClickedElem;
 		private CursorAction _cursorAction;
@@ -99,7 +103,7 @@ namespace MapViewer {
 		private void MovePublic(Vector vector) {
 			MapPublic.Translate(vector / MapPublic.ScaleDpiFix);
 			if (MapPublic.IsLinked || !string.Equals(MapPublic.ImageFilePath, MapPrivate.ImageFilePath)) {
-				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
+				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());

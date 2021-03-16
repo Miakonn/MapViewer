@@ -191,6 +191,14 @@ namespace MapViewer {
 
 		}
 
+        public static UIElement CopyElement(UIElement elemSource) {
+            var xaml = XamlWriter.Save(elemSource);
+            if (XamlReader.Parse(xaml) is UIElement deepCopy) {
+                return deepCopy;
+            }
+            return null;
+        }
+
 		public static void CopyingCanvas(this Canvas canvasSource, Canvas canvasDest) {
 			canvasDest.Children.Clear();
 			foreach (UIElement child in canvasSource.Children) {

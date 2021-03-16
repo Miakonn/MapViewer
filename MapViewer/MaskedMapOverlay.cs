@@ -44,20 +44,23 @@ namespace MapViewer {
 			}
 		}
 
-        public void SendToBack(string uid) {
+        public void SendElementToBack(string uid) {
             var elem = CanvasOverlay.FindElementByUid(uid);
             if (elem != null) {
                 CanvasOverlay.Children.Remove(elem);
                 CanvasOverlay.Children.Insert(0, elem);
             }
         }
+        
+        public UIElement FindElement(string uid) {
+            return CanvasOverlay.FindElementByUid(uid);
+        }
 
+        #endregion
 
-		#endregion
+        #region Elements
 
-		#region Elements
-
-		public void OverlayCircle(Point pos, double radius, Color color, string uid) {
+        public void OverlayCircle(Point pos, double radius, Color color, string uid) {
 			var shape = new Ellipse {
 				Width = 2 * radius,
 				Height = 2 * radius,
@@ -189,18 +192,24 @@ namespace MapViewer {
 				}
 			}
 			else {
-				DeleteShape(PublicCursorUid);
+				RemoveElement(PublicCursorUid);
 			}
 		}
 
-		public void DeleteShape(string uid) {
+		public void RemoveElement(string uid) {
 			var shape = CanvasOverlay.FindElementByUid(uid);
 			if (shape != null) {
 				CanvasOverlay.Children.Remove(shape);
 			}
 		}
 
-		public void UpdateVisibleRectangle(Rect rect) {
+        public void RemoveElement(UIElement elem) {
+            if (elem != null) {
+                CanvasOverlay.Children.Remove(elem);
+            }
+        }
+
+        public void UpdateVisibleRectangle(Rect rect) {
 			var shape = (Rectangle)CanvasOverlay.FindElementByUid(PublicPositionUid);
 	
 			if (shape == null) {

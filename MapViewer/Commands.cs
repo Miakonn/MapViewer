@@ -18,7 +18,9 @@ namespace MapViewer {
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete element", "Delete element", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("Set colour", "Set colour", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand SendToBack = new RoutedUICommand("Send to back", "Send to back", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SendElementToBack = new RoutedUICommand("Send to back", "Send to back", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand MoveElementUp = new RoutedUICommand("Move up", "Move up", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand MoveElementDown = new RoutedUICommand("Move down", "Move down", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ShowPublicCursorTemporary = new RoutedUICommand("Show cursor temp.", "Show cursor temp.", typeof(CustomCommands), null);
 
@@ -128,10 +130,27 @@ namespace MapViewer {
 		private void ElementNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = (_lastClickedElem != null);
 		}
-		#endregion
 
-		#region Assorted
-		private void OpenImage_Execute(object sender, ExecutedRoutedEventArgs e) {
+        private void MoveElementUp_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = (MapPrivate != null 
+                            && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) 
+                            && LevelNumber > 1
+                            && Level < LevelNumber - 1
+                            && _lastClickedElem != null);
+        }
+
+        private void MoveElementDown_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = (MapPrivate != null 
+                            && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) 
+                            && LevelNumber > 1 
+                            && Level > 0
+                            && _lastClickedElem != null);
+        }
+
+        #endregion
+
+        #region Assorted
+        private void OpenImage_Execute(object sender, ExecutedRoutedEventArgs e) {
             var dialog = new OpenFileDialog {
                 Filter = "Image Files|*.jpg;*.bmp;*.png",
                 Multiselect = true
@@ -282,7 +301,7 @@ namespace MapViewer {
 			PublicNeedsRescaling = false;
 
 			if (MapPublic.IsLinked) {
-				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
+				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
@@ -319,7 +338,7 @@ namespace MapViewer {
 			}
 
 			var uid = _lastClickedElem.Uid;
-			MapPrivate.CanvasOverlay.Children.Remove(_lastClickedElem);
+			MapPrivate.RemoveElement(_lastClickedElem);
 			if (PublicWindow.IsVisible) {
 				var elemPublic = MapPublic.CanvasOverlay.FindElementByUid(uid);
 				if (elemPublic != null) {
@@ -348,16 +367,53 @@ namespace MapViewer {
             }
 		}
 
-        private void SendToBack_Execute(object sender, ExecutedRoutedEventArgs e) {
+        private void SendElementToBack_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
             if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
                 return;
             }
             var uid = _lastClickedElem.Uid;
-            MapPrivate.SendToBack(uid);
+            MapPrivate.SendElementToBack(uid);
             if (PublicWindow.IsVisible) {
-                MapPublic.SendToBack(uid);
+                MapPublic.SendElementToBack(uid);
             }
+        }
+
+
+        private void MoveElementUpDown(MaskedMap mapNew) {
+            if (mapNew == null) {
+                return;
+            }
+            var uid = _lastClickedElem.Uid;
+            var elem = MapPrivate.FindElement(uid);
+            MapPrivate.RemoveElement(uid);
+            mapNew.AddOverlayElement(elem, uid);
+            if (PublicWindow.IsVisible) {
+                if (MapPublic.MapId == MapPrivate.MapId) {
+                    MapPublic.RemoveElement(uid);
+                }
+                else if (MapPublic.MapId == mapNew.MapId) {
+                    var elemCopy = CanvasUtils.CopyElement(_lastClickedElem);
+                    MapPublic.AddOverlayElement(elemCopy, uid);
+                }
+            }
+        }
+
+
+        private void MoveElementUp_Execute(object sender, ExecutedRoutedEventArgs e) {
+            ActiveTool = null;
+            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+                return;
+            }
+            MoveElementUpDown(MapAbove);
+        }
+
+        private void MoveElementDown_Execute(object sender, ExecutedRoutedEventArgs e) {
+            ActiveTool = null;
+            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+                return;
+            }
+            MoveElementUpDown(MapBelow);
         }
 
         private void FullMask_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -371,7 +427,7 @@ namespace MapViewer {
 		private void RotateMap_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.RotateClockwise();
 			if (MapPublic.IsLinked) {
-				MapPrivate.DeleteShape(MaskedMap.PublicPositionUid);
+				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());

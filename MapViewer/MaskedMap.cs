@@ -118,7 +118,7 @@ namespace MapViewer {
 
         private long GroupId { get; set; }
 
-        private long MapId { get; set; }
+        public long MapId { get; set; }
 
 		public string ImageFilePath { get; set; }
 
@@ -278,7 +278,7 @@ namespace MapViewer {
 				ScaleToReal();
 			}
 		}
-
+        
         public void CopyTransform(MaskedMap source) {
             TrfTranslate = source.TrfTranslate;
             TrfRotation = source.TrfRotation;
