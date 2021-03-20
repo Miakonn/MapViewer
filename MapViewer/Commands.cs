@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -75,11 +76,11 @@ namespace MapViewer {
 		#region Can execute
 
 		private void ImageNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath));
+			e.CanExecute = MapPrivate != null;
 		}
 
         private void ImagesNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-            e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) && LevelNumber > 1);
+            e.CanExecute = (MapPrivate != null && LevelNumber > 1);
         }
 
         private void Always_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -87,15 +88,15 @@ namespace MapViewer {
 		}
 
 		private void Spell_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) && MapPrivate.ImageScaleMperPix > 0.0);
+			e.CanExecute = (MapPrivate != null && MapPrivate.ImageScaleMperPix > 0.0);
 		}
 
         private void Player_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-            e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) && MapPrivate.ImageScaleMperPix > 0.0);
+            e.CanExecute = (MapPrivate != null && MapPrivate.ImageScaleMperPix > 0.0);
         }
 
         public bool Publish_CanExecute() {
-			return (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath)) && PublicWindow.IsVisible;
+			return MapPrivate != null && PublicWindow.IsVisible;
 		}
 
 		public void OpenLastImage_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -103,7 +104,7 @@ namespace MapViewer {
 			try {
 				e.CanExecute = (!string.IsNullOrWhiteSpace(Settings.Default.MRU));
 				Mru1.Visibility = e.CanExecute ? Visibility.Visible : Visibility.Collapsed;
-				Mru1.Header = e.CanExecute ? Path.GetFileName(Settings.Default.MRU) : "";
+				Mru1.Header = e.CanExecute ? ExtractFileName : String.Empty;
 			}
 			catch (Exception) {
 				e.CanExecute = false;
@@ -124,7 +125,7 @@ namespace MapViewer {
 		}
 
 		private void RotateMap_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (MapPrivate != null && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) && !MapPrivate.IsLinked);
+			e.CanExecute = (MapPrivate != null && !MapPrivate.IsLinked);
 		}
 
 		private void ElementNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -133,7 +134,6 @@ namespace MapViewer {
 
         private void MoveElementUp_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
             e.CanExecute = (MapPrivate != null 
-                            && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) 
                             && LevelNumber > 1
                             && Level < LevelNumber - 1
                             && _lastClickedElem != null);
@@ -141,7 +141,6 @@ namespace MapViewer {
 
         private void MoveElementDown_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
             e.CanExecute = (MapPrivate != null 
-                            && !string.IsNullOrWhiteSpace(MapPrivate.ImageFilePath) 
                             && LevelNumber > 1 
                             && Level > 0
                             && _lastClickedElem != null);
@@ -156,39 +155,34 @@ namespace MapViewer {
                 Multiselect = true
             };
 
+            Array.Sort(dialog.FileNames);
+
             var result = dialog.ShowDialog();
             if (result == null || !result.Value) {
                 return;
             }
-
-            MapList.Clear();
-            long groupId = DateTime.Now.Ticks;
-
-            foreach (var filename in dialog.FileNames) {
-               var map = new MaskedMap(false, this, groupId);
-               map.LoadImage(filename);
-               MapList.Add(map);
-            }
-
-            Level = 0;
-
-            MapPrivate = MapList[Level];
-            InitPrivateWindow();
+            LoadFiles(dialog.FileNames);
         }
 
 		private void OpenLastImage_Execute(object sender, ExecutedRoutedEventArgs e) {
 			if (Settings.Default.MRU == null) {
 				return;
 			}
-
-            if (MapPrivate == null) {
-                MapPrivate = new MaskedMap(false, this, DateTime.Now.Ticks);
-            }
-            MapPrivate.LoadImage(Settings.Default.MRU);
-            InitPrivateWindow();
+            LoadFiles(MruFileNames);
         }
 
-        private void InitPrivateWindow() {
+        private void LoadFiles(string[] fileNames) {
+            MapList.Clear();
+            long groupId = DateTime.Now.Ticks;
+
+            foreach (var filename in fileNames) {
+                var map = new MaskedMap(false, this, groupId);
+                map.LoadImage(filename);
+                MapList.Add(map);
+            }
+
+            Level = 0;
+            MapPrivate = MapList[Level];
             MapPresenterMain1.Content = MapPrivate.CanvasMapMask;
             MapPresenterMain2.Content = MapPrivate.CanvasOverlay;
 
@@ -206,13 +200,16 @@ namespace MapViewer {
             }
         }
 
-        private void SwitchToNewMap(MaskedMap newMap) {
+        private void SwitchToNewMap(int newLevel) {
+            Level = newLevel;
+            
             var oldMap = MapPrivate;
-            MapPrivate = newMap;
+            MapPrivate = MapList[Level];
 
             if (oldMap != null && oldMap != MapPrivate) {
                 MapPrivate.MapData.Copy(oldMap.MapData);
                 MapPrivate.CopyTransform(oldMap);
+                MapPrivate.IsLinked = oldMap.IsLinked;
             }
 
             if (!MapPrivate.Initiated) {
@@ -225,11 +222,47 @@ namespace MapViewer {
         }
 
         private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
-			AddToMru(MapPrivate.ImageFilePath);
+
+            var mru = MapList.Aggregate("", (current, map) => current + map.ImageFilePath + ";");
+
+            AddToMru(mru);
 			Settings.Default.Save();
 			Log.Info("Exiting");
 			Application.Current.Shutdown();
 		}
+
+        string[] MruFileNames => Settings.Default.MRU?.Split(separator: new[] { ';' }, options: StringSplitOptions.RemoveEmptyEntries);
+
+        private string ExtractFileName {
+            get {
+                var fileNames = MruFileNames;
+                if (fileNames == null || fileNames.Length == 0) {
+                    return null;
+                }
+
+                if (fileNames.Length == 1) {
+                    return Path.GetFileName(fileNames[0]);
+                }
+
+                var fileName0 = Path.GetFileName(fileNames[0]);
+                var fileName1 = Path.GetFileName(fileNames[1]);
+                int s;
+                for (s = 0; s < fileName0.Length; s++) {
+                    if (fileName0[s] != fileName1[s]) {
+                        break;
+                    }
+                }
+
+                int e;
+                for (e = fileName0.Length - 1; e > s ; e--) {
+                    if (fileName0[e] != fileName1[e]) {
+                        break;
+                    }
+                }
+
+                return fileName0.Substring(0, s) + "*" + fileName0.Substring(e + 1, fileName0.Length - e - 1);
+            }
+        }
 
 		private void ScaleToFit_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ScaleToWindow(MapPresenterMain1);
@@ -257,8 +290,7 @@ namespace MapViewer {
 		}
 
         private void LevelUp_Execute(object sender, ExecutedRoutedEventArgs e) {
-            Level += 1;
-            SwitchToNewMap(MapList[Level]);
+            SwitchToNewMap(Level + 1);
         }
 
         private void LevelUpPublish_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -267,8 +299,7 @@ namespace MapViewer {
         }
 
         private void LevelDown_Execute(object sender, ExecutedRoutedEventArgs e) {
-            Level -= 1;
-            SwitchToNewMap(MapList[Level]);
+            SwitchToNewMap(Level - 1);
         }
 
         private void LevelDownPublish_Execute(object sender, ExecutedRoutedEventArgs e) {

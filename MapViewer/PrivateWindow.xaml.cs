@@ -103,7 +103,7 @@ namespace MapViewer {
 
 		private void MovePublic(Vector vector) {
 			MapPublic.Translate(vector / MapPublic.ScaleDpiFix);
-			if (MapPublic.IsLinked || !string.Equals(MapPublic.ImageFilePath, MapPrivate.ImageFilePath)) {
+			if (MapPublic.IsLinked || MapPublic.MapId != MapPrivate.MapId) {
 				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
 			}
 			else {
@@ -310,7 +310,8 @@ namespace MapViewer {
 
 		public void InitSettings() {
 			var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-			Settings.Default.SettingsKey = Path.Combine(path, "Miakonn\\MapViewer\\user.config");			
+			Settings.Default.SettingsKey = Path.Combine(path, "Miakonn\\MapViewer\\user.config");
+            Settings.Default.Upgrade();
 		}
 
 		public void DisplayPopup(string text) {
