@@ -134,9 +134,7 @@ namespace MapViewer.Utilities {
         }
 
         internal class Edid {
-            private readonly List<Monitor> _monitors = new List<Monitor>();
-
-            public List<Monitor> Monitors => _monitors;
+            public List<Monitor> Monitors { get; } = new List<Monitor>();
 
             private static void ParseLine(string line, Monitor monitor) {
                 var parts = line.Split(":".ToCharArray());
@@ -162,7 +160,7 @@ namespace MapViewer.Utilities {
                 foreach (var line in lines) {
                     if (line.StartsWith("Active")) {
                         monitor = new Monitor();
-                        _monitors.Add(monitor);
+                        Monitors.Add(monitor);
                         ParseLine(line, monitor);
                     }
                     else if (monitor != null) {

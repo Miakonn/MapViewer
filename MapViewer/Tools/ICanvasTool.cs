@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace MapViewer {
+namespace MapViewer.Tools {
 	public interface ICanvasTool {
 		void Activate();
 		void MouseDown(object sender, MouseButtonEventArgs e);

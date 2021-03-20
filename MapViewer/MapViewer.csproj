@@ -64,7 +64,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BitmapUtils.cs" />
+    <Compile Include="Utilities\BitmapUtils.cs" />
+    <Compile Include="Utilities\CanvasUtils.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Dialogs\DialogAbout.xaml.cs">
       <DependentUpon>DialogAbout.xaml</DependentUpon>

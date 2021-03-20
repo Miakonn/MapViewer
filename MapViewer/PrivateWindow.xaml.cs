@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using log4net;
 using MapViewer.Dialogs;
 using MapViewer.Properties;
+using MapViewer.Tools;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 

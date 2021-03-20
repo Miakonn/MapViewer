@@ -38,10 +38,8 @@ namespace MapViewer.Utilities {
 		/// Override.
 		/// </summary>
 		public override string ApplicationName {
-			get {
-				return System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.Name;
-			}
-			set {
+			get => System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.Name;
+            set {
 				//do nothing
 			}
 		}

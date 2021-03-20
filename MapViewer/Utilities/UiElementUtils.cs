@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Media;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
 namespace MapViewer.Utilities {
-    static class UiElementUtils {
+    internal static class UiElementUtils {
         public static BitmapCacheBrush CreateTextBrush(string text, double size, Brush brush) {
 
             var font = new FontFamily("Arial");
