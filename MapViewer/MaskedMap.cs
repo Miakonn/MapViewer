@@ -84,13 +84,18 @@ namespace MapViewer {
             }
         }
 
+        private Color? _maskColor;
         public Color MaskColor {
             get {
+                if (_maskColor.HasValue) {
+                    return _maskColor.Value;
+                }
                 var colorString = Settings.Default.MaskColor;
                 try {
-                    var color = ColorConverter.ConvertFromString(colorString);
-                    Log.Info("MaskColor= " + color);
-                    return (Color?)color ?? Colors.Black;
+                    _maskColor = (Color?) ColorConverter.ConvertFromString(colorString);
+                    Log.Info("MaskColor= " + _maskColor);
+
+                    return _maskColor ?? Colors.Black;
                 }
                 catch {
                     Log.Error("Failed to parse color: " + colorString);

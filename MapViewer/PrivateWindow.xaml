@@ -32,7 +32,7 @@
     </Window.InputBindings>
 
 	<Window.CommandBindings>
-        <CommandBinding Command="mapViewer:CustomCommands.Player" Executed="Player_Execute" CanExecute="Player_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.Player" Executed="Player_Execute" CanExecute="Player_CanExecute"></CommandBinding>
         <CommandBinding Command="mapViewer:CustomCommands.NonPlayer" Executed="NonPlayer_Execute" CanExecute="Player_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular7m" Executed="SpellCircular7m_Execute" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular3m" Executed="SpellCircular3m_Execute" CanExecute="Spell_CanExecute" />
@@ -89,12 +89,17 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<Popup Name="PopupDisplay" PlacementTarget="{Binding ElementName=DrawingSpace}"
-			VerticalAlignment="Top" IsOpen="False" VerticalOffset="20"  HorizontalOffset="20" Placement="Relative">
+        <Popup Grid.Row="0" Name="PopupDisplay" PlacementTarget="{Binding ElementName=DrawingSpace}"
+               VerticalAlignment="Top" IsOpen="False" VerticalOffset="20"  HorizontalOffset="20" Placement="Relative">
 			<TextBlock Padding="4"  Name="TxtBlock"  Background="WhiteSmoke" >Dummy</TextBlock>
 		</Popup>
 
-		<Ribbon Margin="1,1,1,1" Grid.Row="0" SelectionChanged="Tab_OnSelectionChanged">
+        <Popup Grid.Row="0" Name="PopupWarning" PlacementTarget="{Binding ElementName=DrawingSpace}"
+               VerticalAlignment="Top" IsOpen="False" VerticalOffset="20"  HorizontalOffset="20" Placement="Relative">
+            <TextBlock Padding="4"  Name="TxtBlockWarning"  Background="WhiteSmoke" Foreground="OrangeRed" >Dummy</TextBlock>
+        </Popup>
+
+        <Ribbon Margin="1,1,1,1" Grid.Row="0" SelectionChanged="Tab_OnSelectionChanged">
 			<Ribbon.ApplicationMenu>
 				<RibbonApplicationMenu >
 					<RibbonApplicationMenuItem Header="Open image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
@@ -205,10 +210,8 @@
 			<Grid Name="DrawingSpace"  ClipToBounds="True" >
 
 
-
-
 				<Grid.ContextMenu>
-					<ContextMenu Name="Cm">
+					<ContextMenu Name="PrivateContextMenu">
 						<MenuItem Command="mapViewer:CustomCommands.UnmaskLineOfSight20m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<Separator />
 						<MenuItem Command="mapViewer:CustomCommands.SpellCircular7m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />

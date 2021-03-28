@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -47,6 +48,8 @@ namespace MapViewer {
         private Point _mouseDownPointFirst;
         private ICanvasTool _activeTool;
 
+        private double _characterDistanceMoved;
+
 		public ICanvasTool ActiveTool {
 			get => _activeTool;
 
@@ -79,6 +82,9 @@ namespace MapViewer {
 			MapPublic.MapData.LastFigureScaleUsed = 50;
 			MapPublic.IsLinked = false;
             MapPublic.Create();
+
+            PrivateContextMenu.Opened += ContextMenu_OnOpened;
+
         }
 
 		public void SetScale(int scale) {
@@ -121,8 +127,12 @@ namespace MapViewer {
 				window.KeyDown += PrivateWinKeyDown;
 			}
 		}
+        
+        private void ContextMenu_OnOpened(object sender, RoutedEventArgs e) {
+            ActiveTool = null;
+        }
 
-		private void PrivateWinKeyDown(object sender, KeyEventArgs e) {
+        private void PrivateWinKeyDown(object sender, KeyEventArgs e) {
 			if (e.Key == Key.Escape) {
                 if (_cursorAction == CursorAction.MovingElement) {
                     var move = new Vector((_mouseDownPoint.X - _mouseDownPointFirst.X), (_mouseDownPoint.Y - _mouseDownPointFirst.Y));
@@ -131,13 +141,12 @@ namespace MapViewer {
 
                 }
                 HidePopup(0);
-                ActiveTool = null;
-				_cursorAction = CursorAction.None;
 			}
 			if (e.Key == Key.F12 && Publish_CanExecute()) {
 				PublishMap_Execute(null, null);
 			}
 
+            ActiveTool = null;
             ActiveTool?.KeyDown(sender, e);
         }
 
@@ -146,7 +155,6 @@ namespace MapViewer {
 		}
 
 		private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e) {
-
 			if (ActiveTool != null) {
 				ActiveTool.MouseDown(sender, e);
 				return;
@@ -160,7 +168,8 @@ namespace MapViewer {
                     _cursorAction = _lastClickedElem.Uid == MaskedMap.PublicPositionUid
 						? CursorAction.MovingPublicMapPos
 						: CursorAction.MovingElement;
-				}
+                    _characterDistanceMoved = 0;
+                }
 				else {
 					_mouseDownPoint = e.GetPosition(this);
                     _mouseDownPointFirst = _mouseDownPoint;
@@ -185,7 +194,11 @@ namespace MapViewer {
 			}
 
 			MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
-
+            if (Mouse.LeftButton != MouseButtonState.Pressed) {
+                _cursorAction = CursorAction.None;
+                return;
+            }
+            
 			if (_cursorAction == CursorAction.MovingPublicMapPos) {
 				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
 				MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y)) * MapPublic.Scale * MapPublic.ScaleDpiFix);
@@ -198,7 +211,8 @@ namespace MapViewer {
 				MapPrivate.MoveElement(_lastClickedElem, move);
 				MapPublic.MoveElement(_lastClickedElem.Uid, move);
 				_mouseDownPoint = curMouseDownPoint;
-                DisplayPopup(CalculateDistanceToLastPoint(curMouseDownPoint) + " " + MapPrivate.Unit);
+                string str = $"{DistanceFromStart(curMouseDownPoint),5:N1} Track: {DistanceTrack(move),5:N1}";
+                DisplayPopup(str);
                 e.Handled = true;
 			}
 			else if (_cursorAction == CursorAction.MovingPrivateMap) {
@@ -208,8 +222,6 @@ namespace MapViewer {
 				_mouseDownPoint = curMouseDownPoint;
 				e.Handled = true;
 			}
-
-
 		}
 
 		private void PrivateWinMouseUp(object sender, MouseButtonEventArgs e) {
@@ -227,7 +239,7 @@ namespace MapViewer {
 			MapPrivate.Zoom(scale, e.GetPosition(this));
 		}
 
-		private void PrivateWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+		private void PrivateWindow_Closing(object sender, CancelEventArgs e) {
 			Application.Current.Shutdown();
 		}
 
@@ -297,6 +309,9 @@ namespace MapViewer {
 
         private void Tab_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
 			ActiveTool = null;
+            if (MapPrivate != null && !MapPrivate.IsCalibrated) {
+                DisplayPopupWarning("Image is not calibrated!", 10);
+            }
 		}
 	
 		private void HelpButton_OnClick(object sender, RoutedEventArgs e) {
@@ -304,11 +319,11 @@ namespace MapViewer {
 			dialog.ShowDialog();
 		}
 
-		#endregion
+        #endregion
 
-		#region Public methods
+        #region Public methods
 
-		public void InitSettings() {
+        public void InitSettings() {
 			var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 			Settings.Default.SettingsKey = Path.Combine(path, "Miakonn\\MapViewer\\user.config");
             Settings.Default.Upgrade();
@@ -330,10 +345,29 @@ namespace MapViewer {
 			};
 		}
 
-        private string CalculateDistanceToLastPoint(Point pntNow) {
+        public void DisplayPopupWarning(string text, int delay) {
+            PopupWarning.IsOpen = true;
+            if (PopupWarning.Child is TextBlock popupText) {
+                popupText.Text = text;
+            }
+            var time = new DispatcherTimer { Interval = TimeSpan.FromSeconds(delay) };
+            time.Start();
+            time.Tick += delegate {
+                PopupWarning.IsOpen = false;
+                time.Stop();
+            };
+        }
+        
+        private double DistanceFromStart(Point pntNow) {
             var length = new Vector(_mouseDownPointFirst.X - pntNow.X, _mouseDownPointFirst.Y - pntNow.Y).Length;
             var dist = MapPrivate.ImageScaleMperPix * length;
-            return dist.ToString("N1");
+            return dist;
+        }
+
+        private double DistanceTrack(Vector move) {
+            var dist = MapPrivate.ImageScaleMperPix * move.Length;
+            _characterDistanceMoved += dist;
+            return _characterDistanceMoved;
         }
 
         public void AddToMru(string path) {

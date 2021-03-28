@@ -96,19 +96,7 @@ namespace MapViewer {
         }
 
         public bool Publish_CanExecute() {
-			return MapPrivate != null && PublicWindow.IsVisible;
-		}
-
-		public void OpenLastImage_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			InitSettings();
-			try {
-				e.CanExecute = (!string.IsNullOrWhiteSpace(Settings.Default.MRU));
-				Mru1.Visibility = e.CanExecute ? Visibility.Visible : Visibility.Collapsed;
-				Mru1.Header = e.CanExecute ? ExtractFileName : String.Empty;
-			}
-			catch (Exception) {
-				e.CanExecute = false;
-			}
+			return MapPrivate != null && MapPublic != null && PublicWindow.IsVisible;
 		}
 
 		public void Publish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -146,6 +134,18 @@ namespace MapViewer {
                             && _lastClickedElem != null);
         }
 
+
+        public void OpenLastImage_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            InitSettings();
+            try {
+                e.CanExecute = (!string.IsNullOrWhiteSpace(Settings.Default.MRU));
+                Mru1.Visibility = e.CanExecute ? Visibility.Visible : Visibility.Collapsed;
+                Mru1.Header = e.CanExecute ? ExtractFileName : String.Empty;
+            }
+            catch (Exception) {
+                e.CanExecute = false;
+            }
+        }
         #endregion
 
         #region Assorted
@@ -248,7 +248,14 @@ namespace MapViewer {
                 var fileName1 = Path.GetFileName(fileNames[1]);
                 int s;
                 for (s = 0; s < fileName0.Length; s++) {
-                    if (fileName0[s] != fileName1[s]) {
+                    if (fileName0[s] == fileName1[s]) {
+                        break;
+                    }
+                }
+
+                int t;
+                for (t = s + 1; t < fileName0.Length; t++) {
+                    if (fileName0[t] != fileName1[t]) {
                         break;
                     }
                 }
@@ -260,7 +267,7 @@ namespace MapViewer {
                     }
                 }
 
-                return fileName0.Substring(0, s) + "*" + fileName0.Substring(e + 1, fileName0.Length - e - 1);
+                return fileName0.Substring(s, t - s) + "*" + fileName0.Substring(e + 1, fileName0.Length - e - 1);
             }
         }
 
@@ -637,9 +644,9 @@ namespace MapViewer {
             catch { // ignored
             }
 
-            MapPrivate.OverlayPlayer(_mouseDownPoint, color, text);
+            MapPrivate.CreateOverlayPlayer(_mouseDownPoint, color, text);
             if (PublicWindow.IsVisible) {
-                MapPublic.OverlayPlayer(_mouseDownPoint, color, text);
+                MapPublic.CreateOverlayPlayer(_mouseDownPoint, color, text);
             }
         }
 

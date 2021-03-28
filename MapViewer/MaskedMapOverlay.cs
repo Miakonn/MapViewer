@@ -73,7 +73,7 @@ namespace MapViewer {
 			AddOverlayElement(shape, uid);
 		}
 
-        public void OverlayPlayer(Point pos, Color color, string text) {
+        public void CreateOverlayPlayer(Point pos, Color color, string text) {
             var brush = new SolidColorBrush(color);
             double size;
             if (PlayerSizeMeter != 0) {
@@ -243,6 +243,7 @@ namespace MapViewer {
                     }
 
                     if (Math.Abs(newSize - oldSize) > 1.0E-9) {
+
                         ellipse.Width = newSize;
                         ellipse.Height = newSize;
                         MoveElement(ellipse, new Vector((newSize - oldSize) / 2, (newSize - oldSize) / 2));
