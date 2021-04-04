@@ -184,47 +184,47 @@ namespace MapViewer {
         }
 
 		private void PrivateWinMouseMove(object sender, MouseEventArgs e) {
+            if (ActiveTool != null) {
+                if (ActiveTool.ShowPublicCursor()) {
+                    MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay), MapPrivate.MapId);
+                }
+                ActiveTool.MouseMove(sender, e);
+                return;
+            }
 
-			if (ActiveTool != null) {
-				if (ActiveTool.ShowPublicCursor()) {
-					MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));					
-				}
-				ActiveTool.MouseMove(sender, e);
-				return;
-			}
+            MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay), MapPrivate.MapId);
 
-			MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay));
             if (Mouse.LeftButton != MouseButtonState.Pressed) {
                 _cursorAction = CursorAction.None;
                 return;
             }
-            
-			if (_cursorAction == CursorAction.MovingPublicMapPos) {
-				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
-				MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y)) * MapPublic.Scale * MapPublic.ScaleDpiFix);
-				_mouseDownPoint = curMouseDownPoint;
+
+            if (_cursorAction == CursorAction.MovingPublicMapPos) {
+                var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
+                MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y)) * MapPublic.Scale * MapPublic.ScaleDpiFix);
+                _mouseDownPoint = curMouseDownPoint;
                 e.Handled = true;
-			}
-			else if (_cursorAction == CursorAction.MovingElement) {
-				var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
-				var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
-				MapPrivate.MoveElement(_lastClickedElem, move);
-				MapPublic.MoveElement(_lastClickedElem.Uid, move);
-				_mouseDownPoint = curMouseDownPoint;
+            }
+            else if (_cursorAction == CursorAction.MovingElement) {
+                var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
+                var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
+                MapPrivate.MoveElement(_lastClickedElem, move);
+                MapPublic.MoveElement(_lastClickedElem.Uid, move);
+                _mouseDownPoint = curMouseDownPoint;
                 string str = $"{DistanceFromStart(curMouseDownPoint),5:N1} Track: {DistanceTrack(move),5:N1}";
                 DisplayPopup(str);
                 e.Handled = true;
-			}
-			else if (_cursorAction == CursorAction.MovingPrivateMap) {
-				var curMouseDownPoint = e.GetPosition(this);
-				var move = curMouseDownPoint - _mouseDownPoint;
-				MapPrivate.Translate(move);
-				_mouseDownPoint = curMouseDownPoint;
-				e.Handled = true;
-			}
-		}
+            }
+            else if (_cursorAction == CursorAction.MovingPrivateMap) {
+                var curMouseDownPoint = e.GetPosition(this);
+                var move = curMouseDownPoint - _mouseDownPoint;
+                MapPrivate.Translate(move);
+                _mouseDownPoint = curMouseDownPoint;
+                e.Handled = true;
+            }
+        }
 
-		private void PrivateWinMouseUp(object sender, MouseButtonEventArgs e) {
+        private void PrivateWinMouseUp(object sender, MouseButtonEventArgs e) {
 			if (ActiveTool != null) {
 				ActiveTool.MouseUp(sender, e);
 				return;

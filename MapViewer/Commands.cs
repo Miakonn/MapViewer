@@ -645,7 +645,7 @@ namespace MapViewer {
             }
 
             MapPrivate.CreateOverlayPlayer(_mouseDownPoint, color, text);
-            if (PublicWindow.IsVisible) {
+            if (PublicWindow.IsVisible && MapPublic.MapId == MapPrivate.MapId) {
                 MapPublic.CreateOverlayPlayer(_mouseDownPoint, color, text);
             }
         }

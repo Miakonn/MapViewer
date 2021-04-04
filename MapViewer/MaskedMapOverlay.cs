@@ -23,7 +23,7 @@ namespace MapViewer {
 
 			var indx = 1;
 			do {
-				elem.Uid = uid + indx;
+				elem.Uid = uid + "#" + indx;
 				if (CanvasOverlay.FindElementByUid(elem.Uid) == null) {
 					CanvasOverlay.Children.Add(elem);
 					break;
@@ -175,8 +175,8 @@ namespace MapViewer {
 			AddOverlayElement(shape, uid);
 		}
 
-		public void MovePublicCursor(Point pnt) {
-			if (ShowPublicCursor) {
+		public void MovePublicCursor(Point pnt, long privateMapId) {
+			if (ShowPublicCursor && MapId == privateMapId) {
 				var elemCursor = CanvasOverlay.FindElementByUid(PublicCursorUid) as Ellipse;
 
 				var radius = 30 / Scale;

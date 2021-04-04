@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Runtime.CompilerServices;
+using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
@@ -12,10 +13,23 @@ namespace MapViewer.Utilities {
             return new BitmapCacheBrush(textBlock);
         }
 
+        public static string ExtractTextFromUid(this Ellipse elem) {
+            if (elem.Uid.StartsWith("Player")) {
+                var parts = elem.Uid.Split('_');
+                if (parts.Length < 2) {
+                    return null;
+                }
+
+                var text = parts[1].Split('#')[0];
+                return text;
+            }
+            return null;
+        }
+
         public static void SetColor(this UIElement elem, Brush brush) {
             switch (elem) {
-                case Ellipse ellipse when ellipse.Uid.StartsWith("Player") && ellipse.Uid.Length > 7:
-                    ellipse.Fill = CreateTextBrush(ellipse.Uid.Substring(7), ellipse.Width, brush);
+                case Ellipse ellipse when !string.IsNullOrWhiteSpace(ellipse.ExtractTextFromUid()):
+                    ellipse.Fill = CreateTextBrush(ellipse.ExtractTextFromUid(), ellipse.Width, brush);
                     break;
                 case Ellipse ellipse:
                     ellipse.Fill = brush;
