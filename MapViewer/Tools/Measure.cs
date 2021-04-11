@@ -11,8 +11,8 @@ namespace MapViewer.Tools {
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
 		private readonly Canvas _canvasPublic;
-		private readonly MaskedMap _map;
-		private readonly MaskedMap _mapPublic;
+		private readonly Maps.PrivateMaskedMap _map;
+		private readonly Maps.PublicMaskedMap _mapPublic;
 		private RibbonToggleButton _button;
 		private Line _line;
 		private Line _linePublic;

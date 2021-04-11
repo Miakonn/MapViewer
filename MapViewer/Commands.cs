@@ -7,6 +7,7 @@ using System.Windows.Media;
 using Microsoft.Win32;
 using System.Windows.Controls.Ribbon;
 using MapViewer.Dialogs;
+using MapViewer.Maps;
 using MapViewer.Properties;
 using MapViewer.Utilities;
 
@@ -176,7 +177,7 @@ namespace MapViewer {
             long groupId = DateTime.Now.Ticks;
 
             foreach (var filename in fileNames) {
-                var map = new MaskedMap(false, this, groupId);
+                var map = new PrivateMaskedMap( this, groupId);
                 map.LoadImage(filename);
                 MapList.Add(map);
             }
@@ -339,7 +340,7 @@ namespace MapViewer {
 			PublicNeedsRescaling = false;
 
 			if (MapPublic.IsLinked) {
-				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
+				MapPrivate.RemoveElement(Maps.MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
@@ -371,7 +372,7 @@ namespace MapViewer {
 
 		private void DeleteElement_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
-			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+			if (_lastClickedElem == null || _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid) {
 				return;
 			}
 
@@ -387,7 +388,7 @@ namespace MapViewer {
 
 		private void SetColorElement_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
-			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+			if (_lastClickedElem == null || _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid) {
 				return;
 			}
 
@@ -407,7 +408,7 @@ namespace MapViewer {
 
         private void SendElementToBack_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+            if (_lastClickedElem == null || _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid) {
                 return;
             }
             var uid = _lastClickedElem.Uid;
@@ -418,7 +419,7 @@ namespace MapViewer {
         }
 
 
-        private void MoveElementUpDown(MaskedMap mapNew) {
+        private void MoveElementUpDown(Maps.MaskedMap mapNew) {
             if (mapNew == null) {
                 return;
             }
@@ -440,7 +441,7 @@ namespace MapViewer {
 
         private void MoveElementUp_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+            if (_lastClickedElem == null || _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid) {
                 return;
             }
             MoveElementUpDown(MapAbove);
@@ -448,7 +449,7 @@ namespace MapViewer {
 
         private void MoveElementDown_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+            if (_lastClickedElem == null || _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid) {
                 return;
             }
             MoveElementUpDown(MapBelow);
@@ -465,7 +466,7 @@ namespace MapViewer {
 		private void RotateMap_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.RotateClockwise();
 			if (MapPublic.IsLinked) {
-				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
+				MapPrivate.RemoveElement(Maps.MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());

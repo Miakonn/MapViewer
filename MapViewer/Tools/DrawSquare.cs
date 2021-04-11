@@ -10,7 +10,7 @@ namespace MapViewer.Tools {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
-		private readonly MaskedMap _map;
+		private readonly Maps.MaskedMap _map;
 		private RibbonToggleButton _button;
 		private Polygon _shape;
 

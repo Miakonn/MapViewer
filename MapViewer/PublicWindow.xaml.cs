@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MapViewer.Maps;
 using MapViewer.Properties;
 
 namespace MapViewer
@@ -55,12 +56,12 @@ namespace MapViewer
 
 		public bool IsCalibrated => MonitorScaleMMperPixel > 0;
 
-        public MaskedMap Map { get; }
+        public PublicMaskedMap Map { get; }
 
         public PublicWindow() {
             InitializeComponent();
 
-            Map = new MaskedMap(true, this, DateTime.Now.Ticks);
+            Map = new PublicMaskedMap( this, DateTime.Now.Ticks);
 			_canvasRuler = new Canvas();
 
 			ContentPresenter1.Content = Map.CanvasMapMask;

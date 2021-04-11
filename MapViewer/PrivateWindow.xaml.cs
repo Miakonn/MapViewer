@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using log4net;
 using MapViewer.Dialogs;
+using MapViewer.Maps;
 using MapViewer.Properties;
 using MapViewer.Tools;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -26,9 +27,9 @@ namespace MapViewer {
 
 		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public MaskedMap MapPrivate;
-		public MaskedMap MapPublic;
-        public List<MaskedMap> MapList = new List<MaskedMap>();
+        public PrivateMaskedMap MapPrivate;
+        public List<PrivateMaskedMap> MapList = new List<PrivateMaskedMap>();
+        public PublicMaskedMap MapPublic;
         public int Level {
             get => _level;
             set => _level = Math.Max(Math.Min(value, LevelNumber - 1), 0);
@@ -36,9 +37,9 @@ namespace MapViewer {
 
         public int LevelNumber => MapList.Count;
 
-        public MaskedMap MapAbove => Level < LevelNumber - 1 ? MapList[Level + 1] : null;
+        public Maps.MaskedMap MapAbove => Level < LevelNumber - 1 ? MapList[Level + 1] : null;
 
-        public MaskedMap MapBelow => Level > 0 ? MapList[Level - 1] : null;
+        public Maps.MaskedMap MapBelow => Level > 0 ? MapList[Level - 1] : null;
 
         public readonly PublicWindow PublicWindow = new PublicWindow();
 
@@ -110,7 +111,7 @@ namespace MapViewer {
 		private void MovePublic(Vector vector) {
 			MapPublic.Translate(vector / MapPublic.ScaleDpiFix);
 			if (MapPublic.IsLinked || MapPublic.MapId != MapPrivate.MapId) {
-				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
+				MapPrivate.RemoveElement(Maps.MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
@@ -165,7 +166,7 @@ namespace MapViewer {
 				if (_lastClickedElem != null) {
 					_mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                     _mouseDownPointFirst = _mouseDownPoint;
-                    _cursorAction = _lastClickedElem.Uid == MaskedMap.PublicPositionUid
+                    _cursorAction = _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid
 						? CursorAction.MovingPublicMapPos
 						: CursorAction.MovingElement;
                     _characterDistanceMoved = 0;

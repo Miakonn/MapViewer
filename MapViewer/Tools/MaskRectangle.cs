@@ -10,7 +10,7 @@ using System.Windows.Controls.Ribbon;
 namespace MapViewer.Tools {
 	public class MaskRectangle : ICanvasTool {
 		private readonly Canvas _canvas;
-		private readonly MaskedMap _map;
+		private readonly Maps.MaskedMap _map;
 		private readonly bool _mask;
 		private RibbonToggleButton _button;
 

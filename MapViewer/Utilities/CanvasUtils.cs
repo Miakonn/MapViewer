@@ -61,7 +61,7 @@ namespace MapViewer {
         public static void CopyingCanvas(this Canvas canvasSource, Canvas canvasDest) {
             canvasDest.Children.Clear();
             foreach (UIElement child in canvasSource.Children) {
-                if (child.Uid != MaskedMap.PublicPositionUid) {
+                if (child.Uid != Maps.MaskedMap.PublicPositionUid) {
                     var xaml = XamlWriter.Save(child);
                     if (XamlReader.Parse(xaml) is UIElement deepCopy) {
                         canvasDest.Children.Add(deepCopy);
