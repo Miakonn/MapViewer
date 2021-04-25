@@ -294,7 +294,9 @@ namespace MapViewer {
 		}
 
 		private void Save_Execute(object sender, ExecutedRoutedEventArgs e) {
-			MapPrivate.Serialize();
+            foreach (var map in MapList) {
+                map.Serialize();
+            }
 		}
 
         private void LevelUp_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -340,7 +342,7 @@ namespace MapViewer {
 			PublicNeedsRescaling = false;
 
 			if (MapPublic.IsLinked) {
-				MapPrivate.RemoveElement(Maps.MaskedMap.PublicPositionUid);
+				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
@@ -372,7 +374,7 @@ namespace MapViewer {
 
 		private void DeleteElement_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
-			if (_lastClickedElem == null || _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid) {
+			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
 				return;
 			}
 
@@ -388,7 +390,7 @@ namespace MapViewer {
 
 		private void SetColorElement_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
-			if (_lastClickedElem == null || _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid) {
+			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
 				return;
 			}
 
@@ -408,7 +410,7 @@ namespace MapViewer {
 
         private void SendElementToBack_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedElem == null || _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid) {
+            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
                 return;
             }
             var uid = _lastClickedElem.Uid;
@@ -419,7 +421,7 @@ namespace MapViewer {
         }
 
 
-        private void MoveElementUpDown(Maps.MaskedMap mapNew) {
+        private void MoveElementUpDown(MaskedMap mapNew) {
             if (mapNew == null) {
                 return;
             }
@@ -441,7 +443,7 @@ namespace MapViewer {
 
         private void MoveElementUp_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedElem == null || _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid) {
+            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
                 return;
             }
             MoveElementUpDown(MapAbove);
@@ -449,7 +451,7 @@ namespace MapViewer {
 
         private void MoveElementDown_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedElem == null || _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid) {
+            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
                 return;
             }
             MoveElementUpDown(MapBelow);
@@ -466,7 +468,7 @@ namespace MapViewer {
 		private void RotateMap_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.RotateClockwise();
 			if (MapPublic.IsLinked) {
-				MapPrivate.RemoveElement(Maps.MaskedMap.PublicPositionUid);
+				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());

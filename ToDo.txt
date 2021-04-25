@@ -1,36 +1,26 @@
-
-
 // Buggar
 
-*	problem med mask/unmask-verktygen vid bildkant
+*	space fungerar ej för polygon!
 
-*  	reload image, no overlay
+*	Lägg formler under masken.
+
+*	Lägg till svart , och pc och npc -färg
+
+*   gruppera formler med pc?
+
+* 	Smalare linje?
 
 
-// Nya funktioner
+// 	Nya funktioner
 
-*	reload image
-
-* 	spara position
-
-*	undo
-
-*	rondräknare
-
-* 	olika våningar?
-
-*	Rutnät
-
-*	kontext-menu,
-
-*	mask/unmask ellipse
+*	Skapa en modell och en vymodell.
 
 *	visa rutan före publicering
 
-*	send to back på element. (z-order)
 
 
-// Låg prio
+
+// Låg prio/ svårt
 *	figurordning
 
 *	rondräknare på formler

@@ -37,9 +37,9 @@ namespace MapViewer {
 
         public int LevelNumber => MapList.Count;
 
-        public Maps.MaskedMap MapAbove => Level < LevelNumber - 1 ? MapList[Level + 1] : null;
+        public MaskedMap MapAbove => Level < LevelNumber - 1 ? MapList[Level + 1] : null;
 
-        public Maps.MaskedMap MapBelow => Level > 0 ? MapList[Level - 1] : null;
+        public MaskedMap MapBelow => Level > 0 ? MapList[Level - 1] : null;
 
         public readonly PublicWindow PublicWindow = new PublicWindow();
 
@@ -111,7 +111,7 @@ namespace MapViewer {
 		private void MovePublic(Vector vector) {
 			MapPublic.Translate(vector / MapPublic.ScaleDpiFix);
 			if (MapPublic.IsLinked || MapPublic.MapId != MapPrivate.MapId) {
-				MapPrivate.RemoveElement(Maps.MaskedMap.PublicPositionUid);
+				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
 			}
 			else {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
@@ -166,7 +166,7 @@ namespace MapViewer {
 				if (_lastClickedElem != null) {
 					_mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                     _mouseDownPointFirst = _mouseDownPoint;
-                    _cursorAction = _lastClickedElem.Uid == Maps.MaskedMap.PublicPositionUid
+                    _cursorAction = _lastClickedElem.Uid == MaskedMap.PublicPositionUid
 						? CursorAction.MovingPublicMapPos
 						: CursorAction.MovingElement;
                     _characterDistanceMoved = 0;
