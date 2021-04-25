@@ -152,7 +152,7 @@ namespace MapViewer {
         }
 
 		private void PrivateWinSizeChanged(object sender, SizeChangedEventArgs e) {
-			MapPrivate?.ScaleToWindow(MapPresenterMain2);
+			MapPrivate?.ScaleToWindow(LayerMap);
 		}
 
 		private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e) {
@@ -179,7 +179,7 @@ namespace MapViewer {
 				e.Handled = true;
 			}
 			else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
-				_mouseDownPoint = e.GetPosition(MapPrivate.CanvasMapMask);
+				_mouseDownPoint = e.GetPosition(MapPrivate.CanvasMap);
                 _mouseDownPointFirst = _mouseDownPoint;
 			}
         }

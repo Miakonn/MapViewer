@@ -104,7 +104,7 @@ namespace MapViewer.Tools {
 		}
 
 		private Int32Rect GetElementRect(FrameworkElement element) {
-			var buttonTransform = element.TransformToVisual(_map.CanvasMapMask);
+			var buttonTransform = element.TransformToVisual(_map.CanvasMap);
 			var point = buttonTransform.Transform(new Point());
 			return new Int32Rect((int)point.X, (int)point.Y, (int)element.ActualWidth, (int)element.ActualHeight);
 		}

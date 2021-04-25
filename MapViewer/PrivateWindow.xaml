@@ -231,11 +231,14 @@
                     </ContextMenu>
 				</Grid.ContextMenu>
 				<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}"  KeyDown="PrivateWinKeyDown">
-					<ContentPresenter   Name="MapPresenterMain1" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
+					<ContentPresenter   Name="LayerMap" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
 				</UserControl>
 				<UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}"  KeyDown="PrivateWinKeyDown">
-					<ContentPresenter   Name="MapPresenterMain2" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
+					<ContentPresenter   Name="LayerMask" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
 				</UserControl>
+                <UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}"  KeyDown="PrivateWinKeyDown">
+                    <ContentPresenter   Name="LayerOverlay" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
+                </UserControl>
 			</Grid>
 		</Border>
 

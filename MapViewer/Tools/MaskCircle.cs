@@ -104,7 +104,7 @@ namespace MapViewer.Tools {
 		}
 
 		private Point GetElementCenter(FrameworkElement element) {
-			var transform = element.TransformToVisual(_map.CanvasMapMask);
+			var transform = element.TransformToVisual(_map.CanvasMap);
 			return transform.Transform(new Point(element.ActualWidth / 2.0, element.ActualHeight / 2.0));
 		}
 	}
