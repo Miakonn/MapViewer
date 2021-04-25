@@ -2,14 +2,9 @@
 
 *	space fungerar ej för polygon!
 
-*	Lägg formler under masken.
-
-*	Lägg till svart , och pc och npc -färg
-
 *   gruppera formler med pc?
 
 * 	Smalare linje?
-
 
 // 	Nya funktioner
 
@@ -18,9 +13,7 @@
 *	visa rutan före publicering
 
 
-
-
-// Låg prio/ svårt
+// Låg prio / svårt
 *	figurordning
 
 *	rondräknare på formler

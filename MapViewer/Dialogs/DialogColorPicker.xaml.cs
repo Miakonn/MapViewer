@@ -10,7 +10,7 @@ namespace MapViewer.Dialogs {
 	/// </summary>
 	public partial class DialogColorPicker {
 		public Brush SelectedColor { get; set; }
-		private readonly string[] _selectedColors = { "Red", "Orange", "Yellow", "YellowGreen", "Green", "Turquoise", "Blue", "Purple" };
+		private readonly string[] _selectedColors = { "Red", "Orange", "Yellow", "YellowGreen", "Green", "Turquoise", "Blue", "Purple", "Black", "LightBlue" };
 
 		public DialogColorPicker() {
 			InitializeComponent();
