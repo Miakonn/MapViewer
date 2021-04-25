@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -17,6 +15,7 @@ namespace MapViewer.Tools {
 		private Polygon _shape;
 		private readonly bool _mask;
 		private readonly PointCollection _pnts = new PointCollection();
+        private int _noOfClicks;
 
 		public MaskPolygon(PrivateWindow privateWindow, object button, bool mask) {
 			_privateWindow = privateWindow;
@@ -24,7 +23,8 @@ namespace MapViewer.Tools {
 			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
-		}
+            _noOfClicks = 0;
+        }
 
 		#region ICanvasTool
 		public void Activate() {
@@ -39,28 +39,26 @@ namespace MapViewer.Tools {
 				EndDraw();
 			}
 			else {
-				_pnts.Add(e.GetPosition(_canvas));
-				if (_pnts.Count > 2) {
-					_shape.StrokeThickness = 0;
-				}
+                if (_noOfClicks < 2) {
+                   _pnts[_noOfClicks] = e.GetPosition(_canvas);
+                }
+                else {
+                    _pnts.Add(e.GetPosition(_canvas));
+                }
+                _noOfClicks++;
 			}
 		}
 
-		private bool IsCloseStartingPoint() {
-			if (_pnts.Count < 3) {
-				return false;
-			}
-			var last = _pnts.Count -1;
-			double length = new Vector(_pnts[0].X - _pnts[last].X, _pnts[0].Y - _pnts[last].Y).Length;
-			return (length < 20);
-		}
-
-		public void MouseMove(object sender, MouseEventArgs e) {
+        public void MouseMove(object sender, MouseEventArgs e) {
 			if (_shape == null) {
 				return;
 			}
-			UpdateDraw(e.GetPosition(_canvas));
-		}
+            _pnts[_noOfClicks] = e.GetPosition(_canvas);
+
+            if (_noOfClicks == 2) {
+                _shape.StrokeThickness = 0;
+            }
+        }
 
 		public void MouseUp(object sender, MouseButtonEventArgs e) { }
 
@@ -92,31 +90,38 @@ namespace MapViewer.Tools {
 			_pnts.Add(pnt);
 			_pnts.Add(pnt);
 			_pnts.Add(pnt);
-
+            _noOfClicks = 1;
 			_shape = new Polygon {
 				Points = _pnts,
 				Fill = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
 				FillRule = FillRule.EvenOdd,
-				StrokeThickness = 4,
-				Stroke = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
+				StrokeThickness = 3,
+                StrokeEndLineCap = PenLineCap.Flat,
+                StrokeStartLineCap = PenLineCap.Flat,
+                StrokeLineJoin = PenLineJoin.Bevel,
+                Stroke = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
 				Opacity = 0.5
 			};
 
 			_canvas.Children.Add(_shape);
 		}
 
-		private void UpdateDraw(Point pt) {
-			_pnts[_pnts.Count - 1] = pt;
-		}
-
 		private void EndDraw() {
 			_pnts.Add(_pnts[0]);
-			_pnts.RemoveAt(0);
 
 			_map.CanvasOverlay.Children.Remove(_shape);
 
 			_map.MaskPolygon(_pnts, (byte)(_mask ? 255 : 0));
 			_privateWindow.ActiveTool = null;
+		}
+
+		private bool IsCloseStartingPoint() {
+            if (_noOfClicks < 3) {
+				return false;
+			}
+			var last = _pnts.Count -1;
+			double length = new Vector(_pnts[0].X - _pnts[last].X, _pnts[0].Y - _pnts[last].Y).Length;
+			return (length < 20);
 		}
 
 	}

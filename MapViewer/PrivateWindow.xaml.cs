@@ -142,13 +142,17 @@ namespace MapViewer {
 
                 }
                 HidePopup(0);
-			}
-			if (e.Key == Key.F12 && Publish_CanExecute()) {
+                ActiveTool = null;
+            }
+			else if (e.Key == Key.F12 && Publish_CanExecute()) {
 				PublishMap_Execute(null, null);
-			}
-
-            ActiveTool = null;
-            ActiveTool?.KeyDown(sender, e);
+            }
+            else if (e.Key == Key.Space) {
+                ActiveTool?.KeyDown(sender, e);
+            }
+            else {
+                ActiveTool = null;
+            }
         }
 
 		private void PrivateWinSizeChanged(object sender, SizeChangedEventArgs e) {
