@@ -74,7 +74,7 @@ namespace MapViewer.Tools {
 				X2 = pt1.X,
 				Y2 = pt1.Y,
 				Stroke = Brushes.OrangeRed,
-				StrokeThickness = 2 / _map.ImageScaleMperPix,
+				StrokeThickness = 1 / _map.ImageScaleMperPix,
 				Opacity = 0.5
 			};
 
@@ -99,7 +99,7 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-			_map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2 / _map.ImageScaleMperPix, Colors.OrangeRed, "Line");
+			_map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 1 / _map.ImageScaleMperPix, Colors.OrangeRed, "Line");
 			if (_privateWindow.PublicWindow.IsVisible) {
 				_privateWindow.MapPublic.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2 / _map.ImageScaleMperPix, Colors.OrangeRed, "Line");
 			}

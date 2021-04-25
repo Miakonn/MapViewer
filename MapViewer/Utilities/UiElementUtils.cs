@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
@@ -39,6 +38,9 @@ namespace MapViewer.Utilities {
                     break;
                 case Polygon polygon:
                     polygon.Fill = brush;
+                    break;
+                case Line line:
+                    line.Stroke = brush;
                     break;
             }
         }

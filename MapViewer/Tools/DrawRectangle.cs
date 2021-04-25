@@ -16,7 +16,7 @@ namespace MapViewer.Tools {
 		private Point _pnt1;
 		private Point _pnt2;
 		private Point _pnt3;
-		private int _index =0;
+		private int _index;
 
 		public DrawRectangle(PrivateWindow privateWindow, object button) {
 			_privateWindow = privateWindow;
