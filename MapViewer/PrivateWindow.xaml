@@ -25,6 +25,7 @@
         <KeyBinding Key="PageDown" Command="mapViewer:CustomCommands.LevelDown" />
         <KeyBinding Key="PageUp" Command="mapViewer:CustomCommands.LevelUp" />
 
+        <KeyBinding Key="F9" Command="mapViewer:CustomCommands.OpenLastImage" />
         <KeyBinding Key="F12" Command="mapViewer:CustomCommands.PublishMap" />
         <KeyBinding Key="Home" Command="mapViewer:CustomCommands.ScaleToFit" />
 
@@ -105,7 +106,7 @@
 					<RibbonApplicationMenuItem Header="Open image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
 					<RibbonApplicationMenuItem Header="Save mask/overlay" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
 					<RibbonApplicationMenuItem Header="Calibrate display" Command="mapViewer:CustomCommands.CalibrateDisplay" ImageSource="Images/Monitor_measure.png" />
-					<RibbonApplicationMenuItem Name="Mru1"  Header="Open last image" Command="mapViewer:CustomCommands.OpenLastImage"  />
+                    <RibbonApplicationMenuItem Name="Mru1"  Header="Open last image" Command="mapViewer:CustomCommands.OpenLastImage" ToolTip="F9" />
 					<RibbonApplicationMenuItem Header="Exit" Command="mapViewer:CustomCommands.ExitApp" />
 				</RibbonApplicationMenu>
 			</Ribbon.ApplicationMenu>
@@ -197,7 +198,7 @@
 						</Button.Style>
 					</RibbonButton>
 					<RibbonButton Label="Rotate" Command="mapViewer:CustomCommands.RotateMap" LargeImageSource="Images/Monitor_rotate.png" />
-					<RibbonButton Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png" />
+                    <RibbonButton Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png"  ToolTip="F12" />
 				</RibbonGroup>
 			</RibbonTab>
 			<Ribbon.HelpPaneContent>

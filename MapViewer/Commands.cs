@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -162,6 +161,8 @@ namespace MapViewer {
             if (result == null || !result.Value) {
                 return;
             }
+
+            AddCurrentFilesToMru();
             LoadFiles(dialog.FileNames);
         }
 
@@ -169,10 +170,14 @@ namespace MapViewer {
 			if (Settings.Default.MRU == null) {
 				return;
 			}
-            LoadFiles(MruFileNames);
+
+            var filesToOpen = MruFileNames;
+            AddCurrentFilesToMru();
+            LoadFiles(filesToOpen);
         }
 
         private void LoadFiles(string[] fileNames) {
+            Save_Execute(null, null);
             MapList.Clear();
             long groupId = DateTime.Now.Ticks;
 
@@ -225,11 +230,7 @@ namespace MapViewer {
         }
 
         private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
-
-            var mru = MapList.Aggregate("", (current, map) => current + map.ImageFilePath + ";");
-
-            AddToMru(mru);
-			Settings.Default.Save();
+            AddCurrentFilesToMru();
 			Log.Info("Exiting");
 			Application.Current.Shutdown();
 		}
@@ -295,7 +296,7 @@ namespace MapViewer {
 			}
 		}
 
-		private void Save_Execute(object sender, ExecutedRoutedEventArgs e) {
+		private void Save_Execute(object sender, EventArgs e) {
             foreach (var map in MapList) {
                 map.Serialize();
             }
