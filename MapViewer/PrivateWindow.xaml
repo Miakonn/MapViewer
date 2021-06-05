@@ -102,7 +102,7 @@
 
         <Ribbon Margin="1,1,1,1" Grid.Row="0" SelectionChanged="Tab_OnSelectionChanged">
 			<Ribbon.ApplicationMenu>
-				<RibbonApplicationMenu >
+				<RibbonApplicationMenu>
 					<RibbonApplicationMenuItem Header="Open image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
 					<RibbonApplicationMenuItem Header="Save mask/overlay" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
 					<RibbonApplicationMenuItem Header="Calibrate display" Command="mapViewer:CustomCommands.CalibrateDisplay" ImageSource="Images/Monitor_measure.png" />
@@ -209,8 +209,6 @@
 		<Border Grid.Row="1" BorderThickness="0"  BorderBrush="White" Focusable="True" Loaded="Border_Loaded"
 					MouseDown="PrivateWinMouseDown" MouseMove="PrivateWinMouseMove" MouseUp="PrivateWinMouseUp" KeyDown="PrivateWinKeyDown" MouseWheel="PrivateWinMouseWheel" >
 			<Grid Name="DrawingSpace"  ClipToBounds="True" >
-
-
 				<Grid.ContextMenu>
 					<ContextMenu Name="PrivateContextMenu">
 						<MenuItem Command="mapViewer:CustomCommands.SpellCircular7m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
@@ -242,10 +240,5 @@
                 </UserControl>
 			</Grid>
 		</Border>
-
-
 	</Grid>
-
-
-
 </Window>

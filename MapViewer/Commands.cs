@@ -230,6 +230,7 @@ namespace MapViewer {
         }
 
         private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
+            Save_Execute(null, null);
             AddCurrentFilesToMru();
 			Log.Info("Exiting");
 			Application.Current.Shutdown();

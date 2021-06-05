@@ -348,10 +348,15 @@ namespace MapViewer {
 
         #region Public methods
 
-        public void InitSettings()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            Settings.Default.SettingsKey = Path.Combine(path, "Miakonn\\MapViewer\\user.config");
+        public void InitSettings() {
+            var  exefile = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var path = Path.GetDirectoryName(exefile);
+            if (string.IsNullOrWhiteSpace(path)) {
+                Log.Error("Unable to find folder for config file");
+                path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            }
+            Settings.Default.SettingsKey = Path.Combine(path, "user.config");
+            Log.Info("Uses settings file:" + Settings.Default.SettingsKey);
             Settings.Default.Upgrade();
         }
 
