@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
+using log4net;
 
 
 namespace MapViewer.Tools {
@@ -18,7 +19,9 @@ namespace MapViewer.Tools {
 
 		private Point _pnt1;
 
-		public MaskRectangle(PrivateWindow privateWindow, object button, bool mask) {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public MaskRectangle(PrivateWindow privateWindow, object button, bool mask) {
 			_mask = mask;
 			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
@@ -98,12 +101,21 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-			_map.MaskRectangle(GetElementRect(_rect), (byte)(_mask ? 255 : 0));
-			_canvas.Children.Remove(_rect);
-			_rect = null;
+            try {
+                _map.MaskRectangle(GetElementRect(_rect), (byte) (_mask ? 255 : 0));
+                _canvas.Children.Remove(_rect);
+            }
+            catch (Exception ex) {
+                Log.Error("EndDraw:" + ex.Message);
+            }
+            _rect = null;
 		}
 
 		private Int32Rect GetElementRect(FrameworkElement element) {
+            if (_map?.CanvasMap == null) {
+                Log.Error("_map.CanvasMap == null");
+                return new Int32Rect();
+            }
 			var buttonTransform = element.TransformToVisual(_map.CanvasMap);
 			var point = buttonTransform.Transform(new Point());
 			return new Int32Rect((int)point.X, (int)point.Y, (int)element.ActualWidth, (int)element.ActualHeight);

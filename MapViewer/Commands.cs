@@ -171,12 +171,14 @@ namespace MapViewer {
 				return;
 			}
 
+            ActiveTool = null;
             var filesToOpen = MruFileNames;
             AddCurrentFilesToMru();
             LoadFiles(filesToOpen);
         }
 
         private void LoadFiles(string[] fileNames) {
+            ActiveTool = null;
             Save_Execute(null, null);
             MapList.Clear();
             long groupId = DateTime.Now.Ticks;
@@ -208,8 +210,9 @@ namespace MapViewer {
         }
 
         private void SwitchToNewMap(int newLevel) {
+            ActiveTool = null;
             Level = newLevel;
-            
+
             var oldMap = MapPrivate;
             MapPrivate = MapList[Level];
 

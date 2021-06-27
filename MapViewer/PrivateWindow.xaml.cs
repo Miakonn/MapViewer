@@ -356,7 +356,7 @@ namespace MapViewer {
                 path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             }
             Settings.Default.SettingsKey = Path.Combine(path, "user.config");
-            Log.Info("Uses settings file:" + Settings.Default.SettingsKey);
+            Log.Debug("Uses settings file:" + Settings.Default.SettingsKey);
             Settings.Default.Upgrade();
         }
 
