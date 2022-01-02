@@ -346,6 +346,7 @@ namespace MapViewer {
 			PublicWindow.SetRuler();
             MapPublic.UpdatePlayerElementSizes();
 			PublicWindow.DrawCompass();
+            PublicWindow.MaximizeToCurrentMonitor();
 			PublicNeedsRescaling = false;
 
 			if (MapPublic.IsLinked) {
@@ -484,7 +485,7 @@ namespace MapViewer {
 
 		private void AddDisplay_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.Show();
-			PublicWindow.MaximizeToSelectedMonitor();
+			PublicWindow.PlaceOnSelectedMonitor();
 			PublishMap_Execute(sender, e);
 		}
 
