@@ -51,7 +51,8 @@ namespace MapViewer {
         private Point _mouseDownPoint;
         private Point _mouseDownPointFirst;
         private ICanvasTool _activeTool;
-
+        private bool writtenLogSetting = false;
+ 
         private double _characterDistanceMoved;
 
         public ICanvasTool ActiveTool {
@@ -356,7 +357,11 @@ namespace MapViewer {
                 path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             }
             Settings.Default.SettingsKey = Path.Combine(path, "user.config");
-            Log.Debug("Uses settings file:" + Settings.Default.SettingsKey);
+            if (!writtenLogSetting) {
+                Log.Debug("Uses settings file:" + Settings.Default.SettingsKey);
+                writtenLogSetting = true;
+            }
+
             Settings.Default.Upgrade();
         }
 
