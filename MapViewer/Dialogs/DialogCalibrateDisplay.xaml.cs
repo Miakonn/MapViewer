@@ -9,7 +9,7 @@ using MapViewer.Utilities;
 using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace MapViewer.Dialogs {
-	public partial class DialogCalibrateDisplay : INotifyPropertyChanged {
+    public partial class DialogCalibrateDisplay : INotifyPropertyChanged {
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -84,14 +84,10 @@ namespace MapViewer.Dialogs {
 
         private void ComboBoxDisplayNumber_Loaded(object sender, RoutedEventArgs e) {
             if (sender is ComboBox comboBox) {
-                var displayNo = Screen.AllScreens.Length;
-                var list = new List<string>();
-
-                for (int i = 1; i <= displayNo; i++) {
-                    list.Add($"Public is display {i}");
-                }
-                comboBox.ItemsSource = list;
-                comboBox.SelectedIndex = Settings.Default.DisplayPublicNumber - 1;
+                var listName = Screen.AllScreens.Select(s => s.DeviceName);
+ 
+                comboBox.ItemsSource = listName;
+                comboBox.SelectedItem = Settings.Default.DisplayPublicName;
             }
         }
 
@@ -102,7 +98,7 @@ namespace MapViewer.Dialogs {
                 return;
             }
 
-            Settings.Default.DisplayPublicNumber = comboBox.SelectedIndex + 1;
+            Settings.Default.DisplayPublicName = comboBox.SelectedItem as string;
             Settings.Default.Save();
         }
     }

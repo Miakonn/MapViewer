@@ -9,8 +9,8 @@ using System.Windows.Shapes;
 using MapViewer.Maps;
 using MapViewer.Properties;
 
-namespace MapViewer
-{
+namespace MapViewer {
+
     /// <summary>
     /// Interaction logic for SideWindow.xaml
     /// </summary>
@@ -41,10 +41,10 @@ namespace MapViewer
         }
 
         public double MonitorScaleMMperPixel {
-			get { 
-				if ((MonitorResolution.Width > 0) && (MonitorSize.Width > 0)) {
+            get {
+                if ((MonitorResolution.Width > 0) && (MonitorSize.Width > 0)) {
                     var scaleX = (MonitorSize.Width / MonitorResolution.Width);
-					if ((MonitorResolution.Height > 0) && (MonitorSize.Height > 0)) {
+                    if ((MonitorResolution.Height > 0) && (MonitorSize.Height > 0)) {
                         var scaleY = (MonitorSize.Height / MonitorResolution.Height);
                         return (scaleX + scaleY) / 2.0;
                     }
@@ -58,7 +58,8 @@ namespace MapViewer
 
         public PublicMaskedMap Map { get; }
 
-        public PublicWindow() {
+        public PublicWindow()
+        {
             InitializeComponent();
 
             Map = new PublicMaskedMap(this, DateTime.Now.Ticks);
@@ -73,7 +74,8 @@ namespace MapViewer
 
         }
 
-        public void PlaceOnSelectedMonitor(){
+        public void PlaceOnSelectedMonitor()
+        {
             var screen = SelectScreen();
             if (screen == null) {
                 return;
@@ -95,27 +97,35 @@ namespace MapViewer
             WindowState = WindowState.Maximized;
         }
 
-        public Screen SelectScreen() {
-            var displaySuffix = Settings.Default.DisplayPublicNumber.ToString();
-            var screen = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.EndsWith(displaySuffix));
-            Log.Info("Selecting: " + screen?.ToString());
+        public Screen SelectScreen()
+        {
+            var deviceName = Settings.Default.DisplayPublicName;
+            var screen = Screen.AllScreens.FirstOrDefault(s => s.DeviceName == deviceName);
+            if (screen == null) {
+                Log.Error("Unknown display: " + deviceName);
+            }
+            else {
+                Log.Info("Selecting display: " + screen);
+            }
             return screen;
         }
 
 
-        public void RotateClockwise() {
+        public void RotateClockwise()
+        {
             Map.RotateClockwise();
             _compassTransform.Angle = Map.TrfRotation.Angle;
         }
 
-	    public void DrawCompass() {
+        public void DrawCompass()
+        {
             var image = new BitmapImage(new Uri("pack://application:,,,/Images/Compass_rose.png"));
 
             _compassTransform.Angle = Map.TrfRotation.Angle;
             _compassTransform.CenterX = image.Width / 2;
             _compassTransform.CenterY = image.Height / 2;
 
-			var compass = new Image {
+            var compass = new Image {
                 RenderTransform = _compassTransform,
                 Opacity = 1.0,
                 Source = image,
@@ -128,21 +138,22 @@ namespace MapViewer
         }
 
         #region Ruler
-		private static double CalcStep(double length, out int count) {
+        private static double CalcStep(double length, out int count)
+        {
             Log.Debug("CalcStep length=" + length);
 
             var factor = Math.Pow(10, Math.Floor(Math.Log10(length)) - 1);
             length /= factor;
 
-		    if (length <= 10) {
+            if (length <= 10) {
                 count = (int)length;
                 return factor;
             }
-			if (length <= 20) {
+            if (length <= 20) {
                 count = 10;
                 return factor;
             }
-			if (length <= 50) {
+            if (length <= 50) {
                 count = 20;
                 return factor;
             }
@@ -153,9 +164,10 @@ namespace MapViewer
 
         private const double RulerMarginX = 20;
 
-	    private void WriteRulerText(double length, double yPos, bool topJustify ) {
+        private void WriteRulerText(double length, double yPos, bool topJustify)
+        {
 
-			var text = new TextBlock {
+            var text = new TextBlock {
                 RenderTransform = new RotateTransform(-90),
                 Text = $"{length} {Map.Unit}",
                 FontSize = 25,
@@ -163,7 +175,7 @@ namespace MapViewer
                 FontWeight = FontWeights.UltraBold
             };
 
-		    if (topJustify) {
+            if (topJustify) {
                 yPos += 10 * text.Text.Length;
             }
 
@@ -172,9 +184,10 @@ namespace MapViewer
             _canvasRuler.Children.Add(text);
         }
 
-	    private void DrawRuler(int count, double step, double y0) {
-			for (var i = 0; i < count; i++) {
-				var shape = new Line {
+        private void DrawRuler(int count, double step, double y0)
+        {
+            for (var i = 0; i < count; i++) {
+                var shape = new Line {
                     X1 = RulerMarginX,
                     Y1 = y0 + step * i,
                     X2 = RulerMarginX,
@@ -189,14 +202,15 @@ namespace MapViewer
             }
         }
 
-		public void SetRuler() {
+        public void SetRuler()
+        {
             Log.Debug($"SetRuler ImageScaleMperPix={Map.ImageScaleMperPix} Scale={Map.Scale}");
 
             var screenScaleMperPix = Map.ImageScaleMperPix / Map.Scale;
 
             _canvasRuler.Children.Clear();
 
-			if (screenScaleMperPix < 0.0001  || screenScaleMperPix > 1E6) {
+            if (screenScaleMperPix < 0.0001 || screenScaleMperPix > 1E6) {
                 Log.Error("Screen scale out of bounds!");
                 return;
             }
@@ -215,7 +229,8 @@ namespace MapViewer
 
         #endregion
 
-		private void PublicWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+        private void PublicWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
             e.Cancel = true;
             Visibility = Visibility.Hidden;
         }
