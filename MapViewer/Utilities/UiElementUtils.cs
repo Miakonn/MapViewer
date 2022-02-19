@@ -27,9 +27,6 @@ namespace MapViewer.Utilities {
 
         public static void SetColor(this UIElement elem, Brush brush) {
             switch (elem) {
-                case Ellipse ellipse when !string.IsNullOrWhiteSpace(ellipse.ExtractTextFromUid()):
-                    ellipse.Fill = CreateTextBrush(ellipse.ExtractTextFromUid(), ellipse.Width, brush);
-                    break;
                 case Ellipse ellipse:
                     ellipse.Fill = brush;
                     break;
