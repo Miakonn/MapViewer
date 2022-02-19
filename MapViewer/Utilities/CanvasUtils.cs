@@ -5,7 +5,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Windows.Shapes;
 
+// ReSharper disable once CheckNamespace
 namespace MapViewer {
     public static class CanvasUtils {
         public static void SerializeXaml(this Canvas canvas, string filename ) {
@@ -78,8 +80,16 @@ namespace MapViewer {
             return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.Uid == uid);
         }
 
-        public static IEnumerable<UIElement> FindElementsByUidPrefix(this Canvas canvas, string uid) {
-            return canvas.Children.Cast<UIElement>().Where(child => child.Uid.StartsWith(uid));
+        public static IEnumerable<Ellipse> FindPlayerElements(this Canvas canvas) {
+            return canvas.Children.Cast<UIElement>().Where(child => child.IsPlayer()).Cast<Ellipse>();
+        }
+
+        public static bool IsPlayer(this UIElement elem) {
+            return elem.Uid.StartsWith("Player") && elem is Ellipse;
+        }
+
+        public static TextBlock GetPlayerNameElement(this Canvas canvas, UIElement elem) {
+            return canvas.FindElementByUid(elem.Uid + ".name") as TextBlock;
         }
     }
 }

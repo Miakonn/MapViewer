@@ -40,6 +40,7 @@ namespace MapViewer.Maps {
                 UpdatePublicViewRectangle();
 
                 Deserialize();
+                UpdatePlayerElementSizes();
                 CreatePalette();
 
                 if (MapData.LastFigureScaleUsed != 0) {

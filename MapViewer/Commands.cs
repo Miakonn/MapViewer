@@ -391,7 +391,7 @@ namespace MapViewer {
 			if (PublicWindow.IsVisible) {
 				var elemPublic = MapPublic.CanvasOverlay.FindElementByUid(uid);
 				if (elemPublic != null) {
-					MapPublic.CanvasOverlay.Children.Remove(elemPublic);
+					MapPublic.RemoveElement(elemPublic);
 				}
 			}
 		}

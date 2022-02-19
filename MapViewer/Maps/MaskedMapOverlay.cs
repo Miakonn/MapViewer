@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using MapViewer.Utilities;
 
 namespace MapViewer.Maps {
 	public partial class MaskedMap {
@@ -35,7 +34,19 @@ namespace MapViewer.Maps {
 		public void MoveElement(UIElement elem, Vector move) {
 			Canvas.SetLeft(elem, Canvas.GetLeft(elem) - move.X);
 			Canvas.SetTop(elem, Canvas.GetTop(elem) - move.Y);
-		}
+
+            if (!elem.IsPlayer()) {
+                return;
+            }
+
+            TextBlock elemName = CanvasOverlay.GetPlayerNameElement(elem);
+            if (elemName != null && elem is Ellipse elemPlayer) {
+                var centerX = Canvas.GetLeft(elem) + elemPlayer.Width / 2;
+                var centerY = Canvas.GetTop(elem) + elemPlayer.Height / 2;
+                Canvas.SetLeft(elemName, centerX - elemName.ActualWidth / 2);
+                Canvas.SetTop(elemName, centerY - elemName.ActualHeight / 2);
+            }
+        }
 
 		public void MoveElement(string uid, Vector move) {
 			var elem = CanvasOverlay.FindElementByUid(uid);
@@ -46,11 +57,15 @@ namespace MapViewer.Maps {
 
         public void SendElementToBack(string uid) {
             var elem = CanvasOverlay.FindElementByUid(uid);
-            if (elem != null) {
-                CanvasOverlay.Children.Remove(elem);
-                CanvasOverlay.Children.Insert(0, elem);
+            if (elem == null) {
+                return;
             }
-        }
+            if (elem.IsPlayer()) {
+                SendElementToBack(uid + ".name");
+            }
+            CanvasOverlay.Children.Remove(elem);
+            CanvasOverlay.Children.Insert(0, elem);
+         }
         
         public UIElement FindElement(string uid) {
             return CanvasOverlay.FindElementByUid(uid);
@@ -90,11 +105,30 @@ namespace MapViewer.Maps {
                 Opacity = 1.0
             };
 
-            shape.Fill = UiElementUtils.CreateTextBrush(text, size, brush);
             Canvas.SetLeft(shape, pos.X - size / 2.0);
             Canvas.SetTop(shape, pos.Y - size / 2.0);
             string uid = "Player" + "_" + text;
             AddOverlayElement(shape, uid);
+
+            double fontSize;
+            if (PlayerSizeMeter != 0) {
+                fontSize = 20 / Scale;
+            }
+            else {
+                fontSize = PlayerSizePixel / Scale;
+            }
+ 
+            var textBlock = new TextBlock {
+                Text = text,
+                FontSize = fontSize,
+                Foreground = new SolidColorBrush(Colors.Black),
+                FontWeight = FontWeights.Normal,
+                IsHitTestVisible = false
+            };
+            Canvas.SetLeft(textBlock, pos.X - textBlock.ActualWidth / 2.0);
+            Canvas.SetTop(textBlock, pos.Y - textBlock.ActualHeight / 2.0);
+            AddOverlayElement(textBlock, uid + ".name");
+            MoveElement(shape, new Vector());
         }
 
         public void CreateOverlayPlayerNew(Point pos, Color color, string text)
@@ -209,8 +243,12 @@ namespace MapViewer.Maps {
 		}
 
         public void RemoveElement(UIElement elem) {
-            if (elem != null) {
-                CanvasOverlay.Children.Remove(elem);
+            if (elem == null) {
+                return;
+            }
+            CanvasOverlay.Children.Remove(elem);
+            if (elem.IsPlayer()) {
+                RemoveElement(CanvasOverlay.GetPlayerNameElement(elem));
             }
         }
 
@@ -232,28 +270,44 @@ namespace MapViewer.Maps {
 		}
 
         public void UpdatePlayerElementSizes() {
-            var shapes = CanvasOverlay.FindElementsByUidPrefix("Player");
             if (Scale == 0) {
                 return;
             }
-            foreach (var element in shapes) {
-                if (element is Ellipse ellipse) {
-                    var oldSize = ellipse.Width;
-                    double newSize = ellipse.Width;
+            var elemPlayers = CanvasOverlay.FindPlayerElements();
+            
+            foreach (var ellipse in elemPlayers) {
+                TextBlock textBlock = CanvasOverlay.GetPlayerNameElement(ellipse);
+                if (textBlock != null) {
+                    // Resize name
+                    var oldFontSize = textBlock.FontSize;
+                    double newFontSize = textBlock.FontSize;
+
                     if (PlayerSizeMeter != 0) {
-                        newSize = PlayerSizeMeter / ImageScaleMperPix;
+                        newFontSize = 20 / Scale;
                     }
-                    else if (ellipse.Width * Scale < PlayerSizePixel || ellipse.Width * Scale > PlayerSizePixel) {
-                        newSize = PlayerSizePixel / Scale;
+                    else if (textBlock.FontSize * Scale < PlayerSizePixel || textBlock.FontSize * Scale > PlayerSizePixel) {
+                        newFontSize = PlayerSizePixel / Scale;
                     }
 
-                    if (Math.Abs(newSize - oldSize) > 1.0E-9) {
-
-                        ellipse.Width = newSize;
-                        ellipse.Height = newSize;
-                        MoveElement(ellipse, new Vector((newSize - oldSize) / 2, (newSize - oldSize) / 2));
+                    if (Math.Abs(newFontSize - oldFontSize) > 1.0E-9) {
+                        textBlock.FontSize = newFontSize;
                     }
                 }
+
+                double oldSize = ellipse.Width;
+                double newSize = ellipse.Width;
+                if (PlayerSizeMeter != 0) {
+                    newSize = PlayerSizeMeter / ImageScaleMperPix;
+                }
+                else if (ellipse.Width * Scale < PlayerSizePixel || ellipse.Width * Scale > PlayerSizePixel) {
+                    newSize = PlayerSizePixel / Scale;
+                }
+
+                if (Math.Abs(newSize - oldSize) > 1.0E-9) {
+                    ellipse.Width = newSize;
+                    ellipse.Height = newSize;
+                }
+                MoveElement(ellipse, new Vector((newSize - oldSize) / 2, (newSize - oldSize) / 2));
             }
         }
 
