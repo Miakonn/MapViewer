@@ -112,10 +112,10 @@ namespace MapViewer.Maps {
 
             double fontSize;
             if (PlayerSizeMeter != 0) {
-                fontSize = 20 / Scale;
+                fontSize = 18 / Scale;
             }
             else {
-                fontSize = PlayerSizePixel / Scale;
+                fontSize = 0.8 * PlayerSizePixel / Scale;
             }
  
             var textBlock = new TextBlock {

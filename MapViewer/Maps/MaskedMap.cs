@@ -407,6 +407,28 @@ namespace MapViewer.Maps {
             return Colors.Black;
         }
 
+        public static bool GetPixelIsBlack(BitmapSource bitmap, int x, int y)
+        {
+            if (x < 0 || x >= bitmap.PixelWidth || y < 0 || y >= bitmap.PixelHeight) {
+                return true;
+            }
+
+            const int side = 1;
+            var bytesPerPixel = (bitmap.Format.BitsPerPixel + 7) / 8;
+            var stride = side * bytesPerPixel;
+            var bytes = new byte[side * side * bytesPerPixel];
+            var rect = new Int32Rect(x, y, side, side);
+
+            bitmap.CopyPixels(rect, bytes, stride, 0);
+
+            if (bitmap.Format == PixelFormats.Pbgra32 || bitmap.Format == PixelFormats.Bgr32) {
+                return (bytes[2] + bytes[1] + bytes[0]) < 192;
+            }
+            // handle other required formats
+            return true;
+        }
+
+
         const int DotRadius = 2;
         const int DotSize = DotRadius * 2 + 1;
 
@@ -430,11 +452,13 @@ namespace MapViewer.Maps {
 
             var colorData = CreateColorData(DotSize * DotSize, colorIndex);
             for (var angle = 0.0; angle <= 2 * Math.PI; angle += 0.005) {
+                var cosAngle = Math.Cos(angle);
+                var sinAngle = Math.Sin(angle);
+
                 for (var rad = 0.0; rad <= radius; rad += 4.0) {
-                    var pntX = (int)(centerX + Math.Cos(angle) * rad);
-                    var pntY = (int)(centerY + Math.Sin(angle) * rad);
-                    var col = GetPixelColor(MapImage, pntX, pntY);
-                    if ((col.R + col.G + col.B) < 128) {
+                    var pntX = (int)(centerX + cosAngle * rad);
+                    var pntY = (int)(centerY + sinAngle * rad);
+                    if (GetPixelIsBlack(MapImage, pntX, pntY)) {
                         break;
                     }
                     WritePixel(bitmap, pntX, pntY, colorData);
@@ -463,6 +487,10 @@ namespace MapViewer.Maps {
             if (shape != null) {
                 CanvasOverlay.Children.Remove(shape);
             }
+            CanvasOverlay.Loaded += delegate
+            {
+                 Zoom(1.0,new Point());
+            };
         }
 
         protected static string CreateFilename(string original, string extension) {
@@ -491,9 +519,6 @@ namespace MapViewer.Maps {
             Symbols[symbol.Uid] = symbol;
             Symbols_Updated?.Invoke(this, null);
         }
-
-
-
 
     }
 }
