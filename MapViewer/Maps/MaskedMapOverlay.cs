@@ -39,21 +39,30 @@ namespace MapViewer.Maps {
                 return;
             }
 
-            TextBlock elemName = CanvasOverlay.GetPlayerNameElement(elem);
-            if (elemName != null && elem is Ellipse elemPlayer) {
-                var centerX = Canvas.GetLeft(elem) + elemPlayer.Width / 2;
-                var centerY = Canvas.GetTop(elem) + elemPlayer.Height / 2;
-                Canvas.SetLeft(elemName, centerX - elemName.ActualWidth / 2);
-                Canvas.SetTop(elemName, centerY - elemName.ActualHeight / 2);
+            var elemName = CanvasOverlay.GetPlayerNameElement(elem);
+            CenterPlayerName(elem, elemName);
+        }
+
+        public void MoveElement(string uid, Vector move) {
+            var elem = CanvasOverlay.FindElementByUid(uid);
+            if (elem != null) {
+                MoveElement(elem, move);
             }
         }
 
-		public void MoveElement(string uid, Vector move) {
-			var elem = CanvasOverlay.FindElementByUid(uid);
-			if (elem != null) {
-				MoveElement(elem, move);
-			}
-		}
+        public void CenterPlayerName(UIElement elemPlayer, UIElement elemName) {
+            if (elemName is TextBlock textName && elemPlayer is Ellipse ellipsePlayer) {
+                var centerX = Canvas.GetLeft(ellipsePlayer) + ellipsePlayer.Width / 2;
+                var centerY = Canvas.GetTop(ellipsePlayer) + ellipsePlayer.Height / 2;
+                Canvas.SetLeft(textName, centerX - textName.ActualWidth / 2);
+                Canvas.SetTop(textName, centerY - textName.ActualHeight / 2);
+            }
+        }
+
+        public void CenterPlayerName(UIElement elemText) {
+            var elemPlayer = CanvasOverlay.GetPlayerParentElement(elemText);
+            CenterPlayerName(elemPlayer, elemText);
+        }
 
         public void SendElementToBack(string uid) {
             var elem = CanvasOverlay.FindElementByUid(uid);
@@ -109,6 +118,7 @@ namespace MapViewer.Maps {
             Canvas.SetTop(shape, pos.Y - size / 2.0);
             string uid = "Player" + "_" + text;
             AddOverlayElement(shape, uid);
+            uid = shape.Uid;
 
             double fontSize;
             if (PlayerSizeMeter != 0) {
@@ -128,7 +138,14 @@ namespace MapViewer.Maps {
             Canvas.SetLeft(textBlock, pos.X - textBlock.ActualWidth / 2.0);
             Canvas.SetTop(textBlock, pos.Y - textBlock.ActualHeight / 2.0);
             AddOverlayElement(textBlock, uid + ".name");
-            MoveElement(shape, new Vector());
+
+            textBlock.SizeChanged += TextBlockOnSizeChanged;
+        }
+
+        private void TextBlockOnSizeChanged(object sender, SizeChangedEventArgs e) {
+            if (sender is TextBlock shape) {
+                CenterPlayerName(shape);
+            }
         }
 
         public void CreateOverlayPlayerNew(Point pos, Color color, string text)

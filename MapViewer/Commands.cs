@@ -628,7 +628,7 @@ namespace MapViewer {
 			}
 		}
 
-        private void CreatePlayer(Color color) {
+        private void CreatePlayer(Color color, Point pos) {
             ActiveTool = null;
             var dialog = new DialogGetSingleValue {
                 LeadText = "Text",
@@ -655,18 +655,19 @@ namespace MapViewer {
             catch { // ignored
             }
 
-            MapPrivate.CreateOverlayPlayer(_mouseDownPoint, color, text);
+            MapPrivate.CreateOverlayPlayer(pos, color, text);
+
             if (PublicWindow.IsVisible && MapPublic.MapId == MapPrivate.MapId) {
-                MapPublic.CreateOverlayPlayer(_mouseDownPoint, color, text);
+                MapPublic.CreateOverlayPlayer(pos, color, text);
             }
         }
 
         private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
-           CreatePlayer(Colors.LightBlue);
-       }
+           CreatePlayer(Colors.LightBlue, _mouseDownPoint);
+        }
 
         private void NonPlayer_Execute(object sender, ExecutedRoutedEventArgs e) {
-            CreatePlayer(Colors.Orange);
+            CreatePlayer(Colors.Orange, _mouseDownPoint);
         }
 
         private void ShowPublicCursorTemporary_Execute(object sender, ExecutedRoutedEventArgs e) {

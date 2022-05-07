@@ -91,5 +91,11 @@ namespace MapViewer {
         public static TextBlock GetPlayerNameElement(this Canvas canvas, UIElement elem) {
             return canvas.FindElementByUid(elem.Uid + ".name") as TextBlock;
         }
+
+        public static UIElement GetPlayerParentElement(this Canvas canvas, UIElement elemText)
+        {
+            var playerUid = elemText.Uid.Replace(".name", "");
+            return canvas.FindElementByUid(playerUid);
+        }
     }
 }
