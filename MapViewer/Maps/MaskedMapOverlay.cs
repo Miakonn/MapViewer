@@ -70,7 +70,9 @@ namespace MapViewer.Maps {
                 return;
             }
             if (elem.IsPlayer()) {
-                SendElementToBack(uid + ".name");
+                var elemName = CanvasOverlay.GetPlayerNameElement(elem);
+                CanvasOverlay.Children.Remove(elemName);
+                CanvasOverlay.Children.Insert(0, elemName);
             }
             CanvasOverlay.Children.Remove(elem);
             CanvasOverlay.Children.Insert(0, elem);
@@ -253,10 +255,7 @@ namespace MapViewer.Maps {
 
 
 		public void RemoveElement(string uid) {
-			var shape = CanvasOverlay.FindElementByUid(uid);
-			if (shape != null) {
-				CanvasOverlay.Children.Remove(shape);
-			}
+            RemoveElement(CanvasOverlay.FindElementByUid(uid));
 		}
 
         public void RemoveElement(UIElement elem) {
@@ -267,6 +266,10 @@ namespace MapViewer.Maps {
             if (elem.IsPlayer()) {
                 RemoveElement(CanvasOverlay.GetPlayerNameElement(elem));
             }
+        }
+
+        public UIElement GetPlayerNamElement(UIElement elem) {
+            return CanvasOverlay.GetPlayerNameElement(elem);
         }
 
         public void UpdateVisibleRectangle(Rect rect) {

@@ -435,8 +435,15 @@ namespace MapViewer {
             }
             var uid = _lastClickedElem.Uid;
             var elem = MapPrivate.FindElement(uid);
-            MapPrivate.RemoveElement(uid);
+
+            var elemText = elem.IsPlayer() ? MapPrivate.GetPlayerNamElement(elem) : null;
+            
+            MapPrivate.RemoveElement(elem);
             mapNew.AddOverlayElement(elem, uid);
+            if (elemText != null) {
+                mapNew.AddOverlayElement(elemText, elemText.Uid);
+            }
+
             if (PublicWindow.IsVisible) {
                 if (MapPublic.MapId == MapPrivate.MapId) {
                     MapPublic.RemoveElement(uid);
