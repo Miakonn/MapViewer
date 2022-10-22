@@ -14,7 +14,7 @@ namespace MapViewer.Maps {
     public partial class MaskedMap {
         #region Properties
 
-        public static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        public static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public BitmapImage MapImage;
 
@@ -105,7 +105,10 @@ namespace MapViewer.Maps {
 
         public float ImageScaleMperPix {
             get => MapData.ImageScaleMperPix;
-            set => MapData.ImageScaleMperPix = value;
+            set {
+                MapData.ImageScaleMperPix = value;
+                ImageScaleChanged?.Invoke(this, null);
+            }
         }
 
         public string Unit {
@@ -132,6 +135,8 @@ namespace MapViewer.Maps {
         public Dictionary<string, ISymbol> Symbols = new Dictionary<string, ISymbol>();
 
         public event EventHandler Symbols_Updated;
+
+        public event EventHandler ImageScaleChanged;
 
         #endregion
 

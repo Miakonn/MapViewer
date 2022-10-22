@@ -195,7 +195,9 @@ namespace MapViewer {
             LayerMask.Content = MapPrivate.CanvasMask;
             LayerOverlay.Content = MapPrivate.CanvasOverlay;
 
+            MapPrivate.ImageScaleChanged += HandleImageScaleChanged;
             MapPrivate.ScaleToWindow(LayerMap);
+            HandleImageScaleChanged(null, null);
 
             PublicNeedsRescaling = true;
             MapPrivate.Create();
@@ -427,8 +429,7 @@ namespace MapViewer {
                 MapPublic.SendElementToBack(uid);
             }
         }
-
-
+        
         private void MoveElementUpDown(MaskedMap mapNew) {
             if (mapNew == null) {
                 return;
@@ -454,8 +455,7 @@ namespace MapViewer {
                 }
             }
         }
-
-
+        
         private void MoveElementUp_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
             if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {

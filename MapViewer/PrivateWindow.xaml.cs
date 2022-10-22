@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -19,7 +20,7 @@ using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace MapViewer {
-    public partial class PrivateWindow {
+    public partial class PrivateWindow :INotifyPropertyChanged {
 
         private enum CursorAction {
             None, MovingPublicMapPos, MovingPrivateMap, MovingElement
@@ -28,7 +29,7 @@ namespace MapViewer {
 
         #region Attributes
 
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public PrivateMaskedMap MapPrivate;
         public List<PrivateMaskedMap> MapList = new List<PrivateMaskedMap>();
@@ -51,8 +52,9 @@ namespace MapViewer {
         private Point _mouseDownPoint;
         private Point _mouseDownPointFirst;
         private ICanvasTool _activeTool;
-        private bool writtenLogSetting = false;
- 
+        private bool writtenLogSetting;
+        public bool IsImageCalibrated => MapPrivate?.IsCalibrated ?? false;
+
         private double _characterDistanceMoved;
 
         public ICanvasTool ActiveTool {
@@ -81,7 +83,7 @@ namespace MapViewer {
 
             Title = $"Miakonn's MapViewer {FileVersion} - Private map";
 
-            Log.Info("STARTING MapViewer ******************************************");
+            Log.Info($"STARTING MapViewer {FileVersion} ******************************************");
 
             MapPublic = PublicWindow.Map;
             MapPublic.ScreenScaleMMperM = 20.0;
@@ -92,8 +94,14 @@ namespace MapViewer {
             PrivateContextMenu.Opened += ContextMenu_OnOpened;
 
             InitTimer();
+
+            ComboBoxPublicScale.DataContext = this;
         }
 
+        private void HandleImageScaleChanged(object sender, EventArgs e) {
+            OnPropertyChanged(nameof(IsImageCalibrated));
+        }
+        
         public void SetScale(int scale)
         {
             if (scale == 0) {
@@ -282,6 +290,9 @@ namespace MapViewer {
                     MapPublic.IsLinked = false;
                 }
             }
+            else {
+                ComboBoxPublicScale.Text = "Linked";
+            }
         }
 
         private void ComboBoxPlayerSize_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -435,5 +446,11 @@ namespace MapViewer {
         }
 
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

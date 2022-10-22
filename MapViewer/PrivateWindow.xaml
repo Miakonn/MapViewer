@@ -1,10 +1,14 @@
 ﻿<Window x:Class="MapViewer.PrivateWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mapViewer="clr-namespace:MapViewer"
+        xmlns:mapViewer="clr-namespace:MapViewer" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        mc:Ignorable="d"
         Title="Miakonn's MapViewer - Private map" Height="800" Width="1200" Closing="PrivateWindow_Closing"
 		WindowStyle="ThreeDBorderWindow" 
-		ResizeMode="CanResizeWithGrip">
+		ResizeMode="CanResizeWithGrip"
+        d:DataContext ="{d:DesignInstance {x:Type mapViewer:PrivateWindow}, IsDesignTimeCreatable=True}">
 
 
     <Window.Resources>
@@ -144,25 +148,27 @@
 					<RibbonToggleButton Label="Create text" Command="mapViewer:CustomCommands.DrawText" LargeImageSource="Images/draw_text.png" />
 				</RibbonGroup>
 
-				<RibbonGroup Name="Public" >
-					<ComboBox Name="ComboBoxPublicScale"  Height="20" Margin="2,5,2,5" SelectionChanged="ComboBoxPublicScale_OnSelectionChanged" >
-						<ComboBoxItem Uid="Scale_1" Content="1:1"/>
-						<ComboBoxItem Uid="Scale_2" Content="1:2"/>
-						<ComboBoxItem Uid="Scale_5" Content="1:5"/>
-						<ComboBoxItem Uid="Scale_10" Content="1:10"/>
-						<ComboBoxItem Uid="Scale_20" Content="1:20"/>
-						<ComboBoxItem Uid="Scale_50" Content="1:50" IsSelected="True"/>
-						<ComboBoxItem Uid="Scale_100" Content="1:100"/>
-						<ComboBoxItem Uid="Scale_200" Content="1:200"/>
-						<ComboBoxItem Uid="Scale_300" Content="1:300"/>
-						<ComboBoxItem Uid="Scale_500" Content="1:500"/>
-						<ComboBoxItem Uid="Scale_1000" Content="1:1000"/>
-						<ComboBoxItem Uid="Scale_2000" Content="1:2000"/>
-						<ComboBoxItem Uid="Scale_4000" Content="1:4000"/>
-						<ComboBoxItem Uid="Scale_8000" Content="1:8000"/>
-						<ComboBoxItem Uid="Scale_16000" Content="1:16000"/>
-						<ComboBoxItem Uid="Scale_32000" Content="1:32000"/>
-						<ComboBoxItem Uid="Scale_64000" Content="1:64000"/>
+                <RibbonGroup Name="Public" >
+					<ComboBox Name="ComboBoxPublicScale"  Height="20" Margin="2,5,2,5" 
+                              SelectionChanged="ComboBoxPublicScale_OnSelectionChanged">
+
+                        <ComboBoxItem Uid="Scale_1" Content="1:1" IsEnabled="{Binding Path=IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_2" Content="1:2" IsEnabled="{Binding Path=IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_5" Content="1:5" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_10" Content="1:10" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_20" Content="1:20" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_50" Content="1:50" IsSelected="True" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_100" Content="1:100" IsEnabled="{Binding IsImageCalibrated}"/>
+						<ComboBoxItem Uid="Scale_200" Content="1:200" IsEnabled="{Binding IsImageCalibrated}"/>
+						<ComboBoxItem Uid="Scale_300" Content="1:300" IsEnabled="{Binding IsImageCalibrated}"/>
+						<ComboBoxItem Uid="Scale_500" Content="1:500" IsEnabled="{Binding IsImageCalibrated}"/>
+						<ComboBoxItem Uid="Scale_1000" Content="1:1000" IsEnabled="{Binding IsImageCalibrated}"/>
+						<ComboBoxItem Uid="Scale_2000" Content="1:2000" IsEnabled="{Binding IsImageCalibrated}"/>
+						<ComboBoxItem Uid="Scale_4000" Content="1:4000" IsEnabled="{Binding IsImageCalibrated}"/>
+						<ComboBoxItem Uid="Scale_8000" Content="1:8000" IsEnabled="{Binding IsImageCalibrated}"/>
+						<ComboBoxItem Uid="Scale_16000" Content="1:16000" IsEnabled="{Binding IsImageCalibrated}"/>
+						<ComboBoxItem Uid="Scale_32000" Content="1:32000" IsEnabled="{Binding IsImageCalibrated}"/>
+						<ComboBoxItem Uid="Scale_64000" Content="1:64000" IsEnabled="{Binding IsImageCalibrated}"/>
 						<ComboBoxItem Uid="Scale_0" Content="Linked"/>
 					</ComboBox>
                     <ComboBox Name="ComboBoxPlayerSize"  Height="20" Margin="2,5,2,5" SelectionChanged="ComboBoxPlayerSize_OnSelectionChanged" >

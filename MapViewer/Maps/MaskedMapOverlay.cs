@@ -1,8 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using MapViewer.Annotations;
 
 namespace MapViewer.Maps {
 	public partial class MaskedMap {
@@ -71,8 +74,13 @@ namespace MapViewer.Maps {
             }
             if (elem.IsPlayer()) {
                 var elemName = CanvasOverlay.GetPlayerNameElement(elem);
-                CanvasOverlay.Children.Remove(elemName);
-                CanvasOverlay.Children.Insert(0, elemName);
+                if (elemName != null) {
+                    CanvasOverlay.Children.Remove(elemName);
+                    CanvasOverlay.Children.Insert(0, elemName);
+                }
+                else {
+                    Log.Warn($"Missing player name for  {elem.Uid}! Old format?");
+                }
             }
             CanvasOverlay.Children.Remove(elem);
             CanvasOverlay.Children.Insert(0, elem);
@@ -152,7 +160,6 @@ namespace MapViewer.Maps {
 
         public void CreateOverlayPlayerNew(Point pos, Color color, string text)
         {
-            var brush = new SolidColorBrush(color);
             double size;
             if (PlayerSizeMeter != 0) {
                 size = PlayerSizeMeter / ImageScaleMperPix;
@@ -172,8 +179,7 @@ namespace MapViewer.Maps {
 
             AddSymbol(symbol);
         }
-
-
+        
         public void OverlayRing(Point pos, double radius, Color color, string uid) {
 			var shape = new Ellipse {
 				Width = 2 * radius,
@@ -251,9 +257,7 @@ namespace MapViewer.Maps {
 			Canvas.SetTop(shape, y1);
 			AddOverlayElement(shape, uid);
 		}
-
-
-
+        
 		public void RemoveElement(string uid) {
             RemoveElement(CanvasOverlay.FindElementByUid(uid));
 		}
@@ -332,7 +336,6 @@ namespace MapViewer.Maps {
         }
 
         #endregion
-
 
     }
 }
