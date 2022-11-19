@@ -376,7 +376,7 @@ namespace MapViewer {
                 return;
             }
             MapPrivate.ClearOverlay();
-            MapPrivate.SymbolsPM.RemoveAllSymbols();
+            MapPrivate.SymbolsPM.DeleteAllSymbols();
             if (!MapPublic.IsLinked) {
                 MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
             }
@@ -437,7 +437,7 @@ namespace MapViewer {
             if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
                 return;
             }
-            MapPrivate.SymbolsPM.MoveElementUpDown(_lastClickedElem.Uid, MapAbove.SymbolsPM);
+            MapPrivate.SymbolsPM.MoveSymbolUpDown(_lastClickedElem.Uid, MapAbove.SymbolsPM);
         }
 
         private void MoveElementDown_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -445,7 +445,7 @@ namespace MapViewer {
             if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
                 return;
             }
-            MapPrivate.SymbolsPM.MoveElementUpDown(_lastClickedElem.Uid, MapBelow.SymbolsPM);
+            MapPrivate.SymbolsPM.MoveSymbolUpDown(_lastClickedElem.Uid, MapBelow.SymbolsPM);
         }
 
         private void FullMask_Execute(object sender, ExecutedRoutedEventArgs e) {

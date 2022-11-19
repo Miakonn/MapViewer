@@ -103,10 +103,10 @@ namespace MapViewer.Tools {
 				return;
 			}
 			var angle = Math.Atan2(_line.Y2 - _line.Y1, _line.X2 - _line.X1) * (180 / Math.PI);
-
-            var start = new Point(_line.X1, _line.Y1);
-
-            _map.SymbolsPM.CreateSymbolText(start, angle, Colors.Blue, dialog.TextValue);
+            var center = new Point((_line.X1 + _line.X2) / 2, (_line.Y1 + _line.Y2) / 2);
+            var length = Math.Sqrt((_line.X1 - _line.X2) * (_line.X1 - _line.X2) +
+                                   (_line.Y1 - _line.Y2) * (_line.Y1 - _line.Y2)) * _map.ImageScaleMperPix;
+            _map.SymbolsPM.CreateSymbolText(center, angle, length , Colors.Blue, dialog.TextValue);
 
             _privateWindow.ActiveTool = null;
 		}

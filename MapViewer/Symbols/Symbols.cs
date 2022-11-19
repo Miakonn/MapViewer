@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,10 +19,6 @@ namespace MapViewer.Symbols {
         public double SizeMeter { get; set; }
 
         public abstract void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix);
-
-        public void Move(Vector move) {
-            StartPoint -= move;
-        }
     }
     
     [Serializable]
@@ -117,20 +112,32 @@ namespace MapViewer.Symbols {
     public class SymbolText : Symbol {
         public string Caption { get; set; }
         public double RotationAngle { get; set; }
+        public double LengthMeter { get; set; }
 
         public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
         {
-            var shape = new TextBlock {
+            var fontSize = 25 / Scale;
+            var textBlock = new TextBlock {
                 Uid = Uid,
-                RenderTransform = new RotateTransform(RotationAngle),
+                //RenderTransform = new RotateTransform(RotationAngle),
                 Text = Caption,
-                FontSize = 25,
+                FontSize = fontSize,
                 Foreground = new SolidColorBrush(FillColor),
                 FontWeight = FontWeights.UltraBold,
             };
-            Canvas.SetLeft(shape, StartPoint.X);
-            Canvas.SetTop(shape, StartPoint.Y);
-            canvas.Children.Add(shape);
+
+            var textSize = canvas.GetTextSize(textBlock);
+            double scaleLength = LengthMeter / ImageScaleMperPix / textSize.Width;
+
+            // Reset size and angle
+            textBlock.RenderTransform = new RotateTransform(RotationAngle);
+            textBlock.FontSize = fontSize * scaleLength;
+
+            textSize = canvas.GetTextSize(textBlock);
+
+            Canvas.SetLeft(textBlock, StartPoint.X - textSize.Width / 2);
+            Canvas.SetTop(textBlock, StartPoint.Y - textSize.Height / 2);
+            canvas.Children.Add(textBlock);
         }
     }
     

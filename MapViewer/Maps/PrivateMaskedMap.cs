@@ -1,24 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using MapViewer.Symbols;
 using Path = System.IO.Path;
 
 namespace MapViewer.Maps {
 
-
-
     public class PrivateMaskedMap: MaskedMap {
         private const string FolderName = "MapViewerFiles";
         
         public SymbolsPresentationModel SymbolsPM;
-
 
         public PrivateMaskedMap(Window parent, long groupId) : base(parent, groupId) {
             MaskOpacity = 0.3;
@@ -44,7 +37,7 @@ namespace MapViewer.Maps {
 
                 TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
             }
-            RaiseSymbolsChanged();
+            SymbolsPM.RaiseSymbolsChanged();
         }
 
 
@@ -122,7 +115,7 @@ namespace MapViewer.Maps {
             CanvasOverlay.Loaded += delegate {
                 Zoom(1.0, new Point());
             };
-            RaiseSymbolsChanged();
+            SymbolsPM.RaiseSymbolsChanged();
         }
 
         protected static string CreateFilename(string original, string extension)
@@ -150,20 +143,11 @@ namespace MapViewer.Maps {
 
         #region Symbols
 
-
-
-        public void RaiseSymbolsChanged()
-        {
-            SymbolsPM.RaiseSymbolsChanged();
-        }
-
         public void HandleSymbolsChanged(object sender, EventArgs e) {
-            var se = (SymbolEventArgs)e;
-            se.SymbolsPM.UpdateElements(CanvasOverlay, Scale, ImageScaleMperPix);
+            var se = sender as SymbolsPresentationModel;
+            se?.UpdateElements(CanvasOverlay, Scale, ImageScaleMperPix);
         }
-
-
-
+        
         #endregion
 
     }

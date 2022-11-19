@@ -157,7 +157,7 @@ namespace MapViewer {
                 if (_cursorAction == CursorAction.MovingElement) {
                     var move = new Vector((_mouseDownPoint.X - _mouseDownPointFirst.X), (_mouseDownPoint.Y - _mouseDownPointFirst.Y));
                     if (_lastClickedElem != null) {
-                        MapPrivate.SymbolsPM.MoveSymbol(_lastClickedElem.Uid, move);
+                        MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedElem.Uid, move);
                     }
                 }
                 HidePopup(0);
@@ -236,7 +236,7 @@ namespace MapViewer {
                 var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                 var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
                 if (_lastClickedElem != null) {
-                    MapPrivate.SymbolsPM.MoveSymbol(_lastClickedElem.Uid, move);
+                    MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedElem.Uid, move);
                     _mouseDownPoint = curMouseDownPoint;
                     string str = $"{DistanceFromStart(curMouseDownPoint),5:N1} Track: {DistanceTrack(move),5:N1}";
                     DisplayPopup(str);
@@ -340,7 +340,7 @@ namespace MapViewer {
                 }
                 MapPrivate.UpdatePlayerElementSizes();
                 MapPublic.UpdatePlayerElementSizes();
-                MapPrivate.RaiseSymbolsChanged();
+                MapPrivate.SymbolsPM.RaiseSymbolsChanged();
             }
         }
 
