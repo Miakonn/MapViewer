@@ -24,7 +24,7 @@ namespace MapViewer.Symbols {
     }
 
     [Serializable]
-    [XmlInclude(typeof(Symbol)), XmlInclude(typeof(CreatureSymbol))]
+    [XmlInclude(typeof(Symbol)), XmlInclude(typeof(SymbolCreature))]
     public class SymbolsPresentationModel {
         [XmlIgnore]
         private Dictionary<string, Symbol> Symbols { get; set; }
@@ -64,7 +64,7 @@ namespace MapViewer.Symbols {
 
         public void CreateSymbolCreature(Point pos, Color color, double sizeMeter, string text)
         {
-            var symbol = new CreatureSymbol {
+            var symbol = new SymbolCreature {
                 Uid = GetTimestamp(),
                 Color = color,
                 Caption = text,

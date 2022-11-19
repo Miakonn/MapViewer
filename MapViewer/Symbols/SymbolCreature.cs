@@ -8,21 +8,10 @@ using System.Xml.Serialization;
 
 namespace MapViewer.Symbols {
 
-    public interface ISymbol {
-        Point Position { get; set; }
-        string Uid { get; set; }
-        string Caption { get; set; }
-        Color Color { get; set; }
-        int Zorder { get; set; }
-        double SizeMeter { get; set; }
-
-        void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix);
-        void Move(Vector move);
-    }
 
     [Serializable]
-    [XmlInclude(typeof(Symbol)), XmlInclude(typeof(CreatureSymbol))]
-    public abstract class Symbol : ISymbol {
+    [XmlInclude(typeof(SymbolCreature))]
+    public abstract class Symbol {
         public Point Position { get; set; }
         public string Uid { get; set; }
         public string Caption { get; set; }
@@ -39,8 +28,8 @@ namespace MapViewer.Symbols {
 
 
     [Serializable]
-    [XmlInclude(typeof(Symbol)), XmlInclude(typeof(CreatureSymbol))]
-    public class CreatureSymbol : Symbol {
+    [XmlInclude(typeof(Symbol))]
+    public class SymbolCreature : Symbol {
 
         public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
         {
@@ -57,9 +46,11 @@ namespace MapViewer.Symbols {
             Canvas.SetLeft(shape, Position.X - shape.Width / 2);
             Canvas.SetTop(shape, Position.Y - shape.Height / 2);
 
-            Debug.WriteLine($"CreateElements {shape.Uid}  {shape.Width} ImageScaleMperPix={ImageScaleMperPix}  Scale={Scale} Size={SizeMeter}");
-            shape.Uid = Uid;
             canvas.Children.Add(shape);
+
+            if (string.IsNullOrWhiteSpace(Caption)) {
+                return;
+            }
 
             var fontSize = 20 / Scale;
 
@@ -76,6 +67,33 @@ namespace MapViewer.Symbols {
             Canvas.SetLeft(textBlock, Position.X - textSize.Width / 2.0);
             Canvas.SetTop(textBlock, Position.Y - textSize.Height / 2.0);
             canvas.Children.Add(textBlock);
+        }
+    }
+
+    [Serializable]
+    [XmlInclude(typeof(Symbol))]
+    public class SymbolCircle : Symbol {
+
+        public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
+        {
+            var brush = new SolidColorBrush(Color);
+
+            var shape = new Ellipse {
+                Uid = Uid,
+                Width = SizeMeter / ImageScaleMperPix,
+                Height = SizeMeter / ImageScaleMperPix,
+                Fill = brush,
+                Opacity = 1.0
+            };
+
+            Canvas.SetLeft(shape, Position.X - shape.Width / 2);
+            Canvas.SetTop(shape, Position.Y - shape.Height / 2);
+
+            canvas.Children.Add(shape);
+
+            if (string.IsNullOrWhiteSpace(Caption)) {
+                return;
+            }
         }
     }
 }
