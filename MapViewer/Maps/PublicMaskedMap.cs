@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -95,7 +96,7 @@ namespace MapViewer.Maps {
             }
         }
 
-        public void PublishFrom(MaskedMap mapSource, bool scaleNeedsToRecalculate) {
+        public void PublishFrom(PrivateMaskedMap mapSource, bool scaleNeedsToRecalculate) {
             Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
 
             Unit = mapSource.Unit;
@@ -134,6 +135,8 @@ namespace MapViewer.Maps {
             else if (scaleNeedsToRecalculate) {
                 ScaleToReal();
             }
+
+            mapSource.Symbols_Updated += MaskedMap_SymbolsUpdated;
         }
 
         public void MovePublicCursor(Point pnt, long privateMapId) {
@@ -156,5 +159,31 @@ namespace MapViewer.Maps {
                 RemoveElement(PublicCursorUid);
             }
         }
+
+        public void MoveElement(string uid, Vector move)
+        {
+            var elem = CanvasOverlay.FindElementByUid(uid);
+            if (elem != null) {
+                MoveElement(elem, move);
+            }
+        }
+
+
+
+        private void MaskedMap_SymbolsUpdated(object sender, EventArgs e)
+        {
+            var se = (SymbolEventArgs)e;
+            CanvasOverlay.RemoveAllSymbolsFromOverlay();
+
+            foreach (var symbol in se.Symbols.Values) {
+                symbol.CreateElements(CanvasOverlay, Scale, ImageScaleMperPix);
+            }
+
+
+
+
+            Debug.WriteLine("MaskedMap_Symbols_Updated!!");
+        }
+
     }
 }

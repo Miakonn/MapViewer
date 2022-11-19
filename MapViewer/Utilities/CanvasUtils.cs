@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -72,6 +73,14 @@ namespace MapViewer {
             }
         }
 
+        public static void RemoveAllSymbolsFromOverlay(this Canvas canvas) {
+            Debug.WriteLine("RemoveAllSymbolsFromOverlay!!");
+            var symbols = canvas.Children.Cast<UIElement>().Where(elem => elem.Uid.StartsWith("Symbol_")).ToList();
+            foreach (var elem in symbols) {
+                 canvas.Children.Remove(elem);
+            }
+        }
+
         public static UIElement FindElementHit(this Canvas canvas) {
             return canvas.Children.Cast<UIElement>().FirstOrDefault(child => child.IsMouseOver);
         }
@@ -97,5 +106,17 @@ namespace MapViewer {
             var playerUid = elemText.Uid.Replace(".name", "");
             return canvas.FindElementByUid(playerUid);
         }
+
+        public static Size GetTextSize(this Canvas canvas, TextBlock textBlock) {
+            textBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            return textBlock.DesiredSize;
+
+            //textBlock.Arrange(new Rect(textBlock.DesiredSize));
+
+            //Debug.WriteLine(textBlock.ActualWidth); // prints 80.323333333333
+            //Debug.WriteLine(textBlock.ActualHeight); // prints 15.96
+            //return new Size(textBlock.ActualWidth, textBlock.ActualHeight);
+        }
+
     }
 }

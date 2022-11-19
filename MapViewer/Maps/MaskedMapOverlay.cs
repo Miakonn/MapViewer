@@ -1,11 +1,13 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using MapViewer.Annotations;
+using Color = System.Windows.Media.Color;
+using Point = System.Windows.Point;
+using Rectangle = System.Windows.Shapes.Rectangle;
+using Size = System.Windows.Size;
 
 namespace MapViewer.Maps {
 	public partial class MaskedMap {
@@ -34,57 +36,6 @@ namespace MapViewer.Maps {
 			} while (true);
 		}
 
-		public void MoveElement(UIElement elem, Vector move) {
-			Canvas.SetLeft(elem, Canvas.GetLeft(elem) - move.X);
-			Canvas.SetTop(elem, Canvas.GetTop(elem) - move.Y);
-
-            if (!elem.IsPlayer()) {
-                return;
-            }
-
-            var elemName = CanvasOverlay.GetPlayerNameElement(elem);
-            CenterPlayerName(elem, elemName);
-        }
-
-        public void MoveElement(string uid, Vector move) {
-            var elem = CanvasOverlay.FindElementByUid(uid);
-            if (elem != null) {
-                MoveElement(elem, move);
-            }
-        }
-
-        public void CenterPlayerName(UIElement elemPlayer, UIElement elemName) {
-            if (elemName is TextBlock textName && elemPlayer is Ellipse ellipsePlayer) {
-                var centerX = Canvas.GetLeft(ellipsePlayer) + ellipsePlayer.Width / 2;
-                var centerY = Canvas.GetTop(ellipsePlayer) + ellipsePlayer.Height / 2;
-                Canvas.SetLeft(textName, centerX - textName.ActualWidth / 2);
-                Canvas.SetTop(textName, centerY - textName.ActualHeight / 2);
-            }
-        }
-
-        public void CenterPlayerName(UIElement elemText) {
-            var elemPlayer = CanvasOverlay.GetPlayerParentElement(elemText);
-            CenterPlayerName(elemPlayer, elemText);
-        }
-
-        public void SendElementToBack(string uid) {
-            var elem = CanvasOverlay.FindElementByUid(uid);
-            if (elem == null) {
-                return;
-            }
-            if (elem.IsPlayer()) {
-                var elemName = CanvasOverlay.GetPlayerNameElement(elem);
-                if (elemName != null) {
-                    CanvasOverlay.Children.Remove(elemName);
-                    CanvasOverlay.Children.Insert(0, elemName);
-                }
-                else {
-                    Log.Warn($"Missing player name for  {elem.Uid}! Old format?");
-                }
-            }
-            CanvasOverlay.Children.Remove(elem);
-            CanvasOverlay.Children.Insert(0, elem);
-         }
         
         public UIElement FindElement(string uid) {
             return CanvasOverlay.FindElementByUid(uid);
@@ -102,10 +53,34 @@ namespace MapViewer.Maps {
 				Opacity = 0.4
 			};
 
-			Canvas.SetLeft(shape, pos.X - radius);
+            Canvas.SetLeft(shape, pos.X - radius);
 			Canvas.SetTop(shape, pos.Y - radius);
 			AddOverlayElement(shape, uid);
 		}
+
+
+        public virtual void MoveElement(UIElement elem, Vector move)
+        {
+            Canvas.SetLeft(elem, Canvas.GetLeft(elem) - move.X);
+            Canvas.SetTop(elem, Canvas.GetTop(elem) - move.Y);
+
+            if (!elem.IsPlayer()) {
+                return;
+            }
+
+            var elemName = CanvasOverlay.GetPlayerNameElement(elem);
+            CenterPlayerName(elem, elemName);
+        }
+
+        public void CenterPlayerName(UIElement elemPlayer, UIElement elemName)
+        {
+            if (elemName is TextBlock textName && elemPlayer is Ellipse ellipsePlayer) {
+                var centerX = Canvas.GetLeft(ellipsePlayer) + ellipsePlayer.Width / 2;
+                var centerY = Canvas.GetTop(ellipsePlayer) + ellipsePlayer.Height / 2;
+                Canvas.SetLeft(textName, centerX - textName.ActualWidth / 2);
+                Canvas.SetTop(textName, centerY - textName.ActualHeight / 2);
+            }
+        }
 
         public void CreateOverlayPlayer(Point pos, Color color, string text) {
             var brush = new SolidColorBrush(color);
@@ -152,34 +127,40 @@ namespace MapViewer.Maps {
             textBlock.SizeChanged += TextBlockOnSizeChanged;
         }
 
-        private void TextBlockOnSizeChanged(object sender, SizeChangedEventArgs e) {
+        private void TextBlockOnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
             if (sender is TextBlock shape) {
                 CenterPlayerName(shape);
             }
         }
 
-        public void CreateOverlayPlayerNew(Point pos, Color color, string text)
+
+        public void SendElementToBack(string uid)
         {
-            double size;
-            if (PlayerSizeMeter != 0) {
-                size = PlayerSizeMeter / ImageScaleMperPix;
+            var elem = CanvasOverlay.FindElementByUid(uid);
+            if (elem == null) {
+                return;
             }
-            else {
-                size = PlayerSizePixel / Scale;
+            if (elem.IsPlayer()) {
+                var elemName = CanvasOverlay.GetPlayerNameElement(elem);
+                if (elemName != null) {
+                    CanvasOverlay.Children.Remove(elemName);
+                    CanvasOverlay.Children.Insert(0, elemName);
+                }
+                else {
+                    Log.Warn($"Missing player name for  {elem.Uid}! Old format?");
+                }
             }
-
-            var symbol = new PlayerSymbol {
-                Uid = "Player" + "_" + text,
-                Color = color,
-                Text = text,
-                Layer = 50,
-                Position = pos,
-                Size = size
-            };
-
-            AddSymbol(symbol);
+            CanvasOverlay.Children.Remove(elem);
+            CanvasOverlay.Children.Insert(0, elem);
         }
-        
+
+        public void CenterPlayerName(UIElement elemText)
+        {
+            var elemPlayer = CanvasOverlay.GetPlayerParentElement(elemText);
+            CenterPlayerName(elemPlayer, elemText);
+        }
+
         public void OverlayRing(Point pos, double radius, Color color, string uid) {
 			var shape = new Ellipse {
 				Width = 2 * radius,
@@ -333,9 +314,11 @@ namespace MapViewer.Maps {
                 }
                 MoveElement(ellipse, new Vector((newSize - oldSize) / 2, (newSize - oldSize) / 2));
             }
+            
         }
 
         #endregion
+
 
     }
 }

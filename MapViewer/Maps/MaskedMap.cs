@@ -50,8 +50,6 @@ namespace MapViewer.Maps {
 
         public const string PublicPositionUid = "PublicPos";
 
-        private const string FolderName = "MapViewerFiles";
-
         private readonly RotateTransform _trfRotation;
         public RotateTransform TrfRotation {
             get => _trfRotation;
@@ -132,9 +130,6 @@ namespace MapViewer.Maps {
 
         public double ScaleDpiFix => MapImage != null ? (MapImage.PixelHeight / MapImage.Height) : 1.0;
 
-        public Dictionary<string, ISymbol> Symbols = new Dictionary<string, ISymbol>();
-
-        public event EventHandler Symbols_Updated;
 
         public event EventHandler ImageScaleChanged;
 
@@ -161,7 +156,9 @@ namespace MapViewer.Maps {
             PlayerSizeMeter = 0;
             PlayerSizePixel = 20;
             IsLinked = false;
+
         }
+
 
         public void BitmapFromUri(Uri source) {
             MapImage = new BitmapImage();
@@ -278,23 +275,6 @@ namespace MapViewer.Maps {
             return Math.Min(element.RenderSize.Width / MapImage.Width, element.RenderSize.Height / MapImage.Height);
         }
 
-        public void Zoom(double scale, Point pos) {
-            var posCenterBefore = CenterInMap();
-            TrfScale.ScaleX *= scale;
-            TrfScale.ScaleY *= scale;
-
-            if (TrfScale.ScaleX < GetMinScale(CanvasMap)) {
-                ScaleToWindow(CanvasMap);
-                UpdatePlayerElementSizes();
-            }
-            else {
-                TrfTranslate = new TranslateTransform();
-                var offs = CenterInMap() - posCenterBefore;
-                UpdatePlayerElementSizes();
-
-                TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
-            }
-        }
 
         public void Translate(Vector move) {
             TrfTranslate.X += move.X;
@@ -476,53 +456,6 @@ namespace MapViewer.Maps {
                 var rect = new Int32Rect(0, 0, (int)MapImage.Width, (int)MapImage.Height);
                 MaskRectangle(rect, 0);
             }
-        }
-
-        public void Serialize() {
-            MapData.Serialize();
-            BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(ImageFilePath, ".mask.png"));
-            CanvasOverlay.SerializeXaml(CreateFilename(ImageFilePath, ".xaml"));
-        }
-
-        public void Deserialize() {
-            MapData.Deserialize();
-            BmpMask = BitmapUtils.Deserialize(CreateFilename(ImageFilePath, ".mask.png"));
-            CanvasOverlay.DeserializeXaml(CreateFilename(ImageFilePath, ".xaml"));
-            var shape = CanvasOverlay.FindElementByUid(PublicPositionUid);
-            if (shape != null) {
-                CanvasOverlay.Children.Remove(shape);
-            }
-            CanvasOverlay.Loaded += delegate
-            {
-                 Zoom(1.0,new Point());
-            };
-        }
-
-        protected static string CreateFilename(string original, string extension) {
-            var originalFolder = Path.GetDirectoryName(original);
-            var originalFilename = Path.GetFileName(original);
-
-            if (originalFolder != null) {
-                var folder = Path.Combine(originalFolder, FolderName);
-                if (!Directory.Exists(folder)) {
-                    try {
-                        Directory.CreateDirectory(folder);
-                    }
-                    catch (Exception ex) {
-                        MessageBox.Show(ex.Message);
-                        return "";
-                    }
-                }
-
-                return Path.Combine(folder, originalFilename + extension);
-            }
-            return "";
-        }
-      
-        
-        public void AddSymbol(ISymbol symbol) {
-            Symbols[symbol.Uid] = symbol;
-            Symbols_Updated?.Invoke(this, null);
         }
 
     }

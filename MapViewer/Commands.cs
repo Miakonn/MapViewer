@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.SymbolStore;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ namespace MapViewer {
 	public static class CustomCommands {
         public static readonly RoutedUICommand Player = new RoutedUICommand("Player", "Player", typeof(CustomCommands), null);
         public static readonly RoutedUICommand NonPlayer = new RoutedUICommand("NonPlayer", "NonPlayer", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand Monster = new RoutedUICommand("Monster", "Monster", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
@@ -375,6 +377,7 @@ namespace MapViewer {
                 return;
             }
             MapPrivate.ClearOverlay();
+            MapPrivate.CanvasOverlay.RemoveAllSymbolsFromOverlay();
             if (!MapPublic.IsLinked) {
                 MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
             }
@@ -411,10 +414,20 @@ namespace MapViewer {
 			}
 
 			var uid = _lastClickedElem.Uid;
-			_lastClickedElem.SetColor(dialog.SelectedColor);
+            if (uid.StartsWith("Symbol")) {
+                if (MapPrivate.Symbols.ContainsKey(uid)) {
+                    MapPrivate.Symbols[uid].Color = dialog.SelectedColor;
+                    MapPrivate.RaiseSymbolsChanged();
+                }
+                return;
+            }
+
+
+
+			_lastClickedElem.SetColor(dialog.SelectedBrush);
 			if (PublicWindow.IsVisible) {
 				var elemPublic = MapPublic.CanvasOverlay.FindElementByUid(uid);
-                elemPublic?.SetColor(dialog.SelectedColor);
+                elemPublic?.SetColor(dialog.SelectedBrush);
             }
 		}
 
@@ -669,12 +682,39 @@ namespace MapViewer {
             }
         }
 
+        private void CreateCreature(Color color, Point pos, int size)
+        {
+            ActiveTool = null;
+            var dialog = new DialogGetSingleValue {
+                LeadText = "Text",
+                Owner = this
+            };
+
+            var result = dialog.ShowDialog();
+            if (!result.HasValue || !result.Value) {
+                return;
+            }
+           
+           
+            MapPrivate.CreateOverlayCreature(pos, color, size, dialog.TextValue);
+
+            if (PublicWindow.IsVisible && MapPublic.MapId == MapPrivate.MapId) {
+                //MapPublic.CopyingCanvas();
+            }
+        }
+
+
         private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
            CreatePlayer(Colors.LightBlue, _mouseDownPoint);
         }
 
         private void NonPlayer_Execute(object sender, ExecutedRoutedEventArgs e) {
             CreatePlayer(Colors.Orange, _mouseDownPoint);
+        }
+
+        private void Monster_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+            CreateCreature(Colors.Orange, _mouseDownPoint, 3);
         }
 
         private void ShowPublicCursorTemporary_Execute(object sender, ExecutedRoutedEventArgs e) {

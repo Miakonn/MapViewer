@@ -339,6 +339,7 @@ namespace MapViewer {
                 }
                 MapPrivate.UpdatePlayerElementSizes();
                 MapPublic.UpdatePlayerElementSizes();
+                MapPrivate.RaiseSymbolsChanged();
             }
         }
 
