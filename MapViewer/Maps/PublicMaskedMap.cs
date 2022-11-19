@@ -118,7 +118,6 @@ namespace MapViewer.Maps {
                 if (newImageLoaded) {
                     MapImage = mapSource.MapImage.CloneCurrentValue();
                     BackgroundImage.Source = MapImage;
-                    mapSource.CanvasOverlay.CopyingCanvas(CanvasOverlay);
                     MapId = mapSource.MapId;
                 }
 
@@ -138,6 +137,7 @@ namespace MapViewer.Maps {
             }
 
             mapSource.SymbolsPM.SymbolsChanged += HandleSymbolsChanged;
+            mapSource.SymbolsPM.RaiseSymbolsChanged();
         }
 
         public void MovePublicCursor(Point pnt, long privateMapId) {
@@ -160,15 +160,6 @@ namespace MapViewer.Maps {
                 RemoveElement(PublicCursorUid);
             }
         }
-
-        public void MoveElement(string uid, Vector move)
-        {
-            var elem = CanvasOverlay.FindElementByUid(uid);
-            if (elem != null) {
-                MoveElement(elem, move);
-            }
-        }
-
 
 
         private void HandleSymbolsChanged(object sender, EventArgs e) {

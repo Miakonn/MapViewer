@@ -16,7 +16,7 @@ namespace MapViewer.Symbols {
         public Point StartPoint { get; set; }
         public string Uid { get; set; }
         public Color FillColor { get; set; }
-        public int Zorder { get; set; }
+        public int Z_Order { get; set; }
         public double SizeMeter { get; set; }
 
         public abstract void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix);
@@ -133,9 +133,7 @@ namespace MapViewer.Symbols {
             canvas.Children.Add(shape);
         }
     }
-
-
-
+    
 
     [Serializable]
     [XmlInclude(typeof(Symbol))]
@@ -161,9 +159,7 @@ namespace MapViewer.Symbols {
             canvas.Children.Add(shape);
         }
     }
-
-
-
+    
 
 }
 

@@ -45,6 +45,11 @@ namespace MapViewer.Symbols {
             RaiseSymbolsChanged();
         }
 
+        public void AddSymbolWithoutRaise(Symbol symbol)
+        {
+            Symbols[symbol.Uid] = symbol;
+        }
+
         public void RemoveAllSymbols()
         {
             Symbols.Clear();
@@ -70,7 +75,7 @@ namespace MapViewer.Symbols {
                 Uid = GetTimestamp(),
                 FillColor = color,
                 Caption = caption,
-                Zorder = GetMinZorder() - 1,
+                Z_Order = GetMinZorder() - 1,
                 StartPoint = pos,
                 SizeMeter = sizeMeter
             };
@@ -83,7 +88,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolCreature {
                 Uid = GetTimestamp(),
                 FillColor = color,
-                Zorder = GetMinZorder() - 1,
+                Z_Order = GetMinZorder() - 1,
                 StartPoint = pos,
                 SizeMeter = radiusMeter * 2
             };
@@ -96,7 +101,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolLine {
                 Uid = GetTimestamp(),
                 FillColor = color,
-                Zorder = GetMinZorder() - 1,
+                Z_Order = GetMinZorder() - 1,
                 StartPoint = startPoint,
                 EndPoint = endPoint,
                 Width = width
@@ -110,7 +115,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolText {
                 Uid = GetTimestamp(),
                 FillColor = color,
-                Zorder = GetMinZorder() - 1,
+                Z_Order = GetMinZorder() - 1,
                 StartPoint = pos,
                 RotationAngle = angle
             };
@@ -142,7 +147,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolPolygon {
                 Uid = GetTimestamp(),
                 FillColor = color,
-                Zorder = GetMinZorder() - 1,
+                Z_Order = GetMinZorder() - 1,
                 StartPoint = posCenter,
                 Corners = cornersMoved
             };
@@ -158,7 +163,7 @@ namespace MapViewer.Symbols {
             if (Symbols.Count == 0) {
                 return 1000;
             }
-            return Symbols.Values.Select(symbol => symbol.Zorder).Max();
+            return Symbols.Values.Select(symbol => symbol.Z_Order).Max();
         }
 
         public int GetMinZorder()
@@ -166,14 +171,14 @@ namespace MapViewer.Symbols {
             if (Symbols.Count == 0) {
                 return 1000;
             }
-            return Symbols.Values.Select(symbol => symbol.Zorder).Min();
+            return Symbols.Values.Select(symbol => symbol.Z_Order).Min();
         }
         
         public void UpdateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
         {
             canvas.RemoveAllSymbolsFromOverlay();
 
-            var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.Zorder);
+            var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.Z_Order);
 
             foreach (var symbol in symbolsInZorder) {
                 symbol.CreateElements(canvas, Scale, ImageScaleMperPix);
@@ -208,7 +213,7 @@ namespace MapViewer.Symbols {
                 return;
             }
 
-            Symbols[uid].Zorder = GetMaxZorder() + 1;
+            Symbols[uid].Z_Order = GetMaxZorder() + 1;
             RaiseSymbolsChanged();
         }
 
@@ -241,8 +246,11 @@ namespace MapViewer.Symbols {
         public void Serialize(string filename)
         {
             try {
-                SymbolsOnly = new Collection<Symbol>();
+                if (Symbols.Count == 0) {
+                    return;
+                }
 
+                SymbolsOnly = new Collection<Symbol>();
                 foreach (var symbol in Symbols.Values) {
                     SymbolsOnly.Add(symbol);
                 }
@@ -269,9 +277,10 @@ namespace MapViewer.Symbols {
                     var spm = (SymbolsPresentationModel )serializer.Deserialize(reader);
 
                     foreach (var symbol in spm.SymbolsOnly) {
-                        AddSymbol(symbol);
+                        AddSymbolWithoutRaise(symbol);
                     }
                 }
+                RaiseSymbolsChanged();
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);

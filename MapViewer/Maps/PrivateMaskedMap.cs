@@ -24,17 +24,8 @@ namespace MapViewer.Maps {
             MaskOpacity = 0.3;
             CreatePalette();
             SymbolsPM = new SymbolsPresentationModel();
-            SymbolsPM.SymbolsChanged += MaskedMapSymbolsChanged;
+            SymbolsPM.SymbolsChanged += HandleSymbolsChanged;
         }
-
-
-        public override void MoveElement(UIElement elem, Vector move)
-        {
-           SymbolsPM.MoveSymbol(elem.Uid, move);
-        }
-
-
-
 
         public void Zoom(double scale, Point pos)
         {
@@ -116,17 +107,13 @@ namespace MapViewer.Maps {
         {
             MapData.Serialize();
             BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(ImageFilePath, ".mask.png"));
-            CanvasOverlay.RemoveAllSymbolsFromOverlay();
-            CanvasOverlay.SerializeXaml(CreateFilename(ImageFilePath, ".xaml"));
             SymbolsPM.Serialize(CreateFilename(ImageFilePath, ".symbols.xml"));
-            RaiseSymbolsChanged();
         }
 
         public void Deserialize()
         {
             MapData.Deserialize();
             BmpMask = BitmapUtils.Deserialize(CreateFilename(ImageFilePath, ".mask.png"));
-            CanvasOverlay.DeserializeXaml(CreateFilename(ImageFilePath, ".xaml"));
             SymbolsPM.Deserialize(CreateFilename(ImageFilePath, ".symbols.xml"));
             var shape = CanvasOverlay.FindElementByUid(PublicPositionUid);
             if (shape != null) {
@@ -170,7 +157,7 @@ namespace MapViewer.Maps {
             SymbolsPM.RaiseSymbolsChanged();
         }
 
-        public void MaskedMapSymbolsChanged(object sender, EventArgs e) {
+        public void HandleSymbolsChanged(object sender, EventArgs e) {
             var se = (SymbolEventArgs)e;
             se.SymbolsPM.UpdateElements(CanvasOverlay, Scale, ImageScaleMperPix);
         }

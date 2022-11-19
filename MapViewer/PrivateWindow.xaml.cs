@@ -156,9 +156,9 @@ namespace MapViewer {
             if (e.Key == Key.Escape) {
                 if (_cursorAction == CursorAction.MovingElement) {
                     var move = new Vector((_mouseDownPoint.X - _mouseDownPointFirst.X), (_mouseDownPoint.Y - _mouseDownPointFirst.Y));
-                    MapPrivate.MoveElement(_lastClickedElem, move);
-                    MapPublic.MoveElement(_lastClickedElem.Uid, move);
-
+                    if (_lastClickedElem != null) {
+                        MapPrivate.SymbolsPM.MoveSymbol(_lastClickedElem.Uid, move);
+                    }
                 }
                 HidePopup(0);
                 ActiveTool = null;
@@ -235,12 +235,13 @@ namespace MapViewer {
             else if (_cursorAction == CursorAction.MovingElement) {
                 var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                 var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
-                MapPrivate.MoveElement(_lastClickedElem, move);
-                MapPublic.MoveElement(_lastClickedElem.Uid, move);
-                _mouseDownPoint = curMouseDownPoint;
-                string str = $"{DistanceFromStart(curMouseDownPoint),5:N1} Track: {DistanceTrack(move),5:N1}";
-                DisplayPopup(str);
-                e.Handled = true;
+                if (_lastClickedElem != null) {
+                    MapPrivate.SymbolsPM.MoveSymbol(_lastClickedElem.Uid, move);
+                    _mouseDownPoint = curMouseDownPoint;
+                    string str = $"{DistanceFromStart(curMouseDownPoint),5:N1} Track: {DistanceTrack(move),5:N1}";
+                    DisplayPopup(str);
+                    e.Handled = true;
+                }
             }
             else if (_cursorAction == CursorAction.MovingPrivateMap) {
                 var curMouseDownPoint = e.GetPosition(this);
