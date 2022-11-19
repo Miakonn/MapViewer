@@ -110,12 +110,6 @@ namespace MapViewer {
         public static Size GetTextSize(this Canvas canvas, TextBlock textBlock) {
             textBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             return textBlock.DesiredSize;
-
-            //textBlock.Arrange(new Rect(textBlock.DesiredSize));
-
-            //Debug.WriteLine(textBlock.ActualWidth); // prints 80.323333333333
-            //Debug.WriteLine(textBlock.ActualHeight); // prints 15.96
-            //return new Size(textBlock.ActualWidth, textBlock.ActualHeight);
         }
 
     }

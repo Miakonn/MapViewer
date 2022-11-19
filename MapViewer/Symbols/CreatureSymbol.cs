@@ -4,14 +4,14 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace MapViewer {
+namespace MapViewer.Symbols {
 
     public interface ISymbol {
         Point Position { get; set; }
         string Uid { get; set; }
         string Caption { get; set; }
         Color Color { get; set; }
-        int Layer { get; set; }
+        int Zorder { get; set; }
         double SizeMeter { get; set; }
 
         void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix);
@@ -23,7 +23,7 @@ namespace MapViewer {
         public string Uid { get; set; }
         public string Caption { get; set; }
         public Color Color { get; set; }
-        public int Layer { get; set; }
+        public int Zorder { get; set; }
         public double SizeMeter { get; set; }
 
         public abstract void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix);

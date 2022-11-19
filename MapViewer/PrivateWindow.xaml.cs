@@ -41,9 +41,9 @@ namespace MapViewer {
 
         public int LevelNumber => MapList.Count;
 
-        public MaskedMap MapAbove => Level < LevelNumber - 1 ? MapList[Level + 1] : null;
+        public PrivateMaskedMap MapAbove => Level < LevelNumber - 1 ? MapList[Level + 1] : null;
 
-        public MaskedMap MapBelow => Level > 0 ? MapList[Level - 1] : null;
+        public PrivateMaskedMap MapBelow => Level > 0 ? MapList[Level - 1] : null;
 
         public readonly PublicWindow PublicWindow = new PublicWindow();
 

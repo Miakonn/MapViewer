@@ -68,6 +68,7 @@
     <Compile Include="Maps\PublicMaskedMap.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Symbols\CreatureSymbol.cs" />
+    <Compile Include="Symbols\SymbolsPresentationModel.cs" />
     <Compile Include="Utilities\BitmapUtils.cs" />
     <Compile Include="Utilities\CanvasUtils.cs" />
     <Compile Include="Commands.cs" />

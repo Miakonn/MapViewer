@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.SymbolStore;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -377,7 +376,7 @@ namespace MapViewer {
                 return;
             }
             MapPrivate.ClearOverlay();
-            MapPrivate.CanvasOverlay.RemoveAllSymbolsFromOverlay();
+            MapPrivate.SymbolsPM.RemoveAllSymbols();
             if (!MapPublic.IsLinked) {
                 MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
             }
@@ -399,6 +398,7 @@ namespace MapViewer {
 					MapPublic.RemoveElement(elemPublic);
 				}
 			}
+            MapPrivate.SymbolsPM.DeleteSymbol(uid);
 		}
 
 		private void SetColorElement_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -414,15 +414,7 @@ namespace MapViewer {
 			}
 
 			var uid = _lastClickedElem.Uid;
-            if (uid.StartsWith("Symbol")) {
-                if (MapPrivate.Symbols.ContainsKey(uid)) {
-                    MapPrivate.Symbols[uid].Color = dialog.SelectedColor;
-                    MapPrivate.RaiseSymbolsChanged();
-                }
-                return;
-            }
-
-
+            MapPrivate.SymbolsPM.SetSymbolColor(uid, dialog.SelectedColor);
 
 			_lastClickedElem.SetColor(dialog.SelectedBrush);
 			if (PublicWindow.IsVisible) {
@@ -438,12 +430,13 @@ namespace MapViewer {
             }
             var uid = _lastClickedElem.Uid;
             MapPrivate.SendElementToBack(uid);
+            MapPrivate.SymbolsPM.MoveSymbolToBack(uid);
             if (PublicWindow.IsVisible) {
                 MapPublic.SendElementToBack(uid);
             }
         }
         
-        private void MoveElementUpDown(MaskedMap mapNew) {
+        private void MoveElementUpDown(PrivateMaskedMap mapNew) {
             if (mapNew == null) {
                 return;
             }
@@ -467,6 +460,7 @@ namespace MapViewer {
                     MapPublic.AddOverlayElement(elemCopy, uid);
                 }
             }
+            MapPrivate.SymbolsPM.MoveElementUpDown(uid, mapNew.SymbolsPM);
         }
         
         private void MoveElementUp_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -696,7 +690,7 @@ namespace MapViewer {
             }
            
            
-            MapPrivate.CreateOverlayCreature(pos, color, size, dialog.TextValue);
+            MapPrivate.SymbolsPM.CreateOverlayCreature(pos, color, size, dialog.TextValue);
 
             if (PublicWindow.IsVisible && MapPublic.MapId == MapPrivate.MapId) {
                 //MapPublic.CopyingCanvas();

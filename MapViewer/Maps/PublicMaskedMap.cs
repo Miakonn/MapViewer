@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using MapViewer.Symbols;
 
 namespace MapViewer.Maps {
     public class PublicMaskedMap : MaskedMap {
@@ -136,7 +137,7 @@ namespace MapViewer.Maps {
                 ScaleToReal();
             }
 
-            mapSource.Symbols_Updated += MaskedMap_SymbolsUpdated;
+            mapSource.SymbolsPM.SymbolsChanged += HandleSymbolsChanged;
         }
 
         public void MovePublicCursor(Point pnt, long privateMapId) {
@@ -170,19 +171,9 @@ namespace MapViewer.Maps {
 
 
 
-        private void MaskedMap_SymbolsUpdated(object sender, EventArgs e)
-        {
-            var se = (SymbolEventArgs)e;
-            CanvasOverlay.RemoveAllSymbolsFromOverlay();
-
-            foreach (var symbol in se.Symbols.Values) {
-                symbol.CreateElements(CanvasOverlay, Scale, ImageScaleMperPix);
-            }
-
-
-
-
-            Debug.WriteLine("MaskedMap_Symbols_Updated!!");
+        private void HandleSymbolsChanged(object sender, EventArgs e) {
+            var symbolsPm = (SymbolsPresentationModel)sender;
+            symbolsPm?.UpdateElements(CanvasOverlay, Scale, ImageScaleMperPix);
         }
 
     }

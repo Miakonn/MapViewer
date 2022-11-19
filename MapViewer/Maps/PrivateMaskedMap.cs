@@ -7,47 +7,31 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MapViewer.Symbols;
 using Path = System.IO.Path;
 
 namespace MapViewer.Maps {
 
 
-    public class SymbolEventArgs : EventArgs {
-        public Dictionary<string, ISymbol> Symbols;
-
-        public SymbolEventArgs(Dictionary<string, ISymbol> symbols) {
-            Symbols = symbols;
-        }
-    }
 
     public class PrivateMaskedMap: MaskedMap {
-
-
         private const string FolderName = "MapViewerFiles";
-
-
-        public Dictionary<string, ISymbol> Symbols = new Dictionary<string, ISymbol>();
-
-        public event EventHandler Symbols_Updated;
+        
+        public SymbolsPresentationModel SymbolsPM;
 
 
         public PrivateMaskedMap(Window parent, long groupId) : base(parent, groupId) {
             MaskOpacity = 0.3;
             CreatePalette();
-
-
-            Symbols_Updated += MaskedMap_SymbolsUpdated;
+            SymbolsPM = new SymbolsPresentationModel();
+            SymbolsPM.SymbolsChanged += MaskedMapSymbolsChanged;
         }
 
 
         public override void MoveElement(UIElement elem, Vector move)
         {
             if (elem.Uid.StartsWith("Symbol")) {
-                if (Symbols.ContainsKey(elem.Uid)) {
-                    Symbols[elem.Uid].Move(move);
-                    RaiseSymbolsChanged();
-                }
-
+                SymbolsPM.MoveSymbol(elem.Uid, move);
                 return;
             }
 
@@ -191,52 +175,16 @@ namespace MapViewer.Maps {
 
 
 
-        public void AddSymbol(ISymbol symbol)
-        {
-            Symbols[symbol.Uid] = symbol;
-            RaiseSymbolsChanged();
-        }
-
         public void RaiseSymbolsChanged()
         {
-            Symbols_Updated?.Invoke(this, new SymbolEventArgs(Symbols));
-
+            SymbolsPM.RaiseSymbolsChanged();
         }
 
-        public void MaskedMap_SymbolsUpdated(object sender, EventArgs e) {
-           var se = (SymbolEventArgs)e;
-
-            CanvasOverlay.RemoveAllSymbolsFromOverlay();
-
-            foreach (var symbol in se.Symbols.Values) {
-                symbol.CreateElements(CanvasOverlay, Scale, ImageScaleMperPix);
-            }
-
-
-
-            Debug.WriteLine("MaskedMap_Symbols_Updated!!");
+        public void MaskedMapSymbolsChanged(object sender, EventArgs e) {
+            var se = (SymbolEventArgs)e;
+            se.SymbolsPM.UpdateElements(CanvasOverlay, Scale, ImageScaleMperPix);
         }
 
-
-
-        public string GetTimestamp()
-        {
-            return "Symbol_" + (int)(DateTime.UtcNow.Subtract(new DateTime(2022, 1, 1)).TotalSeconds);
-        }
-
-        public void CreateOverlayCreature(Point pos, Color color, double sizeMeter, string text)
-        {
-            var symbol = new CreatureSymbol {
-                Uid = GetTimestamp(),
-                Color = color,
-                Caption = text,
-                Layer = 50,
-                Position = pos,
-                SizeMeter = sizeMeter
-            };
-
-            AddSymbol(symbol);
-        }
 
 
         #endregion
