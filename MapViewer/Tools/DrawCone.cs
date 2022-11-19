@@ -10,7 +10,7 @@ namespace MapViewer.Tools {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
-		private readonly Maps.MaskedMap _map;
+		private readonly Maps.PrivateMaskedMap _map;
 		private RibbonToggleButton _button;
 		private Polygon _shape;
 		private Point _pnt1;
@@ -112,13 +112,8 @@ namespace MapViewer.Tools {
 
 		private void EndDraw() {
 			var points = CreatePointCollection();
-			_map.OverlayPolygon(points, Colors.Green, "Cone");
-			if (_privateWindow.PublicWindow.IsVisible) {
-				_privateWindow.MapPublic.OverlayPolygon(points, Colors.Green, "Cone");
-			}
-
-			_privateWindow.ActiveTool = null;
+			_map.SymbolsPM.CreateSymbolPolygon(points, Colors.Green);
+            _privateWindow.ActiveTool = null;
 		}
-
-	}
+    }
 }

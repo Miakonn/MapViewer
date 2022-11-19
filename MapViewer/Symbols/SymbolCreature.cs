@@ -10,30 +10,30 @@ namespace MapViewer.Symbols {
 
 
     [Serializable]
-    [XmlInclude(typeof(SymbolCreature))]
+    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), 
+     XmlInclude(typeof(SymbolCircle)), XmlInclude(typeof(SymbolText)), XmlInclude(typeof(SymbolLine))]
     public abstract class Symbol {
-        public Point Position { get; set; }
+        public Point StartPoint { get; set; }
         public string Uid { get; set; }
-        public string Caption { get; set; }
-        public Color Color { get; set; }
+        public Color FillColor { get; set; }
         public int Zorder { get; set; }
         public double SizeMeter { get; set; }
 
         public abstract void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix);
 
         public void Move(Vector move) {
-            Position -= move;
+            StartPoint -= move;
         }
     }
-
-
+    
     [Serializable]
     [XmlInclude(typeof(Symbol))]
     public class SymbolCreature : Symbol {
+        public string Caption { get; set; }
 
         public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
         {
-            var brush = new SolidColorBrush(Color);
+            var brush = new SolidColorBrush(FillColor);
  
             var shape = new Ellipse {
                 Uid = Uid,
@@ -43,8 +43,8 @@ namespace MapViewer.Symbols {
                 Opacity = 1.0
             };
 
-            Canvas.SetLeft(shape, Position.X - shape.Width / 2);
-            Canvas.SetTop(shape, Position.Y - shape.Height / 2);
+            Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);
+            Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);
 
             canvas.Children.Add(shape);
 
@@ -64,8 +64,8 @@ namespace MapViewer.Symbols {
             };
 
             var textSize = canvas.GetTextSize(textBlock);
-            Canvas.SetLeft(textBlock, Position.X - textSize.Width / 2.0);
-            Canvas.SetTop(textBlock, Position.Y - textSize.Height / 2.0);
+            Canvas.SetLeft(textBlock, StartPoint.X - textSize.Width / 2.0);
+            Canvas.SetTop(textBlock, StartPoint.Y - textSize.Height / 2.0);
             canvas.Children.Add(textBlock);
         }
     }
@@ -76,7 +76,7 @@ namespace MapViewer.Symbols {
 
         public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
         {
-            var brush = new SolidColorBrush(Color);
+            var brush = new SolidColorBrush(FillColor);
 
             var shape = new Ellipse {
                 Uid = Uid,
@@ -86,14 +86,84 @@ namespace MapViewer.Symbols {
                 Opacity = 1.0
             };
 
-            Canvas.SetLeft(shape, Position.X - shape.Width / 2);
-            Canvas.SetTop(shape, Position.Y - shape.Height / 2);
+            Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);
+            Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);
 
             canvas.Children.Add(shape);
-
-            if (string.IsNullOrWhiteSpace(Caption)) {
-                return;
-            }
         }
     }
+    
+    [Serializable]
+    [XmlInclude(typeof(Symbol))]
+    public class SymbolPolygon : Symbol {
+        public PointCollection Corners { get; set; }
+        
+        public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix) {
+            var shape = new Polygon {
+                Uid = Uid,
+                Points = Corners,
+                Fill = new SolidColorBrush(FillColor),
+                Opacity = 0.4
+            };
+
+            Canvas.SetLeft(shape, StartPoint.X);
+            Canvas.SetTop(shape, StartPoint.Y);
+            canvas.Children.Add(shape);
+        }
+    }
+    
+    [Serializable]
+    [XmlInclude(typeof(Symbol))]
+    public class SymbolText : Symbol {
+        public string Caption { get; set; }
+        public double RotationAngle { get; set; }
+
+        public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
+        {
+            var shape = new TextBlock {
+                Uid = Uid,
+                RenderTransform = new RotateTransform(RotationAngle),
+                Text = Caption,
+                FontSize = 25,
+                Foreground = new SolidColorBrush(FillColor),
+                FontWeight = FontWeights.UltraBold,
+            };
+            Canvas.SetLeft(shape, StartPoint.X);
+            Canvas.SetTop(shape, StartPoint.Y);
+            canvas.Children.Add(shape);
+        }
+    }
+
+
+
+
+    [Serializable]
+    [XmlInclude(typeof(Symbol))]
+    public class SymbolLine : Symbol {
+        public double Width { get; set; }
+        public Point EndPoint { get; set; }
+
+        public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
+        {
+            var shape = new Line {
+                Uid = Uid,
+                X1 = 0,
+                Y1 = 0,
+                X2 = EndPoint.X,
+                Y2 = EndPoint.Y,
+                StrokeThickness = Width / ImageScaleMperPix,
+                Stroke = new SolidColorBrush(FillColor),
+                Opacity = 0.4
+
+            };
+            Canvas.SetLeft(shape, StartPoint.X);
+            Canvas.SetTop(shape, StartPoint.Y);
+            canvas.Children.Add(shape);
+        }
+    }
+
+
+
+
 }
+

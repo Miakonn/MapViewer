@@ -10,7 +10,7 @@ namespace MapViewer.Tools {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
-		private readonly Maps.MaskedMap _map;
+		private readonly Maps.PrivateMaskedMap _map;
 		private RibbonToggleButton _button;
 		private Line _line;
 
@@ -74,7 +74,7 @@ namespace MapViewer.Tools {
 				X2 = pt1.X,
 				Y2 = pt1.Y,
 				Stroke = Brushes.OrangeRed,
-				StrokeThickness = 1 / _map.ImageScaleMperPix,
+				StrokeThickness = 0.8 / _map.ImageScaleMperPix,
 				Opacity = 0.5
 			};
 
@@ -99,10 +99,9 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-			_map.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 1 / _map.ImageScaleMperPix, Colors.OrangeRed, "Line");
-			if (_privateWindow.PublicWindow.IsVisible) {
-				_privateWindow.MapPublic.OverlayLine(_line.X1, _line.Y1, _line.X2, _line.Y2, 2 / _map.ImageScaleMperPix, Colors.OrangeRed, "Line");
-			}
+            var startPoint = new Point(_line.X1, _line.Y1);
+            var endPoint = new Point(_line.X2 - _line.X1, _line.Y2 - _line.Y1);
+            _map.SymbolsPM.CreateSymbolLine(startPoint, endPoint, 0.8, Colors.OrangeRed);
 
 			_privateWindow.ActiveTool = null;
 		}

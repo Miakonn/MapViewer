@@ -428,39 +428,8 @@ namespace MapViewer {
             if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
                 return;
             }
-            var uid = _lastClickedElem.Uid;
-            MapPrivate.SendElementToBack(uid);
-            MapPrivate.SymbolsPM.MoveSymbolToBack(uid);
-            if (PublicWindow.IsVisible) {
-                MapPublic.SendElementToBack(uid);
-            }
-        }
-        
-        private void MoveElementUpDown(PrivateMaskedMap mapNew) {
-            if (mapNew == null) {
-                return;
-            }
-            var uid = _lastClickedElem.Uid;
-            var elem = MapPrivate.FindElement(uid);
-
-            var elemText = elem.IsPlayer() ? MapPrivate.GetPlayerNamElement(elem) : null;
-            
-            MapPrivate.RemoveElement(elem);
-            mapNew.AddOverlayElement(elem, uid);
-            if (elemText != null) {
-                mapNew.AddOverlayElement(elemText, elemText.Uid);
-            }
-
-            if (PublicWindow.IsVisible) {
-                if (MapPublic.MapId == MapPrivate.MapId) {
-                    MapPublic.RemoveElement(uid);
-                }
-                else if (MapPublic.MapId == mapNew.MapId) {
-                    var elemCopy = CanvasUtils.CopyElement(_lastClickedElem);
-                    MapPublic.AddOverlayElement(elemCopy, uid);
-                }
-            }
-            MapPrivate.SymbolsPM.MoveElementUpDown(uid, mapNew.SymbolsPM);
+ 
+            MapPrivate.SymbolsPM.MoveSymbolToBack(_lastClickedElem.Uid);
         }
         
         private void MoveElementUp_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -468,7 +437,7 @@ namespace MapViewer {
             if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
                 return;
             }
-            MoveElementUpDown(MapAbove);
+            MapPrivate.SymbolsPM.MoveElementUpDown(_lastClickedElem.Uid, MapAbove.SymbolsPM);
         }
 
         private void MoveElementDown_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -476,7 +445,7 @@ namespace MapViewer {
             if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
                 return;
             }
-            MoveElementUpDown(MapBelow);
+            MapPrivate.SymbolsPM.MoveElementUpDown(_lastClickedElem.Uid, MapBelow.SymbolsPM);
         }
 
         private void FullMask_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -617,32 +586,20 @@ namespace MapViewer {
 
 		private void SpellCircular7m_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
-			var radius = 7 / MapPrivate.ImageScaleMperPix;
-			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Spell7m");
-			if (PublicWindow.IsVisible) {
-				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.OrangeRed, "Spell7m");
-			}
-		}
+            MapPrivate.SymbolsPM.CreateSymbolCircle(_mouseDownPoint, Colors.OrangeRed, 7);
+        }
 
 		private void SpellCircular3m_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
-			var radius = 3 / MapPrivate.ImageScaleMperPix;
-			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.LightSkyBlue, "Spell3m");
-			if (PublicWindow.IsVisible) {
-				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.LightSkyBlue, "Spell3m");
-			}
+            MapPrivate.SymbolsPM.CreateSymbolCircle(_mouseDownPoint, Colors.LightSkyBlue, 3);
 		}
 
 		private void SpellCircular2m_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
-			var radius = 2 / MapPrivate.ImageScaleMperPix;
-			MapPrivate.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Spell2m");
-			if (PublicWindow.IsVisible) {
-				MapPublic.OverlayCircle(_mouseDownPoint, radius, Colors.Yellow, "Spell2m");
-			}
+            MapPrivate.SymbolsPM.CreateSymbolCircle(_mouseDownPoint, Colors.Yellow, 2);
 		}
 
-        private void CreatePlayer(Color color, Point pos) {
+        private void CreateCreature(Color color, Point pos, int size) {
             ActiveTool = null;
             var dialog = new DialogGetSingleValue {
                 LeadText = "Text",
@@ -653,57 +610,16 @@ namespace MapViewer {
             if (!result.HasValue || !result.Value) {
                 return;
             }
-            var parts = dialog.TextValue.Split(new[] { ',' }, 2);
-            string text = " ";
-            try {
-                if (parts.Length > 0 && !string.IsNullOrEmpty(parts[0])) {
-                    text = parts[0];
-                }
-
-                if (parts.Length == 2) {
-                    if (ColorConverter.ConvertFromString(parts[1]) is Color colorNew) {
-                        color = colorNew;
-                    }
-                }
-            }
-            catch { // ignored
-            }
-
-            MapPrivate.CreateOverlayPlayer(pos, color, text);
-
-            if (PublicWindow.IsVisible && MapPublic.MapId == MapPrivate.MapId) {
-                MapPublic.CreateOverlayPlayer(pos, color, text);
-            }
-        }
-
-        private void CreateCreature(Color color, Point pos, int size)
-        {
-            ActiveTool = null;
-            var dialog = new DialogGetSingleValue {
-                LeadText = "Text",
-                Owner = this
-            };
-
-            var result = dialog.ShowDialog();
-            if (!result.HasValue || !result.Value) {
-                return;
-            }
-           
-           
+            
             MapPrivate.SymbolsPM.CreateSymbolCreature(pos, color, size, dialog.TextValue);
-
-            if (PublicWindow.IsVisible && MapPublic.MapId == MapPrivate.MapId) {
-                //MapPublic.CopyingCanvas();
-            }
         }
-
-
+        
         private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
-           CreatePlayer(Colors.LightBlue, _mouseDownPoint);
+            CreateCreature(Colors.LightBlue, _mouseDownPoint, 1);
         }
 
         private void NonPlayer_Execute(object sender, ExecutedRoutedEventArgs e) {
-            CreatePlayer(Colors.Orange, _mouseDownPoint);
+            CreateCreature(Colors.Orange, _mouseDownPoint, 1);
         }
 
         private void Monster_Execute(object sender, ExecutedRoutedEventArgs e)

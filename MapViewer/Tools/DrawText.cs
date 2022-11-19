@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
@@ -12,7 +13,7 @@ namespace MapViewer.Tools {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
-		private readonly Maps.MaskedMap _map;
+		private readonly Maps.PrivateMaskedMap _map;
 		private RibbonToggleButton _button;
 		private Line _line;
 
@@ -103,13 +104,11 @@ namespace MapViewer.Tools {
 			}
 			var angle = Math.Atan2(_line.Y2 - _line.Y1, _line.X2 - _line.X1) * (180 / Math.PI);
 
-			_map.OverlayText(dialog.TextValue, _line.X1, _line.Y1, angle, Colors.Blue, "Text");
+            var start = new Point(_line.X1, _line.Y1);
 
-			if (_privateWindow.PublicWindow.IsVisible) {
-				_privateWindow.MapPublic.OverlayText(dialog.TextValue,  _line.X1, _line.Y1,  angle, Colors.Blue, "Text");
-			}
+            _map.SymbolsPM.CreateSymbolText(start, angle, Colors.Blue, dialog.TextValue);
 
-			_privateWindow.ActiveTool = null;
+            _privateWindow.ActiveTool = null;
 		}
 
 	}

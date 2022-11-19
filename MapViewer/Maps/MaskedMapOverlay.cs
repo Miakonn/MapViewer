@@ -45,121 +45,12 @@ namespace MapViewer.Maps {
 
         #region Elements
 
-        public void OverlayCircle(Point pos, double radius, Color color, string uid) {
-			var shape = new Ellipse {
-				Width = 2 * radius,
-				Height = 2 * radius,
-				Fill = new SolidColorBrush(color),
-				Opacity = 0.4
-			};
-
-            Canvas.SetLeft(shape, pos.X - radius);
-			Canvas.SetTop(shape, pos.Y - radius);
-			AddOverlayElement(shape, uid);
-		}
-
-
         public virtual void MoveElement(UIElement elem, Vector move)
         {
             Canvas.SetLeft(elem, Canvas.GetLeft(elem) - move.X);
             Canvas.SetTop(elem, Canvas.GetTop(elem) - move.Y);
-
-            if (!elem.IsPlayer()) {
-                return;
-            }
-
-            var elemName = CanvasOverlay.GetPlayerNameElement(elem);
-            CenterPlayerName(elem, elemName);
         }
 
-        public void CenterPlayerName(UIElement elemPlayer, UIElement elemName)
-        {
-            if (elemName is TextBlock textName && elemPlayer is Ellipse ellipsePlayer) {
-                var centerX = Canvas.GetLeft(ellipsePlayer) + ellipsePlayer.Width / 2;
-                var centerY = Canvas.GetTop(ellipsePlayer) + ellipsePlayer.Height / 2;
-                Canvas.SetLeft(textName, centerX - textName.ActualWidth / 2);
-                Canvas.SetTop(textName, centerY - textName.ActualHeight / 2);
-            }
-        }
-
-        public void CreateOverlayPlayer(Point pos, Color color, string text) {
-            var brush = new SolidColorBrush(color);
-            double size;
-            if (PlayerSizeMeter != 0) {
-                size = PlayerSizeMeter / ImageScaleMperPix;
-            }
-            else {
-                size = PlayerSizePixel / Scale;
-            }
-
-            var shape = new Ellipse {
-                Width = size,
-                Height = size,
-                Fill = brush,
-                Opacity = 1.0
-            };
-
-            Canvas.SetLeft(shape, pos.X - size / 2.0);
-            Canvas.SetTop(shape, pos.Y - size / 2.0);
-            string uid = "Player" + "_" + text;
-            AddOverlayElement(shape, uid);
-            uid = shape.Uid;
-
-            double fontSize;
-            if (PlayerSizeMeter != 0) {
-                fontSize = 18 / Scale;
-            }
-            else {
-                fontSize = 0.8 * PlayerSizePixel / Scale;
-            }
- 
-            var textBlock = new TextBlock {
-                Text = text,
-                FontSize = fontSize,
-                Foreground = new SolidColorBrush(Colors.Black),
-                FontWeight = FontWeights.Normal,
-                IsHitTestVisible = false
-            };
-            Canvas.SetLeft(textBlock, pos.X - textBlock.ActualWidth / 2.0);
-            Canvas.SetTop(textBlock, pos.Y - textBlock.ActualHeight / 2.0);
-            AddOverlayElement(textBlock, uid + ".name");
-
-            textBlock.SizeChanged += TextBlockOnSizeChanged;
-        }
-
-        private void TextBlockOnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (sender is TextBlock shape) {
-                CenterPlayerName(shape);
-            }
-        }
-
-
-        public void SendElementToBack(string uid)
-        {
-            var elem = CanvasOverlay.FindElementByUid(uid);
-            if (elem == null) {
-                return;
-            }
-            if (elem.IsPlayer()) {
-                var elemName = CanvasOverlay.GetPlayerNameElement(elem);
-                if (elemName != null) {
-                    CanvasOverlay.Children.Remove(elemName);
-                    CanvasOverlay.Children.Insert(0, elemName);
-                }
-                else {
-                    Log.Warn($"Missing player name for  {elem.Uid}! Old format?");
-                }
-            }
-            CanvasOverlay.Children.Remove(elem);
-            CanvasOverlay.Children.Insert(0, elem);
-        }
-
-        public void CenterPlayerName(UIElement elemText)
-        {
-            var elemPlayer = CanvasOverlay.GetPlayerParentElement(elemText);
-            CenterPlayerName(elemPlayer, elemText);
-        }
 
         public void OverlayRing(Point pos, double radius, Color color, string uid) {
 			var shape = new Ellipse {
@@ -213,31 +104,6 @@ namespace MapViewer.Maps {
 			AddOverlayElement(shape, uid);
 		}
 
-		public void OverlayPolygon(PointCollection points, Color color, string uid) {
-			var shape = new Polygon {
-				Points = points,
-				Fill = new SolidColorBrush(color),
-				Opacity = 0.4
-
-			};
-			Canvas.SetLeft(shape, 0);
-			Canvas.SetTop(shape, 0);
-			AddOverlayElement(shape, uid);
-		}
-
-		public void OverlayText(string message, double x1, double y1, double angle, Color color, string uid) {
-
-			var shape = new TextBlock {
-				RenderTransform = new RotateTransform(angle),
-				Text = message,
-				FontSize = 25,
-				Foreground = new SolidColorBrush(color),
-				FontWeight = FontWeights.UltraBold,
-			};
-			Canvas.SetLeft(shape, x1);
-			Canvas.SetTop(shape, y1);
-			AddOverlayElement(shape, uid);
-		}
         
 		public void RemoveElement(string uid) {
             RemoveElement(CanvasOverlay.FindElementByUid(uid));

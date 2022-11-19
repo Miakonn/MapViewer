@@ -10,7 +10,7 @@ namespace MapViewer.Tools {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
-		private readonly Maps.MaskedMap _map;
+		private readonly Maps.PrivateMaskedMap _map;
 		private RibbonToggleButton _button;
 		private Polygon _shape;
 
@@ -119,10 +119,9 @@ namespace MapViewer.Tools {
 
 		private void EndDraw() {
 			var points = CreatePointCollection();
-			_map.OverlayPolygon(points, Colors.Green, "Rect");
-			if (_privateWindow.PublicWindow.IsVisible) {
-				_privateWindow.MapPublic.OverlayPolygon(points, Colors.Green, "Rect");
-			}
+
+            _map.SymbolsPM.CreateSymbolPolygon(points, Colors.Green);
+
 			_privateWindow.ActiveTool = null;
 		}
 

@@ -10,7 +10,7 @@ namespace MapViewer.Tools {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
-		private readonly Maps.MaskedMap _map;
+		private readonly Maps.PrivateMaskedMap _map;
 		private RibbonToggleButton _button;
 		private Ellipse _shape;
 
@@ -114,12 +114,10 @@ namespace MapViewer.Tools {
 
 		private void EndDraw() {
 			var center = GetElementCenter(_shape);
-			var radius = (int)(_shape.ActualWidth / 2);
-			_map.OverlayCircle(center, radius, Colors.Blue, "Circle");
-			if (_privateWindow.PublicWindow.IsVisible) {
-				_privateWindow.MapPublic.OverlayCircle(center, radius, Colors.Blue, "Circle");
-			}
-			_privateWindow.ActiveTool = null;
+			var radius = (int)(_shape.ActualWidth / 2) * _map.ImageScaleMperPix;
+
+            _map.SymbolsPM.CreateSymbolCircle(center, Colors.Green, radius);
+            _privateWindow.ActiveTool = null;
 		}
 
 		private Point GetElementCenter(FrameworkElement element) {

@@ -30,20 +30,7 @@ namespace MapViewer.Maps {
 
         public override void MoveElement(UIElement elem, Vector move)
         {
-            if (elem.Uid.StartsWith("Symbol")) {
-                SymbolsPM.MoveSymbol(elem.Uid, move);
-                return;
-            }
-
-            Canvas.SetLeft(elem, Canvas.GetLeft(elem) - move.X);
-            Canvas.SetTop(elem, Canvas.GetTop(elem) - move.Y);
-
-            if (!elem.IsPlayer()) {
-                return;
-            }
-
-            var elemName = CanvasOverlay.GetPlayerNameElement(elem);
-            CenterPlayerName(elem, elemName);
+           SymbolsPM.MoveSymbol(elem.Uid, move);
         }
 
 
