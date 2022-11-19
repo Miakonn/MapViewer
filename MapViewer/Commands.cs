@@ -690,7 +690,7 @@ namespace MapViewer {
             }
            
            
-            MapPrivate.SymbolsPM.CreateOverlayCreature(pos, color, size, dialog.TextValue);
+            MapPrivate.SymbolsPM.CreateSymbolCreature(pos, color, size, dialog.TextValue);
 
             if (PublicWindow.IsVisible && MapPublic.MapId == MapPrivate.MapId) {
                 //MapPublic.CopyingCanvas();

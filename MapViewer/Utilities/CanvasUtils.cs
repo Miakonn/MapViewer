@@ -48,9 +48,7 @@ namespace MapViewer {
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);
-				
             }
-
         }
 
         public static UIElement CopyElement(UIElement elemSource) {

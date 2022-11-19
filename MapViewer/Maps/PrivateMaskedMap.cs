@@ -131,6 +131,7 @@ namespace MapViewer.Maps {
             BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(ImageFilePath, ".mask.png"));
             CanvasOverlay.RemoveAllSymbolsFromOverlay();
             CanvasOverlay.SerializeXaml(CreateFilename(ImageFilePath, ".xaml"));
+            SymbolsPM.Serialize(CreateFilename(ImageFilePath, ".symbols.xml"));
             RaiseSymbolsChanged();
         }
 
@@ -139,6 +140,7 @@ namespace MapViewer.Maps {
             MapData.Deserialize();
             BmpMask = BitmapUtils.Deserialize(CreateFilename(ImageFilePath, ".mask.png"));
             CanvasOverlay.DeserializeXaml(CreateFilename(ImageFilePath, ".xaml"));
+            SymbolsPM.Deserialize(CreateFilename(ImageFilePath, ".symbols.xml"));
             var shape = CanvasOverlay.FindElementByUid(PublicPositionUid);
             if (shape != null) {
                 CanvasOverlay.Children.Remove(shape);
@@ -146,6 +148,7 @@ namespace MapViewer.Maps {
             CanvasOverlay.Loaded += delegate {
                 Zoom(1.0, new Point());
             };
+            RaiseSymbolsChanged();
         }
 
         protected static string CreateFilename(string original, string extension)

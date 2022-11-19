@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 
 namespace MapViewer.Symbols {
 
@@ -18,6 +20,8 @@ namespace MapViewer.Symbols {
         void Move(Vector move);
     }
 
+    [Serializable]
+    [XmlInclude(typeof(Symbol)), XmlInclude(typeof(CreatureSymbol))]
     public abstract class Symbol : ISymbol {
         public Point Position { get; set; }
         public string Uid { get; set; }
@@ -34,9 +38,9 @@ namespace MapViewer.Symbols {
     }
 
 
-
+    [Serializable]
+    [XmlInclude(typeof(Symbol)), XmlInclude(typeof(CreatureSymbol))]
     public class CreatureSymbol : Symbol {
-
 
         public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
         {
