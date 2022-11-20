@@ -45,7 +45,9 @@
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular2m" Executed="SpellCircular2m_Execute" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.DeleteElement" Executed="DeleteElement_Execute" CanExecute="ElementNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.SetColorElement" Executed="SetColorElement_Execute" CanExecute="ElementNeeded_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.SendElementToBack" Executed="SendElementToBack_Execute" CanExecute="ElementNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToFront" Executed="SendSymbolToFront_Execute" CanExecute="ElementNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToBack" Executed="SendSymbolToBack_Execute" CanExecute="ElementNeeded_CanExecute" />
+     
         <CommandBinding Command="mapViewer:CustomCommands.MoveElementUp" Executed="MoveElementUp_Execute" CanExecute="MoveElementUp_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.MoveElementDown" Executed="MoveElementDown_Execute" CanExecute="MoveElementDown_CanExecute" />
 
@@ -226,7 +228,8 @@
 						<Separator />
 						<MenuItem Command="mapViewer:CustomCommands.DeleteElement"    CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
 						<MenuItem Command="mapViewer:CustomCommands.SetColorElement" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-                        <MenuItem Command="mapViewer:CustomCommands.SendElementToBack" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.SendSymbolToFront" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.SendSymbolToBack" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.MoveElementUp" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.MoveElementDown" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <Separator />

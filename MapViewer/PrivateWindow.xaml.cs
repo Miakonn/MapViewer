@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Bluegrams.Application;
 using log4net;
 using MapViewer.Dialogs;
 using MapViewer.Maps;
@@ -341,19 +342,13 @@ namespace MapViewer {
         #region Public methods
 
         public void InitSettings() {
-            var  exefile = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var path = Path.GetDirectoryName(exefile);
-            if (string.IsNullOrWhiteSpace(path)) {
-                Log.Error("Unable to find folder for config file");
-                path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            }
-            Settings.Default.SettingsKey = Path.Combine(path, "user.config");
+            //string user = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            //PortableSettingsProvider.SettingsFileName = $"user.{user}.config".Replace("\\", "_");
+            PortableSettingsProvider.ApplyProvider(Properties.Settings.Default);
             if (!writtenLogSetting) {
-                Log.Debug("Uses settings file:" + Settings.Default.SettingsKey);
+                Log.Debug("Uses settings file:" + PortableSettingsProvider.SettingsFileName);
                 writtenLogSetting = true;
             }
-
-            Settings.Default.Upgrade();
         }
 
         public void DisplayPopup(string text)
