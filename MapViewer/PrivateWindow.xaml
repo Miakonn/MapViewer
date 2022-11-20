@@ -108,10 +108,10 @@
         <Ribbon Margin="1,1,1,1" Grid.Row="0" SelectionChanged="Tab_OnSelectionChanged">
 			<Ribbon.ApplicationMenu>
 				<RibbonApplicationMenu>
-					<RibbonApplicationMenuItem Header="Open image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
-					<RibbonApplicationMenuItem Header="Save mask/overlay" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
-					<RibbonApplicationMenuItem Header="Calibrate display" Command="mapViewer:CustomCommands.CalibrateDisplay" ImageSource="Images/Monitor_measure.png" />
-                    <RibbonApplicationMenuItem Name="Mru1"  Header="Open last image" Command="mapViewer:CustomCommands.OpenLastImage" ToolTip="F9" />
+					<RibbonApplicationMenuItem Header="Open Image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
+					<RibbonApplicationMenuItem Header="Save Mask/Overlay" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
+					<RibbonApplicationMenuItem Header="Calibrate Display" Command="mapViewer:CustomCommands.CalibrateDisplay" ImageSource="Images/Monitor_measure.png" />
+                    <RibbonApplicationMenuItem Name="Mru1"  Header="Open Last Image" Command="mapViewer:CustomCommands.OpenLastImage" ToolTip="F9" />
 					<RibbonApplicationMenuItem Header="Exit" Command="mapViewer:CustomCommands.ExitApp" />
 				</RibbonApplicationMenu>
 			</Ribbon.ApplicationMenu>
@@ -122,31 +122,31 @@
 			</RibbonTab>
 			<RibbonTab x:Name="GamingTab" Header="Gaming" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
 				<RibbonGroup Name="Zooming">
-					<RibbonButton Label="Zoom to fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png" ToolTip="Home"/>
-					<RibbonButton Label="Zoom in" Command="mapViewer:CustomCommands.ZoomIn" LargeImageSource="Images/zoom_in.png"/>
-					<RibbonButton Label="Zoom out" Command="mapViewer:CustomCommands.ZoomOut" LargeImageSource="Images/zoom_out.png"/>
+					<RibbonButton Label="Zoom to Fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png" ToolTip="Home"/>
+					<RibbonButton Label="Zoom In" Command="mapViewer:CustomCommands.ZoomIn" LargeImageSource="Images/zoom_in.png"/>
+					<RibbonButton Label="Zoom Out" Command="mapViewer:CustomCommands.ZoomOut" LargeImageSource="Images/zoom_out.png"/>
 					<RibbonToggleButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
 				</RibbonGroup>
 
 				<RibbonGroup Name="Masking">
-					<RibbonButton Label="Mask all" Command="mapViewer:CustomCommands.FullMask" LargeImageSource="Images/Map_mask.png" />
-					<RibbonToggleButton Label="Mask rect" Command="mapViewer:CustomCommands.MaskRectangle" LargeImageSource="Images/Map_mask_rect.png" />
-					<RibbonToggleButton Label="Mask circle" Command="mapViewer:CustomCommands.MaskCircle" LargeImageSource="Images/Map_mask_circle.png" />
-					<RibbonToggleButton Label="Mask polygon" Command="mapViewer:CustomCommands.MaskPolygon" LargeImageSource="Images/Map_mask_polygon.png" />
-					<RibbonButton Label="Unmask all" Command="mapViewer:CustomCommands.ClearMask" LargeImageSource="Images/map.png" />
-					<RibbonToggleButton Label="Unmask rect" Command="mapViewer:CustomCommands.UnmaskRectangle" LargeImageSource="Images/Map_unmask_rect.png" />
-					<RibbonToggleButton Label="Unmask circle" Command="mapViewer:CustomCommands.UnmaskCircle" LargeImageSource="Images/Map_unmask_circle.png" />
-					<RibbonToggleButton Label="Unmask polygon" Command="mapViewer:CustomCommands.UnmaskPolygon" LargeImageSource="Images/Map_unmask_polygon.png" />
+					<RibbonButton Label="Mask All" Command="mapViewer:CustomCommands.FullMask" LargeImageSource="Images/Map_mask.png" />
+					<RibbonToggleButton Label="Mask Rect" Command="mapViewer:CustomCommands.MaskRectangle" LargeImageSource="Images/Map_mask_rect.png" />
+					<RibbonToggleButton Label="Mask Circle" Command="mapViewer:CustomCommands.MaskCircle" LargeImageSource="Images/Map_mask_circle.png" />
+					<RibbonToggleButton Label="Mask Polygon" Command="mapViewer:CustomCommands.MaskPolygon" LargeImageSource="Images/Map_mask_polygon.png" />
+					<RibbonButton Label="Unmask All" Command="mapViewer:CustomCommands.ClearMask" LargeImageSource="Images/map.png" />
+					<RibbonToggleButton Label="Unmask Rect" Command="mapViewer:CustomCommands.UnmaskRectangle" LargeImageSource="Images/Map_unmask_rect.png" />
+					<RibbonToggleButton Label="Unmask Circle" Command="mapViewer:CustomCommands.UnmaskCircle" LargeImageSource="Images/Map_unmask_circle.png" />
+					<RibbonToggleButton Label="Unmask Polygon" Command="mapViewer:CustomCommands.UnmaskPolygon" LargeImageSource="Images/Map_unmask_polygon.png" />
 				</RibbonGroup>
 
 				<RibbonGroup Name="Spells">
-					<RibbonButton Label="Clear overlay" Command="mapViewer:CustomCommands.ClearOverlay" LargeImageSource="Images/Map.png"/>
-					<RibbonToggleButton Label="Create line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/draw_line.png" />
-					<RibbonToggleButton Label="Create cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/draw_cone.png" />
-					<RibbonToggleButton Label="Create circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/draw_circle.png" />
-					<RibbonToggleButton Label="Create rectangle" Command="mapViewer:CustomCommands.DrawRectangle" LargeImageSource="Images/draw_rect.png" />
-					<RibbonToggleButton Label="Create square" Command="mapViewer:CustomCommands.DrawSquare" LargeImageSource="Images/draw_square.png" />
-					<RibbonToggleButton Label="Create text" Command="mapViewer:CustomCommands.DrawText" LargeImageSource="Images/draw_text.png" />
+					<RibbonButton Label="Clear Overlay" Command="mapViewer:CustomCommands.ClearOverlay" LargeImageSource="Images/Map.png"/>
+					<RibbonToggleButton Label="Create Line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/draw_line.png" />
+					<RibbonToggleButton Label="Create Cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/draw_cone.png" />
+					<RibbonToggleButton Label="Create Circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/draw_circle.png" />
+					<RibbonToggleButton Label="Create Rectangle" Command="mapViewer:CustomCommands.DrawRectangle" LargeImageSource="Images/draw_rect.png" />
+					<RibbonToggleButton Label="Create Square" Command="mapViewer:CustomCommands.DrawSquare" LargeImageSource="Images/draw_square.png" />
+					<RibbonToggleButton Label="Create Text" Command="mapViewer:CustomCommands.DrawText" LargeImageSource="Images/draw_text.png" />
 				</RibbonGroup>
 
                 <RibbonGroup Name="Public" >
@@ -178,8 +178,8 @@
                         <ComboBoxItem Uid="PlayerSize_30p" Content="30 pixel"/>
                         <ComboBoxItem Uid="PlayerSize_35p" Content="35 pixel"/>
                     </ComboBox>
-                    <RibbonCheckBox Label="Show cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
-					<RibbonButton Label="Show display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" 
+                    <RibbonCheckBox Label="Show Cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
+					<RibbonButton Label="Show Display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" 
                                   ToolTip="F12">
 						<Button.Style>
 							<Style TargetType="{x:Type Button}">
@@ -191,7 +191,7 @@
 							</Style>
 						</Button.Style>
 					</RibbonButton>
-					<RibbonButton Label="Hide display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" >
+					<RibbonButton Label="Hide Display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" >
 						<Button.Style>
 							<Style TargetType="{x:Type Button}">
 								<Style.Triggers>

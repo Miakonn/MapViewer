@@ -18,50 +18,50 @@ namespace MapViewer {
         public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete element", "Delete element", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("Set colour", "Set colour", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand SendElementToBack = new RoutedUICommand("Send to back", "Send to back", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand MoveElementUp = new RoutedUICommand("Move up", "Move up", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand MoveElementDown = new RoutedUICommand("Move down", "Move down", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full mask", "Full mask", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand ShowPublicCursorTemporary = new RoutedUICommand("Show cursor temp.", "Show cursor temp.", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("DeleteSymbol", "Delete Symbol", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("SetColour", "Set Colour", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SendElementToBack = new RoutedUICommand("Send to Back", "Send to Back", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand MoveElementUp = new RoutedUICommand("Move Up", "Move Up", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand MoveElementDown = new RoutedUICommand("Move Down", "Move Down", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full Mask", "Full Mask", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand ShowPublicCursorTemporary = new RoutedUICommand("Show Cursor Temp.", "Show Cursor Temp.", typeof(CustomCommands), null);
 
-		public static readonly RoutedUICommand OpenImage = new RoutedUICommand("Open image", "Open image", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand OpenImage = new RoutedUICommand("Open Image", "Open Image", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ExitApp = new RoutedUICommand("Exit", "Exit", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand PublishMap = new RoutedUICommand("Publish", "Publish", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand ClearMask = new RoutedUICommand("Clear mask", "Clear mask", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand ClearOverlay = new RoutedUICommand("Clear overlay", "Clear overlay", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand ScaleToFit= new RoutedUICommand("Scale to fit", "Scale to fit", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand ZoomIn = new RoutedUICommand("Zoom in", "Zoom in", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand ZoomOut = new RoutedUICommand("Zoom out", "Zoom out", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand LevelDown = new RoutedUICommand("Level down", "Level up", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand LevelUp = new RoutedUICommand("Level up", "Level down", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand LevelDownPublish = new RoutedUICommand("Level down publish", "Level up publish", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand LevelUpPublish = new RoutedUICommand("Level up publish", "Level down publish", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand ClearMask = new RoutedUICommand("Clear Mask", "Clear Mask", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand ClearOverlay = new RoutedUICommand("Clear Overlay", "Clear Overlay", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand ScaleToFit= new RoutedUICommand("Scale to Fit", "Scale to Fit", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand ZoomIn = new RoutedUICommand("Zoom In", "Zoom In", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand ZoomOut = new RoutedUICommand("Zoom Out", "Zoom Out", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand LevelDown = new RoutedUICommand("Level Down", "Level Down", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand LevelUp = new RoutedUICommand("Level Up", "Level Up", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand LevelDownPublish = new RoutedUICommand("Level Down Publish", "Level Down Publish", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand LevelUpPublish = new RoutedUICommand("Level Up publish", "Level Up publish", typeof(CustomCommands), null);
 
-        public static readonly RoutedUICommand RotateMap = new RoutedUICommand("Rotate map", "Rotate map", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand AddDisplay = new RoutedUICommand("Add display", "Add display", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand RemoveDisplay = new RoutedUICommand("Remove display", "Remove display", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand RotateMap = new RoutedUICommand("Rotate Map", "Rotate Map", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand AddDisplay = new RoutedUICommand("Add Display", "Add Display", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand RemoveDisplay = new RoutedUICommand("Remove Display", "Remove Display", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand Save = new RoutedUICommand("Save", "Save", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand CalibrateDisplay = new RoutedUICommand("Calibrate display", "Calibrate display", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand OpenLastImage = new RoutedUICommand("Open last image", "Open last image", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand CalibrateDisplay = new RoutedUICommand("Calibrate Display", "Calibrate Display", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand OpenLastImage = new RoutedUICommand("Open Last Image", "Open Last Image", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand Calibrate = new RoutedUICommand("Calibrate", "Calibrate", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand Measure = new RoutedUICommand("Measure", "Measure", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand DrawLine = new RoutedUICommand("Draw line", "Draw line", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand DrawCone = new RoutedUICommand("Draw cone", "Draw cone", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand DrawCircle = new RoutedUICommand("Draw circle", "Draw circle", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand DrawRectangle = new RoutedUICommand("Draw rectangle", "Draw rectangle", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand DrawSquare = new RoutedUICommand("Draw square", "Draw square", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand DrawText = new RoutedUICommand("Draw text", "Draw text", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DrawLine = new RoutedUICommand("Draw Line", "Draw Line", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DrawCone = new RoutedUICommand("Draw Cone", "Draw Cone", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DrawCircle = new RoutedUICommand("Draw Circle", "Draw Circle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DrawRectangle = new RoutedUICommand("Draw Rectangle", "Draw Rectangle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DrawSquare = new RoutedUICommand("Draw Square", "Draw Square", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DrawText = new RoutedUICommand("Draw Text", "Draw Text", typeof(CustomCommands), null);
 
-		public static readonly RoutedUICommand MaskRectangle = new RoutedUICommand("Mask rectangle", "Mask rectangle", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand UnmaskRectangle = new RoutedUICommand("Unmask rectangle", "Unmask rectangle", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand MaskCircle = new RoutedUICommand("Mask circle", "Mask circle", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand UnmaskCircle = new RoutedUICommand("Unmask circle", "Unmask circle", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand MaskPolygon = new RoutedUICommand("Mask polygon", "Mask polygon", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand UnmaskPolygon = new RoutedUICommand("Unmask polygon", "Unmask polygon", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand MaskRectangle = new RoutedUICommand("Mask Rectangle", "Mask Rectangle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand UnmaskRectangle = new RoutedUICommand("Unmask Rectangle", "Unmask Rectangle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand MaskCircle = new RoutedUICommand("Mask Circle", "Mask Circle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand UnmaskCircle = new RoutedUICommand("Unmask Circle", "Unmask Circle", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand MaskPolygon = new RoutedUICommand("Mask Polygon", "Mask Polygon", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand UnmaskPolygon = new RoutedUICommand("Unmask Polygon", "Unmask Polygon", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand UnmaskLineOfSight20m = new RoutedUICommand("Unmask LOS 20m", "Unmask LOS 20m", typeof(CustomCommands), null);
 	}
 
