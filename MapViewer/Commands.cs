@@ -9,12 +9,14 @@ using MapViewer.Dialogs;
 using MapViewer.Maps;
 using MapViewer.Properties;
 using MapViewer.Utilities;
+using System.Windows.Media.Animation;
 
 namespace MapViewer {
 	public static class CustomCommands {
         public static readonly RoutedUICommand Player = new RoutedUICommand("Player", "Player", typeof(CustomCommands), null);
         public static readonly RoutedUICommand NonPlayer = new RoutedUICommand("NonPlayer", "NonPlayer", typeof(CustomCommands), null);
         public static readonly RoutedUICommand Monster = new RoutedUICommand("Monster", "Monster", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SymbolImage = new RoutedUICommand("Load Image", "Load Image", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
@@ -622,7 +624,33 @@ namespace MapViewer {
             
             MapPrivate.SymbolsPM.CreateSymbolCreature(pos, color, size, dialog.TextValue);
         }
-        
+
+        private void CreateSymbolImage(Point pos) {
+            ActiveTool = null;
+			var dialog = new DialogGetSingleValue {
+				LeadText = "Text",
+				TextValue = "Vehicles\\tank.png",
+				Owner = this
+			};
+			var result = dialog.ShowDialog();
+			if (!result.HasValue || !result.Value) {
+				return;
+			}
+
+			var parts = dialog.TextValue.Split(';');
+			double sizeMeter = 5;
+			double angle = 0;
+
+			if (parts.Length > 2) {
+				angle = double.Parse(parts[2]);
+			}
+            if (parts.Length > 1) {
+                sizeMeter = double.Parse(parts[1]);
+            }
+
+            MapPrivate.SymbolsPM.CreateSymbolImage(pos,  angle, sizeMeter, parts[0]);
+        }
+
         private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
             CreateCreature(Colors.LightBlue, _mouseDownPoint, 1);
         }
@@ -633,7 +661,11 @@ namespace MapViewer {
 
         private void Monster_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            CreateCreature(Colors.Orange, _mouseDownPoint, 3);
+			CreateCreature(Colors.Orange, _mouseDownPoint, 3);
+        }
+
+		        private void SymbolImage_Execute(object sender, ExecutedRoutedEventArgs e) {
+            CreateSymbolImage(_mouseDownPoint);
         }
 
         private void ShowPublicCursorTemporary_Execute(object sender, ExecutedRoutedEventArgs e) {

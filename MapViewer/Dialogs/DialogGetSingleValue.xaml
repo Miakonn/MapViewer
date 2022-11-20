@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="DialogGetSingleValue"  SizeToContent="WidthAndHeight"
 		WindowStartupLocation="CenterOwner"
-		ResizeMode="NoResize">
+		ResizeMode="CanResizeWithGrip">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -24,7 +24,7 @@
 		</Grid.RowDefinitions>
 
 		<Label Grid.Row="0" Grid.Column="0" Content="Dummy"  Name="LabelHint" HorizontalAlignment="Left" />
-		<TextBox Grid.Row="0" Grid.Column="1" Name="TextBoxValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  Width="80"/>
+		<TextBox Grid.Row="0" Grid.Column="1" Name="TextBoxValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="120"/>
 		<WrapPanel Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
 			<Button IsDefault="True" Name="BtnOk" Click="BtnOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
 			<Button IsCancel="True" MinWidth="60">_Cancel</Button>

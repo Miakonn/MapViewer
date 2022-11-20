@@ -3,6 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
 
@@ -10,7 +11,7 @@ namespace MapViewer.Symbols {
 
 
     [Serializable]
-    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), XmlInclude(typeof(SymbolPlayer)),
+    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), XmlInclude(typeof(SymbolPlayer)), XmlInclude(typeof(SymbolImage)),
      XmlInclude(typeof(SymbolCircle)), XmlInclude(typeof(SymbolText)), XmlInclude(typeof(SymbolLine))]
     public abstract class Symbol {
         public Point StartPoint { get; set; }
@@ -178,7 +179,40 @@ namespace MapViewer.Symbols {
             canvas.Children.Add(shape);
         }
     }
-    
 
+
+    [Serializable]
+    [XmlInclude(typeof(Symbol))]
+    public class SymbolImage : Symbol {
+        public string ImageFileName { get; set; }
+        public double RotationAngle { get; set; }
+
+
+        public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings) {
+
+            var image = new BitmapImage(new Uri(ImageFileName));
+
+            double scale = (SizeMeter / drawingSettings.ImageScaleMperPix) / Math.Max(image.Width, image.Height);
+
+            var trfScale = new ScaleTransform(scale, scale);
+            var trfRot = new RotateTransform(RotationAngle, scale * image.Width * 0.5, scale * image.Height * 0.5);
+
+            var finalTransform = new TransformGroup();
+            finalTransform.Children.Add(trfScale);
+            finalTransform.Children.Add(trfRot);
+
+            var shape = new Image {
+                Uid= Uid,
+                RenderTransform = finalTransform,
+                Opacity = 1.0,
+                Source = image,
+            };
+
+            Canvas.SetLeft(shape, StartPoint.X);
+            Canvas.SetTop(shape, StartPoint.Y);
+
+            canvas.Children.Add(shape);
+        }
+    }
 }
 

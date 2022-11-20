@@ -87,6 +87,21 @@ namespace MapViewer.Symbols {
             AddSymbol(symbol);
         }
 
+
+        public void CreateSymbolImage(Point pos, double angle, double sizeMeter, string fileName) {
+            fileName = System.IO.Path.GetFullPath(fileName);
+            var symbol = new SymbolImage {
+                Uid = GetTimestamp(),
+                Z_Order = GetMinZorder() - 1,
+                SizeMeter = sizeMeter,
+                StartPoint = pos,
+                RotationAngle = angle,
+                ImageFileName = fileName
+            };
+
+            AddSymbol(symbol);
+        }
+
         #endregion
     }
 }
