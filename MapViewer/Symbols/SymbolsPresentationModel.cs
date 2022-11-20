@@ -102,6 +102,15 @@ namespace MapViewer.Symbols {
             RaiseSymbolsChanged();
         }
 
+        public void MoveSymbolToFront(string uid) {
+            if (!Symbols.ContainsKey(uid)) {
+                return;
+            }
+
+            Symbols[uid].Z_Order = GetMinZorder() - 1;
+            RaiseSymbolsChanged();
+        }
+
         public void MoveSymbolToBack(string uid) {
             if (!Symbols.ContainsKey(uid)) {
                 return;

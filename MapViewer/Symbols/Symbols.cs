@@ -52,12 +52,17 @@ namespace MapViewer.Symbols {
             }
 
             var fontSize = 20 / drawingSettings.ZoomScale;
+            var fontColor = Colors.Black;
+
+            if (FillColor.Equals(Colors.Black) || FillColor.Equals(Colors.Purple) || FillColor.Equals(Colors.Blue)) {
+                fontColor = Colors.Orange;
+            }
 
             var textBlock = new TextBlock {
                 Uid = Uid + "_1",
                 Text = Caption,
                 FontSize = fontSize,
-                Foreground = new SolidColorBrush(Colors.Black),
+                Foreground = new SolidColorBrush(fontColor),
                 FontWeight = FontWeights.Normal,
                 IsHitTestVisible = false
             };

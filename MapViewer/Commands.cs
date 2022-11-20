@@ -18,9 +18,10 @@ namespace MapViewer {
         public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("DeleteSymbol", "Delete Symbol", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("SetColour", "Set Colour", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand SendElementToBack = new RoutedUICommand("Send to Back", "Send to Back", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete Symbol", "Delete Symbol", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("Set Colour", "Set Colour", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SendSymbolToFront = new RoutedUICommand("Bring to Front", "Bring to Front", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SendSymbolToBack = new RoutedUICommand("Send to Back", "Send to Back", typeof(CustomCommands), null);
         public static readonly RoutedUICommand MoveElementUp = new RoutedUICommand("Move Up", "Move Up", typeof(CustomCommands), null);
         public static readonly RoutedUICommand MoveElementDown = new RoutedUICommand("Move Down", "Move Down", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full Mask", "Full Mask", typeof(CustomCommands), null);
@@ -422,9 +423,18 @@ namespace MapViewer {
             }
 		}
 
-        private void SendElementToBack_Execute(object sender, ExecutedRoutedEventArgs e) {
+        private void SendSymbolToFront_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+            if (_lastClickedElem == null) {
+                return;
+            }
+
+            MapPrivate.SymbolsPM.MoveSymbolToFront(_lastClickedElem.Uid);
+        }
+
+        private void SendSymbolToBack_Execute(object sender, ExecutedRoutedEventArgs e) {
+            ActiveTool = null;
+            if (_lastClickedElem == null) {
                 return;
             }
  
@@ -433,7 +443,7 @@ namespace MapViewer {
         
         private void MoveElementUp_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+            if (_lastClickedElem == null) {
                 return;
             }
             MapPrivate.SymbolsPM.MoveSymbolUpDown(_lastClickedElem.Uid, MapAbove.SymbolsPM);
@@ -441,7 +451,7 @@ namespace MapViewer {
 
         private void MoveElementDown_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+            if (_lastClickedElem == null) {
                 return;
             }
             MapPrivate.SymbolsPM.MoveSymbolUpDown(_lastClickedElem.Uid, MapBelow.SymbolsPM);

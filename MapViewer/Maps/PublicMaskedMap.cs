@@ -27,7 +27,7 @@ namespace MapViewer.Maps {
                 Log.DebugFormat("ScaleToReal {0} {1}", ScreenScaleMMperM, ImageScaleMperPix);
 
                 if (MapData.ImageScaleMperPix < 1E-15) {
-                    MessageBox.Show("Image not calibrated!");
+                    MessageBox.Show("Image is not calibrated!");
                     return;
                 }
 
