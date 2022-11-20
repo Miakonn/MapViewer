@@ -347,7 +347,6 @@ namespace MapViewer {
 			MapPrivate.Serialize();
 			MapPublic.PublishFrom(MapPrivate, PublicNeedsRescaling);
 			PublicWindow.SetRuler();
-            MapPublic.UpdatePlayerElementSizes();
 			PublicWindow.DrawCompass();
             PublicWindow.MaximizeToCurrentMonitor();
 			PublicNeedsRescaling = false;

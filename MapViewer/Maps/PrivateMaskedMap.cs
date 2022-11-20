@@ -28,20 +28,14 @@ namespace MapViewer.Maps {
 
             if (TrfScale.ScaleX < GetMinScale(CanvasMap)) {
                 ScaleToWindow(CanvasMap);
-                UpdatePlayerElementSizes();
             }
             else {
                 TrfTranslate = new TranslateTransform();
                 var offs = CenterInMap() - posCenterBefore;
-                UpdatePlayerElementSizes();
-
                 TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
             }
             SymbolsPM.RaiseSymbolsChanged();
         }
-
-
-
 
         public override void ScaleToWindow(UIElement element) {
             var scale = GetMinScale(element);
@@ -73,7 +67,6 @@ namespace MapViewer.Maps {
                 UpdatePublicViewRectangle();
 
                 Deserialize();
-                UpdatePlayerElementSizes();
                 CreatePalette();
 
                 if (MapData.LastFigureScaleUsed != 0) {
@@ -144,8 +137,13 @@ namespace MapViewer.Maps {
         #region Symbols
 
         public void HandleSymbolsChanged(object sender, EventArgs e) {
+            var drawSettings = new MapDrawingSettings();
+            drawSettings.ZoomScale = ZoomScale;
+            drawSettings.ImageScaleMperPix = ImageScaleMperPix;
+            drawSettings.MinCreatureSizePixel = PlayerSizePixel;
+
             var se = sender as SymbolsPresentationModel;
-            se?.UpdateElements(CanvasOverlay, Scale, ImageScaleMperPix);
+            se?.UpdateElements(CanvasOverlay, drawSettings);
         }
         
         #endregion

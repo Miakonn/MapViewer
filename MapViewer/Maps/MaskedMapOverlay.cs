@@ -45,7 +45,7 @@ namespace MapViewer.Maps {
 				Width = 2 * radius,
 				Height = 2 * radius,
 				Stroke = new SolidColorBrush(color),
-				StrokeThickness = 10 / Scale,
+				StrokeThickness = 10 / ZoomScale,
 				Opacity = 0.6
 			};
 
@@ -60,7 +60,7 @@ namespace MapViewer.Maps {
 				return;
 			}
 
-			var thickness = 10 / Scale;
+			var thickness = 10 / ZoomScale;
 			var shape = new Rectangle {
 				Width = rect.Width + 2 * thickness,
 				Height = rect.Height + 2 * thickness,
@@ -97,7 +97,7 @@ namespace MapViewer.Maps {
 				OverlayRectangle(rect, Colors.Red, MaskedMap.PublicPositionUid);
 			}
 			else {
-				var thickness = 10 / Scale; 
+				var thickness = 10 / ZoomScale; 
 				Canvas.SetLeft(shape, rect.X - thickness);
 				Canvas.SetTop(shape, rect.Y - thickness);
 				shape.Width = rect.Width + 2 * thickness;
@@ -106,12 +106,6 @@ namespace MapViewer.Maps {
 				shape.Visibility = (rect.Size == new Size()) ? Visibility.Hidden : Visibility.Visible;
 			}
 		}
-
-        public void UpdatePlayerElementSizes() {
-           
-            // TODO
-            
-        }
 
         #endregion
 

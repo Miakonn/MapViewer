@@ -228,7 +228,7 @@ namespace MapViewer {
 
             if (_cursorAction == CursorAction.MovingPublicMapPos) {
                 var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
-                MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y)) * MapPublic.Scale * MapPublic.ScaleDpiFix);
+                MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y)) * MapPublic.ZoomScale * MapPublic.ScaleDpiFix);
                 _mouseDownPoint = curMouseDownPoint;
                 e.Handled = true;
             }
@@ -301,45 +301,23 @@ namespace MapViewer {
             var selected = (ComboBoxItem)ComboBoxPlayerSize.SelectedItem;
             if (selected != null && MapPublic != null && MapPrivate != null) {
                 switch (selected.Uid) {
-                    case "PlayerSize_0.7m":
-                        MapPublic.PlayerSizeMeter = 0.7;
-                        MapPublic.PlayerSizePixel = 0;
-                        MapPrivate.PlayerSizeMeter = 0.7;
-                        MapPrivate.PlayerSizePixel = 0;
-                        break;
-                    case "PlayerSize_1m":
-                        MapPublic.PlayerSizeMeter = 1;
-                        MapPublic.PlayerSizePixel = 0;
-                        MapPrivate.PlayerSizeMeter = 1;
-                        MapPrivate.PlayerSizePixel = 0;
-                        break;
                     case "PlayerSize_20p":
-                        MapPublic.PlayerSizeMeter = 0;
                         MapPublic.PlayerSizePixel = 20;
-                        MapPrivate.PlayerSizeMeter = 0;
                         MapPrivate.PlayerSizePixel = 20;
                         break;
                     case "PlayerSize_25p":
-                        MapPublic.PlayerSizeMeter = 0;
                         MapPublic.PlayerSizePixel = 25;
-                        MapPrivate.PlayerSizeMeter = 0;
                         MapPrivate.PlayerSizePixel = 25;
                         break;
                     case "PlayerSize_30p":
-                        MapPublic.PlayerSizeMeter = 0;
                         MapPublic.PlayerSizePixel = 30;
-                        MapPrivate.PlayerSizeMeter = 0;
                         MapPrivate.PlayerSizePixel = 30;
                         break;
                     case "PlayerSize_35p":
-                        MapPublic.PlayerSizeMeter = 0;
                         MapPublic.PlayerSizePixel = 35;
-                        MapPrivate.PlayerSizeMeter = 0;
                         MapPrivate.PlayerSizePixel = 35;
                         break;
                 }
-                MapPrivate.UpdatePlayerElementSizes();
-                MapPublic.UpdatePlayerElementSizes();
                 MapPrivate.SymbolsPM.RaiseSymbolsChanged();
             }
         }

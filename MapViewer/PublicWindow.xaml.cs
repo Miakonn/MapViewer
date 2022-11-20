@@ -204,9 +204,9 @@ namespace MapViewer {
 
         public void SetRuler()
         {
-            Log.Debug($"SetRuler ImageScaleMperPix={Map.ImageScaleMperPix} Scale={Map.Scale}");
+            Log.Debug($"SetRuler ImageScaleMperPix={Map.ImageScaleMperPix} Scale={Map.ZoomScale}");
 
-            var screenScaleMperPix = Map.ImageScaleMperPix / Map.Scale;
+            var screenScaleMperPix = Map.ImageScaleMperPix / Map.ZoomScale;
 
             _canvasRuler.Children.Clear();
 

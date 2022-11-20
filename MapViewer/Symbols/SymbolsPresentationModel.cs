@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MapViewer.Maps;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -71,19 +72,18 @@ namespace MapViewer.Symbols {
             return Symbols.Values.Select(symbol => symbol.Z_Order).Min();
         }
         
-        public void UpdateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
+        public void UpdateElements(Canvas canvas, MapDrawingSettings drawSettings)
         {
             canvas.RemoveAllSymbolsFromOverlay();
 
             var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.Z_Order);
-
             foreach (var symbol in symbolsInZorder) {
-                symbol.CreateElements(canvas, Scale, ImageScaleMperPix);
+                symbol.CreateElements(canvas, drawSettings);
             }
         }
 
         #region Symbol properties
- 
+
         public void DeleteSymbol(string uid)
         {
             if (!Symbols.ContainsKey(uid)) {

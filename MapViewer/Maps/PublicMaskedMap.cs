@@ -144,14 +144,14 @@ namespace MapViewer.Maps {
             if (ShowPublicCursor && MapId == privateMapId) {
                 var elemCursor = CanvasOverlay.FindElementByUid(PublicCursorUid) as Ellipse;
 
-                var radius = 30 / Scale;
+                var radius = 30 / ZoomScale;
                 if (elemCursor == null) {
                     OverlayRing(pnt, radius, Colors.Red, PublicCursorUid);
                 }
                 else {
                     elemCursor.Width = 2 * radius;
                     elemCursor.Height = 2 * radius;
-                    elemCursor.StrokeThickness = 10 / Scale;
+                    elemCursor.StrokeThickness = 10 / ZoomScale;
                     Canvas.SetLeft(elemCursor, pnt.X - radius);
                     Canvas.SetTop(elemCursor, pnt.Y - radius);
                 }
@@ -161,10 +161,14 @@ namespace MapViewer.Maps {
             }
         }
 
-
         private void HandleSymbolsChanged(object sender, EventArgs e) {
+            var drawSettings = new MapDrawingSettings();
+            drawSettings.ZoomScale = ZoomScale;
+            drawSettings.ImageScaleMperPix = ImageScaleMperPix;
+            drawSettings.MinCreatureSizePixel = PlayerSizePixel;
+
             var symbolsPm = (SymbolsPresentationModel)sender;
-            symbolsPm?.UpdateElements(CanvasOverlay, Scale, ImageScaleMperPix);
+            symbolsPm?.UpdateElements(CanvasOverlay, drawSettings);
         }
 
     }

@@ -94,7 +94,7 @@ namespace MapViewer.Tools {
 				X2 = pt1.X,
 				Y2 = pt1.Y,
 				Stroke = Brushes.Blue,
-				StrokeThickness = 10 / _map.Scale,
+				StrokeThickness = 10 / _map.ZoomScale,
 				Opacity = 0.5
 			};
 			_canvas.Children.Add(_line);
@@ -106,7 +106,7 @@ namespace MapViewer.Tools {
 					X2 = pt1.X,
 					Y2 = pt1.Y,
 					Stroke = Brushes.Blue,
-					StrokeThickness = 10/_map.Scale,
+					StrokeThickness = 10/_map.ZoomScale,
 					Opacity = 0.5
 				};
 				_canvasPublic.Children.Add(_linePublic);

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MapViewer.Properties;
 using Image = System.Windows.Controls.Image;
-using Path = System.IO.Path;
 using Point = System.Windows.Point;
 
 namespace MapViewer.Maps {
@@ -126,7 +124,7 @@ namespace MapViewer.Maps {
 
         public string ImageFilePath { get; set; }
 
-        public double Scale => MapImage != null ? TrfScale.ScaleX : 1.0;
+        public double ZoomScale => MapImage != null ? TrfScale.ScaleX : 1.0;
 
         public double ScaleDpiFix => MapImage != null ? (MapImage.PixelHeight / MapImage.Height) : 1.0;
 
@@ -153,7 +151,7 @@ namespace MapViewer.Maps {
 
             MapData = new MapData(null);
 
-            PlayerSizeMeter = 0;
+            PlayerSizeMeter = 0.8;
             PlayerSizePixel = 20;
             IsLinked = false;
 
@@ -194,7 +192,6 @@ namespace MapViewer.Maps {
 
             // CanvasOverlay
             CanvasOverlay.RenderTransform = DisplayTransform;
-            UpdatePlayerElementSizes();
         }
 
         public void CreatePalette() {

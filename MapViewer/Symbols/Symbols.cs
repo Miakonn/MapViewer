@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MapViewer.Maps;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,7 +10,7 @@ namespace MapViewer.Symbols {
 
 
     [Serializable]
-    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), 
+    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), XmlInclude(typeof(SymbolPlayer)),
      XmlInclude(typeof(SymbolCircle)), XmlInclude(typeof(SymbolText)), XmlInclude(typeof(SymbolLine))]
     public abstract class Symbol {
         public Point StartPoint { get; set; }
@@ -18,22 +19,25 @@ namespace MapViewer.Symbols {
         public int Z_Order { get; set; }
         public double SizeMeter { get; set; }
 
-        public abstract void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix);
+        public abstract void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings);
     }
     
-    [Serializable]
-    [XmlInclude(typeof(Symbol))]
-    public class SymbolCreature : Symbol {
+
+    public class SymbolCreature : Symbol
+    {
         public string Caption { get; set; }
 
-        public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
-        {
+        public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings) {
             var brush = new SolidColorBrush(FillColor);
- 
+
+            double sizePixel = SizeMeter / drawingSettings.ImageScaleMperPix;
+            double minSizeScaled = drawingSettings.MinCreatureSizePixel / drawingSettings.ZoomScale;
+            sizePixel = Math.Max(sizePixel, minSizeScaled);
+
             var shape = new Ellipse {
                 Uid = Uid,
-                Width = SizeMeter / ImageScaleMperPix,
-                Height = SizeMeter / ImageScaleMperPix,
+                Width = sizePixel,
+                Height = sizePixel,
                 Fill = brush,
                 Opacity = 1.0
             };
@@ -47,7 +51,7 @@ namespace MapViewer.Symbols {
                 return;
             }
 
-            var fontSize = 20 / Scale;
+            var fontSize = 20 / drawingSettings.ZoomScale;
 
             var textBlock = new TextBlock {
                 Uid = Uid + "_1",
@@ -65,18 +69,21 @@ namespace MapViewer.Symbols {
         }
     }
 
+
+    public class SymbolPlayer : SymbolCreature { }  
+
     [Serializable]
     [XmlInclude(typeof(Symbol))]
     public class SymbolCircle : Symbol {
 
-        public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
+        public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings)
         {
             var brush = new SolidColorBrush(FillColor);
 
             var shape = new Ellipse {
                 Uid = Uid,
-                Width = SizeMeter / ImageScaleMperPix,
-                Height = SizeMeter / ImageScaleMperPix,
+                Width = SizeMeter / drawingSettings.ImageScaleMperPix,
+                Height = SizeMeter / drawingSettings.ImageScaleMperPix,
                 Fill = brush,
                 Opacity = 1.0
             };
@@ -93,7 +100,7 @@ namespace MapViewer.Symbols {
     public class SymbolPolygon : Symbol {
         public PointCollection Corners { get; set; }
         
-        public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix) {
+        public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings) {
             var shape = new Polygon {
                 Uid = Uid,
                 Points = Corners,
@@ -114,9 +121,9 @@ namespace MapViewer.Symbols {
         public double RotationAngle { get; set; }
         public double LengthMeter { get; set; }
 
-        public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
+        public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings)
         {
-            var fontSize = 25 / Scale;
+            var fontSize = 25 / drawingSettings.ZoomScale;
             var textBlock = new TextBlock {
                 Uid = Uid,
                 //RenderTransform = new RotateTransform(RotationAngle),
@@ -127,7 +134,7 @@ namespace MapViewer.Symbols {
             };
 
             var textSize = canvas.GetTextSize(textBlock);
-            double scaleLength = LengthMeter / ImageScaleMperPix / textSize.Width;
+            double scaleLength = LengthMeter / drawingSettings.ImageScaleMperPix / textSize.Width;
 
             // Reset size and angle
             textBlock.RenderTransform = new RotateTransform(RotationAngle);
@@ -148,7 +155,7 @@ namespace MapViewer.Symbols {
         public double Width { get; set; }
         public Point EndPoint { get; set; }
 
-        public override void CreateElements(Canvas canvas, double Scale, double ImageScaleMperPix)
+        public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings)
         {
             var shape = new Line {
                 Uid = Uid,
@@ -156,7 +163,7 @@ namespace MapViewer.Symbols {
                 Y1 = 0,
                 X2 = EndPoint.X,
                 Y2 = EndPoint.Y,
-                StrokeThickness = Width / ImageScaleMperPix,
+                StrokeThickness = Width / drawingSettings.ImageScaleMperPix,
                 Stroke = new SolidColorBrush(FillColor),
                 Opacity = 0.4
 
