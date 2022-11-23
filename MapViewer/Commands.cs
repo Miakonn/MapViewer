@@ -15,7 +15,7 @@ namespace MapViewer {
 	public static class CustomCommands {
         public static readonly RoutedUICommand Player = new RoutedUICommand("Player", "Player", typeof(CustomCommands), null);
         public static readonly RoutedUICommand NonPlayer = new RoutedUICommand("NonPlayer", "NonPlayer", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand Monster = new RoutedUICommand("Monster", "Monster", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand DuplicateSymbol = new RoutedUICommand("Duplicate", "Duplicate", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SymbolImage = new RoutedUICommand("Load Image", "Load Image", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
@@ -391,19 +391,21 @@ namespace MapViewer {
 			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
 				return;
 			}
-
-			var uid = _lastClickedElem.Uid;
-			MapPrivate.RemoveElement(_lastClickedElem);
-			if (PublicWindow.IsVisible) {
-				var elemPublic = MapPublic.CanvasOverlay.FindElementByUid(uid);
-				if (elemPublic != null) {
-					MapPublic.RemoveElement(elemPublic);
-				}
-			}
-            MapPrivate.SymbolsPM.DeleteSymbol(uid);
+			
+            MapPrivate.SymbolsPM.DeleteSymbol(_lastClickedElem.Uid);
 		}
 
-		private void SetColorElement_Execute(object sender, ExecutedRoutedEventArgs e) {
+
+        private void DuplicateSymbol_Execute(object sender, ExecutedRoutedEventArgs e) {
+            ActiveTool = null;
+            if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+                return;
+            }
+ 
+            MapPrivate.SymbolsPM.DuplicateSymbol(_lastClickedElem.Uid);
+        }
+
+        private void SetColorElement_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
 				return;
@@ -610,7 +612,7 @@ namespace MapViewer {
             MapPrivate.SymbolsPM.CreateSymbolCircle(_mouseDownPoint, Colors.Yellow, 2);
 		}
 
-        private void CreateCreature(Color color, Point pos, int size) {
+        private void CreateCreature(Color color, Point pos, double size) {
             ActiveTool = null;
             var dialog = new DialogGetSingleValue {
                 LeadText = "Text",
@@ -626,45 +628,22 @@ namespace MapViewer {
         }
 
         private void CreateSymbolImage(Point pos) {
-            ActiveTool = null;
-			var dialog = new DialogGetSingleValue {
-				LeadText = "Text",
-				TextValue = "Vehicles\\tank.png",
-				Owner = this
-			};
-			var result = dialog.ShowDialog();
-			if (!result.HasValue || !result.Value) {
-				return;
-			}
-
-			var parts = dialog.TextValue.Split(';');
-			double sizeMeter = 5;
-			double angle = 0;
-
-			if (parts.Length > 2) {
-				angle = double.Parse(parts[2]);
-			}
-            if (parts.Length > 1) {
-                sizeMeter = double.Parse(parts[1]);
+            var symbol = MapPrivate.SymbolsPM.CreateSymbolImage(pos);
+			var result = symbol.OpenEditor(pos, MapPrivate.SymbolsPM);
+            if (!result) {
+                MapPrivate.SymbolsPM.DeleteSymbol(symbol.Uid);
             }
-
-            MapPrivate.SymbolsPM.CreateSymbolImage(pos,  angle, sizeMeter, parts[0]);
         }
 
         private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
-            CreateCreature(Colors.LightBlue, _mouseDownPoint, 1);
+            CreateCreature(Colors.LightBlue, _mouseDownPoint, 0.8);
         }
 
         private void NonPlayer_Execute(object sender, ExecutedRoutedEventArgs e) {
-            CreateCreature(Colors.Orange, _mouseDownPoint, 1);
+            CreateCreature(Colors.Orange, _mouseDownPoint, 0.8);
         }
-
-        private void Monster_Execute(object sender, ExecutedRoutedEventArgs e)
-        {
-			CreateCreature(Colors.Orange, _mouseDownPoint, 3);
-        }
-
-		        private void SymbolImage_Execute(object sender, ExecutedRoutedEventArgs e) {
+		
+        private void SymbolImage_Execute(object sender, ExecutedRoutedEventArgs e) {
             CreateSymbolImage(_mouseDownPoint);
         }
 

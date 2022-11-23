@@ -2,10 +2,10 @@
 using System.Windows.Media;
 
 namespace MapViewer.Symbols {
-    public partial class SymbolsPresentationModel {
+    public partial class SymbolsViewModel {
         #region Factory
 
-        public void CreateSymbolCreature(Point pos, Color color, double sizeMeter, string caption) {
+        public Symbol CreateSymbolCreature(Point pos, Color color, double sizeMeter, string caption) {
             var symbol = new SymbolCreature {
                 Uid = GetTimestamp(),
                 FillColor = color,
@@ -16,9 +16,10 @@ namespace MapViewer.Symbols {
             };
 
             AddSymbol(symbol);
+            return symbol;
         }
 
-        public void CreateSymbolCircle(Point pos, Color color, double radiusMeter) {
+        public Symbol CreateSymbolCircle(Point pos, Color color, double radiusMeter) {
             var symbol = new SymbolCreature {
                 Uid = GetTimestamp(),
                 FillColor = color,
@@ -28,9 +29,10 @@ namespace MapViewer.Symbols {
             };
 
             AddSymbol(symbol);
+            return symbol;
         }
 
-        public void CreateSymbolLine(Point startPoint, Point endPoint, double width, Color color) {
+        public Symbol CreateSymbolLine(Point startPoint, Point endPoint, double width, Color color) {
             var symbol = new SymbolLine {
                 Uid = GetTimestamp(),
                 FillColor = color,
@@ -41,9 +43,10 @@ namespace MapViewer.Symbols {
             };
 
             AddSymbol(symbol);
+            return symbol;
         }
 
-        public void CreateSymbolText(Point pos, double angle, double lengthMeter, Color color, string caption) {
+        public Symbol CreateSymbolText(Point pos, double angle, double lengthMeter, Color color, string caption) {
             var symbol = new SymbolText {
                 Uid = GetTimestamp(),
                 Caption = caption,
@@ -55,9 +58,10 @@ namespace MapViewer.Symbols {
             };
 
             AddSymbol(symbol);
+            return symbol;
         }
 
-        public void CreateSymbolPolygon(PointCollection corners, Color color) {
+        public Symbol CreateSymbolPolygon(PointCollection corners, Color color) {
             var posCenter = new Point();
 
             foreach (var corner in corners) {
@@ -85,21 +89,19 @@ namespace MapViewer.Symbols {
             };
 
             AddSymbol(symbol);
+            return symbol;
         }
 
-
-        public void CreateSymbolImage(Point pos, double angle, double sizeMeter, string fileName) {
-            fileName = System.IO.Path.GetFullPath(fileName);
+        public Symbol CreateSymbolImage(Point pos) {
             var symbol = new SymbolImage {
                 Uid = GetTimestamp(),
                 Z_Order = GetMinZorder() - 1,
-                SizeMeter = sizeMeter,
-                StartPoint = pos,
-                RotationAngle = angle,
-                ImageFileName = fileName
+                SizeMeter = 4,
+                StartPoint = pos
             };
 
             AddSymbol(symbol);
+            return symbol;
         }
 
         #endregion

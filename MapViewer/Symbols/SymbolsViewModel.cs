@@ -51,7 +51,7 @@ namespace MapViewer.Symbols {
             SymbolsChanged?.Invoke(this, null);
         }
         
-        private string GetTimestamp()
+        public static string GetTimestamp()
         {
             return "Symbol_" + (int)(DateTime.UtcNow.Subtract(new DateTime(2022, 1, 1)).TotalSeconds);
         }
@@ -92,7 +92,17 @@ namespace MapViewer.Symbols {
             Symbols.Remove(uid);
             RaiseSymbolsChanged();
         }
-       
+
+        public void DuplicateSymbol(string uid) {
+            if (!Symbols.ContainsKey(uid)) {
+                return;
+            }
+            var symbol = Symbols[uid].Copy();
+            AddSymbol(symbol);
+            RaiseSymbolsChanged();
+        }
+
+
         public void SetSymbolColor(string uid, Color color)
         {
             if (!Symbols.ContainsKey(uid)) {
@@ -148,7 +158,7 @@ namespace MapViewer.Symbols {
             }
 
             var symbol = Symbols[uid];
-            symbol.OpenEditor(mouseDownPoint);
+            symbol.OpenEditor(mouseDownPoint, this);
             RaiseSymbolsChanged();
         }
 
@@ -179,7 +189,7 @@ namespace MapViewer.Symbols {
             try {
                 var serializer = new XmlSerializer(GetType());
                 using (var reader = XmlReader.Create(filename)) {
-                    var spm = (SymbolsViewModel )serializer.Deserialize(reader);
+                    var spm = (SymbolsViewModel)serializer.Deserialize(reader);
 
                     foreach (var symbol in spm.SymbolsOnly) {
                         AddSymbolWithoutRaise(symbol);

@@ -67,13 +67,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialogs\DialogImageProp.xaml.cs">
+      <DependentUpon>DialogImageProp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogCreatureProp.xaml.cs">
+      <DependentUpon>DialogCreatureProp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Maps\MapDrawingSettings.cs" />
     <Compile Include="Maps\PrivateMaskedMap.cs" />
     <Compile Include="Maps\PublicMaskedMap.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Symbols\Symbols.cs" />
-    <Compile Include="Symbols\SymbolsPresentationModel.cs" />
-    <Compile Include="Symbols\SymbolsPresentationModel.Factory.cs" />
+    <Compile Include="Symbols\SymbolsViewModel.cs" />
+    <Compile Include="Symbols\SymbolsViewModel.Factory.cs" />
     <Compile Include="Utilities\BitmapUtils.cs" />
     <Compile Include="Utilities\CanvasUtils.cs" />
     <Compile Include="Commands.cs" />
@@ -123,6 +129,14 @@
     <Page Include="Dialogs\DialogColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogImageProp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\DialogCreatureProp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\DialogGetDoubleValue.xaml">
       <Generator>MSBuild:Compile</Generator>

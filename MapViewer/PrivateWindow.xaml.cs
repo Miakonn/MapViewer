@@ -204,6 +204,14 @@ namespace MapViewer {
                 }
                 e.Handled = true;
             }
+            else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
+                if (_lastClickedElem != null && _lastClickedElem.Uid != MaskedMap.PublicPositionUid) {
+                    _mouseDownPoint = e.GetPosition(this);
+                    _cursorAction = CursorAction.None;
+                    MapPrivate.SymbolsPM.OpenEditor(_lastClickedElem.Uid, _mouseDownPoint);
+                }
+                e.Handled = true;
+            }
             else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
                 _mouseDownPoint = e.GetPosition(MapPrivate.CanvasMap);
                 _mouseDownPointFirst = _mouseDownPoint;

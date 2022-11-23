@@ -8,3 +8,7 @@
 
 *	visa rutan före publicering
 
+* ladda färdiga grupper
+* multipla val
+* rotera objekt
+* gummiband vid förflyttning

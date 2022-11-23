@@ -11,12 +11,12 @@ namespace MapViewer.Maps {
     public class PrivateMaskedMap: MaskedMap {
         private const string FolderName = "MapViewerFiles";
         
-        public SymbolsPresentationModel SymbolsPM;
+        public SymbolsViewModel SymbolsPM;
 
         public PrivateMaskedMap(Window parent, long groupId) : base(parent, groupId) {
             MaskOpacity = 0.3;
             CreatePalette();
-            SymbolsPM = new SymbolsPresentationModel();
+            SymbolsPM = new SymbolsViewModel();
             SymbolsPM.SymbolsChanged += HandleSymbolsChanged;
         }
 
@@ -142,7 +142,7 @@ namespace MapViewer.Maps {
             drawSettings.ImageScaleMperPix = ImageScaleMperPix;
             drawSettings.MinCreatureSizePixel = PlayerSizePixel;
 
-            var se = sender as SymbolsPresentationModel;
+            var se = sender as SymbolsViewModel;
             se?.UpdateElements(CanvasOverlay, drawSettings);
         }
         
