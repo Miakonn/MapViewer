@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -91,14 +93,18 @@ namespace MapViewer.Tools {
 
 		private PointCollection CreatePointCollection() {
 			var points = new PointCollection(3);
-			var vector = new Vector(_pnt1.X - _pnt2.X, _pnt1.Y - _pnt2.Y);
-			var vectorPerp = new Vector(vector.Y / 2, -vector.X / 2);
+			var vector = new Vector(_pnt2.X - _pnt1.X, _pnt2.Y - _pnt1.Y);
 
-			points.Add(_pnt1);
-			points.Add(_pnt2 + vectorPerp);
-			points.Add(_pnt2 - vectorPerp);
+            var angleDegree = Math.Atan2(vector.Y, vector.X) * 180.0 / Math.PI;
 
-			return points;
+            points.Add(_pnt1);
+            for (var a = -30.0; a <= 30.0; a += 5.0) {
+                var aRadian = (a + angleDegree) * (Math.PI / 180.0);
+                var pnt = new Point(_pnt1.X + vector.Length * Math.Cos(aRadian), _pnt1.Y + vector.Length * Math.Sin(aRadian));
+                points.Add(pnt);
+            }
+			
+            return points;
 		}
 
 		private string CalculateDistance() {
@@ -111,8 +117,11 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-			var points = CreatePointCollection();
-			_map.SymbolsPM.CreateSymbolPolygon(points, Colors.Green);
+            var vector = new Vector(_pnt2.X - _pnt1.X, _pnt2.Y - _pnt1.Y);
+            var angleDegree = Math.Atan2(vector.Y, vector.X) * 180.0 / Math.PI;
+            var lengthMeter = vector.Length * _privateWindow.MapPrivate.ImageScaleMperPix;
+			
+            _map.SymbolsPM.CreateSymbolCone(_pnt1, angleDegree, lengthMeter , 30.0, Colors.Green);
             _privateWindow.ActiveTool = null;
 		}
     }

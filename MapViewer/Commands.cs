@@ -396,6 +396,7 @@ namespace MapViewer {
 		}
 
 
+
         private void DuplicateSymbol_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
             if (_lastClickedElem == null || _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {

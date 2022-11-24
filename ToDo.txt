@@ -12,3 +12,16 @@
 * multipla val
 * rotera objekt
 * gummiband vid förflyttning
+* 
+
+
+* SymbolCone!
+* SymbolLine !
+
+
+
+* riktning på creature?
+* ändra text-storlek
+* kolla indata i dialogprop
+
+

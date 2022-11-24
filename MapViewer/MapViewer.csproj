@@ -77,9 +77,16 @@
     <Compile Include="Maps\PrivateMaskedMap.cs" />
     <Compile Include="Maps\PublicMaskedMap.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Symbols\SymbolCircle.cs" />
+    <Compile Include="Symbols\SymbolCone.cs" />
+    <Compile Include="Symbols\SymbolCreature.cs" />
+    <Compile Include="Symbols\SymbolImage.cs" />
+    <Compile Include="Symbols\SymbolLine.cs" />
+    <Compile Include="Symbols\SymbolPolygon.cs" />
     <Compile Include="Symbols\Symbols.cs" />
     <Compile Include="Symbols\SymbolsViewModel.cs" />
     <Compile Include="Symbols\SymbolsViewModel.Factory.cs" />
+    <Compile Include="Symbols\SymbolText.cs" />
     <Compile Include="Utilities\BitmapUtils.cs" />
     <Compile Include="Utilities\CanvasUtils.cs" />
     <Compile Include="Commands.cs" />

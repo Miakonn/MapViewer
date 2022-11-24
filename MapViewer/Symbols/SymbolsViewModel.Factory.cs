@@ -61,6 +61,23 @@ namespace MapViewer.Symbols {
             return symbol;
         }
 
+
+        public Symbol CreateSymbolCone(Point pos, double angleDegree, double lengthMeter, double widthDegrees, Color color) {
+            var symbol = new SymbolCone() {
+                Uid = GetTimestamp(),
+                FillColor = color,
+                SizeMeter = lengthMeter,
+                WidthDegrees = widthDegrees,
+                Z_Order = GetMinZorder() - 1,
+                StartPoint = pos,
+                RotatationAngle = angleDegree
+            };
+
+            AddSymbol(symbol);
+            return symbol;
+        }
+
+
         public Symbol CreateSymbolPolygon(PointCollection corners, Color color) {
             var posCenter = new Point();
 
