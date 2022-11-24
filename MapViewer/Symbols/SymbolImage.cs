@@ -46,26 +46,7 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(shape, StartPoint.Y - image.PixelHeight * scale / 2);
             canvas.Children.Add(shape);
 
-
-            if (string.IsNullOrWhiteSpace(Caption)) {
-                return;
-            }
-            var fontSize = 20 / drawingSettings.ZoomScale;
-            var fontColor = Colors.Black;
-
-            var textBlock = new TextBlock {
-                Uid = Uid + "_1",
-                Text = Caption,
-                FontSize = fontSize,
-                Foreground = new SolidColorBrush(fontColor),
-                FontWeight = FontWeights.Normal,
-                IsHitTestVisible = false
-            };
-
-            var textSize = canvas.GetTextSize(textBlock);
-            Canvas.SetLeft(textBlock, StartPoint.X - textSize.Width / 2.0);
-            Canvas.SetTop(textBlock, StartPoint.Y - textSize.Height / 2.0);
-            canvas.Children.Add(textBlock);
+            CreateText(Caption, canvas, drawingSettings);
         }
 
         public override bool OpenEditor(Point mouseDownPoint, SymbolsViewModel symbolsVM) {

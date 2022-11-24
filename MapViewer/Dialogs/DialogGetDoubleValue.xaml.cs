@@ -17,7 +17,7 @@ namespace MapViewer.Dialogs {
         }
 
 		public float FloatValue1 {
-			get => float.TryParse(TextBoxValue1.Text, out var val) ? val : 0;
+			get => float.TryParse(TextBoxValue1.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture,  out var val) ? val : 0;
             set => TextBoxValue1.Text = value.ToString(CultureInfo.InvariantCulture);
         }
 

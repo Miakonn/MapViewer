@@ -18,7 +18,7 @@ namespace MapViewer.Dialogs {
             set {
                 _symbol = value;
                 CaptionValue.Text = Symbol.Caption;
-                SizeValue.Text = Symbol.SizeMeter.ToString(CultureInfo.InvariantCulture);
+                SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
                 Angle = (int)Symbol.RotationAngle;
                 FilenameValue.Text = Symbol.ImageFileName;
             }
@@ -36,6 +36,7 @@ namespace MapViewer.Dialogs {
             var str = SizeValue.Text.Replace(',', '.');
             if (double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sizeM)) {
                 Symbol.SizeMeter = sizeM;
+                SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
             }
 
             SymbolsVM?.RaiseSymbolsChanged();

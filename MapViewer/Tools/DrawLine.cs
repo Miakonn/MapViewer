@@ -4,6 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
+using MapViewer.Symbols;
+using System;
 
 namespace MapViewer.Tools {
 	class DrawLine : ICanvasTool {
@@ -99,11 +101,18 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-            var startPoint = new Point(_line.X1, _line.Y1);
-            var endPoint = new Point(_line.X2 - _line.X1, _line.Y2 - _line.Y1);
-            _map.SymbolsPM.CreateSymbolLine(startPoint, endPoint, 0.8, Colors.OrangeRed);
+            var pnt1 = new Point(_line.X1, _line.Y1);
+            var pnt2 = new Point(_line.X2 , _line.Y2);
+            var vectLength = new Vector(pnt2.X - pnt1.X, pnt2.Y - pnt1.Y);
 
-			_privateWindow.ActiveTool = null;
+            var angleDegree = SymbolsViewModel.ToDegrees(Math.Atan2(vectLength.Y, vectLength.X));
+            var lengthMeter = vectLength.Length * _privateWindow.MapPrivate.ImageScaleMperPix;
+			
+            var center = pnt1 + vectLength * 0.5 ;
+
+            _map.SymbolsPM.CreateSymbolRect(center, lengthMeter, 0.8, angleDegree, Colors.Green);
+
+            _privateWindow.ActiveTool = null;
 		}
 
 	}

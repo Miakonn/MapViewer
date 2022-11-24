@@ -79,7 +79,6 @@
 		<CommandBinding Command="mapViewer:CustomCommands.DrawCone" Executed="DrawCone_Execute" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Execute" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.DrawRectangle" Executed="DrawRectangle_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawSquare" Executed="DrawSquare_Execute" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.DrawText" Executed="DrawText_Execute" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" Executed="ShowPublicCursorTemporary_Execute" CanExecute="Spell_CanExecute" />
 
@@ -148,7 +147,6 @@
 					<RibbonToggleButton Label="Create Cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/draw_cone.png" />
 					<RibbonToggleButton Label="Create Circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/draw_circle.png" />
 					<RibbonToggleButton Label="Create Rectangle" Command="mapViewer:CustomCommands.DrawRectangle" LargeImageSource="Images/draw_rect.png" />
-					<RibbonToggleButton Label="Create Square" Command="mapViewer:CustomCommands.DrawSquare" LargeImageSource="Images/draw_square.png" />
 					<RibbonToggleButton Label="Create Text" Command="mapViewer:CustomCommands.DrawText" LargeImageSource="Images/draw_text.png" />
 				</RibbonGroup>
 

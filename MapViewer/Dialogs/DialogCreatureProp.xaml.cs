@@ -13,13 +13,13 @@ namespace MapViewer.Dialogs {
         public double SizeMeter {
             get {
                 var str = TextBoxValue2.Text.Replace(',', '.');
-                if (double.TryParse(str, out var val)) {
+                if (double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var val)) {
                     return val;
                 }
 
                 return 0.8;
             }
-            set => TextBoxValue2.Text = value.ToString(CultureInfo.InvariantCulture);
+            set => TextBoxValue2.Text = value.ToString("N1", CultureInfo.InvariantCulture);
         }
 
         public Point StartPosition {

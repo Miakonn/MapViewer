@@ -70,6 +70,9 @@
     <Compile Include="Dialogs\DialogConeProp.xaml.cs">
       <DependentUpon>DialogConeProp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\DialogRectProp.xaml.cs">
+      <DependentUpon>DialogRectProp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\DialogImageProp.xaml.cs">
       <DependentUpon>DialogImageProp.xaml</DependentUpon>
     </Compile>
@@ -84,7 +87,7 @@
     <Compile Include="Symbols\SymbolCone.cs" />
     <Compile Include="Symbols\SymbolCreature.cs" />
     <Compile Include="Symbols\SymbolImage.cs" />
-    <Compile Include="Symbols\SymbolLine.cs" />
+    <Compile Include="Symbols\SymbolRectangle.cs" />
     <Compile Include="Symbols\SymbolPolygon.cs" />
     <Compile Include="Symbols\Symbols.cs" />
     <Compile Include="Symbols\SymbolsViewModel.cs" />
@@ -115,7 +118,6 @@
     <Compile Include="Tools\DrawCone.cs" />
     <Compile Include="Tools\MaskPolygon.cs" />
     <Compile Include="Tools\DrawRectangle.cs" />
-    <Compile Include="Tools\DrawSquare.cs" />
     <Compile Include="Tools\DrawText.cs" />
     <Compile Include="Tools\MaskCircle.cs" />
     <Compile Include="Tools\Measure.cs" />
@@ -141,6 +143,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\DialogConeProp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\DialogRectProp.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -172,7 +172,13 @@ namespace MapViewer.Symbols {
             }
         }
 
+        public static double ToRadians(double degrees) {
+            return degrees * (Math.PI / 180.0);
+        }
 
+        public static double ToDegrees(double radians) {
+            return radians * (180.0 / Math.PI);
+        }
 
         public void OpenEditor(string uid, Point mouseDownPoint) {
             if (!Symbols.ContainsKey(uid)) {

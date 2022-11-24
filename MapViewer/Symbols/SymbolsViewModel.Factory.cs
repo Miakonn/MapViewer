@@ -32,14 +32,15 @@ namespace MapViewer.Symbols {
             return symbol;
         }
 
-        public Symbol CreateSymbolLine(Point startPoint, Point endPoint, double width, Color color) {
-            var symbol = new SymbolLine {
+        public Symbol CreateSymbolRect(Point startPoint, double sizeM, double widthM, double angleDeg, Color color) {
+            var symbol = new SymbolRectangle {
                 Uid = GetTimestamp(),
                 FillColor = color,
                 Z_Order = GetMinZorder() - 1,
                 StartPoint = startPoint,
-                EndPoint = endPoint,
-                Width = width
+                SizeMeter = sizeM,
+                WidthMeter = widthM,
+                RotationAngle = angleDeg
             };
 
             AddSymbol(symbol);

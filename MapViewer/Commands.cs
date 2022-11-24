@@ -56,7 +56,6 @@ namespace MapViewer {
 		public static readonly RoutedUICommand DrawCone = new RoutedUICommand("Draw Cone", "Draw Cone", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DrawCircle = new RoutedUICommand("Draw Circle", "Draw Circle", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DrawRectangle = new RoutedUICommand("Draw Rectangle", "Draw Rectangle", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand DrawSquare = new RoutedUICommand("Draw Square", "Draw Square", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DrawText = new RoutedUICommand("Draw Text", "Draw Text", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand MaskRectangle = new RoutedUICommand("Mask Rectangle", "Mask Rectangle", typeof(CustomCommands), null);
@@ -581,13 +580,6 @@ namespace MapViewer {
 			ActiveTool = null;
 			if (CheckToggleState(e.OriginalSource)) {
 				ActiveTool = new Tools.DrawRectangle(this, e.OriginalSource);
-			}
-		}
-
-		private void DrawSquare_Execute(object sender, ExecutedRoutedEventArgs e) {
-			ActiveTool = null;
-			if (CheckToggleState(e.OriginalSource)) {
-				ActiveTool = new Tools.DrawSquare(this, e.OriginalSource);
 			}
 		}
 
