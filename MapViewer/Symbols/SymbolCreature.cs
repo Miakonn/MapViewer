@@ -77,6 +77,8 @@ namespace MapViewer.Symbols {
         public override Symbol Copy() {
             var newSymbol = new SymbolCreature();
             newSymbol.CopyBase(this);
+            newSymbol.Caption = SymbolsViewModel.CountUpCaption(Caption);
+
             return newSymbol;
         }
     }

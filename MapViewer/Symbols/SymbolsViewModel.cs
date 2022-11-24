@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml;
 using System.Xml.Serialization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Point = System.Windows.Point;
 
 namespace MapViewer.Symbols {
@@ -150,6 +151,27 @@ namespace MapViewer.Symbols {
             symbolsPmNew.AddSymbol(symbolToMove);
             RaiseSymbolsChanged();
         }
+
+        public static string CountUpCaption(string caption) {
+            if (string.IsNullOrWhiteSpace(caption)) {
+                return string.Empty;
+            }
+
+            int i = caption.Length - 1;
+            while (char.IsDigit(caption[i]) && i >= 0) {
+                i--;
+            }
+
+            i++;
+            if (i <= caption.Length - 1) {
+                int num = int.Parse(caption.Substring(i)) + 1;
+                return caption.Substring(0, i) + num.ToString();
+            }
+            else {
+                return caption + "1";
+            }
+        }
+
 
 
         public void OpenEditor(string uid, Point mouseDownPoint) {

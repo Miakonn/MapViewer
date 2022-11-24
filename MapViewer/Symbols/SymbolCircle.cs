@@ -29,7 +29,9 @@ namespace MapViewer.Symbols {
         }
 
         public override Symbol Copy() {
-            throw new NotImplementedException();
+            var newSymbol = new SymbolCircle();
+            newSymbol.CopyBase(this);
+            return newSymbol;
         }
     }
 }

@@ -29,9 +29,9 @@ namespace MapViewer.Symbols {
 
         public void CopyBase(Symbol symbolSource) {
             Uid = SymbolsViewModel.GetTimestamp();
-            StartPoint = symbolSource.StartPoint;
+            StartPoint = symbolSource.StartPoint + new Vector(50, 50);
             FillColor = symbolSource.FillColor;
-            Z_Order = symbolSource.Z_Order + 1;
+            Z_Order = symbolSource.Z_Order - 1;
             SizeMeter = symbolSource.SizeMeter;
         }
     }

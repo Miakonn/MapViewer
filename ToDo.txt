@@ -6,15 +6,15 @@
 
 Hög prio
 
-
-* Copy på alla Symbols.
-
 * Creature editor Apply
 * kolla indata i dialogprop
 
+* standardisera prop namnen
+* komma ihåg senaste image-mapp
 
 
-* ladda färdiga grupper
+
+* spara/ladda färdiga grupper av symboler
 
 * multipla val
 * rotera alla objekt?

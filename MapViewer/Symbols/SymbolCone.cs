@@ -58,7 +58,11 @@ namespace MapViewer.Symbols {
         }
 
         public override Symbol Copy() {
-            throw new NotImplementedException();
+            var newSymbol = new SymbolCone();
+            newSymbol.CopyBase(this);
+            newSymbol.WidthDegrees = WidthDegrees;
+            newSymbol.RotationAngle = RotationAngle;
+            return newSymbol;
         }
     }
 }

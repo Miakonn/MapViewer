@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -25,7 +26,10 @@ namespace MapViewer.Symbols {
         }
 
         public override Symbol Copy() {
-            throw new NotImplementedException();
+            var newSymbol = new SymbolPolygon();
+            newSymbol.CopyBase(this);
+            newSymbol.Corners = Corners.Clone();
+            return newSymbol;
         }
     }
 }

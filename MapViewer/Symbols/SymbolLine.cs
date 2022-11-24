@@ -32,7 +32,11 @@ namespace MapViewer.Symbols {
         }
 
         public override Symbol Copy() {
-            throw new NotImplementedException();
+            var newSymbol = new SymbolLine();
+            newSymbol.CopyBase(this);
+            newSymbol.Width = Width;
+            newSymbol.EndPoint = EndPoint;
+            return newSymbol;
         }
     }
 }

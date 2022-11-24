@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -40,7 +41,12 @@ namespace MapViewer.Symbols {
         }
 
         public override Symbol Copy() {
-            throw new NotImplementedException();
+            var newSymbol = new SymbolText();
+            newSymbol.CopyBase(this);
+            newSymbol.Caption = Caption;
+            newSymbol.RotationAngle = RotationAngle;
+            newSymbol.LengthMeter = LengthMeter;
+            return newSymbol;
         }
     }
 }
