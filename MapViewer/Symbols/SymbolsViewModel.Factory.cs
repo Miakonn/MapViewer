@@ -47,12 +47,12 @@ namespace MapViewer.Symbols {
             return symbol;
         }
 
-        public Symbol CreateSymbolText(Point pos, double angle, double lengthMeter, Color color, string caption) {
+        public Symbol CreateSymbolText(Point pos, double angle, double sizeMeter, Color color, string caption) {
             var symbol = new SymbolText {
                 Uid = GetTimestamp(),
                 Caption = caption,
                 FillColor = color,
-                LengthMeter = lengthMeter,
+                SizeMeter = sizeMeter,
                 Z_Order = GetMinZorder() - 1,
                 StartPoint = pos,
                 RotationAngle = angle

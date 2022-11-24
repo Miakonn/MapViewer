@@ -12,7 +12,6 @@ namespace MapViewer.Symbols {
     public class SymbolText : Symbol {
         public string Caption { get; set; }
         public double RotationAngle { get; set; }
-        public double LengthMeter { get; set; }
 
         public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings)
         {
@@ -27,7 +26,7 @@ namespace MapViewer.Symbols {
             };
 
             var textSize = canvas.GetTextSize(textBlock);
-            double scaleLength = LengthMeter / drawingSettings.ImageScaleMperPix / textSize.Width;
+            double scaleLength = SizeMeter / drawingSettings.ImageScaleMperPix / textSize.Width;
 
             // Reset size and angle
             textBlock.RenderTransform = new RotateTransform(RotationAngle);
@@ -45,7 +44,7 @@ namespace MapViewer.Symbols {
             newSymbol.CopyBase(this);
             newSymbol.Caption = Caption;
             newSymbol.RotationAngle = RotationAngle;
-            newSymbol.LengthMeter = LengthMeter;
+            newSymbol.SizeMeter = SizeMeter;
             return newSymbol;
         }
     }
