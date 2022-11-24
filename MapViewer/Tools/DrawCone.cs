@@ -121,7 +121,7 @@ namespace MapViewer.Tools {
             var angleDegree = Math.Atan2(vector.Y, vector.X) * 180.0 / Math.PI;
             var lengthMeter = vector.Length * _privateWindow.MapPrivate.ImageScaleMperPix;
 			
-            _map.SymbolsPM.CreateSymbolCone(_pnt1, angleDegree, lengthMeter , 30.0, Colors.Green);
+            _map.SymbolsPM.CreateSymbolCone(_pnt1, angleDegree, lengthMeter , 60.0, Colors.Green);
             _privateWindow.ActiveTool = null;
 		}
     }

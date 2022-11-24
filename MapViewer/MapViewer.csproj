@@ -67,6 +67,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialogs\DialogConeProp.xaml.cs">
+      <DependentUpon>DialogConeProp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\DialogImageProp.xaml.cs">
       <DependentUpon>DialogImageProp.xaml</DependentUpon>
     </Compile>
@@ -136,6 +139,10 @@
     <Page Include="Dialogs\DialogColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogConeProp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\DialogImageProp.xaml">
       <Generator>MSBuild:Compile</Generator>

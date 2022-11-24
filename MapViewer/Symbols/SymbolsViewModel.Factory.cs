@@ -70,7 +70,7 @@ namespace MapViewer.Symbols {
                 WidthDegrees = widthDegrees,
                 Z_Order = GetMinZorder() - 1,
                 StartPoint = pos,
-                RotatationAngle = angleDegree
+                RotationAngle = angleDegree
             };
 
             AddSymbol(symbol);

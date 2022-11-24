@@ -1,27 +1,36 @@
 // Buggar
 
-*   gruppera formler med pc?
+
 
 // 	Nya funktioner
 
-*	Skapa en modell och en vymodell.
+Hög prio
 
-*	visa rutan före publicering
+
+* Copy på alla Symbols.
+
+* Creature editor Apply
+* kolla indata i dialogprop
+
+
 
 * ladda färdiga grupper
+
 * multipla val
-* rotera objekt
+* rotera alla objekt?
 * gummiband vid förflyttning
 * 
 
 
-* SymbolCone!
-* SymbolLine !
-
+* SymbolLine  Editor
 
 
 * riktning på creature?
 * ändra text-storlek
-* kolla indata i dialogprop
 
 
+
+
+*   gruppera formler med pc?
+
+*	visa rutan före publicering
