@@ -6,14 +6,11 @@
 
 Hög prio
 
-* Creature editor Apply
 * kolla indata i dialogprop
-* Editor till symbols?
 
-* standardisera prop namnen
 * komma ihåg senaste image-mapp
 
-
+* lägga tillbaka 0,8 och 1m
 
 * spara/ladda färdiga grupper av symboler
 

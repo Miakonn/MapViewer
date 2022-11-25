@@ -99,7 +99,7 @@ namespace MapViewer.Maps {
             }
         }
 
-        public float ImageScaleMperPix {
+        public double ImageScaleMperPix {
             get => MapData.ImageScaleMperPix;
             set {
                 MapData.ImageScaleMperPix = value;

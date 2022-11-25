@@ -27,7 +27,7 @@ namespace MapViewer.Symbols {
             double scaleLength = SizeMeter / drawingSettings.ImageScaleMperPix / textSize.Width;
 
             // Reset size and angle
-            textBlock.RenderTransform = new RotateTransform(RotationDegree);
+            textBlock.RenderTransform = new RotateTransform(RotationDegree, scaleLength * textSize.Width * 0.5, scaleLength * textSize.Height * 0.5);
             textBlock.FontSize = fontSize * scaleLength;
 
             textSize = canvas.GetTextSize(textBlock);
