@@ -1,7 +1,7 @@
 ﻿<Window x:Class="MapViewer.Dialogs.DialogConeProp"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DialogGetDoubleValue"  SizeToContent="WidthAndHeight"
+        Title="Cone Proprties"  SizeToContent="WidthAndHeight"
         Background="#DFE9F5"
 		WindowStartupLocation="Manual"
         ResizeMode="NoResize">
@@ -27,12 +27,12 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
- 		<Label Grid.Row="0" Grid.Column="0" Content="Size (m)"  Name="LabelHint2" HorizontalAlignment="Left" />
+ 		<Label Grid.Row="0" Grid.Column="0" Content="Size (m)" HorizontalAlignment="Left" />
 		<TextBox Grid.Row="0" Grid.Column="1" Name="SizeValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="40"/>
-        <Label Grid.Row="1" Grid.Column="0" Content="Width"  Name="LabelHint1" HorizontalAlignment="Left" />
+        <Label Grid.Row="1" Grid.Column="0" Content="Width" HorizontalAlignment="Left" />
 		<TextBox Grid.Row="1" Grid.Column="1" Name="WidthValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="40"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Content="Angle"  Name="LabelHint4" HorizontalAlignment="Left" Height="23" />
+        <Label Grid.Row="2" Grid.Column="0" Content="Angle" HorizontalAlignment="Left"  />
         <WrapPanel Grid.Row="2" Grid.Column="1"   VerticalAlignment="Top">
             <Button x:Name="RotateAntiClockWiseButton"  FontSize="10" Padding="0,-4,0,0" Content="⤹" Height="25" Width="20" FontWeight="ExtraBold" Click="cmdRotateCCW_Click" Margin="3,2,1,3" />
             <Button x:Name="RotateClockWiseButton"  FontSize="10" Padding="0,-4,0,0" Content="⤸" Height="25" Width="20" FontWeight="ExtraBold" Click="cmdRotateCW_Click" Margin="3,2,1,3" />

@@ -20,7 +20,7 @@ namespace MapViewer {
         public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete Symbol", "Delete Symbol", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete", "Delete", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("Set Colour", "Set Colour", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SendSymbolToFront = new RoutedUICommand("Bring to Front", "Bring to Front", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SendSymbolToBack = new RoutedUICommand("Send to Back", "Send to Back", typeof(CustomCommands), null);

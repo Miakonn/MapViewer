@@ -58,19 +58,14 @@ namespace MapViewer.Symbols {
 
         public override bool OpenEditor(Point mouseDownPoint, SymbolsViewModel symbolsVM) {
             var dlg = new DialogCreatureProp {
-                Caption = Caption,
-                SizeMeter = SizeMeter,
+                Symbol = this,
+                SymbolsVM = symbolsVM,
                 StartPosition = mouseDownPoint
             };
 
-            var result = dlg.ShowDialog();
-            if (result == null || !result.Value) {
-                return false;
-            }
 
-            Caption = dlg.Caption;
-            SizeMeter = dlg.SizeMeter;
-            return true;
+            var result = dlg.ShowDialog();
+            return result != null && result.Value;
         }
 
         public override Symbol Copy() {
