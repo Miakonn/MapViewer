@@ -89,7 +89,7 @@
     <Compile Include="Symbols\SymbolImage.cs" />
     <Compile Include="Symbols\SymbolRectangle.cs" />
     <Compile Include="Symbols\SymbolPolygon.cs" />
-    <Compile Include="Symbols\Symbols.cs" />
+    <Compile Include="Symbols\Symbol.cs" />
     <Compile Include="Symbols\SymbolsViewModel.cs" />
     <Compile Include="Symbols\SymbolsViewModel.Factory.cs" />
     <Compile Include="Symbols\SymbolText.cs" />

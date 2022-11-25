@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,15 +9,13 @@ namespace MapViewer.Symbols {
     [Serializable]
     [XmlInclude(typeof(Symbol))]
     public class SymbolText : Symbol {
-        public string Caption { get; set; }
-        public double RotationAngle { get; set; }
+        public double RotationDegree { get; set; }
 
         public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings)
         {
             var fontSize = 25 / drawingSettings.ZoomScale;
             var textBlock = new TextBlock {
                 Uid = Uid,
-                //RenderTransform = new RotateTransform(RotationAngle),
                 Text = Caption,
                 FontSize = fontSize,
                 Foreground = new SolidColorBrush(FillColor),
@@ -29,7 +26,7 @@ namespace MapViewer.Symbols {
             double scaleLength = SizeMeter / drawingSettings.ImageScaleMperPix / textSize.Width;
 
             // Reset size and angle
-            textBlock.RenderTransform = new RotateTransform(RotationAngle);
+            textBlock.RenderTransform = new RotateTransform(RotationDegree);
             textBlock.FontSize = fontSize * scaleLength;
 
             textSize = canvas.GetTextSize(textBlock);
@@ -43,7 +40,7 @@ namespace MapViewer.Symbols {
             var newSymbol = new SymbolText();
             newSymbol.CopyBase(this);
             newSymbol.Caption = Caption;
-            newSymbol.RotationAngle = RotationAngle;
+            newSymbol.RotationDegree = RotationDegree;
             newSymbol.SizeMeter = SizeMeter;
             return newSymbol;
         }

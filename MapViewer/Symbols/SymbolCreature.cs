@@ -8,7 +8,6 @@ using MapViewer.Maps;
 
 namespace MapViewer.Symbols {
     public class SymbolCreature : Symbol {
-        public string Caption { get; set; }
 
         public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings) {
             var brush = new SolidColorBrush(FillColor);

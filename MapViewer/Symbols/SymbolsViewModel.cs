@@ -9,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml;
 using System.Xml.Serialization;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Point = System.Windows.Point;
 
 namespace MapViewer.Symbols {
@@ -23,61 +22,55 @@ namespace MapViewer.Symbols {
         public Collection<Symbol> SymbolsOnly { get; set; }
 
 
+        public const string UidPrefix = "S_";
+
+
         public event EventHandler SymbolsChanged;
         
-        public SymbolsViewModel()
-        {
+        public SymbolsViewModel() {
             Symbols = new Dictionary<string, Symbol>();
         }
         
-        public void AddSymbol(Symbol symbol)
-        {
+        public void AddSymbol(Symbol symbol) {
             Symbols[symbol.Uid] = symbol;
             RaiseSymbolsChanged();
         }
 
-        public void AddSymbolWithoutRaise(Symbol symbol)
-        {
+        public void AddSymbolWithoutRaise(Symbol symbol) {
             Symbols[symbol.Uid] = symbol;
         }
 
-        public void DeleteAllSymbols()
-        {
+        public void DeleteAllSymbols() {
             Symbols.Clear();
             RaiseSymbolsChanged();
         }
 
-        public void RaiseSymbolsChanged()
-        {
+        public void RaiseSymbolsChanged() {
             SymbolsChanged?.Invoke(this, null);
         }
         
-        public static string GetTimestamp()
-        {
-            return "Symbol_" + (int)(DateTime.UtcNow.Subtract(new DateTime(2022, 1, 1)).TotalSeconds);
+        public static string GetTimestamp() {
+            return UidPrefix + (int)(DateTime.UtcNow.Subtract(new DateTime(2022, 1, 1)).TotalMilliseconds);
         }
 
-        public int GetMaxZorder()
-        {
+        public int GetMaxOrderZ() {
             if (Symbols.Count == 0) {
                 return 1000;
             }
-            return Symbols.Values.Select(symbol => symbol.Z_Order).Max();
+            return Symbols.Values.Select(symbol => symbol.OrderZ).Max();
         }
 
-        public int GetMinZorder()
-        {
+        public int GetMinOrderZ() {
             if (Symbols.Count == 0) {
                 return 1000;
             }
-            return Symbols.Values.Select(symbol => symbol.Z_Order).Min();
+            return Symbols.Values.Select(symbol => symbol.OrderZ).Min();
         }
         
-        public void UpdateElements(Canvas canvas, MapDrawingSettings drawSettings)
-        {
+        public void UpdateElements(Canvas canvas, MapDrawingSettings drawSettings) {
             canvas.RemoveAllSymbolsFromOverlay();
 
-            var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.Z_Order);
+            var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.OrderZ);
             foreach (var symbol in symbolsInZorder) {
                 symbol.CreateElements(canvas, drawSettings);
             }
@@ -85,8 +78,7 @@ namespace MapViewer.Symbols {
 
         #region Symbol properties
 
-        public void DeleteSymbol(string uid)
-        {
+        public void DeleteSymbol(string uid) {
             if (!Symbols.ContainsKey(uid)) {
                 return;
             }
@@ -104,8 +96,7 @@ namespace MapViewer.Symbols {
         }
 
 
-        public void SetSymbolColor(string uid, Color color)
-        {
+        public void SetSymbolColor(string uid, Color color) {
             if (!Symbols.ContainsKey(uid)) {
                 return;
             }
@@ -118,7 +109,7 @@ namespace MapViewer.Symbols {
                 return;
             }
 
-            Symbols[uid].Z_Order = GetMinZorder() - 1;
+            Symbols[uid].OrderZ = GetMinOrderZ() - 1;
             RaiseSymbolsChanged();
         }
 
@@ -127,7 +118,7 @@ namespace MapViewer.Symbols {
                 return;
             }
 
-            Symbols[uid].Z_Order = GetMaxZorder() + 1;
+            Symbols[uid].OrderZ = GetMaxOrderZ() + 1;
             RaiseSymbolsChanged();
         }
 
@@ -217,9 +208,9 @@ namespace MapViewer.Symbols {
             try {
                 var serializer = new XmlSerializer(GetType());
                 using (var reader = XmlReader.Create(filename)) {
-                    var spm = (SymbolsViewModel)serializer.Deserialize(reader);
+                    var symbolVM = (SymbolsViewModel)serializer.Deserialize(reader);
 
-                    foreach (var symbol in spm.SymbolsOnly) {
+                    foreach (var symbol in symbolVM.SymbolsOnly) {
                         AddSymbolWithoutRaise(symbol);
                     }
                 }

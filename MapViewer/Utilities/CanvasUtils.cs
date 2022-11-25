@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using MapViewer.Symbols;
 
 // ReSharper disable once CheckNamespace
 namespace MapViewer {
@@ -9,7 +10,7 @@ namespace MapViewer {
       
         public static void RemoveAllSymbolsFromOverlay(this Canvas canvas) {
             Debug.WriteLine("RemoveAllSymbolsFromOverlay!!");
-            var symbols = canvas.Children.Cast<UIElement>().Where(elem => elem.Uid.StartsWith("Symbol_")).ToList();
+            var symbols = canvas.Children.Cast<UIElement>().Where(elem => elem.Uid.StartsWith(SymbolsViewModel.UidPrefix)).ToList();
             foreach (var elem in symbols) {
                  canvas.Children.Remove(elem);
             }

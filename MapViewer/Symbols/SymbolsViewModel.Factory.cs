@@ -10,7 +10,7 @@ namespace MapViewer.Symbols {
                 Uid = GetTimestamp(),
                 FillColor = color,
                 Caption = caption,
-                Z_Order = GetMinZorder() - 1,
+                OrderZ = GetMinOrderZ() - 1,
                 StartPoint = pos,
                 SizeMeter = sizeMeter
             };
@@ -23,7 +23,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolCreature {
                 Uid = GetTimestamp(),
                 FillColor = color,
-                Z_Order = GetMinZorder() - 1,
+                OrderZ = GetMinOrderZ() - 1,
                 StartPoint = pos,
                 SizeMeter = radiusMeter * 2
             };
@@ -36,11 +36,11 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolRectangle {
                 Uid = GetTimestamp(),
                 FillColor = color,
-                Z_Order = GetMinZorder() - 1,
+                OrderZ = GetMinOrderZ() - 1,
                 StartPoint = startPoint,
                 SizeMeter = sizeM,
                 WidthMeter = widthM,
-                RotationAngle = angleDeg
+                RotationDegree = angleDeg
             };
 
             AddSymbol(symbol);
@@ -53,9 +53,9 @@ namespace MapViewer.Symbols {
                 Caption = caption,
                 FillColor = color,
                 SizeMeter = sizeMeter,
-                Z_Order = GetMinZorder() - 1,
+                OrderZ = GetMinOrderZ() - 1,
                 StartPoint = pos,
-                RotationAngle = angle
+                RotationDegree = angle
             };
 
             AddSymbol(symbol);
@@ -69,9 +69,9 @@ namespace MapViewer.Symbols {
                 FillColor = color,
                 SizeMeter = lengthMeter,
                 WidthDegrees = widthDegrees,
-                Z_Order = GetMinZorder() - 1,
+                OrderZ = GetMinOrderZ() - 1,
                 StartPoint = pos,
-                RotationAngle = angleDegree
+                RotationDegree = angleDegree
             };
 
             AddSymbol(symbol);
@@ -101,7 +101,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolPolygon {
                 Uid = GetTimestamp(),
                 FillColor = color,
-                Z_Order = GetMinZorder() - 1,
+                OrderZ = GetMinOrderZ() - 1,
                 StartPoint = posCenter,
                 Corners = cornersMoved
             };
@@ -113,7 +113,7 @@ namespace MapViewer.Symbols {
         public Symbol CreateSymbolImage(Point pos) {
             var symbol = new SymbolImage {
                 Uid = GetTimestamp(),
-                Z_Order = GetMinZorder() - 1,
+                OrderZ = GetMinOrderZ() - 1,
                 SizeMeter = 4,
                 StartPoint = pos
             };

@@ -18,7 +18,7 @@ namespace MapViewer.Symbols {
     public class SymbolCone : Symbol {
         public double WidthDegrees { get; set; }
 
-        public double RotationAngle { get; set; }
+        public double RotationDegree { get; set; }
 
         public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings) {
 
@@ -26,12 +26,12 @@ namespace MapViewer.Symbols {
 
             var corners = new PointCollection { new Point() };
             for (var a = -WidthDegrees / 2; a < WidthDegrees / 2; a+= 5.0) {
-                var aRadian = (a + RotationAngle) * (Math.PI / 180.0);
+                var aRadian = (a + RotationDegree) * (Math.PI / 180.0);
                 var pnt = new Point( sizePixel * Math.Cos(aRadian),  sizePixel * Math.Sin(aRadian) );
                 corners.Add(pnt);
             }
 
-            var aRadianLast = (WidthDegrees / 2.0 + RotationAngle) * (Math.PI / 180) ;
+            var aRadianLast = (WidthDegrees / 2.0 + RotationDegree) * (Math.PI / 180) ;
             var pntLast = new Point(sizePixel * Math.Cos(aRadianLast), sizePixel * Math.Sin(aRadianLast));
             corners.Add(pntLast);
 
@@ -61,7 +61,7 @@ namespace MapViewer.Symbols {
             var newSymbol = new SymbolCone();
             newSymbol.CopyBase(this);
             newSymbol.WidthDegrees = WidthDegrees;
-            newSymbol.RotationAngle = RotationAngle;
+            newSymbol.RotationDegree = RotationDegree;
             return newSymbol;
         }
     }

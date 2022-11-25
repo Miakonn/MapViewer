@@ -19,7 +19,7 @@ namespace MapViewer.Dialogs {
                 _symbol = value;
                 CaptionValue.Text = Symbol.Caption;
                 SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
-                Angle = (int)Symbol.RotationAngle;
+                Angle = (int)Symbol.RotationDegree;
                 FilenameValue.Text = Symbol.ImageFileName;
             }
         }
@@ -30,7 +30,7 @@ namespace MapViewer.Dialogs {
                 return;
             }
             Symbol.Caption = CaptionValue.Text;
-            Symbol.RotationAngle = Angle;
+            Symbol.RotationDegree = Angle;
             Symbol.ImageFileName = FilenameValue.Text;
 
             var str = SizeValue.Text.Replace(',', '.');

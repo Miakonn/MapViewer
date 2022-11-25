@@ -13,17 +13,14 @@ namespace MapViewer.Symbols {
     public class SymbolRectangle : Symbol {
         public double WidthMeter { get; set; }
         
-        public double RotationAngle { get; set; }
-
-        public string Caption { get; set; }
-
+        public double RotationDegree { get; set; }
         public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings) {
             var corners = new PointCollection();
 
             double lengthPixel = SizeMeter / drawingSettings.ImageScaleMperPix * 0.5;
             double widthPixel = WidthMeter / drawingSettings.ImageScaleMperPix * 0.5;
 
-            var angleRadians = SymbolsViewModel.ToRadians(RotationAngle);
+            var angleRadians = SymbolsViewModel.ToRadians(RotationDegree);
 
             var vectLength = new Vector(lengthPixel * Math.Cos(angleRadians), lengthPixel * Math.Sin(angleRadians));
             var vectWidth = new Vector(-widthPixel * Math.Sin(angleRadians), widthPixel * Math.Cos(angleRadians));
@@ -65,7 +62,7 @@ namespace MapViewer.Symbols {
             var newSymbol = new SymbolRectangle();
             newSymbol.CopyBase(this);
             newSymbol.WidthMeter = WidthMeter;
-            newSymbol.RotationAngle = RotationAngle;
+            newSymbol.RotationDegree = RotationDegree;
             newSymbol.Caption = SymbolsViewModel.CountUpCaption(Caption);
             return newSymbol;
         }

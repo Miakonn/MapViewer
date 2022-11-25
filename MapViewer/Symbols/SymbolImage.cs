@@ -13,9 +13,8 @@ namespace MapViewer.Symbols {
     [XmlInclude(typeof(Symbol))]
     public class SymbolImage : Symbol {
 
-        public string Caption { get; set; }
         public string ImageFileName { get; set; }
-        public double RotationAngle { get; set; }
+        public double RotationDegree { get; set; }
 
 
         public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings) {
@@ -29,7 +28,7 @@ namespace MapViewer.Symbols {
             double scale = (SizeMeter / drawingSettings.ImageScaleMperPix) / Math.Max(image.Width, image.Height);
 
             var trfScale = new ScaleTransform(scale, scale);
-            var trfRot = new RotateTransform(RotationAngle, scale * image.Width * 0.5, scale * image.Height * 0.5);
+            var trfRot = new RotateTransform(RotationDegree, scale * image.Width * 0.5, scale * image.Height * 0.5);
 
             var finalTransform = new TransformGroup();
             finalTransform.Children.Add(trfScale);
@@ -64,7 +63,7 @@ namespace MapViewer.Symbols {
             var newSymbol = new SymbolImage();
             newSymbol.CopyBase(this);
             newSymbol.Caption = newSymbol.Caption = SymbolsViewModel.CountUpCaption(Caption);
-            newSymbol.RotationAngle = RotationAngle;
+            newSymbol.RotationDegree = RotationDegree;
             newSymbol.ImageFileName = ImageFileName;
 
             return newSymbol;

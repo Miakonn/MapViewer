@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml.Serialization;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace MapViewer.Symbols {
 
@@ -14,11 +13,12 @@ namespace MapViewer.Symbols {
      XmlInclude(typeof(SymbolCone)),
      XmlInclude(typeof(SymbolCircle)), XmlInclude(typeof(SymbolText)), XmlInclude(typeof(SymbolRectangle))]
     public abstract class Symbol {
-        public Point StartPoint { get; set; }
         public string Uid { get; set; }
+        public int OrderZ { get; set; }   
+        public Point StartPoint { get; set; }
         public Color FillColor { get; set; }
-        public int Z_Order { get; set; }
         public double SizeMeter { get; set; }
+        public string Caption { get; set; }
 
         public abstract void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings);
 
@@ -32,10 +32,10 @@ namespace MapViewer.Symbols {
             Uid = SymbolsViewModel.GetTimestamp();
             StartPoint = symbolSource.StartPoint + new Vector(50, 50);
             FillColor = symbolSource.FillColor;
-            Z_Order = symbolSource.Z_Order - 1;
+            OrderZ = symbolSource.OrderZ - 1;
             SizeMeter = symbolSource.SizeMeter;
+            Caption = symbolSource.Caption;
         }
-
 
         public void CreateText(string caption, Canvas canvas, MapDrawingSettings drawingSettings) {
             if (string.IsNullOrWhiteSpace(caption)) {
