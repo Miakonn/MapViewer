@@ -2,16 +2,16 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Microsoft.Win32;
 using System.Windows.Controls.Ribbon;
+using System.Windows.Forms;
 using MapViewer.Dialogs;
 using MapViewer.Maps;
 using MapViewer.Properties;
 using MapViewer.Utilities;
-using System.Windows.Media.Animation;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace MapViewer {
 	public static class CustomCommands {
@@ -49,6 +49,8 @@ namespace MapViewer {
 		public static readonly RoutedUICommand RemoveDisplay = new RoutedUICommand("Remove Display", "Remove Display", typeof(CustomCommands), null);
 
 		public static readonly RoutedUICommand Save = new RoutedUICommand("Save", "Save", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SaveSymbolsAs = new RoutedUICommand("Save Symbols as...", "SaveSymbolsAs", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand LoadSymbols = new RoutedUICommand("Load Symbols", "LoadSymbols", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand CalibrateDisplay = new RoutedUICommand("Calibrate Display", "Calibrate Display", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand OpenLastImage = new RoutedUICommand("Open Last Image", "Open Last Image", typeof(CustomCommands), null);
 
@@ -84,8 +86,12 @@ namespace MapViewer {
 			e.CanExecute = MapPrivate != null;
 		}
 
-        private void ImagesNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+		private void ImagesNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
             e.CanExecute = (MapPrivate != null && LevelNumber > 1);
+        }
+
+        private void CalibratedImageNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = (MapPrivate != null && MapPrivate.IsCalibrated);
         }
 
         private void Always_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -163,7 +169,7 @@ namespace MapViewer {
             Array.Sort(dialog.FileNames);
 
             var result = dialog.ShowDialog();
-            if (result == null || !result.Value) {
+            if (result != System.Windows.Forms.DialogResult.OK) {
                 return;
             }
 
@@ -312,6 +318,44 @@ namespace MapViewer {
                 map.Serialize();
             }
 		}
+
+        private string SaveSymbolFileName() {
+            var dlg = new SaveFileDialog {
+                Title = "Select Symbol file",
+                OverwritePrompt = true,
+                DefaultExt = "xml",
+                Filter = "Symbol (*.xml)|*.xml|All files (*.*)|*.*"
+            };
+            var result = dlg.ShowDialog();
+            return result == System.Windows.Forms.DialogResult.OK ? dlg.FileName : string.Empty;
+        }
+        
+        private void SaveSymbolAs_Execute(object sender, ExecutedRoutedEventArgs e) {
+            var filename = SaveSymbolFileName();
+            if (!string.IsNullOrWhiteSpace(filename)) {
+                MapPrivate.SymbolsPM.Serialize(filename);
+            }
+        }
+
+        private string OpenSymbolFile() {
+            var dlg = new OpenFileDialog {
+                Title = "Select Symbol file",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                DefaultExt = "xml",
+                Filter = "Symbol (*.xml)|*.xml|All files (*.*)|*.*"
+            };
+
+            var result = dlg.ShowDialog();
+            return result == System.Windows.Forms.DialogResult.OK ? dlg.FileName : string.Empty;
+        }
+        private void LoadSymbols_Execute(object sender, ExecutedRoutedEventArgs e) {
+            var filename = OpenSymbolFile();
+            if (!string.IsNullOrWhiteSpace(filename)) {
+                MapPrivate.SymbolsPM.Deserialize(filename);
+            }
+        }
+
 
         private void LevelUp_Execute(object sender, ExecutedRoutedEventArgs e) {
             SwitchToNewMap(Level + 1);

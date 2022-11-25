@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using MapViewer.Symbols;
@@ -9,7 +8,6 @@ namespace MapViewer {
     public static class CanvasUtils {
       
         public static void RemoveAllSymbolsFromOverlay(this Canvas canvas) {
-            Debug.WriteLine("RemoveAllSymbolsFromOverlay!!");
             var symbols = canvas.Children.Cast<UIElement>().Where(elem => elem.Uid.StartsWith(SymbolsViewModel.UidPrefix)).ToList();
             foreach (var elem in symbols) {
                  canvas.Children.Remove(elem);

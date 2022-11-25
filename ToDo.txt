@@ -4,32 +4,28 @@
 
 // 	Nya funktioner
 
-Hög prio
+Hög prio ================================
+
+* spara senaste folder vid de olik spar-dialogerna
+
+
+Medel prio =================================
 
 * kolla indata i dialogprop
 
-* komma ihåg senaste image-mapp
-
-* lägga tillbaka 0,8 och 1m
-
-
-* spara/ladda färdiga grupper av symboler
-
-* multipla val
-* rotera alla objekt?
 * gummiband vid förflyttning
-* 
 
 
+Låg prio ------------------------
 
-
+* rotera alla objekt?
 
 * riktning på creature?
+
 * ändra text-storlek
 
+* multipla val
 
+* gruppera symboler
 
-
-*   gruppera formler med pc?
-
-*	visa rutan före publicering
+* visa rutan före publicering

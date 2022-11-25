@@ -38,7 +38,7 @@
     </Window.InputBindings>
 
 	<Window.CommandBindings>
-        <CommandBinding Command="mapViewer:CustomCommands.Player" Executed="Player_Execute" CanExecute="Player_CanExecute"></CommandBinding>
+        <CommandBinding Command="mapViewer:CustomCommands.Player" Executed="Player_Execute" CanExecute="Player_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.NonPlayer" Executed="NonPlayer_Execute" CanExecute="Player_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DuplicateSymbol" Executed="DuplicateSymbol_Execute" CanExecute="Player_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.SymbolImage" Executed="SymbolImage_Execute" CanExecute="Spell_CanExecute" />
@@ -71,7 +71,9 @@
 		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Execute" CanExecute="AddDisplay_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Execute" CanExecute="RemoveDisplay_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SaveSymbolsAs" Executed="SaveSymbolAs_Execute" CanExecute="CalibratedImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.LoadSymbols" Executed="LoadSymbols_Execute" CanExecute="CalibratedImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Execute" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.CalibrateDisplay" Executed="CalibrateDisplay_Execute" CanExecute="Always_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ExitApp" Executed="ExitApp_Execute" CanExecute="Always_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Execute" CanExecute="Spell_CanExecute" />
@@ -112,8 +114,10 @@
 			<Ribbon.ApplicationMenu>
 				<RibbonApplicationMenu>
 					<RibbonApplicationMenuItem Header="Open Image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
-					<RibbonApplicationMenuItem Header="Save Mask/Overlay" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
-					<RibbonApplicationMenuItem Header="Calibrate Display" Command="mapViewer:CustomCommands.CalibrateDisplay" ImageSource="Images/Monitor_measure.png" />
+					<RibbonApplicationMenuItem Header="Save Mask/Symbols" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
+                    <RibbonApplicationMenuItem Header="Save Symbols as..." Command="mapViewer:CustomCommands.SaveSymbolsAs" ImageSource="Images\Save_file.png" />
+                    <RibbonApplicationMenuItem Header="Load Symbols.." Command="mapViewer:CustomCommands.LoadSymbols" ImageSource="Images\Open_file.png" />
+                    <RibbonApplicationMenuItem Header="Calibrate Display" Command="mapViewer:CustomCommands.CalibrateDisplay" ImageSource="Images/Monitor_measure.png" />
                     <RibbonApplicationMenuItem Name="Mru1"  Header="Open Last Image" Command="mapViewer:CustomCommands.OpenLastImage" ToolTip="F9" />
 					<RibbonApplicationMenuItem Header="Exit" Command="mapViewer:CustomCommands.ExitApp" />
 				</RibbonApplicationMenu>

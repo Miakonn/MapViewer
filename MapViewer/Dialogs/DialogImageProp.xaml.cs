@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Forms;
 using MapViewer.Symbols;
 
 namespace MapViewer.Dialogs {
@@ -62,7 +63,7 @@ namespace MapViewer.Dialogs {
 		}
 
         private void Browse_OnClick(object sender, RoutedEventArgs e) {
-            var dlg = new System.Windows.Forms.OpenFileDialog {
+            var dlg = new OpenFileDialog {
                 //InitialDirectory = @"C:\",
                 Title = "Select Image",
                 CheckFileExists = true,
@@ -72,12 +73,13 @@ namespace MapViewer.Dialogs {
                          "All files (*.*)|*.*"
             };
 
+            var result = dlg.ShowDialog();
+            if (result != System.Windows.Forms.DialogResult.OK) {
+                return;
+            }
 
-            dlg.ShowDialog();
             FilenameValue.Text = dlg.FileName;
-
             var filename = Path.GetFileNameWithoutExtension(dlg.FileName);
-
             var parts = filename.Split(';');
             if (parts.Length == 2) {
                 SizeValue.Text = parts[1];
