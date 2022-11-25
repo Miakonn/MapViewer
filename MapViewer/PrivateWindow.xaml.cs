@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -50,8 +49,10 @@ namespace MapViewer {
 
         private UIElement _lastClickedElem;
         private CursorAction _cursorAction;
-        private Point _mouseDownPoint;
-        private Point _mouseDownPointFirst;
+        private Point _mouseDownPoint;  // Canvas
+        private Point _mouseDownPointFirst;  // Canvas
+        private Point _mouseDownPointWindow;
+        private Point _mouseDownPointWindowFirst;
         private ICanvasTool _activeTool;
         private bool writtenLogSetting;
 
@@ -181,8 +182,7 @@ namespace MapViewer {
             MapPrivate?.ScaleToWindow(LayerMap);
         }
 
-        private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e)
-        {
+        private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e) {
             if (ActiveTool != null) {
                 ActiveTool.MouseDown(sender, e);
                 return;
@@ -199,22 +199,23 @@ namespace MapViewer {
                     _characterDistanceMoved = 0;
                 }
                 else {
-                    _mouseDownPoint = e.GetPosition(this);
-                    _mouseDownPointFirst = _mouseDownPoint;
+                    _mouseDownPointWindow = e.GetPosition(this);
+                    _mouseDownPointWindowFirst = _mouseDownPoint;
                     _cursorAction = CursorAction.MovingPrivateMap;
                 }
                 e.Handled = true;
             }
             else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
                 if (_lastClickedElem != null && _lastClickedElem.Uid != MaskedMap.PublicPositionUid) {
-                    _mouseDownPoint = e.GetPosition(this);
+                    _mouseDownPointWindow = e.GetPosition(this);
                     _cursorAction = CursorAction.None;
-                    MapPrivate.SymbolsPM.OpenEditor(_lastClickedElem.Uid, PointToScreen(_mouseDownPoint));
+                    MapPrivate.SymbolsPM.OpenEditor(_lastClickedElem.Uid, PointToScreen(_mouseDownPointWindow));
                 }
                 e.Handled = true;
             }
             else if (e.ChangedButton == MouseButton.Right && e.ClickCount == 1) {
                 _mouseDownPoint = e.GetPosition(MapPrivate.CanvasMap);
+                _mouseDownPointWindow = e.GetPosition(this);
                 _mouseDownPointFirst = _mouseDownPoint;
             }
         }
@@ -255,9 +256,9 @@ namespace MapViewer {
             }
             else if (_cursorAction == CursorAction.MovingPrivateMap) {
                 var curMouseDownPoint = e.GetPosition(this);
-                var move = curMouseDownPoint - _mouseDownPoint;
+                var move = curMouseDownPoint - _mouseDownPointWindow;
                 MapPrivate.Translate(move);
-                _mouseDownPoint = curMouseDownPoint;
+                _mouseDownPointWindow = curMouseDownPoint;
                 e.Handled = true;
             }
         }
@@ -382,7 +383,7 @@ namespace MapViewer {
         public void InitSettings() {
             //string user = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             //PortableSettingsProvider.SettingsFileName = $"user.{user}.config".Replace("\\", "_");
-            PortableSettingsProvider.ApplyProvider(Properties.Settings.Default);
+            PortableSettingsProvider.ApplyProvider(Settings.Default);
             if (!writtenLogSetting) {
                 Log.Debug("Uses settings file:" + PortableSettingsProvider.SettingsFileName);
                 writtenLogSetting = true;

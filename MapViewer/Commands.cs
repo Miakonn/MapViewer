@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -606,9 +607,11 @@ namespace MapViewer {
             MapPrivate.SymbolsPM.CreateSymbolCircle(_mouseDownPoint, Colors.Yellow, 2);
 		}
 
-        private void CreateCreature(Color color, Point pos, double size) {
-            var symbol = MapPrivate.SymbolsPM.CreateSymbolCreature(pos, color, size, "");
-            var result = symbol.OpenEditor(PointToScreen(pos), MapPrivate.SymbolsPM);
+        private void CreateCreature(Color color, double size) {
+            var symbol = MapPrivate.SymbolsPM.CreateSymbolCreature(_mouseDownPoint, color, size, "");
+		
+            Debug.WriteLine($"PointToScreen = {PointToScreen(_mouseDownPointWindow)}");
+            var result = symbol.OpenEditor(PointToScreen(_mouseDownPointWindow), MapPrivate.SymbolsPM);
             if (!result) {
                 MapPrivate.SymbolsPM.DeleteSymbol(symbol.Uid);
             }
@@ -623,11 +626,11 @@ namespace MapViewer {
         }
 
         private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
-            CreateCreature(Colors.LightBlue, _mouseDownPoint, 0.8);
+            CreateCreature(Colors.LightBlue, 0.8);
         }
 
         private void NonPlayer_Execute(object sender, ExecutedRoutedEventArgs e) {
-            CreateCreature(Colors.Orange, _mouseDownPoint, 0.8);
+            CreateCreature(Colors.Orange, 0.8);
         }
 		
         private void SymbolImage_Execute(object sender, ExecutedRoutedEventArgs e) {
