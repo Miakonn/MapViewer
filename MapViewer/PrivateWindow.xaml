@@ -174,11 +174,18 @@
 						<ComboBoxItem Uid="Scale_64000" Content="1:64000" IsEnabled="{Binding IsImageCalibrated}"/>
 						<ComboBoxItem Uid="Scale_0" Content="Linked"/>
 					</ComboBox>
+                    <ComboBox Name="ComboBoxPlayerMinSize"  Height="20" Margin="2,5,2,5" SelectionChanged="ComboBoxPlayerMinSize_OnSelectionChanged" >
+                        <ComboBoxItem Uid="PlayerMinSize_10p" Content="10 pixel"  IsSelected="True"/>
+                        <ComboBoxItem Uid="PlayerMinSize_20p" Content="20 pixel"/>
+                        <ComboBoxItem Uid="PlayerMinSize_25p" Content="25 pixel"/>
+                        <ComboBoxItem Uid="PlayerMinSize_30p" Content="30 pixel"/>
+                        <ComboBoxItem Uid="PlayerMinSize_35p" Content="35 pixel"/>
+                    </ComboBox>
                     <ComboBox Name="ComboBoxPlayerSize"  Height="20" Margin="2,5,2,5" SelectionChanged="ComboBoxPlayerSize_OnSelectionChanged" >
-                        <ComboBoxItem Uid="PlayerSize_20p" Content="20 pixel"  IsSelected="True"/>
-                        <ComboBoxItem Uid="PlayerSize_25p" Content="25 pixel"/>
-                        <ComboBoxItem Uid="PlayerSize_30p" Content="30 pixel"/>
-                        <ComboBoxItem Uid="PlayerSize_35p" Content="35 pixel"/>
+                        <ComboBoxItem Uid="PlayerSize_0.7" Content="0.7m"/>
+                        <ComboBoxItem Uid="PlayerSize_0.8" Content="0.8m"  IsSelected="True"/>
+                        <ComboBoxItem Uid="PlayerSize_0.9" Content="0.9m"/>
+                        <ComboBoxItem Uid="PlayerSize_1.0" Content="1.0m"/>
                     </ComboBox>
                     <RibbonCheckBox Label="Show Cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
 					<RibbonButton Label="Show Display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" 

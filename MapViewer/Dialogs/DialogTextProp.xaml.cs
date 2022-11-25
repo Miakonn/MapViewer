@@ -44,10 +44,10 @@ namespace MapViewer.Dialogs {
             SymbolsVM?.RaiseSymbolsChanged();
         }
 
-        public Point StartPosition {
+        public Point DialogPos {
             set { 
-                Left = value.X;
-                Top = value.Y;
+                Left = value.X + 10;
+                Top = value.Y + 10;
             }
         }
 

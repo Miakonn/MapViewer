@@ -54,6 +54,7 @@ namespace MapViewer {
         private Point _mouseDownPointFirst;
         private ICanvasTool _activeTool;
         private bool writtenLogSetting;
+
         public bool IsImageCalibrated => MapPrivate?.IsCalibrated ?? false;
 
         private double _characterDistanceMoved;
@@ -208,7 +209,7 @@ namespace MapViewer {
                 if (_lastClickedElem != null && _lastClickedElem.Uid != MaskedMap.PublicPositionUid) {
                     _mouseDownPoint = e.GetPosition(this);
                     _cursorAction = CursorAction.None;
-                    MapPrivate.SymbolsPM.OpenEditor(_lastClickedElem.Uid, _mouseDownPoint);
+                    MapPrivate.SymbolsPM.OpenEditor(_lastClickedElem.Uid, PointToScreen(_mouseDownPoint));
                 }
                 e.Handled = true;
             }
@@ -308,28 +309,57 @@ namespace MapViewer {
         private void ComboBoxPlayerSize_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selected = (ComboBoxItem)ComboBoxPlayerSize.SelectedItem;
-            if (selected != null && MapPublic != null && MapPrivate != null) {
-                switch (selected.Uid) {
-                    case "PlayerSize_20p":
-                        MapPublic.PlayerSizePixel = 20;
-                        MapPrivate.PlayerSizePixel = 20;
-                        break;
-                    case "PlayerSize_25p":
-                        MapPublic.PlayerSizePixel = 25;
-                        MapPrivate.PlayerSizePixel = 25;
-                        break;
-                    case "PlayerSize_30p":
-                        MapPublic.PlayerSizePixel = 30;
-                        MapPrivate.PlayerSizePixel = 30;
-                        break;
-                    case "PlayerSize_35p":
-                        MapPublic.PlayerSizePixel = 35;
-                        MapPrivate.PlayerSizePixel = 35;
-                        break;
-                }
-                MapPrivate.SymbolsPM.RaiseSymbolsChanged();
+            if (selected == null || MapPublic == null || MapPrivate == null) {
+                return;
             }
+            switch (selected.Uid) {
+                case "PlayerSize_0.7":
+                    MapPrivate.SymbolsPM.ChangePlayerSizes(0.7);
+                    break;
+                case "PlayerSize_0.8":
+                    MapPrivate.SymbolsPM.ChangePlayerSizes(0.8);
+                    break;
+                case "PlayerSize_0.9":
+                    MapPrivate.SymbolsPM.ChangePlayerSizes(0.9);
+                    break;
+                case "PlayerSize_1.0":
+                    MapPrivate.SymbolsPM.ChangePlayerSizes(1.0);
+                    break;
+            }
+            MapPrivate.SymbolsPM.RaiseSymbolsChanged();
         }
+
+
+        private void ComboBoxPlayerMinSize_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
+             var selected = (ComboBoxItem)ComboBoxPlayerMinSize.SelectedItem;
+             if (selected == null || MapPublic == null || MapPrivate == null) {
+                 return;
+             }
+             switch (selected.Uid) {
+                case "PlayerMinSize_10p":
+                    MapPublic.PlayerSizePixel = 20;
+                    MapPrivate.PlayerSizePixel = 20;
+                    break;
+                case "PlayerMinSize_20p":
+                    MapPublic.PlayerSizePixel = 20;
+                    MapPrivate.PlayerSizePixel = 20;
+                    break;
+                case "PlayerMinSize_25p":
+                    MapPublic.PlayerSizePixel = 25;
+                    MapPrivate.PlayerSizePixel = 25;
+                    break;
+                case "PlayerMinSize_30p":
+                    MapPublic.PlayerSizePixel = 30;
+                    MapPrivate.PlayerSizePixel = 30;
+                    break;
+                case "PlayerMinSize_35p":
+                    MapPublic.PlayerSizePixel = 35;
+                    MapPrivate.PlayerSizePixel = 35;
+                    break;
+            }
+            MapPrivate.SymbolsPM.RaiseSymbolsChanged();
+        }
+
 
         private void Tab_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {

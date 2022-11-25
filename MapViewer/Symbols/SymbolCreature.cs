@@ -56,11 +56,11 @@ namespace MapViewer.Symbols {
         }
 
 
-        public override bool OpenEditor(Point mouseDownPoint, SymbolsViewModel symbolsVM) {
+        public override bool OpenEditor(Point dialogPos, SymbolsViewModel symbolsVM) {
             var dlg = new DialogCreatureProp {
                 Symbol = this,
                 SymbolsVM = symbolsVM,
-                StartPosition = mouseDownPoint
+                DialogPos = dialogPos
             };
 
 
@@ -76,8 +76,4 @@ namespace MapViewer.Symbols {
             return newSymbol;
         }
     }
-
-
-
-    public class SymbolPlayer : SymbolCreature { }
 }

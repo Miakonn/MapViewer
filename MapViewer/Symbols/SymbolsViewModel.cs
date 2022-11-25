@@ -129,8 +129,7 @@ namespace MapViewer.Symbols {
             RaiseSymbolsChanged();
         }
 
-        public void MoveSymbolUpDown(string uid, SymbolsViewModel symbolsPmNew)
-        {
+        public void MoveSymbolUpDown(string uid, SymbolsViewModel symbolsPmNew) {
             if (!Symbols.ContainsKey(uid)) {
                 return;
             }
@@ -138,6 +137,18 @@ namespace MapViewer.Symbols {
             var symbolToMove = Symbols[uid];
             Symbols.Remove(uid);
             symbolsPmNew.AddSymbol(symbolToMove);
+            RaiseSymbolsChanged();
+        }
+
+        public void ChangePlayerSizes(double sizeMeterNew) {
+            foreach (var symbol in Symbols.Values) {
+                if (symbol is SymbolCreature creature) {
+                    if (creature.SizeMeter >= 0.7 && creature.SizeMeter <= 1.0) {
+                        creature.SizeMeter = sizeMeterNew;
+                    }
+                }
+            }
+
             RaiseSymbolsChanged();
         }
 
@@ -169,13 +180,13 @@ namespace MapViewer.Symbols {
             return radians * (180.0 / Math.PI);
         }
 
-        public void OpenEditor(string uid, Point mouseDownPoint) {
+        public void OpenEditor(string uid, Point dialogScreenPos) {
             if (!Symbols.ContainsKey(uid)) {
                 return;
             }
 
             var symbol = Symbols[uid];
-            symbol.OpenEditor(mouseDownPoint, this);
+            symbol.OpenEditor(dialogScreenPos, this);
             RaiseSymbolsChanged();
         }
 

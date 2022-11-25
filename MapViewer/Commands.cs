@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
@@ -606,23 +607,16 @@ namespace MapViewer {
 		}
 
         private void CreateCreature(Color color, Point pos, double size) {
-            ActiveTool = null;
-            var dialog = new DialogGetSingleValue {
-                LeadText = "Text",
-                Owner = this
-            };
-
-            var result = dialog.ShowDialog();
-            if (!result.HasValue || !result.Value) {
-                return;
+            var symbol = MapPrivate.SymbolsPM.CreateSymbolCreature(pos, color, size, "");
+            var result = symbol.OpenEditor(PointToScreen(pos), MapPrivate.SymbolsPM);
+            if (!result) {
+                MapPrivate.SymbolsPM.DeleteSymbol(symbol.Uid);
             }
-            
-            MapPrivate.SymbolsPM.CreateSymbolCreature(pos, color, size, dialog.TextValue);
         }
 
         private void CreateSymbolImage(Point pos) {
             var symbol = MapPrivate.SymbolsPM.CreateSymbolImage(pos);
-			var result = symbol.OpenEditor(pos, MapPrivate.SymbolsPM);
+			var result = symbol.OpenEditor(PointToScreen(pos), MapPrivate.SymbolsPM);
             if (!result) {
                 MapPrivate.SymbolsPM.DeleteSymbol(symbol.Uid);
             }
@@ -665,5 +659,6 @@ namespace MapViewer {
 			MapPublic.ShowPublicCursor = false;
 		}
 		#endregion
-	}
+
+    }
 }

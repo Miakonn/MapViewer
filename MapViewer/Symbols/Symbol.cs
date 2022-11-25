@@ -9,7 +9,7 @@ namespace MapViewer.Symbols {
 
 
     [Serializable]
-    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), XmlInclude(typeof(SymbolPlayer)), XmlInclude(typeof(SymbolImage)),
+    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), XmlInclude(typeof(SymbolImage)),
      XmlInclude(typeof(SymbolCone)),
      XmlInclude(typeof(SymbolCircle)), XmlInclude(typeof(SymbolText)), XmlInclude(typeof(SymbolRectangle))]
     public abstract class Symbol {
@@ -22,7 +22,7 @@ namespace MapViewer.Symbols {
 
         public abstract void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings);
 
-        public virtual bool OpenEditor(Point mouseDownPoint, SymbolsViewModel symbolsVM) {
+        public virtual bool OpenEditor(Point dialogPos, SymbolsViewModel symbolsVM) {
             return true;
         }
 

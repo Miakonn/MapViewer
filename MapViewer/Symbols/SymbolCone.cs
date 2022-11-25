@@ -46,11 +46,11 @@ namespace MapViewer.Symbols {
             canvas.Children.Add(shape);
         }
 
-        public override bool OpenEditor(Point mouseDownPoint, SymbolsViewModel symbolsVM) {
+        public override bool OpenEditor(Point dialogPos, SymbolsViewModel symbolsVM) {
             var dlg = new DialogConeProp {
                 Symbol = this,
                 SymbolsVM = symbolsVM,
-                StartPosition = mouseDownPoint
+                DialogPos = dialogPos
             };
 
             var result = dlg.ShowDialog();

@@ -12,6 +12,7 @@ Hög prio
 
 * lägga tillbaka 0,8 och 1m
 
+
 * spara/ladda färdiga grupper av symboler
 
 * multipla val

@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace MapViewer {
 	public class MapData {
-		private float _imageScaleMperPix;
+		private double _imageScaleMperPix;
 		private int _lastFigureScaleUsed;
 		private string _unit;
 		
@@ -19,7 +19,7 @@ namespace MapViewer {
 			}
 		}
 
-		public float ImageScaleMperPix {
+		public double ImageScaleMperPix {
 			get => _imageScaleMperPix;
             set {
 				_imageScaleMperPix = value;
