@@ -21,10 +21,8 @@ namespace MapViewer.Symbols {
 
         public Collection<Symbol> SymbolsOnly { get; set; }
 
-
-        public const string UidPrefix = "S_";
-
-
+        public const string UidPrefix = "S";
+        
         public event EventHandler SymbolsChanged;
         
         public SymbolsViewModel() {
@@ -50,7 +48,7 @@ namespace MapViewer.Symbols {
         }
         
         public static string GetTimestamp() {
-            return UidPrefix + (int)(DateTime.UtcNow.Subtract(new DateTime(2022, 1, 1)).TotalMilliseconds);
+            return UidPrefix + (DateTime.UtcNow.Subtract(new DateTime(2022, 1, 1)).TotalMilliseconds);
         }
 
         public int GetMaxOrderZ() {

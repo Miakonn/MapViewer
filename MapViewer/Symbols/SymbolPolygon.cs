@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Net;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using MapViewer.Dialogs;
 using MapViewer.Maps;
 
 namespace MapViewer.Symbols {
@@ -23,6 +25,18 @@ namespace MapViewer.Symbols {
             Canvas.SetLeft(shape, StartPoint.X);
             Canvas.SetTop(shape, StartPoint.Y);
             canvas.Children.Add(shape);
+
+            CreateTextElement(Caption, canvas, drawingSettings);
+        }
+        public override bool OpenEditor(Point mouseDownPoint, SymbolsViewModel symbolsVM) {
+            var dlg = new DialogBaseSymbolProp() {
+                Symbol = this,
+                SymbolsVM = symbolsVM,
+                StartPosition = mouseDownPoint
+            };
+
+            var result = dlg.ShowDialog();
+            return result != null && result.Value;
         }
 
         public override Symbol Copy() {

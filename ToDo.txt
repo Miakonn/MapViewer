@@ -8,7 +8,7 @@ Hög prio
 
 * Creature editor Apply
 * kolla indata i dialogprop
-* SymbolLine  Editor till symbols?
+* Editor till symbols?
 
 * standardisera prop namnen
 * komma ihåg senaste image-mapp

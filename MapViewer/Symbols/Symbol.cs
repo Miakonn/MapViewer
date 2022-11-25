@@ -37,7 +37,7 @@ namespace MapViewer.Symbols {
             Caption = symbolSource.Caption;
         }
 
-        public void CreateText(string caption, Canvas canvas, MapDrawingSettings drawingSettings) {
+        public void CreateTextElement(string caption, Canvas canvas, MapDrawingSettings drawingSettings) {
             if (string.IsNullOrWhiteSpace(caption)) {
                 return;
             }

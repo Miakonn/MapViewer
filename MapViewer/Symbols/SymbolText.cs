@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml.Serialization;
+using MapViewer.Dialogs;
 using MapViewer.Maps;
 
 namespace MapViewer.Symbols {
@@ -34,6 +35,17 @@ namespace MapViewer.Symbols {
             Canvas.SetLeft(textBlock, StartPoint.X - textSize.Width / 2);
             Canvas.SetTop(textBlock, StartPoint.Y - textSize.Height / 2);
             canvas.Children.Add(textBlock);
+        }
+
+        public override bool OpenEditor(Point mouseDownPoint, SymbolsViewModel symbolsVM) {
+            var dlg = new DialogTextProp() {
+                Symbol = this,
+                SymbolsVM = symbolsVM,
+                StartPosition = mouseDownPoint
+            };
+
+            var result = dlg.ShowDialog();
+            return result != null && result.Value;
         }
 
         public override Symbol Copy() {

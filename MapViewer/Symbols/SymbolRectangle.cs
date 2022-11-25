@@ -44,7 +44,7 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(shape, StartPoint.Y);
             canvas.Children.Add(shape);
 
-            CreateText(Caption, canvas, drawingSettings);
+            CreateTextElement(Caption, canvas, drawingSettings);
         }
 
         public override bool OpenEditor(Point mouseDownPoint, SymbolsViewModel symbolsVM) {
