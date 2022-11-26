@@ -71,7 +71,6 @@ namespace MapViewer.Symbols {
         public override Symbol Copy() {
             var newSymbol = new SymbolIcon();
             newSymbol.CopyBase(this);
-            newSymbol.Caption = newSymbol.Caption = SymbolsViewModel.CountUpCaption(Caption);
             newSymbol.RotationDegree = RotationDegree;
             newSymbol.ImageFileName = ImageFileName;
 

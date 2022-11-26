@@ -34,7 +34,7 @@ namespace MapViewer.Symbols {
             FillColor = symbolSource.FillColor;
             OrderZ = symbolSource.OrderZ - 1;
             SizeMeter = symbolSource.SizeMeter;
-            Caption = symbolSource.Caption;
+            Caption = SymbolsViewModel.CountUpCaption(symbolSource.Caption); ;
         }
 
         public void DrawTextElement(string caption, Canvas canvas, MapDrawingSettings drawingSettings) {

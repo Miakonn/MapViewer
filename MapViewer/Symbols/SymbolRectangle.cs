@@ -63,7 +63,6 @@ namespace MapViewer.Symbols {
             newSymbol.CopyBase(this);
             newSymbol.WidthMeter = WidthMeter;
             newSymbol.RotationDegree = RotationDegree;
-            newSymbol.Caption = SymbolsViewModel.CountUpCaption(Caption);
             return newSymbol;
         }
     }
