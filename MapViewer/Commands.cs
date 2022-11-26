@@ -689,13 +689,6 @@ namespace MapViewer {
             }
         }
 
-        private void CreateSymbolImage(Point pos) {
-            var symbol = MapPrivate.SymbolsPM.CreateSymbolIcon(pos);
-			var result = symbol.OpenDialogProp(PointToScreen(pos), MapPrivate.SymbolsPM);
-            if (!result) {
-                MapPrivate.SymbolsPM.DeleteSymbol(symbol.Uid);
-            }
-        }
 
         private void Player_Execute(object sender, ExecutedRoutedEventArgs e) {
             CreateCreature(Colors.LightBlue, 0.8);
@@ -705,8 +698,12 @@ namespace MapViewer {
             CreateCreature(Colors.Orange, 0.8);
         }
 		
-        private void SymbolImage_Execute(object sender, ExecutedRoutedEventArgs e) {
-            CreateSymbolImage(_mouseDownPoint);
+        private void SymbolIcon_Execute(object sender, ExecutedRoutedEventArgs e) {
+            var symbol = MapPrivate.SymbolsPM.CreateSymbolIcon(_mouseDownPoint);
+            var result = symbol.OpenDialogProp(PointToScreen(_mouseDownPoint), MapPrivate.SymbolsPM);
+            if (!result) {
+                MapPrivate.SymbolsPM.DeleteSymbol(symbol.Uid);
+            }
         }
 
         private void ShowPublicCursorTemporary_Execute(object sender, ExecutedRoutedEventArgs e) {

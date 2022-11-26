@@ -41,7 +41,7 @@
         <CommandBinding Command="mapViewer:CustomCommands.Player" Executed="Player_Execute" CanExecute="Player_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.NonPlayer" Executed="NonPlayer_Execute" CanExecute="Player_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DuplicateSymbol" Executed="DuplicateSymbol_Execute" CanExecute="Player_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.SymbolImage" Executed="SymbolImage_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SymbolImage" Executed="SymbolIcon_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.SpellCircular7m" Executed="SpellCircular7m_Execute" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular3m" Executed="SpellCircular3m_Execute" CanExecute="Spell_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular2m" Executed="SpellCircular2m_Execute" CanExecute="Spell_CanExecute" />

@@ -6,8 +6,6 @@
 
 Hög prio ================================
 
-* spara senaste folder vid de olik spar-dialogerna
-
 
 Medel prio =================================
 

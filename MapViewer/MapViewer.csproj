@@ -79,8 +79,8 @@
     <Compile Include="Dialogs\DialogRectProp.xaml.cs">
       <DependentUpon>DialogRectProp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\DialogImageProp.xaml.cs">
-      <DependentUpon>DialogImageProp.xaml</DependentUpon>
+    <Compile Include="Dialogs\DialogIconProp.xaml.cs">
+      <DependentUpon>DialogIconProp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\DialogCreatureProp.xaml.cs">
       <DependentUpon>DialogCreatureProp.xaml</DependentUpon>
@@ -164,7 +164,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Dialogs\DialogImageProp.xaml">
+    <Page Include="Dialogs\DialogIconProp.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
