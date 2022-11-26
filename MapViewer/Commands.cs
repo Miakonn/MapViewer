@@ -36,7 +36,7 @@ namespace MapViewer {
 		public static readonly RoutedUICommand ExitApp = new RoutedUICommand("Exit", "Exit", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand PublishMap = new RoutedUICommand("Publish", "Publish", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ClearMask = new RoutedUICommand("Clear Mask", "Clear Mask", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand ClearOverlay = new RoutedUICommand("Clear Overlay", "Clear Overlay", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand ClearOverlay = new RoutedUICommand("Clear Symbols", "Clear Symbols", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ScaleToFit= new RoutedUICommand("Scale to Fit", "Scale to Fit", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ZoomIn = new RoutedUICommand("Zoom In", "Zoom In", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand ZoomOut = new RoutedUICommand("Zoom Out", "Zoom Out", typeof(CustomCommands), null);
@@ -700,7 +700,7 @@ namespace MapViewer {
 		
         private void SymbolIcon_Execute(object sender, ExecutedRoutedEventArgs e) {
             var symbol = MapPrivate.SymbolsPM.CreateSymbolIcon(_mouseDownPoint);
-            var result = symbol.OpenDialogProp(PointToScreen(_mouseDownPoint), MapPrivate.SymbolsPM);
+            var result = symbol.OpenDialogProp(PointToScreen(_mouseDownPointWindow), MapPrivate.SymbolsPM);
             if (!result) {
                 MapPrivate.SymbolsPM.DeleteSymbol(symbol.Uid);
             }

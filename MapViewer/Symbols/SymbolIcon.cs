@@ -34,8 +34,10 @@ namespace MapViewer.Symbols {
                 scale = minSizeScaled / iconSize;
             }
 
+            var center = new Vector(scale * iconSource.Width * 0.5, scale * iconSource.Height * 0.5);
+
             var trfScale = new ScaleTransform(scale, scale);
-            var trfRot = new RotateTransform(RotationDegree, scale * iconSource.Width * 0.5, scale * iconSource.Height * 0.5);
+            var trfRot = new RotateTransform(RotationDegree, center.X, center.Y);
 
             var finalTransform = new TransformGroup();
             finalTransform.Children.Add(trfScale);
@@ -48,8 +50,8 @@ namespace MapViewer.Symbols {
                 Source = iconSource,
             };
 
-            Canvas.SetLeft(shape, StartPoint.X - iconSource.PixelWidth * scale / 2 ); 
-            Canvas.SetTop(shape, StartPoint.Y - iconSource.PixelHeight * scale / 2);
+            Canvas.SetLeft(shape, StartPoint.X -center.X); 
+            Canvas.SetTop(shape, StartPoint.Y - center.Y);
             canvas.Children.Add(shape);
 
             DrawTextElement(Caption, canvas, drawingSettings);

@@ -147,7 +147,7 @@
 				</RibbonGroup>
 
 				<RibbonGroup Name="Spells">
-					<RibbonButton Label="Clear Overlay" Command="mapViewer:CustomCommands.ClearOverlay" LargeImageSource="Images/Map.png"/>
+					<RibbonButton Label="Clear Symbols" Command="mapViewer:CustomCommands.ClearOverlay" LargeImageSource="Images/Map.png"/>
 					<RibbonToggleButton Label="Create Line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/draw_line.png" />
 					<RibbonToggleButton Label="Create Cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/draw_cone.png" />
 					<RibbonToggleButton Label="Create Circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/draw_circle.png" />
