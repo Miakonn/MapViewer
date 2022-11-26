@@ -22,7 +22,7 @@ namespace MapViewer.Symbols {
 
         public abstract void DrawElements(Canvas canvas, MapDrawingSettings drawingSettings);
 
-        public virtual bool OpenEditor(Point dialogPos, SymbolsViewModel symbolsVM) {
+        public virtual bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
             return true;
         }
 

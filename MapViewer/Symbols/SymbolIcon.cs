@@ -17,10 +17,11 @@ namespace MapViewer.Symbols {
         public string ImageFileName { get; set; }
         public double RotationDegree { get; set; }
         
-        public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings) {
+        public override void DrawElements(Canvas canvas, MapDrawingSettings drawingSettings) {
             BitmapSource iconSource;
             if (string.IsNullOrWhiteSpace(ImageFileName) || !File.Exists(ImageFileName)) {
-                iconSource = CreateBitmapSource(Colors.Orange);
+                iconSource =  new BitmapImage(new Uri("pack://application:,,,/Images/Question_mark.png"));
+
             }
             else {
                 iconSource = new BitmapImage(new Uri(ImageFileName));
@@ -46,10 +47,10 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(shape, StartPoint.Y - iconSource.PixelHeight * scale / 2);
             canvas.Children.Add(shape);
 
-            CreateTextElement(Caption, canvas, drawingSettings);
+            DrawTextElement(Caption, canvas, drawingSettings);
         }
 
-        public override bool OpenEditor(Point dialogPos, SymbolsViewModel symbolsVM) {
+        public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
             var dlg = new DialogImageProp {
                 Symbol = this,
                 SymbolsVM = symbolsVM,

@@ -683,15 +683,15 @@ namespace MapViewer {
             var symbol = MapPrivate.SymbolsPM.CreateSymbolCreature(_mouseDownPoint, color, size, "");
 		
             Debug.WriteLine($"PointToScreen = {PointToScreen(_mouseDownPointWindow)}");
-            var result = symbol.OpenEditor(PointToScreen(_mouseDownPointWindow), MapPrivate.SymbolsPM);
+            var result = symbol.OpenDialogProp(PointToScreen(_mouseDownPointWindow), MapPrivate.SymbolsPM);
             if (!result) {
                 MapPrivate.SymbolsPM.DeleteSymbol(symbol.Uid);
             }
         }
 
         private void CreateSymbolImage(Point pos) {
-            var symbol = MapPrivate.SymbolsPM.CreateSymbolImage(pos);
-			var result = symbol.OpenEditor(PointToScreen(pos), MapPrivate.SymbolsPM);
+            var symbol = MapPrivate.SymbolsPM.CreateSymbolIcon(pos);
+			var result = symbol.OpenDialogProp(PointToScreen(pos), MapPrivate.SymbolsPM);
             if (!result) {
                 MapPrivate.SymbolsPM.DeleteSymbol(symbol.Uid);
             }

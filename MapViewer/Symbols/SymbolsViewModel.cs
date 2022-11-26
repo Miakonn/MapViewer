@@ -70,7 +70,7 @@ namespace MapViewer.Symbols {
 
             var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.OrderZ);
             foreach (var symbol in symbolsInZorder) {
-                symbol.CreateElements(canvas, drawSettings);
+                symbol.DrawElements(canvas, drawSettings);
             }
         }
 
@@ -186,7 +186,7 @@ namespace MapViewer.Symbols {
             }
 
             var symbol = Symbols[uid];
-            symbol.OpenEditor(dialogScreenPos, this);
+            symbol.OpenDialogProp(dialogScreenPos, this);
             RaiseSymbolsChanged();
         }
 

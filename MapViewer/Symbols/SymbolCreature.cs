@@ -56,7 +56,7 @@ namespace MapViewer.Symbols {
         }
 
 
-        public override bool OpenEditor(Point dialogPos, SymbolsViewModel symbolsVM) {
+        public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
             var dlg = new DialogCreatureProp {
                 Symbol = this,
                 SymbolsVM = symbolsVM,
