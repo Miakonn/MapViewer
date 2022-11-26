@@ -12,7 +12,7 @@ namespace MapViewer.Symbols {
     [XmlInclude(typeof(Symbol))]
     public class SymbolCircle : Symbol {
 
-        public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings)
+        public override void DrawElements(Canvas canvas, MapDrawingSettings drawingSettings)
         {
             var brush = new SolidColorBrush(FillColor);
 
@@ -29,7 +29,7 @@ namespace MapViewer.Symbols {
 
             canvas.Children.Add(shape);
 
-            CreateTextElement(Caption, canvas, drawingSettings);
+            DrawTextElement(Caption, canvas, drawingSettings);
         }
 
         public override bool OpenEditor(Point dialogPos, SymbolsViewModel symbolsVM) {

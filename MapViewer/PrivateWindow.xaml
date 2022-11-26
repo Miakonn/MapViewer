@@ -113,7 +113,7 @@
         <Ribbon Margin="1,1,1,1" Grid.Row="0" SelectionChanged="Tab_OnSelectionChanged">
 			<Ribbon.ApplicationMenu>
 				<RibbonApplicationMenu>
-					<RibbonApplicationMenuItem Header="Open Image" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
+					<RibbonApplicationMenuItem Header="Open Map" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
 					<RibbonApplicationMenuItem Header="Save Mask/Symbols" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
                     <RibbonApplicationMenuItem Header="Save Symbols as..." Command="mapViewer:CustomCommands.SaveSymbolsAs" ImageSource="Images\Save_file.png" />
                     <RibbonApplicationMenuItem Header="Load Symbols.." Command="mapViewer:CustomCommands.LoadSymbols" ImageSource="Images\Open_file.png" />

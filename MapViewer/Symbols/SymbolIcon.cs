@@ -12,7 +12,7 @@ using MapViewer.Maps;
 namespace MapViewer.Symbols {
     [Serializable]
     [XmlInclude(typeof(Symbol))]
-    public class SymbolImage : Symbol {
+    public class SymbolIcon : Symbol {
 
         public string ImageFileName { get; set; }
         public double RotationDegree { get; set; }
@@ -61,7 +61,7 @@ namespace MapViewer.Symbols {
         }
 
         public override Symbol Copy() {
-            var newSymbol = new SymbolImage();
+            var newSymbol = new SymbolIcon();
             newSymbol.CopyBase(this);
             newSymbol.Caption = newSymbol.Caption = SymbolsViewModel.CountUpCaption(Caption);
             newSymbol.RotationDegree = RotationDegree;

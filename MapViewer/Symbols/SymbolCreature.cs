@@ -9,7 +9,7 @@ using MapViewer.Maps;
 namespace MapViewer.Symbols {
     public class SymbolCreature : Symbol {
 
-        public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings) {
+        public override void DrawElements(Canvas canvas, MapDrawingSettings drawingSettings) {
             var brush = new SolidColorBrush(FillColor);
 
             double sizePixel = SizeMeter / drawingSettings.ImageScaleMperPix;

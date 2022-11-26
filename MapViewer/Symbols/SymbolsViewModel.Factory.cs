@@ -20,7 +20,7 @@ namespace MapViewer.Symbols {
         }
 
         public Symbol CreateSymbolCircle(Point pos, Color color, double radiusMeter) {
-            var symbol = new SymbolCreature {
+            var symbol = new SymbolCircle {
                 Uid = GetTimestamp(),
                 FillColor = color,
                 OrderZ = GetMinOrderZ() - 1,
@@ -110,8 +110,8 @@ namespace MapViewer.Symbols {
             return symbol;
         }
 
-        public Symbol CreateSymbolImage(Point pos) {
-            var symbol = new SymbolImage {
+        public Symbol CreateSymbolIcon(Point pos) {
+            var symbol = new SymbolIcon {
                 Uid = GetTimestamp(),
                 OrderZ = GetMinOrderZ() - 1,
                 SizeMeter = 4,

@@ -9,7 +9,7 @@ namespace MapViewer.Symbols {
 
 
     [Serializable]
-    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), XmlInclude(typeof(SymbolImage)),
+    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), XmlInclude(typeof(SymbolIcon)),
      XmlInclude(typeof(SymbolCone)),
      XmlInclude(typeof(SymbolCircle)), XmlInclude(typeof(SymbolText)), XmlInclude(typeof(SymbolRectangle))]
     public abstract class Symbol {
@@ -20,7 +20,7 @@ namespace MapViewer.Symbols {
         public double SizeMeter { get; set; }
         public string Caption { get; set; }
 
-        public abstract void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings);
+        public abstract void DrawElements(Canvas canvas, MapDrawingSettings drawingSettings);
 
         public virtual bool OpenEditor(Point dialogPos, SymbolsViewModel symbolsVM) {
             return true;
@@ -37,7 +37,7 @@ namespace MapViewer.Symbols {
             Caption = symbolSource.Caption;
         }
 
-        public void CreateTextElement(string caption, Canvas canvas, MapDrawingSettings drawingSettings) {
+        public void DrawTextElement(string caption, Canvas canvas, MapDrawingSettings drawingSettings) {
             if (string.IsNullOrWhiteSpace(caption)) {
                 return;
             }

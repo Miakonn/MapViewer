@@ -8,7 +8,7 @@ namespace MapViewer.Dialogs {
 	public partial class DialogImageProp
     {
      
-        private SymbolImage _symbol;
+        private SymbolIcon _symbol;
 
         public double Angle { get; set; }
 
@@ -16,7 +16,7 @@ namespace MapViewer.Dialogs {
 
         private static string _lastDirectoryUsed;
 
-        public SymbolImage Symbol {
+        public SymbolIcon Symbol {
             get => _symbol;
             set {
                 _symbol = value;

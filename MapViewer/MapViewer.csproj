@@ -92,7 +92,7 @@
     <Compile Include="Symbols\SymbolCircle.cs" />
     <Compile Include="Symbols\SymbolCone.cs" />
     <Compile Include="Symbols\SymbolCreature.cs" />
-    <Compile Include="Symbols\SymbolImage.cs" />
+    <Compile Include="Symbols\SymbolIcon.cs" />
     <Compile Include="Symbols\SymbolRectangle.cs" />
     <Compile Include="Symbols\SymbolPolygon.cs" />
     <Compile Include="Symbols\Symbol.cs" />
