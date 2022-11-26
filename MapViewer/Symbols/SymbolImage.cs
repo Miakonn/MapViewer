@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,20 +16,20 @@ namespace MapViewer.Symbols {
 
         public string ImageFileName { get; set; }
         public double RotationDegree { get; set; }
-
-
+        
         public override void CreateElements(Canvas canvas, MapDrawingSettings drawingSettings) {
-
+            BitmapSource iconSource;
             if (string.IsNullOrWhiteSpace(ImageFileName) || !File.Exists(ImageFileName)) {
-                return;
+                iconSource = CreateBitmapSource(Colors.Orange);
+            }
+            else {
+                iconSource = new BitmapImage(new Uri(ImageFileName));
             }
 
-            var image = new BitmapImage(new Uri(ImageFileName));
-
-            double scale = (SizeMeter / drawingSettings.ImageScaleMperPix) / Math.Max(image.Width, image.Height);
+            var scale = (SizeMeter / drawingSettings.ImageScaleMperPix) / Math.Max(iconSource.Width, iconSource.Height);
 
             var trfScale = new ScaleTransform(scale, scale);
-            var trfRot = new RotateTransform(RotationDegree, scale * image.Width * 0.5, scale * image.Height * 0.5);
+            var trfRot = new RotateTransform(RotationDegree, scale * iconSource.Width * 0.5, scale * iconSource.Height * 0.5);
 
             var finalTransform = new TransformGroup();
             finalTransform.Children.Add(trfScale);
@@ -38,11 +39,11 @@ namespace MapViewer.Symbols {
                 Uid= Uid,
                 RenderTransform = finalTransform,
                 Opacity = 1.0,
-                Source = image,
+                Source = iconSource,
             };
 
-            Canvas.SetLeft(shape, StartPoint.X - image.PixelWidth * scale / 2 ); 
-            Canvas.SetTop(shape, StartPoint.Y - image.PixelHeight * scale / 2);
+            Canvas.SetLeft(shape, StartPoint.X - iconSource.PixelWidth * scale / 2 ); 
+            Canvas.SetTop(shape, StartPoint.Y - iconSource.PixelHeight * scale / 2);
             canvas.Children.Add(shape);
 
             CreateTextElement(Caption, canvas, drawingSettings);
@@ -68,5 +69,29 @@ namespace MapViewer.Symbols {
 
             return newSymbol;
         }
+
+
+        private BitmapSource CreateBitmapSource(Color color) {
+            var width = 128;
+            var height = width;
+            var stride = width / 8;
+            var pixels = new byte[height * stride];
+
+            var colors = new List<Color> { color };
+            var myPalette = new BitmapPalette(colors);
+
+            var image = BitmapSource.Create(
+                width,
+                height,
+                96,
+                96,
+                PixelFormats.Indexed1,
+                myPalette,
+                pixels,
+                stride);
+
+            return image;
+        }
+
     }
 }

@@ -14,6 +14,8 @@ namespace MapViewer.Dialogs {
 
         public SymbolsViewModel SymbolsVM { get; set; }
 
+        private static string _lastDirectoryUsed;
+
         public SymbolImage Symbol {
             get => _symbol;
             set {
@@ -63,8 +65,7 @@ namespace MapViewer.Dialogs {
 		}
 
         private void Browse_OnClick(object sender, RoutedEventArgs e) {
-            var dlg = new OpenFileDialog {
-                //InitialDirectory = @"C:\",
+            var dialog = new OpenFileDialog {
                 Title = "Select Image",
                 CheckFileExists = true,
                 CheckPathExists = true,
@@ -73,17 +74,23 @@ namespace MapViewer.Dialogs {
                          "All files (*.*)|*.*"
             };
 
-            var result = dlg.ShowDialog();
+            if (!string.IsNullOrWhiteSpace(_lastDirectoryUsed)) {
+                dialog.InitialDirectory = _lastDirectoryUsed;
+            }
+
+            var result = dialog.ShowDialog();
             if (result != System.Windows.Forms.DialogResult.OK) {
                 return;
             }
 
-            FilenameValue.Text = dlg.FileName;
-            var filename = Path.GetFileNameWithoutExtension(dlg.FileName);
+            FilenameValue.Text = dialog.FileName;
+            var filename = Path.GetFileNameWithoutExtension(dialog.FileName);
             var parts = filename.Split(';');
             if (parts.Length == 2) {
                 SizeValue.Text = parts[1];
             }
+
+            _lastDirectoryUsed = Path.GetDirectoryName(dialog.FileName);
         }
 
         private void cmdRotateCCW_Click(object sender, RoutedEventArgs e) {

@@ -12,18 +12,19 @@ using MapViewer.Properties;
 using MapViewer.Utilities;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace MapViewer {
 	public static class CustomCommands {
         public static readonly RoutedUICommand Player = new RoutedUICommand("Player", "Player", typeof(CustomCommands), null);
         public static readonly RoutedUICommand NonPlayer = new RoutedUICommand("NonPlayer", "NonPlayer", typeof(CustomCommands), null);
         public static readonly RoutedUICommand DuplicateSymbol = new RoutedUICommand("Duplicate", "Duplicate", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand SymbolImage = new RoutedUICommand("Load Image", "Load Image", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand SymbolImage = new RoutedUICommand("Load Icon", "Load Icon", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SpellCircular7m = new RoutedUICommand("Spell r=7m", "Spell r=7m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular3m = new RoutedUICommand("Spell r=3m", "Spell r=3m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand SpellCircular2m = new RoutedUICommand("Spell r=2m", "Spell r=2m", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand DeleteElement = new RoutedUICommand("Delete", "Delete", typeof(CustomCommands), null);
-		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("Set Colour", "Set Colour", typeof(CustomCommands), null);
+		public static readonly RoutedUICommand SetColorElement = new RoutedUICommand("Set Color", "Set Color", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SendSymbolToFront = new RoutedUICommand("Bring to Front", "Bring to Front", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SendSymbolToBack = new RoutedUICommand("Send to Back", "Send to Back", typeof(CustomCommands), null);
         public static readonly RoutedUICommand MoveElementUp = new RoutedUICommand("Move Up", "Move Up", typeof(CustomCommands), null);
@@ -160,11 +161,19 @@ namespace MapViewer {
         #endregion
 
         #region Assorted
+
+        private string _lastImageDirectoryUsed;
+
         private void OpenImage_Execute(object sender, ExecutedRoutedEventArgs e) {
+			
             var dialog = new OpenFileDialog {
                 Filter = "Image Files|*.jpg;*.bmp;*.png",
                 Multiselect = true
             };
+
+            if (!string.IsNullOrWhiteSpace(_lastImageDirectoryUsed)) {
+                dialog.InitialDirectory = _lastImageDirectoryUsed;
+            }
 
             Array.Sort(dialog.FileNames);
 
@@ -175,6 +184,7 @@ namespace MapViewer {
 
             AddCurrentFilesToMru();
             LoadFiles(dialog.FileNames);
+            _lastImageDirectoryUsed = Path.GetDirectoryName(dialog.FileName);
         }
 
 		private void OpenLastImage_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -318,16 +328,25 @@ namespace MapViewer {
                 map.Serialize();
             }
 		}
-
+        
+        private string _lastSymbolDirectoryUsed;
         private string SaveSymbolFileName() {
-            var dlg = new SaveFileDialog {
+            var dialog = new SaveFileDialog {
                 Title = "Select Symbol file",
                 OverwritePrompt = true,
                 DefaultExt = "xml",
                 Filter = "Symbol (*.xml)|*.xml|All files (*.*)|*.*"
             };
-            var result = dlg.ShowDialog();
-            return result == System.Windows.Forms.DialogResult.OK ? dlg.FileName : string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(_lastSymbolDirectoryUsed)) {
+                dialog.InitialDirectory = _lastSymbolDirectoryUsed;
+            }
+            var result = dialog.ShowDialog();
+            if (result != System.Windows.Forms.DialogResult.OK) {
+                return string.Empty;
+            }
+            _lastSymbolDirectoryUsed = Path.GetDirectoryName(dialog.FileName);
+            return dialog.FileName;
         }
         
         private void SaveSymbolAs_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -337,8 +356,9 @@ namespace MapViewer {
             }
         }
 
+      
         private string OpenSymbolFile() {
-            var dlg = new OpenFileDialog {
+            var dialog = new OpenFileDialog {
                 Title = "Select Symbol file",
                 CheckFileExists = true,
                 CheckPathExists = true,
@@ -346,8 +366,16 @@ namespace MapViewer {
                 Filter = "Symbol (*.xml)|*.xml|All files (*.*)|*.*"
             };
 
-            var result = dlg.ShowDialog();
-            return result == System.Windows.Forms.DialogResult.OK ? dlg.FileName : string.Empty;
+            if (!string.IsNullOrWhiteSpace(_lastSymbolDirectoryUsed)) {
+                dialog.InitialDirectory = _lastSymbolDirectoryUsed;
+            }
+            var result = dialog.ShowDialog();
+            if (result != System.Windows.Forms.DialogResult.OK) {
+                return string.Empty;
+            }
+            _lastSymbolDirectoryUsed = Path.GetDirectoryName(dialog.FileName);
+
+            return dialog.FileName;
         }
         private void LoadSymbols_Execute(object sender, ExecutedRoutedEventArgs e) {
             var filename = OpenSymbolFile();
