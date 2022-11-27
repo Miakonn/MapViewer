@@ -1,6 +1,8 @@
 // Buggar
 
+* Symboler försvinner på public, när private gör page up/down
 
+* skala när man laddar symboler från annan fil
 
 // 	Nya funktioner
 
@@ -12,6 +14,12 @@ Medel prio =================================
 * kolla indata i dialogprop
 
 * gummiband vid förflyttning
+
+* ta bort enhets val i calibrate-dialogen
+
+* mer kontrastarande färger i symboler
+
+* mer färger
 
 
 Låg prio ------------------------

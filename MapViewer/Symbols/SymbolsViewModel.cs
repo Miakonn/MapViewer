@@ -209,7 +209,22 @@ namespace MapViewer.Symbols {
             }
         }
 
-        public void Deserialize(string filename) {
+        // Check and calulate if symbol positions needs to scaled to fit.
+        private double GetNeededScaleToFitThisImage(Collection<Symbol> symbols, Size imSize) {
+            double maxX = 0;
+            double maxY = 0;
+            foreach (var symbol in symbols) {
+                maxX = Math.Max(maxX, symbol.StartPoint.X);
+                maxY = Math.Max(maxY, symbol.StartPoint.Y);
+            }
+
+            var scaleX = (maxX > imSize.Width) ? (imSize.Width - 10) / maxX : 1;
+            var scaleY = (maxY > imSize.Height) ? (imSize.Height - 10) / maxY : 1;
+
+            return Math.Min(scaleX, scaleY);
+        }
+
+        public void Deserialize(string filename, Size imSize) {
             if (!File.Exists(filename)) {
                 return;
             }
@@ -218,8 +233,10 @@ namespace MapViewer.Symbols {
                 var serializer = new XmlSerializer(GetType());
                 using (var reader = XmlReader.Create(filename)) {
                     var symbolVM = (SymbolsViewModel)serializer.Deserialize(reader);
+                    var scale = GetNeededScaleToFitThisImage(symbolVM.SymbolsOnly, imSize);
 
                     foreach (var symbol in symbolVM.SymbolsOnly) {
+                        symbol.StartPoint = new Point(scale * symbol.StartPoint.X, scale * symbol.StartPoint.Y);
                         AddSymbolWithoutRaise(symbol);
                     }
                 }

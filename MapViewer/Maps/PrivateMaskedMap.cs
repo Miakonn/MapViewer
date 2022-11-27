@@ -100,7 +100,9 @@ namespace MapViewer.Maps {
         {
             MapData.Deserialize();
             BmpMask = BitmapUtils.Deserialize(CreateFilename(ImageFilePath, ".mask.png"));
-            SymbolsPM.Deserialize(CreateFilename(ImageFilePath, ".symbols.xml"));
+            var imSize = new Size(MapImage.PixelWidth, MapImage.PixelHeight);
+
+            SymbolsPM.Deserialize(CreateFilename(ImageFilePath, ".symbols.xml"), imSize);
             var shape = CanvasOverlay.FindElementByUid(PublicPositionUid);
             if (shape != null) {
                 CanvasOverlay.Children.Remove(shape);

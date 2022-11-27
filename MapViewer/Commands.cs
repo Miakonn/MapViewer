@@ -380,7 +380,11 @@ namespace MapViewer {
         private void LoadSymbols_Execute(object sender, ExecutedRoutedEventArgs e) {
             var filename = OpenSymbolFile();
             if (!string.IsNullOrWhiteSpace(filename)) {
-                MapPrivate.SymbolsPM.Deserialize(filename);
+
+                var imSize = new Size(MapPrivate.MapImage.PixelWidth, MapPrivate.MapImage.PixelHeight);
+
+                MapPrivate.SymbolsPM.Deserialize(filename, imSize);
+
             }
         }
 
