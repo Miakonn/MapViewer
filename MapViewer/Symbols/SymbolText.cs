@@ -35,6 +35,8 @@ namespace MapViewer.Symbols {
             Canvas.SetLeft(textBlock, StartPoint.X - textSize.Width / 2);
             Canvas.SetTop(textBlock, StartPoint.Y - textSize.Height / 2);
             canvas.Children.Add(textBlock);
+
+            base.DrawElements(canvas, drawingSettings);
         }
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {

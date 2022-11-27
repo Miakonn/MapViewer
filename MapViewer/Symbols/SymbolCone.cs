@@ -44,6 +44,8 @@ namespace MapViewer.Symbols {
             Canvas.SetLeft(shape, StartPoint.X);
             Canvas.SetTop(shape, StartPoint.Y);
             canvas.Children.Add(shape);
+
+            base.DrawElements(canvas, drawingSettings);
         }
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {

@@ -29,7 +29,7 @@ namespace MapViewer.Symbols {
 
             var scale = (SizeMeter / drawingSettings.ImageScaleMperPix) / iconSize;
 
-            double minSizeScaled = drawingSettings.MinCreatureSizePixel / drawingSettings.ZoomScale;
+            double minSizeScaled = drawingSettings.MinSymbolSizePixel / drawingSettings.ZoomScale;
             if (scale * iconSize < minSizeScaled) {
                 scale = minSizeScaled / iconSize;
             }
@@ -54,7 +54,7 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(shape, StartPoint.Y - center.Y);
             canvas.Children.Add(shape);
 
-            DrawTextElement(Caption, canvas, drawingSettings);
+            base.DrawElements(canvas, drawingSettings);
         }
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {

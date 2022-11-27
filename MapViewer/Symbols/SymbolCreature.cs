@@ -12,9 +12,7 @@ namespace MapViewer.Symbols {
         public override void DrawElements(Canvas canvas, MapDrawingSettings drawingSettings) {
             var brush = new SolidColorBrush(FillColor);
 
-            double sizePixel = SizeMeter / drawingSettings.ImageScaleMperPix;
-            double minSizeScaled = drawingSettings.MinCreatureSizePixel / drawingSettings.ZoomScale;
-            sizePixel = Math.Max(sizePixel, minSizeScaled);
+            var sizePixel = drawingSettings.GetMinSizePixelFromMeter(SizeMeter);
 
             var shape = new Ellipse {
                 Uid = Uid,
@@ -29,30 +27,7 @@ namespace MapViewer.Symbols {
 
             canvas.Children.Add(shape);
 
-            if (string.IsNullOrWhiteSpace(Caption)) {
-                return;
-            }
-
-            var fontSize = 20 / drawingSettings.ZoomScale;
-            var fontColor = Colors.Black;
-
-            if (FillColor.Equals(Colors.Black) || FillColor.Equals(Colors.Purple) || FillColor.Equals(Colors.Blue)) {
-                fontColor = Colors.Orange;
-            }
-
-            var textBlock = new TextBlock {
-                Uid = Uid + "_1",
-                Text = Caption,
-                FontSize = fontSize,
-                Foreground = new SolidColorBrush(fontColor),
-                FontWeight = FontWeights.Normal,
-                IsHitTestVisible = false
-            };
-
-            var textSize = canvas.GetTextSize(textBlock);
-            Canvas.SetLeft(textBlock, StartPoint.X - textSize.Width / 2.0);
-            Canvas.SetTop(textBlock, StartPoint.Y - textSize.Height / 2.0);
-            canvas.Children.Add(textBlock);
+            base.DrawElements(canvas, drawingSettings);
         }
 
 

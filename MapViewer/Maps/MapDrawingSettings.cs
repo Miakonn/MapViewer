@@ -1,7 +1,19 @@
-﻿namespace MapViewer.Maps {
+﻿using System;
+
+namespace MapViewer.Maps {
     public class MapDrawingSettings {
         public double ZoomScale;
         public double ImageScaleMperPix;
-        public double MinCreatureSizePixel;
+        public double MinSymbolSizePixel;
+
+
+        public double MinSymbolSizePixelScaled => MinSymbolSizePixel / ZoomScale;
+
+        public double GetMinSizePixelFromMeter(double sizeMeter) {
+            double sizePixel = sizeMeter / ImageScaleMperPix;
+            sizePixel = Math.Max(sizePixel, MinSymbolSizePixelScaled);
+            return sizePixel;
+        }
+
     }
 }

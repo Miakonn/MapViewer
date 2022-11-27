@@ -139,10 +139,11 @@ namespace MapViewer.Maps {
         #region Symbols
 
         public void HandleSymbolsChanged(object sender, EventArgs e) {
-            var drawSettings = new MapDrawingSettings();
-            drawSettings.ZoomScale = ZoomScale;
-            drawSettings.ImageScaleMperPix = ImageScaleMperPix;
-            drawSettings.MinCreatureSizePixel = PlayerSizePixel;
+            var drawSettings = new MapDrawingSettings {
+                ZoomScale = ZoomScale,
+                ImageScaleMperPix = ImageScaleMperPix,
+                MinSymbolSizePixel = PlayerSizePixel
+            };
 
             var se = sender as SymbolsViewModel;
             se?.UpdateElements(CanvasOverlay, drawSettings);

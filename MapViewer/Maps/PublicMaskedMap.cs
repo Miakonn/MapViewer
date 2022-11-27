@@ -165,7 +165,7 @@ namespace MapViewer.Maps {
             var drawSettings = new MapDrawingSettings();
             drawSettings.ZoomScale = ZoomScale;
             drawSettings.ImageScaleMperPix = ImageScaleMperPix;
-            drawSettings.MinCreatureSizePixel = PlayerSizePixel;
+            drawSettings.MinSymbolSizePixel = PlayerSizePixel;
 
             var symbolsPm = (SymbolsViewModel)sender;
             symbolsPm?.UpdateElements(CanvasOverlay, drawSettings);
