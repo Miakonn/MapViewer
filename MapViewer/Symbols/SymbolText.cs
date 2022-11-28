@@ -53,10 +53,17 @@ namespace MapViewer.Symbols {
         public override Symbol Copy() {
             var newSymbol = new SymbolText();
             newSymbol.CopyBase(this);
-            newSymbol.Caption = Caption;
             newSymbol.RotationDegree = RotationDegree;
-            newSymbol.SizeMeter = SizeMeter;
             return newSymbol;
+        }
+
+        public override void Rotate(RotationDirection direction) {
+            if (direction == RotationDirection.Clockwise) {
+                RotationDegree += RotationStep;
+            }
+            else {
+                RotationDegree -= RotationStep;
+            }
         }
     }
 }

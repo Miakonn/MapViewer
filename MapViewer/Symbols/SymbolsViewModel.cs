@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -127,6 +128,25 @@ namespace MapViewer.Symbols {
             RaiseSymbolsChanged();
         }
 
+        public void RotateSymbol(Symbol symbolActive, RotationDirection direction) {
+            if (symbolActive == null) {
+                return;
+            }
+     
+            if (symbolActive.IsSelected) {
+                foreach (var symbol in Symbols.Values) {
+                    if (symbol.IsSelected) {
+                        symbol.Rotate(direction);
+                    }
+                }
+            }
+            else {
+                symbolActive.Rotate(direction);
+                ClearSymbolSelection();
+            }
+            RaiseSymbolsChanged();
+        }
+        
         public void MoveSymbolPosition(string uid, Vector move) {
             if (!Symbols.ContainsKey(uid)) {
                 return;

@@ -76,5 +76,14 @@ namespace MapViewer.Symbols {
 
             return newSymbol;
         }
+        
+        public override void Rotate(RotationDirection direction) {
+            if (direction == RotationDirection.Clockwise) {
+                RotationDegree += RotationStep;
+            }
+            else {
+                RotationDegree -= RotationStep;
+            }
+        }
     }
 }

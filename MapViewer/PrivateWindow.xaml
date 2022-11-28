@@ -34,6 +34,9 @@
         <KeyBinding Key="F12" Command="mapViewer:CustomCommands.PublishMap" />
         <KeyBinding Key="Home" Command="mapViewer:CustomCommands.ScaleToFit" />
 
+        <KeyBinding Key="Right" Command="mapViewer:CustomCommands.RotateSymbolCW" />
+        <KeyBinding Key="Left" Command="mapViewer:CustomCommands.RotateSymbolCCW" />
+
 
     </Window.InputBindings>
 
@@ -66,6 +69,8 @@
         <CommandBinding Command="mapViewer:CustomCommands.LevelUp" Executed="LevelUp_Execute" CanExecute="ImagesNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelDownPublish" Executed="LevelDownPublish_Execute" CanExecute="ImagesNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelUpPublish" Executed="LevelUpPublish_Execute" CanExecute="ImagesNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.RotateSymbolCW" Executed="RotateSymbolCW_Execute" CanExecute="ElementNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.RotateSymbolCCW" Executed="RotateSymbolCCW_Execute" CanExecute="ElementNeeded_CanExecute" />
 
         <CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Execute" CanExecute="RotateMap_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Execute" CanExecute="AddDisplay_CanExecute" />

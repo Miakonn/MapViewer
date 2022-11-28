@@ -10,12 +10,18 @@ using Point = System.Windows.Point;
 
 namespace MapViewer.Symbols {
 
+    public enum RotationDirection {
+        Clockwise, CounterClockwise
+    }
 
     [Serializable]
     [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), XmlInclude(typeof(SymbolIcon)),
      XmlInclude(typeof(SymbolCone)),
      XmlInclude(typeof(SymbolCircle)), XmlInclude(typeof(SymbolText)), XmlInclude(typeof(SymbolRectangle))]
     public abstract class Symbol {
+        public const double RotationStep = 22.5;
+
+
         public string Uid { get; set; }
         public int OrderZ { get; set; }   
         public Point StartPoint { get; set; }
@@ -39,6 +45,8 @@ namespace MapViewer.Symbols {
         public virtual bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
             return true;
         }
+
+        public virtual void Rotate(RotationDirection direction) {}
 
         public abstract Symbol Copy();
 

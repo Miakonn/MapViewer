@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using MapViewer.Dialogs;
 using MapViewer.Maps;
 using MapViewer.Properties;
+using MapViewer.Symbols;
 using MapViewer.Utilities;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
@@ -44,6 +45,8 @@ namespace MapViewer {
         public static readonly RoutedUICommand LevelUp = new RoutedUICommand("Level Up", "Level Up", typeof(CustomCommands), null);
         public static readonly RoutedUICommand LevelDownPublish = new RoutedUICommand("Level Down Publish", "Level Down Publish", typeof(CustomCommands), null);
         public static readonly RoutedUICommand LevelUpPublish = new RoutedUICommand("Level Up publish", "Level Up publish", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand RotateSymbolCW = new RoutedUICommand("Rotate CW", "Rotate CW", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand RotateSymbolCCW = new RoutedUICommand("Rotate CCW", "Rotate CCW", typeof(CustomCommands), null);
 
         public static readonly RoutedUICommand RotateMap = new RoutedUICommand("Rotate Map", "Rotate Map", typeof(CustomCommands), null);
 		public static readonly RoutedUICommand AddDisplay = new RoutedUICommand("Add Display", "Add Display", typeof(CustomCommands), null);
@@ -736,5 +739,22 @@ namespace MapViewer {
 		}
 		#endregion
 
+        private void RotateSymbolCW_Execute(object sender, ExecutedRoutedEventArgs e) {
+            ActiveTool = null;
+            if (_lastClickedSymbol == null) {
+                return;
+            }
+
+            MapPrivate.SymbolsPM.RotateSymbol(_lastClickedSymbol, RotationDirection.Clockwise);
+        }
+
+        private void RotateSymbolCCW_Execute(object sender, ExecutedRoutedEventArgs e) {
+            ActiveTool = null;
+            if (_lastClickedSymbol == null) {
+                return;
+            }
+
+            MapPrivate.SymbolsPM.RotateSymbol(_lastClickedSymbol, RotationDirection.CounterClockwise);
+        }
     }
 }
