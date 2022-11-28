@@ -21,7 +21,8 @@ namespace MapViewer.Symbols {
                 Width = SizeMeter / drawingSettings.ImageScaleMperPix,
                 Height = SizeMeter / drawingSettings.ImageScaleMperPix,
                 Fill = brush,
-                Opacity = 1.0
+                Opacity = 1.0,
+                Cursor = SymbolCursor
             };
 
             Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);

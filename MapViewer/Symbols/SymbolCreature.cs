@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -19,7 +18,8 @@ namespace MapViewer.Symbols {
                 Width = sizePixel,
                 Height = sizePixel,
                 Fill = brush,
-                Opacity = 1.0
+                Opacity = 1.0,
+                Cursor = SymbolCursor
             };
 
             Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);

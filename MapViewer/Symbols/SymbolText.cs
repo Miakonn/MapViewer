@@ -21,6 +21,7 @@ namespace MapViewer.Symbols {
                 FontSize = fontSize,
                 Foreground = new SolidColorBrush(FillColor),
                 FontWeight = FontWeights.UltraBold,
+                Cursor = SymbolCursor
             };
 
             var textSize = canvas.GetTextSize(textBlock);

@@ -19,7 +19,8 @@ namespace MapViewer.Symbols {
                 Uid = Uid,
                 Points = Corners,
                 Fill = new SolidColorBrush(FillColor),
-                Opacity = 0.4
+                Opacity = 0.4,
+                Cursor = SymbolCursor
             };
 
             Canvas.SetLeft(shape, StartPoint.X);

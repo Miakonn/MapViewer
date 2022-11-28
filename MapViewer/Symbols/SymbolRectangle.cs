@@ -38,7 +38,8 @@ namespace MapViewer.Symbols {
                 Uid = Uid,
                 Points = corners,
                 Fill = new SolidColorBrush(FillColor),
-                Opacity = 0.4
+                Opacity = 0.4,
+                Cursor = SymbolCursor
             };
             Canvas.SetLeft(shape, StartPoint.X);
             Canvas.SetTop(shape, StartPoint.Y);

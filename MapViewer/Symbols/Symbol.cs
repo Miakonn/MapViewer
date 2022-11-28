@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
@@ -21,6 +22,8 @@ namespace MapViewer.Symbols {
     public abstract class Symbol {
         public const double RotationStep = 22.5;
 
+        [XmlIgnore]
+        public Cursor SymbolCursor = Cursors.Hand;
 
         public string Uid { get; set; }
         public int OrderZ { get; set; }   

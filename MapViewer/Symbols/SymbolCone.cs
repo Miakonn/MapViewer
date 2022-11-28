@@ -1,16 +1,11 @@
 ﻿using MapViewer.Maps;
 using System;
-using System.Collections.Generic;
 using System.Windows;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
 using MapViewer.Dialogs;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace MapViewer.Symbols {
     [Serializable]
@@ -39,7 +34,8 @@ namespace MapViewer.Symbols {
                 Uid = Uid,
                 Points = corners,
                 Fill = new SolidColorBrush(FillColor),
-                Opacity = 0.4
+                Opacity = 0.4,
+                Cursor = SymbolCursor
             };
             Canvas.SetLeft(shape, StartPoint.X);
             Canvas.SetTop(shape, StartPoint.Y);

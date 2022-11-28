@@ -48,6 +48,7 @@ namespace MapViewer.Symbols {
                 RenderTransform = finalTransform,
                 Opacity = 1.0,
                 Source = iconSource,
+                Cursor = SymbolCursor
             };
 
             Canvas.SetLeft(shape, StartPoint.X -center.X); 
