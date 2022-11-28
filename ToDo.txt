@@ -2,7 +2,6 @@
 
 * Symboler försvinner på public, när private gör page up/down
 
-* skala när man laddar symboler från annan fil
 
 // 	Nya funktioner
 
@@ -30,7 +29,7 @@ Låg prio ------------------------
 
 * ändra text-storlek
 
-* multipla val
+* rotera multipla val
 
 * gruppera symboler
 

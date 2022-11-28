@@ -14,6 +14,7 @@ using log4net;
 using MapViewer.Dialogs;
 using MapViewer.Maps;
 using MapViewer.Properties;
+using MapViewer.Symbols;
 using MapViewer.Tools;
 using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -23,7 +24,7 @@ namespace MapViewer {
     public partial class PrivateWindow :INotifyPropertyChanged {
 
         private enum CursorAction {
-            None, MovingPublicMapPos, MovingPrivateMap, MovingElement
+            None, MovingPublicMapPos, MovingPrivateMap, MovingSymbol
         }
 
 
@@ -48,6 +49,8 @@ namespace MapViewer {
         public readonly PublicWindow PublicWindow = new PublicWindow();
 
         private UIElement _lastClickedElem;
+        private Symbol _lastClickedSymbol;
+
         private CursorAction _cursorAction;
         private Point _mouseDownPoint;  // Canvas
         private Point _mouseDownPointFirst;  // Canvas
@@ -157,7 +160,7 @@ namespace MapViewer {
         private void PrivateWinKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape) {
-                if (_cursorAction == CursorAction.MovingElement) {
+                if (_cursorAction == CursorAction.MovingSymbol) {
                     var move = new Vector((_mouseDownPoint.X - _mouseDownPointFirst.X), (_mouseDownPoint.Y - _mouseDownPointFirst.Y));
                     if (_lastClickedElem != null) {
                         MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedElem.Uid, move);
@@ -182,20 +185,49 @@ namespace MapViewer {
             MapPrivate?.ScaleToWindow(LayerMap);
         }
 
+
+        private void GetLastClickedSymbol() {
+            _lastClickedElem = MapPrivate.CanvasOverlay.FindElementHit();
+
+            if (_lastClickedElem == null) {
+                _lastClickedSymbol = null;
+                return;
+            }
+
+            _lastClickedSymbol = MapPrivate.SymbolsPM.FindSymbolFromUid(_lastClickedElem.Uid);
+        }
+
         private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e) {
             if (ActiveTool != null) {
                 ActiveTool.MouseDown(sender, e);
                 return;
             }
-            _lastClickedElem = MapPrivate.CanvasOverlay.FindElementHit();
+
+            GetLastClickedSymbol();
+
+            bool shiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
 
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
-                if (_lastClickedElem != null) {
+                if (shiftPressed) {
+                    if (_lastClickedSymbol != null) {
+                        MapPrivate.SymbolsPM.ChangeSymbolSelection(_lastClickedSymbol);
+                    }
+                    else {
+                        MapPrivate.SymbolsPM.ClearSymbolSelection();
+                    }
+                }
+                else if (_lastClickedSymbol != null) {
                     _mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                     _mouseDownPointFirst = _mouseDownPoint;
-                    _cursorAction = _lastClickedElem.Uid == MaskedMap.PublicPositionUid
-                        ? CursorAction.MovingPublicMapPos
-                        : CursorAction.MovingElement;
+                    _cursorAction = CursorAction.MovingSymbol;
+
+                    _characterDistanceMoved = 0;
+                }
+                else if (_lastClickedElem != null && _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+                    _mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
+                    _mouseDownPointFirst = _mouseDownPoint;
+                    _cursorAction =  CursorAction.MovingPublicMapPos;
+
                     _characterDistanceMoved = 0;
                 }
                 else {
@@ -209,6 +241,7 @@ namespace MapViewer {
                 if (_lastClickedElem != null && _lastClickedElem.Uid != MaskedMap.PublicPositionUid) {
                     _mouseDownPointWindow = e.GetPosition(this);
                     _cursorAction = CursorAction.None;
+                    MapPrivate.SymbolsPM.ClearSymbolSelection();
                     MapPrivate.SymbolsPM.OpenEditor(_lastClickedElem.Uid, PointToScreen(_mouseDownPointWindow));
                 }
                 e.Handled = true;
@@ -243,14 +276,13 @@ namespace MapViewer {
                 _mouseDownPoint = curMouseDownPoint;
                 e.Handled = true;
             }
-            else if (_cursorAction == CursorAction.MovingElement) {
+            else if (_cursorAction == CursorAction.MovingSymbol) {
                 var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                 var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
                 if (_lastClickedElem != null) {
                     MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedElem.Uid, move);
                     _mouseDownPoint = curMouseDownPoint;
-                    string str = $"{DistanceFromStart(curMouseDownPoint),5:N1} Track: {DistanceTrack(move),5:N1}";
-                    DisplayPopup(str);
+                    DisplayPopup($"{DistanceFromStart(curMouseDownPoint),5:N1} Track: {DistanceTrack(move),5:N1}");
                     e.Handled = true;
                 }
             }

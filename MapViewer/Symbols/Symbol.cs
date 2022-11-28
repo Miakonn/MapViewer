@@ -31,7 +31,9 @@ namespace MapViewer.Symbols {
                 DrawTextElement(Caption, canvas, drawingSettings);
             }
 
-            DrawSelected(canvas, drawingSettings);
+            if (IsSelected) {
+                DrawSelected(canvas, drawingSettings);
+            }
         }
 
         public virtual bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
@@ -78,26 +80,14 @@ namespace MapViewer.Symbols {
             }
             var sizePixel = drawingSettings.GetMinSizePixelFromMeter(SizeMeter); ;
 
-            var coll = new GradientStopCollection {
-                new GradientStop(Colors.GreenYellow, 0.0),
-                new GradientStop(Colors.GreenYellow, 0.5),
-                new GradientStop(Colors.DarkRed, 0.5),
-                new GradientStop(Colors.DarkRed, 1.0)
-            };
-            var brush = new LinearGradientBrush {
-                StartPoint = new Point(0, 0),
-                EndPoint = new Point(1, 1),
-                SpreadMethod = GradientSpreadMethod.Repeat,
-                GradientStops = coll,
-                Transform = new ScaleTransform(0.1, 0.1)
-            };
-
             var shape = new Ellipse {
-                Uid = Uid + "_Selected",
+                Uid = Uid + "_Selected1",
                 Width = sizePixel,
                 Height = sizePixel,
-                Stroke = brush,
-                StrokeThickness = 2,
+                Stroke = new SolidColorBrush(Colors.White),
+                StrokeThickness = 2 / drawingSettings.ZoomScale,
+                StrokeDashArray = DoubleCollection.Parse("3, 3"),
+                StrokeDashOffset = 0,
                 Opacity = 1.0,
                 IsHitTestVisible = false
             };
@@ -106,8 +96,24 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);
 
             canvas.Children.Add(shape);
+            
+            shape = new Ellipse {
+                Uid = Uid + "_Selected2",
+                Width = sizePixel,
+                Height = sizePixel,
+                Stroke = new SolidColorBrush(Colors.Black),
+                StrokeThickness = 2 / drawingSettings.ZoomScale,
+                StrokeDashArray = DoubleCollection.Parse("3, 3"),
+                StrokeDashOffset = 3,
+                Opacity = 1.0,
+                IsHitTestVisible = false
+            };
+           
 
-            DrawTextElement(Caption, canvas, drawingSettings);
+            Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);
+            Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);
+
+            canvas.Children.Add(shape);
         }
     }
 }

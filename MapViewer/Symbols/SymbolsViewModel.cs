@@ -38,6 +38,13 @@ namespace MapViewer.Symbols {
             Symbols[symbol.Uid] = symbol;
         }
 
+        public Symbol FindSymbolFromUid(string uid) {
+            if (!Symbols.ContainsKey(uid)) {
+                return null;
+            }
+            return Symbols[uid];
+        }
+
         public void DeleteAllSymbols() {
             Symbols.Clear();
             RaiseSymbolsChanged();
@@ -125,7 +132,20 @@ namespace MapViewer.Symbols {
                 return;
             }
 
-            Symbols[uid].StartPoint -= move;
+            var symbolActive = Symbols[uid];
+
+            if (symbolActive.IsSelected) {
+                foreach (var symbol in Symbols.Values) {
+                    if (symbol.IsSelected) {
+                        symbol.StartPoint -= move;
+                    }
+                }
+            }
+            else {
+                symbolActive.StartPoint -= move;
+                ClearSymbolSelection();
+            }
+
             RaiseSymbolsChanged();
         }
 
@@ -137,6 +157,23 @@ namespace MapViewer.Symbols {
             var symbolToMove = Symbols[uid];
             Symbols.Remove(uid);
             symbolsPmNew.AddSymbol(symbolToMove);
+            RaiseSymbolsChanged();
+        }
+
+        public void ChangeSymbolSelection(Symbol symbol) {
+            if (symbol == null) {
+                return;
+            }
+
+            symbol.IsSelected = !symbol.IsSelected;
+            RaiseSymbolsChanged();
+        }
+
+        public void ClearSymbolSelection() {
+            foreach (var symbol in Symbols.Values) {
+                symbol.IsSelected = false;
+            }
+
             RaiseSymbolsChanged();
         }
 
