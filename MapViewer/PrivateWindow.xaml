@@ -41,24 +41,24 @@
     </Window.InputBindings>
 
 	<Window.CommandBindings>
-        <CommandBinding Command="mapViewer:CustomCommands.Player" Executed="Player_Execute" CanExecute="Player_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.NonPlayer" Executed="NonPlayer_Execute" CanExecute="Player_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.CreateSymbolPlayer" Executed="Player_Execute" CanExecute="Player_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.CreateSymbolNonPlayer" Executed="NonPlayer_Execute" CanExecute="Player_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DuplicateSymbol" Executed="DuplicateSymbol_Execute" CanExecute="Player_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.SymbolImage" Executed="SymbolIcon_Execute" CanExecute="Spell_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.SpellCircular7m" Executed="SpellCircular7m_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular3m" Executed="SpellCircular3m_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.SpellCircular2m" Executed="SpellCircular2m_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DeleteElement" Executed="DeleteElement_Execute" CanExecute="ElementNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.SetColorElement" Executed="SetColorElement_Execute" CanExecute="ElementNeeded_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToFront" Executed="SendSymbolToFront_Execute" CanExecute="ElementNeeded_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToBack" Executed="SendSymbolToBack_Execute" CanExecute="ElementNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.CreateSymbolImage" Executed="SymbolIcon_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.CreateSpellCircular7m" Executed="SpellCircular7m_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.CreateSpellCircular3m" Executed="SpellCircular3m_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.CreateSpellCircular2m" Executed="SpellCircular2m_Execute" CanExecute="Spell_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.DeleteSymbol" Executed="DeleteSymbol_Execute" CanExecute="SymbolNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.SetSymbolColor" Executed="SetSymbolColor_Execute" CanExecute="SymbolNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToFront" Executed="SendSymbolToFront_Execute" CanExecute="SymbolNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToBack" Executed="SendSymbolToBack_Execute" CanExecute="SymbolNeeded_CanExecute" />
      
-        <CommandBinding Command="mapViewer:CustomCommands.MoveElementUp" Executed="MoveElementUp_Execute" CanExecute="MoveElementUp_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.MoveElementDown" Executed="MoveElementDown_Execute" CanExecute="MoveElementDown_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.MoveSymbolUp" Executed="MoveSymbolUp_Execute" CanExecute="MoveSymbolUp_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.MoveSymbolDown" Executed="MoveSymbolDown_Execute" CanExecute="MoveSymbolDown_CanExecute" />
 
         <CommandBinding Command="mapViewer:CustomCommands.FullMask" Executed="FullMask_Execute" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearOverlay_Execute" CanExecute="ImageNeeded_CanExecute" />
+		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearSymbols_Execute" CanExecute="ImageNeeded_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Execute" CanExecute="Always_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.OpenLastImage" Executed="OpenLastImage_Execute" CanExecute="OpenLastImage_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.PublishMap" Executed="PublishMap_Execute" CanExecute="Publish_CanExecute" />
@@ -69,8 +69,8 @@
         <CommandBinding Command="mapViewer:CustomCommands.LevelUp" Executed="LevelUp_Execute" CanExecute="ImagesNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelDownPublish" Executed="LevelDownPublish_Execute" CanExecute="ImagesNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelUpPublish" Executed="LevelUpPublish_Execute" CanExecute="ImagesNeeded_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.RotateSymbolCW" Executed="RotateSymbolCW_Execute" CanExecute="ElementNeeded_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.RotateSymbolCCW" Executed="RotateSymbolCCW_Execute" CanExecute="ElementNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.RotateSymbolCW" Executed="RotateSymbolCW_Execute" CanExecute="SymbolNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.RotateSymbolCCW" Executed="RotateSymbolCCW_Execute" CanExecute="SymbolNeeded_CanExecute" />
 
         <CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Execute" CanExecute="RotateMap_CanExecute" />
 		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Execute" CanExecute="AddDisplay_CanExecute" />
@@ -234,19 +234,19 @@
 			<Grid Name="DrawingSpace"  ClipToBounds="True" >
 				<Grid.ContextMenu>
 					<ContextMenu Name="PrivateContextMenu">
-						<MenuItem Command="mapViewer:CustomCommands.SpellCircular3m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<MenuItem Command="mapViewer:CustomCommands.CreateSpellCircular3m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <Separator />
-						<MenuItem Command="mapViewer:CustomCommands.Player" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-                        <MenuItem Command="mapViewer:CustomCommands.NonPlayer" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-                        <MenuItem Command="mapViewer:CustomCommands.SymbolImage" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<MenuItem Command="mapViewer:CustomCommands.CreateSymbolPlayer" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.CreateSymbolNonPlayer" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.CreateSymbolImage" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <Separator />
                         <MenuItem Command="mapViewer:CustomCommands.DuplicateSymbol" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-						<MenuItem Command="mapViewer:CustomCommands.DeleteElement"    CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-						<MenuItem Command="mapViewer:CustomCommands.SetColorElement" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<MenuItem Command="mapViewer:CustomCommands.DeleteSymbol"    CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+						<MenuItem Command="mapViewer:CustomCommands.SetSymbolColor" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.SendSymbolToFront" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.SendSymbolToBack" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-                        <MenuItem Command="mapViewer:CustomCommands.MoveElementUp" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-                        <MenuItem Command="mapViewer:CustomCommands.MoveElementDown" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.MoveSymbolUp" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.MoveSymbolDown" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <Separator />
                         <MenuItem Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <Separator />

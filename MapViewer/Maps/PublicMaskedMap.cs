@@ -168,7 +168,7 @@ namespace MapViewer.Maps {
             drawSettings.MinSymbolSizePixel = PlayerSizePixel;
 
             var symbolsPm = (SymbolsViewModel)sender;
-            symbolsPm?.UpdateElements(CanvasOverlay, drawSettings);
+            symbolsPm?.DrawSymbols(CanvasOverlay, drawSettings);
         }
 
     }

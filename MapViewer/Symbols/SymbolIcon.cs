@@ -16,7 +16,7 @@ namespace MapViewer.Symbols {
         public string ImageFileName { get; set; }
         public double RotationDegree { get; set; }
         
-        public override void DrawElements(Canvas canvas, MapDrawingSettings drawingSettings) {
+        public override void Draw(Canvas canvas, MapDrawingSettings drawingSettings) {
             BitmapSource iconSource;
             if (string.IsNullOrWhiteSpace(ImageFileName) || !File.Exists(ImageFileName)) {
                 iconSource = new BitmapImage(new Uri("pack://application:,,,/Images/Question_mark.png"));
@@ -54,7 +54,7 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(shape, StartPoint.Y - center.Y);
             canvas.Children.Add(shape);
 
-            base.DrawElements(canvas, drawingSettings);
+            base.Draw(canvas, drawingSettings);
         }
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {

@@ -162,8 +162,8 @@ namespace MapViewer {
             if (e.Key == Key.Escape) {
                 if (_cursorAction == CursorAction.MovingSymbol) {
                     var move = new Vector((_mouseDownPoint.X - _mouseDownPointFirst.X), (_mouseDownPoint.Y - _mouseDownPointFirst.Y));
-                    if (_lastClickedElem != null) {
-                        MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedElem.Uid, move);
+                    if (_lastClickedSymbol != null) {
+                        MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedSymbol, move);
                     }
                 }
                 HidePopup(0);
@@ -238,11 +238,11 @@ namespace MapViewer {
                 e.Handled = true;
             }
             else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
-                if (_lastClickedElem != null && _lastClickedElem.Uid != MaskedMap.PublicPositionUid) {
+                if (_lastClickedSymbol != null) {
                     _mouseDownPointWindow = e.GetPosition(this);
                     _cursorAction = CursorAction.None;
                     MapPrivate.SymbolsPM.ClearSymbolSelection();
-                    MapPrivate.SymbolsPM.OpenEditor(_lastClickedElem.Uid, PointToScreen(_mouseDownPointWindow));
+                    MapPrivate.SymbolsPM.OpenEditor(_lastClickedSymbol, PointToScreen(_mouseDownPointWindow));
                 }
                 e.Handled = true;
             }
@@ -279,8 +279,8 @@ namespace MapViewer {
             else if (_cursorAction == CursorAction.MovingSymbol) {
                 var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                 var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
-                if (_lastClickedElem != null) {
-                    MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedElem.Uid, move);
+                if (_lastClickedSymbol != null) {
+                    MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedSymbol, move);
                     _mouseDownPoint = curMouseDownPoint;
                     DisplayPopup($"{DistanceFromStart(curMouseDownPoint),5:N1} Track: {DistanceTrack(move),5:N1}");
                     e.Handled = true;

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -73,58 +72,59 @@ namespace MapViewer.Symbols {
             return Symbols.Values.Select(symbol => symbol.OrderZ).Min();
         }
         
-        public void UpdateElements(Canvas canvas, MapDrawingSettings drawSettings) {
+        public void DrawSymbols(Canvas canvas, MapDrawingSettings drawSettings) {
             canvas.RemoveAllSymbolsFromOverlay();
 
             var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.OrderZ);
             foreach (var symbol in symbolsInZorder) {
-                symbol.DrawElements(canvas, drawSettings);
+                symbol.Draw(canvas, drawSettings);
             }
         }
 
         #region Symbol properties
 
-        public void DeleteSymbol(string uid) {
-            if (!Symbols.ContainsKey(uid)) {
+        public void DeleteSymbol(Symbol symbolActive) {
+            if (symbolActive == null) {
                 return;
             }
-            Symbols.Remove(uid);
+            Symbols.Remove(symbolActive.Uid);
             RaiseSymbolsChanged();
         }
 
-        public void DuplicateSymbol(string uid) {
-            if (!Symbols.ContainsKey(uid)) {
+        public void DuplicateSymbol(Symbol symbolActive) {
+            if (symbolActive == null) {
                 return;
             }
-            var symbol = Symbols[uid].Copy();
-            AddSymbol(symbol);
+
+            var symbolCopy = symbolActive.Copy();
+            AddSymbol(symbolCopy);
             RaiseSymbolsChanged();
         }
 
 
-        public void SetSymbolColor(string uid, Color color) {
-            if (!Symbols.ContainsKey(uid)) {
+        public void SetSymbolColor(Symbol symbolActive, Color color) {
+            if (symbolActive == null) {
                 return;
             }
-            Symbols[uid].FillColor = color;
+            symbolActive.FillColor = color;
             RaiseSymbolsChanged();
         }
 
-        public void MoveSymbolToFront(string uid) {
-            if (!Symbols.ContainsKey(uid)) {
+        public void MoveSymbolToFront(Symbol symbolActive) {
+            if (symbolActive == null) {
                 return;
             }
 
-            Symbols[uid].OrderZ = GetMinOrderZ() - 1;
+            symbolActive.OrderZ = GetMinOrderZ() - 1;
             RaiseSymbolsChanged();
         }
 
-        public void MoveSymbolToBack(string uid) {
-            if (!Symbols.ContainsKey(uid)) {
+        public void MoveSymbolToBack(Symbol symbolActive) {
+            if (symbolActive == null) {
                 return;
             }
 
-            Symbols[uid].OrderZ = GetMaxOrderZ() + 1;
+            symbolActive.OrderZ = GetMaxOrderZ() + 1;
             RaiseSymbolsChanged();
         }
 
@@ -147,12 +147,11 @@ namespace MapViewer.Symbols {
             RaiseSymbolsChanged();
         }
         
-        public void MoveSymbolPosition(string uid, Vector move) {
-            if (!Symbols.ContainsKey(uid)) {
+        public void MoveSymbolPosition(Symbol symbolActive, Vector move) {
+            if (symbolActive == null) {
                 return;
             }
 
-            var symbolActive = Symbols[uid];
 
             if (symbolActive.IsSelected) {
                 foreach (var symbol in Symbols.Values) {
@@ -169,23 +168,22 @@ namespace MapViewer.Symbols {
             RaiseSymbolsChanged();
         }
 
-        public void MoveSymbolUpDown(string uid, SymbolsViewModel symbolsPmNew) {
-            if (!Symbols.ContainsKey(uid)) {
+        public void MoveSymbolUpDown(Symbol symbolActive, SymbolsViewModel symbolsPmNew) {
+            if (symbolActive == null) {
                 return;
             }
 
-            var symbolToMove = Symbols[uid];
-            Symbols.Remove(uid);
-            symbolsPmNew.AddSymbol(symbolToMove);
+            Symbols.Remove(symbolActive.Uid);
+            symbolsPmNew.AddSymbol(symbolActive);
             RaiseSymbolsChanged();
         }
 
-        public void ChangeSymbolSelection(Symbol symbol) {
-            if (symbol == null) {
+        public void ChangeSymbolSelection(Symbol symbolActive) {
+            if (symbolActive == null) {
                 return;
             }
 
-            symbol.IsSelected = !symbol.IsSelected;
+            symbolActive.IsSelected = !symbolActive.IsSelected;
             RaiseSymbolsChanged();
         }
 
@@ -237,13 +235,12 @@ namespace MapViewer.Symbols {
             return radians * (180.0 / Math.PI);
         }
 
-        public void OpenEditor(string uid, Point dialogScreenPos) {
-            if (!Symbols.ContainsKey(uid)) {
+        public void OpenEditor(Symbol symbolActive, Point dialogScreenPos) {
+            if (symbolActive == null) {
                 return;
             }
 
-            var symbol = Symbols[uid];
-            symbol.OpenDialogProp(dialogScreenPos, this);
+            symbolActive.OpenDialogProp(dialogScreenPos, this);
             RaiseSymbolsChanged();
         }
 

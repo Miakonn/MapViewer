@@ -146,7 +146,7 @@ namespace MapViewer.Maps {
             };
 
             var se = sender as SymbolsViewModel;
-            se?.UpdateElements(CanvasOverlay, drawSettings);
+            se?.DrawSymbols(CanvasOverlay, drawSettings);
         }
         
         #endregion

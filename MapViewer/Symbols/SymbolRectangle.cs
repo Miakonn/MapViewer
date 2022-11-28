@@ -14,7 +14,7 @@ namespace MapViewer.Symbols {
         public double WidthMeter { get; set; }
         
         public double RotationDegree { get; set; }
-        public override void DrawElements(Canvas canvas, MapDrawingSettings drawingSettings) {
+        public override void Draw(Canvas canvas, MapDrawingSettings drawingSettings) {
             var corners = new PointCollection();
 
             double lengthPixel = SizeMeter / drawingSettings.ImageScaleMperPix * 0.5;
@@ -44,7 +44,7 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(shape, StartPoint.Y);
             canvas.Children.Add(shape);
 
-            base.DrawElements(canvas, drawingSettings);
+            base.Draw(canvas, drawingSettings);
         }
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {

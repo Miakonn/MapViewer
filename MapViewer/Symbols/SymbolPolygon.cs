@@ -14,7 +14,7 @@ namespace MapViewer.Symbols {
     public class SymbolPolygon : Symbol {
         public PointCollection Corners { get; set; }
         
-        public override void DrawElements(Canvas canvas, MapDrawingSettings drawingSettings) {
+        public override void Draw(Canvas canvas, MapDrawingSettings drawingSettings) {
             var shape = new Polygon {
                 Uid = Uid,
                 Points = Corners,
@@ -26,7 +26,7 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(shape, StartPoint.Y);
             canvas.Children.Add(shape);
 
-            base.DrawElements(canvas, drawingSettings);
+            base.Draw(canvas, drawingSettings);
         }
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
             var dlg = new DialogBaseSymbolProp() {
