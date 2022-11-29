@@ -14,11 +14,11 @@ namespace MapViewer.Symbols {
         public double WidthMeter { get; set; }
         
         public double RotationDegree { get; set; }
-        public override void Draw(Canvas canvas, MapDrawingSettings drawingSettings) {
+        public override void Draw(Canvas canvas, MapDrawingSettings settings) {
             var corners = new PointCollection();
 
-            double lengthPixel = SizeMeter / drawingSettings.ImageScaleMperPix * 0.5;
-            double widthPixel = WidthMeter / drawingSettings.ImageScaleMperPix * 0.5;
+            double lengthPixel = SizeMeter / settings.ImageScaleMperPix * 0.5;
+            double widthPixel = WidthMeter / settings.ImageScaleMperPix * 0.5;
 
             var angleRadians = SymbolsViewModel.ToRadians(RotationDegree);
 
@@ -39,13 +39,13 @@ namespace MapViewer.Symbols {
                 Points = corners,
                 Fill = new SolidColorBrush(FillColor),
                 Opacity = 0.4,
-                Cursor = SymbolCursor
+                Cursor = (settings.IsToolActive ? null : SymbolCursor)
             };
             Canvas.SetLeft(shape, StartPoint.X);
             Canvas.SetTop(shape, StartPoint.Y);
             canvas.Children.Add(shape);
 
-            base.Draw(canvas, drawingSettings);
+            base.Draw(canvas, settings);
         }
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {

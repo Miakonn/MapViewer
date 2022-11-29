@@ -12,25 +12,25 @@ namespace MapViewer.Symbols {
     [XmlInclude(typeof(Symbol))]
     public class SymbolCircle : Symbol {
 
-        public override void Draw(Canvas canvas, MapDrawingSettings drawingSettings)
+        public override void Draw(Canvas canvas, MapDrawingSettings settings)
         {
             var brush = new SolidColorBrush(FillColor);
 
             var shape = new Ellipse {
                 Uid = Uid,
-                Width = SizeMeter / drawingSettings.ImageScaleMperPix,
-                Height = SizeMeter / drawingSettings.ImageScaleMperPix,
+                Width = SizeMeter / settings.ImageScaleMperPix,
+                Height = SizeMeter / settings.ImageScaleMperPix,
                 Fill = brush,
                 Opacity = 1.0,
-                Cursor = SymbolCursor
+                Cursor = (settings.IsToolActive ? null: SymbolCursor)
             };
 
             Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);
-            Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);
+            Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);  
 
             canvas.Children.Add(shape);
 
-            base.Draw(canvas, drawingSettings);
+            base.Draw(canvas, settings);
         }
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {

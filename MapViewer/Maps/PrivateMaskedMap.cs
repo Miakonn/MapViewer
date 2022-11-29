@@ -13,7 +13,10 @@ namespace MapViewer.Maps {
         
         public SymbolsViewModel SymbolsPM;
 
-        public PrivateMaskedMap(Window parent, long groupId) : base(parent, groupId) {
+        public PrivateWindow ParentWindow { get; set; }
+
+        public PrivateMaskedMap(PrivateWindow parent, long groupId) : base(parent, groupId) {
+            ParentWindow = parent;
             MaskOpacity = 0.3;
             CreatePalette();
             SymbolsPM = new SymbolsViewModel();
@@ -142,7 +145,8 @@ namespace MapViewer.Maps {
             var drawSettings = new MapDrawingSettings {
                 ZoomScale = ZoomScale,
                 ImageScaleMperPix = ImageScaleMperPix,
-                MinSymbolSizePixel = PlayerSizePixel
+                MinSymbolSizePixel = PlayerSizePixel,
+                IsToolActive = ParentWindow.ActiveTool != null
             };
 
             var se = sender as SymbolsViewModel;

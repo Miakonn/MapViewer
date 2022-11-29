@@ -12,20 +12,20 @@ namespace MapViewer.Symbols {
     public class SymbolText : Symbol {
         public double RotationDegree { get; set; }
 
-        public override void Draw(Canvas canvas, MapDrawingSettings drawingSettings)
+        public override void Draw(Canvas canvas, MapDrawingSettings settings)
         {
-            var fontSize = 25 / drawingSettings.ZoomScale;
+            var fontSize = 25 / settings.ZoomScale;
             var textBlock = new TextBlock {
                 Uid = Uid,
                 Text = Caption,
                 FontSize = fontSize,
                 Foreground = new SolidColorBrush(FillColor),
                 FontWeight = FontWeights.UltraBold,
-                Cursor = SymbolCursor
+                Cursor = (settings.IsToolActive ? null : SymbolCursor)
             };
 
             var textSize = canvas.GetTextSize(textBlock);
-            double scaleLength = SizeMeter / drawingSettings.ImageScaleMperPix / textSize.Width;
+            double scaleLength = SizeMeter / settings.ImageScaleMperPix / textSize.Width;
 
             // Reset size and angle
             textBlock.RenderTransform = new RotateTransform(RotationDegree, scaleLength * textSize.Width * 0.5, scaleLength * textSize.Height * 0.5);
@@ -37,7 +37,7 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(textBlock, StartPoint.Y - textSize.Height / 2);
             canvas.Children.Add(textBlock);
 
-            base.Draw(canvas, drawingSettings);
+            base.Draw(canvas, settings);
         }
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {

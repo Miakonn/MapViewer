@@ -5,7 +5,7 @@ namespace MapViewer.Maps {
         public double ZoomScale;
         public double ImageScaleMperPix;
         public double MinSymbolSizePixel;
-
+        public bool IsToolActive;
 
         public double MinSymbolSizePixelScaled => MinSymbolSizePixel / ZoomScale;
 

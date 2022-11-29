@@ -69,6 +69,7 @@ namespace MapViewer {
                 _activeTool?.Deactivate();
                 _activeTool = value;
                 _cursorAction = CursorAction.None;
+                MapPrivate?.SymbolsPM.RaiseSymbolsChanged();
                 if (MapPublic != null && MapPublic.ShowPublicCursorTemporary) {
                     MapPublic.ShowPublicCursor = false;
                     MapPublic.ShowPublicCursorTemporary = false;

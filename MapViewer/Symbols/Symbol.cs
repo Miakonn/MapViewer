@@ -35,13 +35,13 @@ namespace MapViewer.Symbols {
         [XmlIgnore]
         public bool IsSelected{ get; set; }
 
-        public virtual void Draw(Canvas canvas, MapDrawingSettings drawingSettings) {
+        public virtual void Draw(Canvas canvas, MapDrawingSettings settings) {
             if (!(this is SymbolText)) {
-                DrawText(Caption, canvas, drawingSettings);
+                DrawText(Caption, canvas, settings);
             }
 
             if (IsSelected) {
-                DrawSelected(canvas, drawingSettings);
+                DrawSelected(canvas, settings);
             }
         }
 

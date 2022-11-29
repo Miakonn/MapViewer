@@ -114,8 +114,6 @@ namespace MapViewer.Maps {
 
         public bool IsCalibrated => ImageScaleMperPix > 0.0;
 
-        public Window ParentWindow { get; set; }
-
         public bool IsLinked { get; set; }
 
         public long GroupId { get; set; }
@@ -134,7 +132,7 @@ namespace MapViewer.Maps {
         #endregion
 
         public MaskedMap(Window parent, long groupId) {
-            ParentWindow = parent;
+           
             GroupId = groupId;
             MapId = DateTime.Now.Ticks;
 

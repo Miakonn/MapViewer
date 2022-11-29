@@ -8,10 +8,10 @@ using MapViewer.Maps;
 namespace MapViewer.Symbols {
     public class SymbolCreature : Symbol {
 
-        public override void Draw(Canvas canvas, MapDrawingSettings drawingSettings) {
+        public override void Draw(Canvas canvas, MapDrawingSettings settings) {
             var brush = new SolidColorBrush(FillColor);
 
-            var sizePixel = drawingSettings.GetMinSizePixelFromMeter(SizeMeter);
+            var sizePixel = settings.GetMinSizePixelFromMeter(SizeMeter);
 
             var shape = new Ellipse {
                 Uid = Uid,
@@ -19,7 +19,7 @@ namespace MapViewer.Symbols {
                 Height = sizePixel,
                 Fill = brush,
                 Opacity = 1.0,
-                Cursor = SymbolCursor
+                Cursor = (settings.IsToolActive ? null : SymbolCursor)
             };
 
             Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);
@@ -27,7 +27,7 @@ namespace MapViewer.Symbols {
 
             canvas.Children.Add(shape);
 
-            base.Draw(canvas, drawingSettings);
+            base.Draw(canvas, settings);
         }
 
 

@@ -16,7 +16,7 @@ namespace MapViewer.Symbols {
         public string ImageFileName { get; set; }
         public double RotationDegree { get; set; }
         
-        public override void Draw(Canvas canvas, MapDrawingSettings drawingSettings) {
+        public override void Draw(Canvas canvas, MapDrawingSettings settings) {
             BitmapSource iconSource;
             if (string.IsNullOrWhiteSpace(ImageFileName) || !File.Exists(ImageFileName)) {
                 iconSource = new BitmapImage(new Uri("pack://application:,,,/Images/Question_mark.png"));
@@ -27,9 +27,9 @@ namespace MapViewer.Symbols {
 
             double iconSize = Math.Max(iconSource.Width, iconSource.Height);
 
-            var scale = (SizeMeter / drawingSettings.ImageScaleMperPix) / iconSize;
+            var scale = (SizeMeter / settings.ImageScaleMperPix) / iconSize;
 
-            double minSizeScaled = drawingSettings.MinSymbolSizePixel / drawingSettings.ZoomScale;
+            double minSizeScaled = settings.MinSymbolSizePixel / settings.ZoomScale;
             if (scale * iconSize < minSizeScaled) {
                 scale = minSizeScaled / iconSize;
             }
@@ -48,14 +48,14 @@ namespace MapViewer.Symbols {
                 RenderTransform = finalTransform,
                 Opacity = 1.0,
                 Source = iconSource,
-                Cursor = SymbolCursor
+                Cursor = (settings.IsToolActive ? null : SymbolCursor)
             };
 
             Canvas.SetLeft(shape, StartPoint.X -center.X); 
             Canvas.SetTop(shape, StartPoint.Y - center.Y);
             canvas.Children.Add(shape);
 
-            base.Draw(canvas, drawingSettings);
+            base.Draw(canvas, settings);
         }
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {

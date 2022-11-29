@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,11 +9,14 @@ namespace MapViewer.Maps {
     public class PublicMaskedMap : MaskedMap {
         
         public bool ShowPublicCursor { get; set; }
-
+            
         public bool ShowPublicCursorTemporary { get; set; }
-        
-        public PublicMaskedMap(Window parent, long groupId) : base(parent, groupId) {
 
+        public PublicWindow ParentWindow { get; set; }
+
+
+        public PublicMaskedMap(PublicWindow parent, long groupId) : base(parent, groupId) {
+            ParentWindow = parent;
             MaskOpacity = 1.0;
         }
 
@@ -30,71 +32,67 @@ namespace MapViewer.Maps {
                     MessageBox.Show("Image is not calibrated!");
                     return;
                 }
-
-                if (ParentWindow is PublicWindow publicWindow) {
-                    var cp = new Point(CanvasOverlay.ActualWidth / 2, CanvasOverlay.ActualHeight / 2);
-                    Point center;
-                    if ((TrfScale.Value.IsIdentity && TrfTranslate.Value.IsIdentity) || !DisplayTransform.Value.HasInverse) {
-                        center = new Point(MapImage.Width / 2, MapImage.Height / 2);
-                    }
-                    else {
-                        // ReSharper disable once PossibleNullReferenceException
-                        center = DisplayTransform.Inverse.Transform(cp);
-                    }
-                    Log.DebugFormat("ScaleToReal1 MonitorScaleMMperPixel={0}", publicWindow.MonitorScaleMMperPixel);
-                    Log.DebugFormat("ScaleToReal2 CanvasOverlay.ActualWidth={0} MapImage.Width={1}", CanvasOverlay.ActualWidth, MapImage.Width);
-                    Log.DebugFormat("ScaleToReal3 center={0} ", center);
-
-                    var scale = ScreenScaleMMperM * ImageScaleMperPix / publicWindow.MonitorScaleMMperPixel;
-
-                    TrfScale.CenterX = 0;
-                    TrfScale.CenterY = 0;
-                    TrfScale.ScaleX = scale;
-                    TrfScale.ScaleY = scale;
-                    TrfTranslate.X = (CanvasOverlay.ActualWidth / 2) - scale * center.X;
-                    TrfTranslate.Y = (CanvasOverlay.ActualHeight / 2) - scale * center.Y;
+                
+                var cp = new Point(CanvasOverlay.ActualWidth / 2, CanvasOverlay.ActualHeight / 2);
+                Point center;
+                if ((TrfScale.Value.IsIdentity && TrfTranslate.Value.IsIdentity) || !DisplayTransform.Value.HasInverse) {
+                    center = new Point(MapImage.Width / 2, MapImage.Height / 2);
                 }
+                else {
+                    // ReSharper disable once PossibleNullReferenceException
+                    center = DisplayTransform.Inverse.Transform(cp);
+                }
+                Log.DebugFormat("ScaleToReal1 MonitorScaleMMperPixel={0}", ParentWindow.MonitorScaleMMperPixel);
+                Log.DebugFormat("ScaleToReal2 CanvasOverlay.ActualWidth={0} MapImage.Width={1}", CanvasOverlay.ActualWidth, MapImage.Width);
+                Log.DebugFormat("ScaleToReal3 center={0} ", center);
+
+                var scale = ScreenScaleMMperM * ImageScaleMperPix / ParentWindow.MonitorScaleMMperPixel;
+
+                TrfScale.CenterX = 0;
+                TrfScale.CenterY = 0;
+                TrfScale.ScaleX = scale;
+                TrfScale.ScaleY = scale;
+                TrfTranslate.X = (CanvasOverlay.ActualWidth / 2) - scale * center.X;
+                TrfTranslate.Y = (CanvasOverlay.ActualHeight / 2) - scale * center.Y;
+
             }
         }
 
-        public virtual void ScaleToLinked(MaskedMap mapSource) {
-            if (MapImage != null) {
-
-                var privateWindow = mapSource.ParentWindow as PrivateWindow;
-                if (privateWindow == null) {
-                    return;
-                }
-                var privateWidth = privateWindow.DrawingSpace.ActualWidth;
-                var privateHeight = privateWindow.DrawingSpace.ActualHeight;
-                var privateAspectRatio = privateWidth / privateHeight;
-
-                var publicWinSizePix = ParentWindow.RenderSize;
-                var publicAspectRatio = publicWinSizePix.Width / publicWinSizePix.Height;
-
-                Log.DebugFormat("ScaleToLinked private aspect ratio={0}", privateAspectRatio);
-                Log.DebugFormat("ScaleToLinked public aspect ratio={0}", publicAspectRatio);
-
-                if (privateAspectRatio > publicAspectRatio) {
-                    publicWinSizePix.Height = publicWinSizePix.Width / privateAspectRatio;
-                }
-                else {
-                    publicWinSizePix.Width = publicWinSizePix.Height * privateAspectRatio;
-                }
-
-                var scale = Math.Min(publicWinSizePix.Width / privateWidth, publicWinSizePix.Height / privateHeight);
-                Log.DebugFormat("ScaleToLinked public scale={0}", scale);
-
-                TrfScale = mapSource.TrfScale;
-                TrfScale.ScaleX *= scale;
-                TrfScale.ScaleY *= scale;
-
-                TrfTranslate = new TranslateTransform();
-                var offs = CenterInMap() - mapSource.CenterInMap();
-                TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
-
-                CanvasMap.RenderTransform = DisplayTransform;
-                CanvasMask.RenderTransform = DisplayTransform;
+        public virtual void ScaleToLinked(PrivateMaskedMap mapSource) {
+            if (MapImage == null || mapSource.ParentWindow == null) {
+                return;
             }
+            var privateWindow = mapSource.ParentWindow;
+            var privateWidth = privateWindow.DrawingSpace.ActualWidth;
+            var privateHeight = privateWindow.DrawingSpace.ActualHeight;
+            var privateAspectRatio = privateWidth / privateHeight;
+
+            var publicWinSizePix = ParentWindow.RenderSize;
+            var publicAspectRatio = publicWinSizePix.Width / publicWinSizePix.Height;
+
+            Log.DebugFormat("ScaleToLinked private aspect ratio={0}", privateAspectRatio);
+            Log.DebugFormat("ScaleToLinked public aspect ratio={0}", publicAspectRatio);
+
+            if (privateAspectRatio > publicAspectRatio) {
+                publicWinSizePix.Height = publicWinSizePix.Width / privateAspectRatio;
+            }
+            else {
+                publicWinSizePix.Width = publicWinSizePix.Height * privateAspectRatio;
+            }
+
+            var scale = Math.Min(publicWinSizePix.Width / privateWidth, publicWinSizePix.Height / privateHeight);
+            Log.DebugFormat("ScaleToLinked public scale={0}", scale);
+
+            TrfScale = mapSource.TrfScale;
+            TrfScale.ScaleX *= scale;
+            TrfScale.ScaleY *= scale;
+
+            TrfTranslate = new TranslateTransform();
+            var offs = CenterInMap() - mapSource.CenterInMap();
+            TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
+
+            CanvasMap.RenderTransform = DisplayTransform;
+            CanvasMask.RenderTransform = DisplayTransform;
         }
 
         public void PublishFrom(PrivateMaskedMap mapSource, bool scaleNeedsToRecalculate) {
