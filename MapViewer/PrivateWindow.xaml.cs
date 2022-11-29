@@ -284,7 +284,7 @@ namespace MapViewer {
 
                     MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedSymbol, move);
                     _mouseDownPoint = curMouseDownPoint;
-                    DisplayPopup($"{DistanceFromStart(curMouseDownPoint),5:N1} Track: {DistanceTrack(move),5:N1}");
+                    DisplayPopup($"{DistanceFromStart(curMouseDownPoint),5:N1}{MapPrivate.Unit} Track: {DistanceTrack(move),5:N1}{MapPrivate.Unit}");
                     e.Handled = true;
                     break;
                 }

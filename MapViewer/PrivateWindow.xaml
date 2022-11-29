@@ -1,4 +1,4 @@
-﻿<Window x:Class="MapViewer.PrivateWindow"
+﻿<RibbonWindow x:Class="MapViewer.PrivateWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mapViewer="clr-namespace:MapViewer" 
@@ -20,9 +20,9 @@
         </ResourceDictionary>
     </Window.Resources>
 
-	<Window.InputBindings>
-		<KeyBinding Modifiers="Control" Key="S" Command="mapViewer:CustomCommands.Save" />
-		<KeyBinding Modifiers="Control" Key="O" Command="mapViewer:CustomCommands.OpenImage" />
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control" Key="S" Command="mapViewer:CustomCommands.Save" />
+        <KeyBinding Modifiers="Control" Key="O" Command="mapViewer:CustomCommands.OpenImage" />
 
         <KeyBinding Modifiers="Control" Key="PageDown" Command="mapViewer:CustomCommands.LevelDownPublish" />
         <KeyBinding Modifiers="Control" Key="PageUp" Command="mapViewer:CustomCommands.LevelUpPublish" />
@@ -36,35 +36,33 @@
 
         <KeyBinding Key="Right" Command="mapViewer:CustomCommands.RotateSymbolCW" />
         <KeyBinding Key="Left" Command="mapViewer:CustomCommands.RotateSymbolCCW" />
-
-
     </Window.InputBindings>
 
-	<Window.CommandBindings>
+    <Window.CommandBindings>
         <CommandBinding Command="mapViewer:CustomCommands.CreateSymbolPlayer" Executed="Player_Execute" CanExecute="Player_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.CreateSymbolNonPlayer" Executed="NonPlayer_Execute" CanExecute="Player_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DuplicateSymbol" Executed="DuplicateSymbol_Execute" CanExecute="Player_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.CreateSymbolImage" Executed="SymbolIcon_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.CreateSpellCircular7m" Executed="SpellCircular7m_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.CreateSpellCircular3m" Executed="SpellCircular3m_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.CreateSpellCircular2m" Executed="SpellCircular2m_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DeleteSymbol" Executed="DeleteSymbol_Execute" CanExecute="SymbolNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.SetSymbolColor" Executed="SetSymbolColor_Execute" CanExecute="SymbolNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.CreateSpellCircular3m" Executed="SpellCircular3m_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.CreateSpellCircular2m" Executed="SpellCircular2m_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.DeleteSymbol" Executed="DeleteSymbol_Execute" CanExecute="SymbolNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SetSymbolColor" Executed="SetSymbolColor_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToFront" Executed="SendSymbolToFront_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToBack" Executed="SendSymbolToBack_Execute" CanExecute="SymbolNeeded_CanExecute" />
-     
+
         <CommandBinding Command="mapViewer:CustomCommands.MoveSymbolUp" Executed="MoveSymbolUp_Execute" CanExecute="MoveSymbolUp_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.MoveSymbolDown" Executed="MoveSymbolDown_Execute" CanExecute="MoveSymbolDown_CanExecute" />
 
         <CommandBinding Command="mapViewer:CustomCommands.FullMask" Executed="FullMask_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearSymbols_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Execute" CanExecute="Always_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.OpenLastImage" Executed="OpenLastImage_Execute" CanExecute="OpenLastImage_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.PublishMap" Executed="PublishMap_Execute" CanExecute="Publish_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ScaleToFit" Executed="ScaleToFit_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ZoomIn" Executed="ZoomIn_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ZoomOut" Executed="ZoomOut_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearSymbols_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Execute" CanExecute="Always_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.OpenLastImage" Executed="OpenLastImage_Execute" CanExecute="OpenLastImage_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.PublishMap" Executed="PublishMap_Execute" CanExecute="Publish_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.ScaleToFit" Executed="ScaleToFit_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.ZoomIn" Executed="ZoomIn_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.ZoomOut" Executed="ZoomOut_Execute" CanExecute="ImageNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelDown" Executed="LevelDown_Execute" CanExecute="ImagesNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelUp" Executed="LevelUp_Execute" CanExecute="ImagesNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelDownPublish" Executed="LevelDownPublish_Execute" CanExecute="ImagesNeeded_CanExecute" />
@@ -73,95 +71,90 @@
         <CommandBinding Command="mapViewer:CustomCommands.RotateSymbolCCW" Executed="RotateSymbolCCW_Execute" CanExecute="SymbolNeeded_CanExecute" />
 
         <CommandBinding Command="mapViewer:CustomCommands.RotateMap" Executed="RotateMap_Execute" CanExecute="RotateMap_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Execute" CanExecute="AddDisplay_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Execute" CanExecute="RemoveDisplay_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.AddDisplay" Executed="AddDisplay_Execute" CanExecute="AddDisplay_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.RemoveDisplay" Executed="RemoveDisplay_Execute" CanExecute="RemoveDisplay_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.Save" Executed="Save_Execute" CanExecute="ImageNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.SaveSymbolsAs" Executed="SaveSymbolAs_Execute" CanExecute="CalibratedImageNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LoadSymbols" Executed="LoadSymbols_Execute" CanExecute="CalibratedImageNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.Calibrate" Executed="Calibrate_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.CalibrateDisplay" Executed="CalibrateDisplay_Execute" CanExecute="Always_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ExitApp" Executed="ExitApp_Execute" CanExecute="Always_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.CalibrateDisplay" Executed="CalibrateDisplay_Execute" CanExecute="Always_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.ExitApp" Executed="ExitApp_Execute" CanExecute="Always_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.Measure" Executed="Measure_Execute" CanExecute="Spell_CanExecute" />
 
-		<CommandBinding Command="mapViewer:CustomCommands.DrawCircle" Executed="DrawCircle_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawCone" Executed="DrawCone_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawRectangle" Executed="DrawRectangle_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.DrawText" Executed="DrawText_Execute" CanExecute="Spell_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" Executed="ShowPublicCursorTemporary_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.DrawCircle" Executed="DrawCircle_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.DrawCone" Executed="DrawCone_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.DrawRectangle" Executed="DrawRectangle_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.DrawText" Executed="DrawText_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" Executed="ShowPublicCursorTemporary_Execute" CanExecute="Spell_CanExecute" />
 
-		<CommandBinding Command="mapViewer:CustomCommands.MaskRectangle" Executed="MaskRectangle_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.MaskCircle" Executed="MaskCircle_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.UnmaskCircle" Executed="UnmaskCircle_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.MaskPolygon" Executed="MaskPolygon_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.UnmaskPolygon" Executed="UnmaskPolygon_Execute" CanExecute="ImageNeeded_CanExecute" />
-		<CommandBinding Command="mapViewer:CustomCommands.UnmaskLineOfSight20m" Executed="UnmaskLineOfSight20m_Execute" CanExecute="ImageNeeded_CanExecute" />
-	</Window.CommandBindings>
+        <CommandBinding Command="mapViewer:CustomCommands.MaskRectangle" Executed="MaskRectangle_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.MaskCircle" Executed="MaskCircle_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.UnmaskCircle" Executed="UnmaskCircle_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.MaskPolygon" Executed="MaskPolygon_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.UnmaskPolygon" Executed="UnmaskPolygon_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.UnmaskLineOfSight20m" Executed="UnmaskLineOfSight20m_Execute" CanExecute="ImageNeeded_CanExecute" />
+    </Window.CommandBindings>
 
-	<Grid KeyDown="PrivateWinKeyDown">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+    <Grid KeyDown="PrivateWinKeyDown">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
         <Popup Grid.Row="0" Name="PopupDisplay" PlacementTarget="{Binding ElementName=DrawingSpace}"
                VerticalAlignment="Top" IsOpen="False" VerticalOffset="20"  HorizontalOffset="20" Placement="Relative">
-			<TextBlock Padding="4"  Name="TxtBlock"  Background="WhiteSmoke" >Dummy</TextBlock>
-		</Popup>
+            <TextBlock Padding="4"  Name="TxtBlock" Foreground="DarkRed" Background="WhiteSmoke"  FontWeight="Bold">Dummy</TextBlock>
+        </Popup>
 
         <Popup Grid.Row="0" Name="PopupWarning" PlacementTarget="{Binding ElementName=DrawingSpace}"
                VerticalAlignment="Top" IsOpen="False" VerticalOffset="20"  HorizontalOffset="20" Placement="Relative">
             <TextBlock Padding="4"  Name="TxtBlockWarning"  Background="WhiteSmoke" Foreground="OrangeRed" >Dummy</TextBlock>
         </Popup>
 
-        <Ribbon Margin="1,1,1,1" Grid.Row="0" SelectionChanged="Tab_OnSelectionChanged">
-			<Ribbon.ApplicationMenu>
-				<RibbonApplicationMenu>
-					<RibbonApplicationMenuItem Header="Open Map" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
-					<RibbonApplicationMenuItem Header="Save Mask/Symbols" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
+        <Ribbon Margin="1,1,1,1" Grid.Row="0" SelectionChanged="Tab_OnSelectionChanged" Name="Ribbon">
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu>
+                    <RibbonApplicationMenuItem Header="Open Map" Command="mapViewer:CustomCommands.OpenImage" ImageSource="Images\Open_file.png"/>
+                    <RibbonApplicationMenuItem Header="Save Mask/Symbols" Command="mapViewer:CustomCommands.Save" ImageSource="Images\Save_file.png" />
                     <RibbonApplicationMenuItem Header="Save Symbols as..." Command="mapViewer:CustomCommands.SaveSymbolsAs" ImageSource="Images\Save_file.png" />
                     <RibbonApplicationMenuItem Header="Load Symbols.." Command="mapViewer:CustomCommands.LoadSymbols" ImageSource="Images\Open_file.png" />
                     <RibbonApplicationMenuItem Header="Calibrate Display" Command="mapViewer:CustomCommands.CalibrateDisplay" ImageSource="Images/Monitor_measure.png" />
                     <RibbonApplicationMenuItem Name="Mru1"  Header="Open Last Image" Command="mapViewer:CustomCommands.OpenLastImage" ToolTip="F9" />
-					<RibbonApplicationMenuItem Header="Exit" Command="mapViewer:CustomCommands.ExitApp" />
-				</RibbonApplicationMenu>
-			</Ribbon.ApplicationMenu>
-			<RibbonTab x:Name="SetupTab" Header="Setup" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
-				<RibbonGroup Name="Calibration">
-					<RibbonToggleButton Label="Calibrate" Command="mapViewer:CustomCommands.Calibrate" LargeImageSource="Images/Map_measure.png" />
-				</RibbonGroup>
-			</RibbonTab>
-			<RibbonTab x:Name="GamingTab" Header="Gaming" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
-				<RibbonGroup Name="Zooming">
-					<RibbonButton Label="Zoom to Fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png" ToolTip="Home"/>
-					<RibbonButton Label="Zoom In" Command="mapViewer:CustomCommands.ZoomIn" LargeImageSource="Images/zoom_in.png"/>
-					<RibbonButton Label="Zoom Out" Command="mapViewer:CustomCommands.ZoomOut" LargeImageSource="Images/zoom_out.png"/>
-					<RibbonToggleButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
-				</RibbonGroup>
+                    <RibbonApplicationMenuItem Header="Exit" Command="mapViewer:CustomCommands.ExitApp" />
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
+            <RibbonTab x:Name="SetupTab" Header="Setup" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
+                <RibbonGroup Name="Calibration">
+                    <RibbonButton Label="Zoom to Fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png" ToolTip="Home"/>
+                    <RibbonButton Label="Zoom In" Command="mapViewer:CustomCommands.ZoomIn" LargeImageSource="Images/zoom_in.png"/>
+                    <RibbonButton Label="Zoom Out" Command="mapViewer:CustomCommands.ZoomOut" LargeImageSource="Images/zoom_out.png"/>
+                    <RibbonToggleButton Label="Calibrate" Command="mapViewer:CustomCommands.Calibrate" LargeImageSource="Images/Map_measure.png" />
+                </RibbonGroup>
+            </RibbonTab>
+            <RibbonTab x:Name="GamingTab" Header="Symbols" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
+                <RibbonGroup Name="Zooming">
+                    <RibbonButton Label="Zoom to Fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png" ToolTip="Home"/>
+                    <RibbonButton Label="Zoom In" Command="mapViewer:CustomCommands.ZoomIn" LargeImageSource="Images/zoom_in.png"/>
+                    <RibbonButton Label="Zoom Out" Command="mapViewer:CustomCommands.ZoomOut" LargeImageSource="Images/zoom_out.png"/>
+                    <RibbonToggleButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
+                </RibbonGroup>
 
-				<RibbonGroup Name="Masking">
-					<RibbonButton Label="Mask All" Command="mapViewer:CustomCommands.FullMask" LargeImageSource="Images/Map_mask.png" />
-					<RibbonToggleButton Label="Mask Rect" Command="mapViewer:CustomCommands.MaskRectangle" LargeImageSource="Images/Map_mask_rect.png" />
-					<RibbonToggleButton Label="Mask Circle" Command="mapViewer:CustomCommands.MaskCircle" LargeImageSource="Images/Map_mask_circle.png" />
-					<RibbonToggleButton Label="Mask Polygon" Command="mapViewer:CustomCommands.MaskPolygon" LargeImageSource="Images/Map_mask_polygon.png" />
-					<RibbonButton Label="Unmask All" Command="mapViewer:CustomCommands.ClearMask" LargeImageSource="Images/map.png" />
-					<RibbonToggleButton Label="Unmask Rect" Command="mapViewer:CustomCommands.UnmaskRectangle" LargeImageSource="Images/Map_unmask_rect.png" />
-					<RibbonToggleButton Label="Unmask Circle" Command="mapViewer:CustomCommands.UnmaskCircle" LargeImageSource="Images/Map_unmask_circle.png" />
-					<RibbonToggleButton Label="Unmask Polygon" Command="mapViewer:CustomCommands.UnmaskPolygon" LargeImageSource="Images/Map_unmask_polygon.png" />
-				</RibbonGroup>
+                <RibbonGroup Name="Symbols">
+                    <RibbonButton Label="Clear Symbols" Command="mapViewer:CustomCommands.ClearOverlay" LargeImageSource="Images/Map.png"/>
+                    <RibbonToggleButton Label="Create Line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/draw_line.png" />
+                    <RibbonToggleButton Label="Create Cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/draw_cone.png" />
+                    <RibbonToggleButton Label="Create Circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/draw_circle.png" />
+                    <RibbonToggleButton Label="Create Rectangle" Command="mapViewer:CustomCommands.DrawRectangle" LargeImageSource="Images/draw_rect.png" />
+                    <RibbonToggleButton Label="Create Text" Command="mapViewer:CustomCommands.DrawText" LargeImageSource="Images/draw_text.png" />
+                </RibbonGroup>
 
-				<RibbonGroup Name="Spells">
-					<RibbonButton Label="Clear Symbols" Command="mapViewer:CustomCommands.ClearOverlay" LargeImageSource="Images/Map.png"/>
-					<RibbonToggleButton Label="Create Line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/draw_line.png" />
-					<RibbonToggleButton Label="Create Cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/draw_cone.png" />
-					<RibbonToggleButton Label="Create Circle" Command="mapViewer:CustomCommands.DrawCircle" LargeImageSource="Images/draw_circle.png" />
-					<RibbonToggleButton Label="Create Rectangle" Command="mapViewer:CustomCommands.DrawRectangle" LargeImageSource="Images/draw_rect.png" />
-					<RibbonToggleButton Label="Create Text" Command="mapViewer:CustomCommands.DrawText" LargeImageSource="Images/draw_text.png" />
-				</RibbonGroup>
-
-                <RibbonGroup Name="Public" >
-					<ComboBox Name="ComboBoxPublicScale"  Height="20" Margin="2,5,2,5" 
+                <RibbonGroup Name="Character" >
+                    <ComboBox Name="ComboBoxPublicScale"
+                              Height="20" 
+                              Margin="2,5,2,5" 
+                              ToolTip="Public Map Scale"
                               SelectionChanged="ComboBoxPublicScale_OnSelectionChanged">
 
                         <ComboBoxItem Uid="Scale_1" Content="1:1" IsEnabled="{Binding Path=IsImageCalibrated}"/>
@@ -171,78 +164,139 @@
                         <ComboBoxItem Uid="Scale_20" Content="1:20" IsEnabled="{Binding IsImageCalibrated}"/>
                         <ComboBoxItem Uid="Scale_50" Content="1:50" IsSelected="True" IsEnabled="{Binding IsImageCalibrated}"/>
                         <ComboBoxItem Uid="Scale_100" Content="1:100" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_200" Content="1:200" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_300" Content="1:300" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_500" Content="1:500" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_1000" Content="1:1000" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_2000" Content="1:2000" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_4000" Content="1:4000" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_8000" Content="1:8000" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_16000" Content="1:16000" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_32000" Content="1:32000" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_64000" Content="1:64000" IsEnabled="{Binding IsImageCalibrated}"/>
-						<ComboBoxItem Uid="Scale_0" Content="Linked"/>
-					</ComboBox>
-                    <ComboBox Name="ComboBoxPlayerMinSize"  Height="20" Margin="2,5,2,5" SelectionChanged="ComboBoxPlayerMinSize_OnSelectionChanged" >
+                        <ComboBoxItem Uid="Scale_200" Content="1:200" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_300" Content="1:300" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_500" Content="1:500" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_1000" Content="1:1000" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_2000" Content="1:2000" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_4000" Content="1:4000" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_8000" Content="1:8000" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_16000" Content="1:16000" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_32000" Content="1:32000" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_64000" Content="1:64000" IsEnabled="{Binding IsImageCalibrated}"/>
+                        <ComboBoxItem Uid="Scale_0" Content="Linked"/>
+                    </ComboBox>
+                    <ComboBox Name="ComboBoxPlayerMinSize"  
+                              Height="20" 
+                              Margin="2,5,2,5" 
+                              ToolTip="Player Min Size"
+                              SelectionChanged="ComboBoxPlayerMinSize_OnSelectionChanged" >
                         <ComboBoxItem Uid="PlayerMinSize_10p" Content="10 pixel"  IsSelected="True"/>
                         <ComboBoxItem Uid="PlayerMinSize_20p" Content="20 pixel"/>
                         <ComboBoxItem Uid="PlayerMinSize_25p" Content="25 pixel"/>
                         <ComboBoxItem Uid="PlayerMinSize_30p" Content="30 pixel"/>
                         <ComboBoxItem Uid="PlayerMinSize_35p" Content="35 pixel"/>
                     </ComboBox>
-                    <ComboBox Name="ComboBoxPlayerSize"  Height="20" Margin="2,5,2,5" SelectionChanged="ComboBoxPlayerSize_OnSelectionChanged" >
+                    <ComboBox Name="ComboBoxPlayerSize"
+                              Height="20" 
+                              Margin="2,5,2,5" 
+                              ToolTip="Player Size"
+                              SelectionChanged="ComboBoxPlayerSize_OnSelectionChanged" >
                         <ComboBoxItem Uid="PlayerSize_0.7" Content="0.7m"/>
                         <ComboBoxItem Uid="PlayerSize_0.8" Content="0.8m"  IsSelected="True"/>
                         <ComboBoxItem Uid="PlayerSize_0.9" Content="0.9m"/>
                         <ComboBoxItem Uid="PlayerSize_1.0" Content="1.0m"/>
                     </ComboBox>
-                    <RibbonCheckBox Label="Show Cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />					
-					<RibbonButton Label="Show Display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" 
-                                  ToolTip="F12">
-						<Button.Style>
-							<Style TargetType="{x:Type Button}">
-								<Style.Triggers>
-									<Trigger Property="IsEnabled" Value="False">
-										<Setter Property="Visibility" Value="Collapsed"/>
-									</Trigger>
-								</Style.Triggers>
-							</Style>
-						</Button.Style>
-					</RibbonButton>
-					<RibbonButton Label="Hide Display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" >
-						<Button.Style>
-							<Style TargetType="{x:Type Button}">
-								<Style.Triggers>
-									<Trigger Property="IsEnabled" Value="False">
-										<Setter Property="Visibility" Value="Collapsed"/>
-									</Trigger>
-								</Style.Triggers>
-							</Style>
-						</Button.Style>
-					</RibbonButton>
-					<RibbonButton Label="Rotate" Command="mapViewer:CustomCommands.RotateMap" LargeImageSource="Images/Monitor_rotate.png" />
-                    <RibbonButton Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png"  ToolTip="F12" />
-				</RibbonGroup>
-			</RibbonTab>
-			<Ribbon.HelpPaneContent>
-				<RibbonButton x:Name="HelpButton" SmallImageSource="Images\help.png" Click="HelpButton_OnClick"/>
-			</Ribbon.HelpPaneContent>
-		</Ribbon>
+                </RibbonGroup>
 
-		<Border Grid.Row="1" BorderThickness="0"  BorderBrush="White" Focusable="True" Loaded="Border_Loaded"
+                <RibbonGroup Name="Public">
+                    <RibbonCheckBox Label="Show Cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />
+                    <RibbonButton Label="Show Display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" 
+                                  ToolTip="F12">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </RibbonButton>
+                    <RibbonButton Label="Hide Display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" >
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </RibbonButton>
+                    <RibbonButton Label="Rotate" Command="mapViewer:CustomCommands.RotateMap" LargeImageSource="Images/Monitor_rotate.png" />
+                    <RibbonButton Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png"  ToolTip="F12" />
+                </RibbonGroup>
+            </RibbonTab>
+            <RibbonTab x:Name="MaskingTab" Header="Masking" Margin="0,2,0,-5" RenderTransformOrigin="0.499,0.459">
+                <RibbonGroup Name="Zooming2">
+                    <RibbonButton Label="Zoom to Fit" Command="mapViewer:CustomCommands.ScaleToFit" LargeImageSource="Images/Map_fit.png" ToolTip="Home"/>
+                    <RibbonButton Label="Zoom In" Command="mapViewer:CustomCommands.ZoomIn" LargeImageSource="Images/zoom_in.png"/>
+                    <RibbonButton Label="Zoom Out" Command="mapViewer:CustomCommands.ZoomOut" LargeImageSource="Images/zoom_out.png"/>
+                    <RibbonToggleButton Label="Measure" Command="mapViewer:CustomCommands.Measure" LargeImageSource="Images/Map_measure.png" />
+                </RibbonGroup>
+
+                <RibbonGroup Name="Masking">
+                    <RibbonButton Label="Mask All" Command="mapViewer:CustomCommands.FullMask" LargeImageSource="Images/Map_mask.png" />
+                    <RibbonToggleButton Label="Mask Rect" Command="mapViewer:CustomCommands.MaskRectangle" LargeImageSource="Images/Map_mask_rect.png" />
+                    <RibbonToggleButton Label="Mask Circle" Command="mapViewer:CustomCommands.MaskCircle" LargeImageSource="Images/Map_mask_circle.png" />
+                    <RibbonToggleButton Label="Mask Polygon" Command="mapViewer:CustomCommands.MaskPolygon" LargeImageSource="Images/Map_mask_polygon.png" />
+                    <RibbonButton Label="Unmask All" Command="mapViewer:CustomCommands.ClearMask" LargeImageSource="Images/map.png" />
+                    <RibbonToggleButton Label="Unmask Rect" Command="mapViewer:CustomCommands.UnmaskRectangle" LargeImageSource="Images/Map_unmask_rect.png" />
+                    <RibbonToggleButton Label="Unmask Circle" Command="mapViewer:CustomCommands.UnmaskCircle" LargeImageSource="Images/Map_unmask_circle.png" />
+                    <RibbonToggleButton Label="Unmask Polygon" Command="mapViewer:CustomCommands.UnmaskPolygon" LargeImageSource="Images/Map_unmask_polygon.png" />
+                </RibbonGroup>
+
+                <RibbonGroup Name="Public2">
+                    <RibbonCheckBox Label="Show Cursor" Height="20" Margin="2,5,2,5" Checked="CheckBoxPublicCursor_OnChecked" Unchecked="CheckBoxPublicCursor_OnUnchecked" />
+                    <RibbonButton Label="Show Display" Command="mapViewer:CustomCommands.AddDisplay" LargeImageSource="Images/Monitor_add.png" 
+                                  ToolTip="F12">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </RibbonButton>
+                    <RibbonButton Label="Hide Display" Command="mapViewer:CustomCommands.RemoveDisplay" LargeImageSource="Images/Monitor_delete.png" >
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </RibbonButton>
+                    <RibbonButton Label="Rotate" Command="mapViewer:CustomCommands.RotateMap" LargeImageSource="Images/Monitor_rotate.png" />
+                    <RibbonButton Label="Publish" Command="mapViewer:CustomCommands.PublishMap" LargeImageSource="Images/Monitor_publish.png"  ToolTip="F12" />
+                </RibbonGroup>
+
+            </RibbonTab>
+
+            <Ribbon.HelpPaneContent>
+                <RibbonButton x:Name="HelpButton" SmallImageSource="Images\help.png" Click="HelpButton_OnClick"/>
+            </Ribbon.HelpPaneContent>
+        </Ribbon>
+
+        <Border Grid.Row="1" BorderThickness="0"  BorderBrush="White" Focusable="True" Loaded="Border_Loaded"
 					MouseDown="PrivateWinMouseDown" MouseMove="PrivateWinMouseMove" MouseUp="PrivateWinMouseUp" KeyDown="PrivateWinKeyDown" MouseWheel="PrivateWinMouseWheel" >
-			<Grid Name="DrawingSpace"  ClipToBounds="True" >
-				<Grid.ContextMenu>
-					<ContextMenu Name="PrivateContextMenu">
-						<MenuItem Command="mapViewer:CustomCommands.CreateSpellCircular3m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+            <Grid Name="DrawingSpace"  ClipToBounds="True" >
+                <Grid.ContextMenu>
+                    <ContextMenu Name="PrivateContextMenu">
+                        <MenuItem Command="mapViewer:CustomCommands.CreateSpellCircular3m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <Separator />
-						<MenuItem Command="mapViewer:CustomCommands.CreateSymbolPlayer" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.CreateSymbolPlayer" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.CreateSymbolNonPlayer" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.CreateSymbolImage" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <Separator />
                         <MenuItem Command="mapViewer:CustomCommands.DuplicateSymbol" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-						<MenuItem Command="mapViewer:CustomCommands.DeleteSymbol"    CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-						<MenuItem Command="mapViewer:CustomCommands.SetSymbolColor" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.DeleteSymbol"    CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.SetSymbolColor" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.SendSymbolToFront" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.SendSymbolToBack" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.MoveSymbolUp" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
@@ -252,17 +306,17 @@
                         <Separator />
                         <MenuItem Command="mapViewer:CustomCommands.UnmaskLineOfSight20m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                     </ContextMenu>
-				</Grid.ContextMenu>
-				<UserControl Grid.Row="0"  RenderTransform="{Binding DisplayTransform}"  KeyDown="PrivateWinKeyDown">
-					<ContentPresenter   Name="LayerMap" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
-				</UserControl>
-				<UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}"  KeyDown="PrivateWinKeyDown">
-					<ContentPresenter   Name="LayerMask" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
-				</UserControl>
-                <UserControl Grid.Row="0" RenderTransform="{Binding DisplayTransform}"  KeyDown="PrivateWinKeyDown">
+                </Grid.ContextMenu>
+                <UserControl Grid.Row="0" KeyDown="PrivateWinKeyDown">
+                    <ContentPresenter   Name="LayerMap" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
+                </UserControl>
+                <UserControl Grid.Row="0" KeyDown="PrivateWinKeyDown">
+                    <ContentPresenter   Name="LayerMask" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
+                </UserControl>
+                <UserControl Grid.Row="0" KeyDown="PrivateWinKeyDown">
                     <ContentPresenter   Name="LayerOverlay" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
                 </UserControl>
-			</Grid>
-		</Border>
-	</Grid>
-</Window>
+            </Grid>
+        </Border>
+    </Grid>
+</RibbonWindow>
