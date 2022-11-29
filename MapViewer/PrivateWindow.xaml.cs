@@ -56,7 +56,7 @@ namespace MapViewer {
         private Point _mouseDownPointFirst;  // Canvas
         private Point _mouseDownPointWindow;
         private ICanvasTool _activeTool;
-        private bool writtenLogSetting;
+        private bool _writtenLogSetting;
 
         public bool IsImageCalibrated => MapPrivate?.IsCalibrated ?? false;
 
@@ -420,9 +420,9 @@ namespace MapViewer {
             //string user = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             //PortableSettingsProvider.SettingsFileName = $"user.{user}.config".Replace("\\", "_");
             PortableSettingsProvider.ApplyProvider(Settings.Default);
-            if (!writtenLogSetting) {
+            if (!_writtenLogSetting) {
                 Log.Debug("Uses settings file:" + PortableSettingsProvider.SettingsFileName);
-                writtenLogSetting = true;
+                _writtenLogSetting = true;
             }
         }
 
