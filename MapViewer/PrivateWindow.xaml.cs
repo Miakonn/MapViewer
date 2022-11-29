@@ -55,7 +55,6 @@ namespace MapViewer {
         private Point _mouseDownPoint;  // Canvas
         private Point _mouseDownPointFirst;  // Canvas
         private Point _mouseDownPointWindow;
-        private Point _mouseDownPointWindowFirst;
         private ICanvasTool _activeTool;
         private bool writtenLogSetting;
 
@@ -124,7 +123,7 @@ namespace MapViewer {
         private static string FileVersion {
             get {
                 System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
                 return fvi.FileVersion;
             }
         }
@@ -232,7 +231,6 @@ namespace MapViewer {
                 }
                 else {
                     _mouseDownPointWindow = e.GetPosition(this);
-                    _mouseDownPointWindowFirst = _mouseDownPoint;
                     _cursorAction = CursorAction.MovingPrivateMap;
                 }
                 e.Handled = true;
@@ -270,28 +268,33 @@ namespace MapViewer {
                 return;
             }
 
-            if (_cursorAction == CursorAction.MovingPublicMapPos) {
-                var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
-                MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y)) * MapPublic.ZoomScale * MapPublic.ScaleDpiFix);
-                _mouseDownPoint = curMouseDownPoint;
-                e.Handled = true;
-            }
-            else if (_cursorAction == CursorAction.MovingSymbol) {
-                var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
-                var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
-                if (_lastClickedSymbol != null) {
+            switch (_cursorAction) {
+                case CursorAction.MovingPublicMapPos: {
+                    var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
+                    MovePublic(new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y)) * MapPublic.ZoomScale * MapPublic.ScaleDpiFix);
+                    _mouseDownPoint = curMouseDownPoint;
+                    e.Handled = true;
+                    break;
+                }
+                case CursorAction.MovingSymbol: {
+                    var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
+                    var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
+                    Debug.Assert(_lastClickedSymbol != null);
+
                     MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedSymbol, move);
                     _mouseDownPoint = curMouseDownPoint;
                     DisplayPopup($"{DistanceFromStart(curMouseDownPoint),5:N1} Track: {DistanceTrack(move),5:N1}");
                     e.Handled = true;
+                    break;
                 }
-            }
-            else if (_cursorAction == CursorAction.MovingPrivateMap) {
-                var curMouseDownPoint = e.GetPosition(this);
-                var move = curMouseDownPoint - _mouseDownPointWindow;
-                MapPrivate.Translate(move);
-                _mouseDownPointWindow = curMouseDownPoint;
-                e.Handled = true;
+                case CursorAction.MovingPrivateMap: {
+                    var curMouseDownPoint = e.GetPosition(this);
+                    var move = curMouseDownPoint - _mouseDownPointWindow;
+                    MapPrivate.Translate(move);
+                    _mouseDownPointWindow = curMouseDownPoint;
+                    e.Handled = true;
+                    break;
+                }
             }
         }
 

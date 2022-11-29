@@ -24,15 +24,13 @@ namespace MapViewer.Tools {
 			_canvas = _map.CanvasOverlay;
 			_canvasPublic = _mapPublic.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
-		}
+            _line = null;
+            _linePublic = null;
+        }
 
-		#region ICanvasTool
-		public void Activate() {
-			_line = null;
-			_linePublic = null;
-		}
+        #region ICanvasTool
 
-		public void MouseDown(object sender, MouseButtonEventArgs e) {
+        public void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_line == null) {
 				InitDraw(e.GetPosition(_canvas));
 			}
@@ -47,7 +45,7 @@ namespace MapViewer.Tools {
 				return;
 			}
 
-			UpdateDraw(e.GetPosition(_canvas));
+            UpdateDraw(e.GetPosition(_canvas));
 			_privateWindow.DisplayPopup(CalculateDistance() + " " + _map.Unit);
 		}
 
@@ -124,8 +122,7 @@ namespace MapViewer.Tools {
 				_linePublic.X2 = pt2.X;
 				_linePublic.Y2 = pt2.Y;
 			}
-
-		}
+        }
 
 		private void EndDraw() {
 			_privateWindow.ActiveTool = null;

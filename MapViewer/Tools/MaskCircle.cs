@@ -21,15 +21,13 @@ namespace MapViewer.Tools {
 			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
-		}
+            _circle = null;
+        }
 
 
 		#region ICanvasTool
-		public void Activate() {
-			_circle = null;
-		}
 
-		public void MouseDown(object sender, MouseButtonEventArgs e) {
+        public void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_circle == null) {
 				_pnt1 = e.GetPosition(_canvas);
 				InitDraw(_pnt1);

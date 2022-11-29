@@ -14,11 +14,13 @@ Medel prio =================================
 
 * gummiband vid förflyttning
 
-* ta bort enhets val i calibrate-dialogen
+* ta bort enhetsval i calibrate-dialogen
 
 * mer kontrastarande färger i symboler
 
 * mer färger
+
+* städa bort mer element
 
 
 Låg prio ------------------------
@@ -28,8 +30,6 @@ Låg prio ------------------------
 * riktning på creature?
 
 * ändra text-storlek
-
-* rotera multipla val
 
 * gruppera symboler
 

@@ -23,7 +23,7 @@ namespace MapViewer.Symbols {
         public const double RotationStep = 22.5;
 
         [XmlIgnore]
-        public Cursor SymbolCursor = Cursors.Hand;
+        public static Cursor SymbolCursor = Cursors.Hand;
 
         public string Uid { get; set; }
         public int OrderZ { get; set; }   
@@ -59,7 +59,7 @@ namespace MapViewer.Symbols {
             FillColor = symbolSource.FillColor;
             OrderZ = symbolSource.OrderZ - 1;
             SizeMeter = symbolSource.SizeMeter;
-            Caption = SymbolsViewModel.CountUpCaption(symbolSource.Caption); ;
+            Caption = SymbolsViewModel.CountUpCaption(symbolSource.Caption);
         }
 
         public void DrawText(string caption, Canvas canvas, MapDrawingSettings drawingSettings) {
@@ -89,13 +89,13 @@ namespace MapViewer.Symbols {
             if (!IsSelected) {
                 return;
             }
-            var sizePixel = drawingSettings.GetMinSizePixelFromMeter(SizeMeter); ;
+            var sizePixel = drawingSettings.GetMinSizePixelFromMeter(SizeMeter);
 
             var shape = new Ellipse {
                 Uid = Uid + "_Selected1",
                 Width = sizePixel,
                 Height = sizePixel,
-                Stroke = new SolidColorBrush(Colors.White),
+                Stroke = new SolidColorBrush(Colors.Yellow),
                 StrokeThickness = 2 / drawingSettings.ZoomScale,
                 StrokeDashArray = DoubleCollection.Parse("3, 3"),
                 StrokeDashOffset = 0,

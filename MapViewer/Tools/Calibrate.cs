@@ -20,12 +20,10 @@ namespace MapViewer.Tools {
 			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = (RibbonToggleButton)button;
-		}
+            _line = null;
+        }
 
 		#region ICanvasTool
-		public void Activate() {
-			_line = null;
-		}
 
 		public void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_line == null) {
@@ -87,10 +85,8 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			_canvas.Children.Remove(_line);
 					
-			var dialog = new DialogGetDoubleValue {
-				LeadText1 = "Length",
-				LeadText2 = "Unit",
-				DefaultText2 = _map.Unit,
+			var dialog = new DialogGetDoubleValue() {
+				LeadText1 = "Length (m)",
 				Owner = _privateWindow
 			};
 
@@ -102,11 +98,9 @@ namespace MapViewer.Tools {
 
 			var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
 
-			_map.ImageScaleMperPix = (float) (dialog.FloatValue1 / length);
-			_map.Unit = dialog.TextValue2;
+			_map.ImageScaleMperPix = dialog.DoubleValue / length;
 
 			_privateWindow.ActiveTool = null;
 		}
-
 	}
 }
