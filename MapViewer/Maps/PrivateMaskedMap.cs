@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -62,11 +61,6 @@ namespace MapViewer.Maps {
         public void SetCursor(Cursor cursor) {
             if (cursor == null) {
                 cursor = Cursors.Arrow;
-                Debug.WriteLine("Cursor Arrow");
-            }
-            else {
-                Debug.WriteLine("Cursor " + cursor.ToString());
-
             }
             CanvasMap.Cursor = cursor;
             CanvasMask.Cursor = cursor;
@@ -111,7 +105,7 @@ namespace MapViewer.Maps {
         public void Serialize()
         {
             MapData.Serialize();
-            BitmapUtils.Serialize(BmpMask as WriteableBitmap, CreateFilename(ImageFilePath, ".mask.png"));
+            (BmpMask as WriteableBitmap).Serialize(CreateFilename(ImageFilePath, ".mask.png"));
             SymbolsPM.Serialize(CreateFilename(ImageFilePath, ".symbols.xml"));
         }
 
@@ -161,7 +155,7 @@ namespace MapViewer.Maps {
             var drawSettings = new MapDrawSettings {
                 ZoomScale = ZoomScale,
                 ImageScaleMperPix = ImageScaleMperPix,
-                MinSymbolSizePixel = PlayerSizePixel,
+                MinSymbolSizePixel = PlayerMinSizePixel,
                 IsToolActive = ParentWindow.ActiveTool != null
             };
 

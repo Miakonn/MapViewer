@@ -14,7 +14,7 @@ namespace MapViewer.Utilities {
         private readonly Edid _edid;
 
         private static readonly log4net.ILog Log =
-            log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+            log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public MonitorManager() {
             _edid = new Edid(RunDumpEdid());

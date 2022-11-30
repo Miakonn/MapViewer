@@ -379,24 +379,24 @@ namespace MapViewer {
              }
              switch (selected.Uid) {
                 case "PlayerMinSize_10p":
-                    MapPublic.PlayerSizePixel = 20;
-                    MapPrivate.PlayerSizePixel = 20;
+                    MapPublic.PlayerMinSizePixel = 20;
+                    MapPrivate.PlayerMinSizePixel = 20;
                     break;
                 case "PlayerMinSize_20p":
-                    MapPublic.PlayerSizePixel = 20;
-                    MapPrivate.PlayerSizePixel = 20;
+                    MapPublic.PlayerMinSizePixel = 20;
+                    MapPrivate.PlayerMinSizePixel = 20;
                     break;
                 case "PlayerMinSize_25p":
-                    MapPublic.PlayerSizePixel = 25;
-                    MapPrivate.PlayerSizePixel = 25;
+                    MapPublic.PlayerMinSizePixel = 25;
+                    MapPrivate.PlayerMinSizePixel = 25;
                     break;
                 case "PlayerMinSize_30p":
-                    MapPublic.PlayerSizePixel = 30;
-                    MapPrivate.PlayerSizePixel = 30;
+                    MapPublic.PlayerMinSizePixel = 30;
+                    MapPrivate.PlayerMinSizePixel = 30;
                     break;
                 case "PlayerMinSize_35p":
-                    MapPublic.PlayerSizePixel = 35;
-                    MapPrivate.PlayerSizePixel = 35;
+                    MapPublic.PlayerMinSizePixel = 35;
+                    MapPrivate.PlayerMinSizePixel = 35;
                     break;
             }
             MapPrivate.SymbolsPM.RaiseSymbolsChanged();

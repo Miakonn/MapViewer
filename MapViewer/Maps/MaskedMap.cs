@@ -36,9 +36,9 @@ namespace MapViewer.Maps {
 
         public bool Initiated;
 
-        public double PlayerSizePixel { get; set; } //  == 0 means fixed in meter 
+        public double PlayerMinSizePixel { get; set; }
 
-        public double PlayerSizeMeter { get; set; } //  == 0 means dynamic in pixel 
+        public double PlayerSizeMeter { get; set; } 
 
         protected double MaskOpacity { get; set; }
 
@@ -149,7 +149,7 @@ namespace MapViewer.Maps {
             MapData = new MapData(null);
 
             PlayerSizeMeter = 0.8;
-            PlayerSizePixel = 20;
+            PlayerMinSizePixel = 20;
             IsLinked = false;
         }
 

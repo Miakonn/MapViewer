@@ -159,7 +159,7 @@ namespace MapViewer.Maps {
             var drawSettings = new MapDrawSettings {
                 ZoomScale = ZoomScale,
                 ImageScaleMperPix = ImageScaleMperPix,
-                MinSymbolSizePixel = PlayerSizePixel,
+                MinSymbolSizePixel = PlayerMinSizePixel,
                 IsToolActive = false
             };
 
