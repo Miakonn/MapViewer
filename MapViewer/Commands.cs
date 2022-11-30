@@ -214,12 +214,12 @@ namespace MapViewer {
 
             Level = 0;
             MapPrivate = MapList[Level];
-            LayerMap.Content = MapPrivate.CanvasMap;
-            LayerMask.Content = MapPrivate.CanvasMask;
-            LayerOverlay.Content = MapPrivate.CanvasOverlay;
+            Layer1_Map.Content = MapPrivate.CanvasMap;
+            Layer2_Mask.Content = MapPrivate.CanvasMask;
+            Layer3_Overlay.Content = MapPrivate.CanvasOverlay;
 
             MapPrivate.ImageScaleChanged += HandleImageScaleChanged;
-            MapPrivate.ScaleToWindow(LayerMap);
+            MapPrivate.ScaleToWindow(Layer1_Map);
             HandleImageScaleChanged(null, null);
 
             PublicNeedsRescaling = true;
@@ -251,9 +251,9 @@ namespace MapViewer {
                 MapPrivate.Create();
             }
 
-            LayerMap.Content = MapPrivate.CanvasMap;
-            LayerMask.Content = MapPrivate.CanvasMask;
-            LayerOverlay.Content = MapPrivate.CanvasOverlay;
+            Layer1_Map.Content = MapPrivate.CanvasMap;
+            Layer2_Mask.Content = MapPrivate.CanvasMask;
+            Layer3_Overlay.Content = MapPrivate.CanvasOverlay;
             PublicNeedsRescaling = false;
         }
 
@@ -305,7 +305,7 @@ namespace MapViewer {
         }
 
 		private void ScaleToFit_Execute(object sender, ExecutedRoutedEventArgs e) {
-			MapPrivate.ScaleToWindow(LayerMap);
+			MapPrivate.ScaleToWindow(Layer1_Map);
 			if (!MapPrivate.IsLinked) {
 				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
 			}

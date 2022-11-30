@@ -65,10 +65,10 @@ namespace MapViewer {
             Map = new PublicMaskedMap(this, DateTime.Now.Ticks);
             _canvasRuler = new Canvas();
 
-            Layer1.Content = Map.CanvasMap;
-            Layer3.Content = Map.CanvasOverlay;
-            Layer4.Content = Map.CanvasMask;
-            Layer5.Content = _canvasRuler;
+            Layer1_Map.Content = Map.CanvasMap;
+            Layer2_Symbol.Content = Map.CanvasOverlay;
+            Layer3_Mask.Content = Map.CanvasMask;
+            Layer4_Ruler.Content = _canvasRuler;
 
             _compassTransform = new RotateTransform(0);
 

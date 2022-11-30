@@ -182,7 +182,7 @@ namespace MapViewer {
 
         private void PrivateWinSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            MapPrivate?.ScaleToWindow(LayerMap);
+            MapPrivate?.ScaleToWindow(Layer1_Map);
         }
 
 

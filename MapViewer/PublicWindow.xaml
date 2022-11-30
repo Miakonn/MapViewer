@@ -5,10 +5,10 @@
 		 WindowStyle="None">
 	<Border Name="PublicBorder" BorderThickness="0,0" >
 		<Grid>
-			<ContentPresenter Grid.Row="0" Grid.Column="0" Name="Layer1"  Margin="0" />
-			<ContentPresenter Grid.Row="0" Grid.Column="0" Name="Layer3"  Margin="0" />
-            <ContentPresenter Grid.Row="0" Grid.Column="0" Name="Layer4"  Margin="0" />
-            <ContentPresenter Grid.Row="0" Grid.Column="0" Name="Layer5"  Margin="0" />
+            <ContentPresenter Grid.Row="0" Grid.Column="0" Name="Layer1_Map"  Margin="0" IsHitTestVisible="False" />
+            <ContentPresenter Grid.Row="0" Grid.Column="0" Name="Layer2_Symbol"  Margin="0" IsHitTestVisible="False" />
+            <ContentPresenter Grid.Row="0" Grid.Column="0" Name="Layer3_Mask"  Margin="0" IsHitTestVisible="False" />
+            <ContentPresenter Grid.Row="0" Grid.Column="0" Name="Layer4_Ruler"  Margin="0" IsHitTestVisible="False" />
 		</Grid>
 	</Border>
 </Window>

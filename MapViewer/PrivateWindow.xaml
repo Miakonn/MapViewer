@@ -105,7 +105,7 @@
 
         <Popup Grid.Row="0" Name="PopupDisplay" PlacementTarget="{Binding ElementName=DrawingSpace}"
                VerticalAlignment="Top" IsOpen="False" VerticalOffset="20"  HorizontalOffset="20" Placement="Relative">
-            <TextBlock Padding="4"  Name="TxtBlock" Foreground="DarkRed" Background="WhiteSmoke"  FontWeight="Bold">Dummy</TextBlock>
+            <TextBlock Padding="4"  Name="TxtBlock" Foreground="DarkGreen" Background="WhiteSmoke"  FontWeight="Bold">Dummy</TextBlock>
         </Popup>
 
         <Popup Grid.Row="0" Name="PopupWarning" PlacementTarget="{Binding ElementName=DrawingSpace}"
@@ -308,13 +308,13 @@
                     </ContextMenu>
                 </Grid.ContextMenu>
                 <UserControl Grid.Row="0" KeyDown="PrivateWinKeyDown">
-                    <ContentPresenter   Name="LayerMap" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
+                    <ContentPresenter   Name="Layer1_Map" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" IsHitTestVisible="True"  />
                 </UserControl>
                 <UserControl Grid.Row="0" KeyDown="PrivateWinKeyDown">
-                    <ContentPresenter   Name="LayerMask" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
+                    <ContentPresenter   Name="Layer2_Mask" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" IsHitTestVisible="True" />
                 </UserControl>
                 <UserControl Grid.Row="0" KeyDown="PrivateWinKeyDown">
-                    <ContentPresenter   Name="LayerOverlay" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" />
+                    <ContentPresenter   Name="Layer3_Overlay" Focusable="true" Margin="10" SizeChanged="PrivateWinSizeChanged" IsHitTestVisible="True" />
                 </UserControl>
             </Grid>
         </Border>
