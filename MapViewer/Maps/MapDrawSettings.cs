@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace MapViewer.Maps {
-    public class MapDrawingSettings {
+    public class MapDrawSettings {
         public double ZoomScale;
         public double ImageScaleMperPix;
         public double MinSymbolSizePixel;

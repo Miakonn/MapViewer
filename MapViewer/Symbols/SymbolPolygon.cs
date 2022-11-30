@@ -14,7 +14,7 @@ namespace MapViewer.Symbols {
     public class SymbolPolygon : Symbol {
         public PointCollection Corners { get; set; }
         
-        public override void Draw(Canvas canvas, MapDrawingSettings settings) {
+        public override void Draw(Canvas canvas, MapDrawSettings settings) {
             var shape = new Polygon {
                 Uid = Uid,
                 Points = Corners,

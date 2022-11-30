@@ -14,7 +14,7 @@ namespace MapViewer.Symbols {
         public double WidthMeter { get; set; }
         
         public double RotationDegree { get; set; }
-        public override void Draw(Canvas canvas, MapDrawingSettings settings) {
+        public override void Draw(Canvas canvas, MapDrawSettings settings) {
             var corners = new PointCollection();
 
             double lengthPixel = SizeMeter / settings.ImageScaleMperPix * 0.5;

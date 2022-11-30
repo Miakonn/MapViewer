@@ -72,7 +72,7 @@ namespace MapViewer.Symbols {
             return Symbols.Values.Select(symbol => symbol.OrderZ).Min();
         }
         
-        public void DrawSymbols(Canvas canvas, MapDrawingSettings drawSettings) {
+        public void DrawSymbols(Canvas canvas, MapDrawSettings drawSettings) {
             canvas.RemoveAllSymbolsFromOverlay();
 
             var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.OrderZ);

@@ -12,7 +12,7 @@ namespace MapViewer.Symbols {
     [XmlInclude(typeof(Symbol))]
     public class SymbolCircle : Symbol {
 
-        public override void Draw(Canvas canvas, MapDrawingSettings settings)
+        public override void Draw(Canvas canvas, MapDrawSettings settings)
         {
             var brush = new SolidColorBrush(FillColor);
 

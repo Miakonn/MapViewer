@@ -35,7 +35,7 @@ namespace MapViewer.Symbols {
         [XmlIgnore]
         public bool IsSelected{ get; set; }
 
-        public virtual void Draw(Canvas canvas, MapDrawingSettings settings) {
+        public virtual void Draw(Canvas canvas, MapDrawSettings settings) {
             if (!(this is SymbolText)) {
                 DrawText(Caption, canvas, settings);
             }
@@ -62,11 +62,11 @@ namespace MapViewer.Symbols {
             Caption = SymbolsViewModel.CountUpCaption(symbolSource.Caption);
         }
 
-        public void DrawText(string caption, Canvas canvas, MapDrawingSettings drawingSettings) {
+        public void DrawText(string caption, Canvas canvas, MapDrawSettings drawSettings) {
             if (string.IsNullOrWhiteSpace(caption)) {
                 return;
             }
-            var fontSize = 20 / drawingSettings.ZoomScale;
+            var fontSize = 20 / drawSettings.ZoomScale;
             var fontColor = Colors.Black;
 
             var textBlock = new TextBlock {
@@ -85,18 +85,18 @@ namespace MapViewer.Symbols {
         }
 
 
-        public void DrawSelected(Canvas canvas, MapDrawingSettings drawingSettings) {
+        public void DrawSelected(Canvas canvas, MapDrawSettings drawSettings) {
             if (!IsSelected) {
                 return;
             }
-            var sizePixel = drawingSettings.GetMinSizePixelFromMeter(SizeMeter);
+            var sizePixel = drawSettings.GetMinSizePixelFromMeter(SizeMeter);
 
             var shape = new Ellipse {
                 Uid = Uid + "_Selected1",
                 Width = sizePixel,
                 Height = sizePixel,
                 Stroke = new SolidColorBrush(Colors.Yellow),
-                StrokeThickness = 2 / drawingSettings.ZoomScale,
+                StrokeThickness = 2 / drawSettings.ZoomScale,
                 StrokeDashArray = DoubleCollection.Parse("3, 3"),
                 StrokeDashOffset = 0,
                 Opacity = 1.0,
@@ -113,7 +113,7 @@ namespace MapViewer.Symbols {
                 Width = sizePixel,
                 Height = sizePixel,
                 Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 2 / drawingSettings.ZoomScale,
+                StrokeThickness = 2 / drawSettings.ZoomScale,
                 StrokeDashArray = DoubleCollection.Parse("3, 3"),
                 StrokeDashOffset = 3,
                 Opacity = 1.0,

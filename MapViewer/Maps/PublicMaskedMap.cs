@@ -156,7 +156,7 @@ namespace MapViewer.Maps {
         }
 
         private void HandleSymbolsChanged(object sender, EventArgs e) {
-            var drawSettings = new MapDrawingSettings {
+            var drawSettings = new MapDrawSettings {
                 ZoomScale = ZoomScale,
                 ImageScaleMperPix = ImageScaleMperPix,
                 MinSymbolSizePixel = PlayerSizePixel,

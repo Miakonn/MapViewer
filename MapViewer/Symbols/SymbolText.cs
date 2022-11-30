@@ -12,7 +12,7 @@ namespace MapViewer.Symbols {
     public class SymbolText : Symbol {
         public double RotationDegree { get; set; }
 
-        public override void Draw(Canvas canvas, MapDrawingSettings settings)
+        public override void Draw(Canvas canvas, MapDrawSettings settings)
         {
             var fontSize = 25 / settings.ZoomScale;
             var textBlock = new TextBlock {

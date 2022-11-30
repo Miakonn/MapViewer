@@ -85,7 +85,7 @@
     <Compile Include="Dialogs\DialogCreatureProp.xaml.cs">
       <DependentUpon>DialogCreatureProp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Maps\MapDrawingSettings.cs" />
+    <Compile Include="Maps\MapDrawSettings.cs" />
     <Compile Include="Maps\PrivateMaskedMap.cs" />
     <Compile Include="Maps\PublicMaskedMap.cs" />
     <Compile Include="Properties\Annotations.cs" />

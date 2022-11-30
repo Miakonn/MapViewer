@@ -15,7 +15,7 @@ namespace MapViewer.Symbols {
 
         public double RotationDegree { get; set; }
 
-        public override void Draw(Canvas canvas, MapDrawingSettings settings) {
+        public override void Draw(Canvas canvas, MapDrawSettings settings) {
 
             double sizePixel = SizeMeter / settings.ImageScaleMperPix;
 
