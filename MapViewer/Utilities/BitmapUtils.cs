@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 
 namespace MapViewer {
 	public static class BitmapUtils {
-		public static void Serialize(WriteableBitmap wBitMap, string filename) {
+		public static void Serialize(this WriteableBitmap wBitMap, string filename) {
 			if (wBitMap == null) {
 				return;
 			}

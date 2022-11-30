@@ -131,8 +131,7 @@ namespace MapViewer.Maps {
 
         #endregion
 
-        public MaskedMap(Window parent, long groupId) {
-           
+        public MaskedMap(long groupId) {
             GroupId = groupId;
             MapId = DateTime.Now.Ticks;
 
@@ -152,7 +151,6 @@ namespace MapViewer.Maps {
             PlayerSizeMeter = 0.8;
             PlayerSizePixel = 20;
             IsLinked = false;
-
         }
 
 

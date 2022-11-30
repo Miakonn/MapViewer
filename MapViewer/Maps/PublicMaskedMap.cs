@@ -15,7 +15,7 @@ namespace MapViewer.Maps {
         public PublicWindow ParentWindow { get; set; }
 
 
-        public PublicMaskedMap(PublicWindow parent, long groupId) : base(parent, groupId) {
+        public PublicMaskedMap(PublicWindow parent, long groupId) : base(groupId) {
             ParentWindow = parent;
             MaskOpacity = 1.0;
         }
