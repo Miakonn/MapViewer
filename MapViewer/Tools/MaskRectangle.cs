@@ -11,7 +11,7 @@ using log4net;
 namespace MapViewer.Tools {
 	public class MaskRectangle : ICanvasTool {
 		private readonly Canvas _canvas;
-		private readonly Maps.MaskedMap _map;
+		private readonly Maps.PrivateMaskedMap _map;
 		private readonly bool _mask;
 		private RibbonToggleButton _button;
 

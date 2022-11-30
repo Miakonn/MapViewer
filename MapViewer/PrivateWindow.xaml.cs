@@ -17,6 +17,7 @@ using MapViewer.Properties;
 using MapViewer.Symbols;
 using MapViewer.Tools;
 using Application = System.Windows.Application;
+using Cursors = System.Windows.Input.Cursors;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
@@ -69,7 +70,13 @@ namespace MapViewer {
                 _activeTool?.Deactivate();
                 _activeTool = value;
                 _cursorAction = CursorAction.None;
+                
                 MapPrivate?.SymbolsPM.RaiseSymbolsChanged();
+               
+                MapPrivate?.SetCursor((value != null) ?  Cursors.Cross : null);
+                
+
+
                 if (MapPublic != null && MapPublic.ShowPublicCursorTemporary) {
                     MapPublic.ShowPublicCursor = false;
                     MapPublic.ShowPublicCursorTemporary = false;

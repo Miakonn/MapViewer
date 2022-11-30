@@ -11,7 +11,7 @@ namespace MapViewer.Tools {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
-		private readonly Maps.MaskedMap _map;
+		private readonly Maps.PrivateMaskedMap _map;
 		private RibbonToggleButton _button;
 		private Line _line;
 
@@ -53,7 +53,7 @@ namespace MapViewer.Tools {
 				_button.IsChecked = false;
 			}
 			_button = null;
-		}
+        }
 
 		public bool ShowPublicCursor() {
 			return false;

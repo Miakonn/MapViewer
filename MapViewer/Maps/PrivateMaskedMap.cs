@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MapViewer.Symbols;
@@ -55,6 +57,20 @@ namespace MapViewer.Maps {
                     UpdateVisibleRectangle(privateWin.MapPublic.VisibleRectInMap());
                 }
             }
+        }
+
+        public void SetCursor(Cursor cursor) {
+            if (cursor == null) {
+                cursor = Cursors.Arrow;
+                Debug.WriteLine("Cursor Arrow");
+            }
+            else {
+                Debug.WriteLine("Cursor " + cursor.ToString());
+
+            }
+            CanvasMap.Cursor = cursor;
+            CanvasMask.Cursor = cursor;
+            CanvasOverlay.Cursor = cursor;
         }
 
         public void LoadImage(string imagePath) {

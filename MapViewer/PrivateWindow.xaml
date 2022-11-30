@@ -241,6 +241,9 @@
                     <RibbonToggleButton Label="Mask Rect" Command="mapViewer:CustomCommands.MaskRectangle" LargeImageSource="Images/Map_mask_rect.png" />
                     <RibbonToggleButton Label="Mask Circle" Command="mapViewer:CustomCommands.MaskCircle" LargeImageSource="Images/Map_mask_circle.png" />
                     <RibbonToggleButton Label="Mask Polygon" Command="mapViewer:CustomCommands.MaskPolygon" LargeImageSource="Images/Map_mask_polygon.png" />
+                </RibbonGroup>
+
+                <RibbonGroup Name="Unmasking">
                     <RibbonButton Label="Unmask All" Command="mapViewer:CustomCommands.ClearMask" LargeImageSource="Images/map.png" />
                     <RibbonToggleButton Label="Unmask Rect" Command="mapViewer:CustomCommands.UnmaskRectangle" LargeImageSource="Images/Map_unmask_rect.png" />
                     <RibbonToggleButton Label="Unmask Circle" Command="mapViewer:CustomCommands.UnmaskCircle" LargeImageSource="Images/Map_unmask_circle.png" />
