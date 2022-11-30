@@ -117,7 +117,7 @@
     <Compile Include="Dialogs\DialogGetSingleValue.xaml.cs">
       <DependentUpon>DialogGetSingleValue.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Maps\MaskedMapOverlay.cs" />
+    <Compile Include="Maps\MaskedMap.Overlay.cs" />
     <Compile Include="Tools\Calibrate.cs" />
     <Compile Include="Tools\DrawLine.cs" />
     <Compile Include="Tools\DrawCircle.cs" />
