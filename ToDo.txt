@@ -14,8 +14,6 @@ Medel prio =================================
 
 * gummiband vid förflyttning
 
-* ta bort enhetsval i calibrate-dialogen
-
 * mer kontrastarande färger i symboler
 
 * mer färger

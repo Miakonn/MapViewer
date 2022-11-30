@@ -258,11 +258,7 @@ namespace MapViewer.Maps {
             TrfRotation.CenterX = winSizePix.Width / 2;
             TrfRotation.CenterY = winSizePix.Height / 2;
         }
-
-        public virtual void ScaleToWindow(UIElement element) {
-
-        }
-
+        
         public double GetMinScale(UIElement element) {
             if (element == null || element.RenderSize.Width == 0) {
                 return Math.Min(500 / MapImage.Width, 500 / MapImage.Height);

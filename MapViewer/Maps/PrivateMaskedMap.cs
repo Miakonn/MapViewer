@@ -40,7 +40,7 @@ namespace MapViewer.Maps {
             SymbolsPM.RaiseSymbolsChanged();
         }
 
-        public override void ScaleToWindow(UIElement element) {
+        public void ScaleToWindow(UIElement element) {
             var scale = GetMinScale(element);
             TrfScale.ScaleX = scale;
             TrfScale.ScaleY = scale;

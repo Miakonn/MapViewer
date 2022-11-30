@@ -19,11 +19,7 @@ namespace MapViewer.Maps {
             ParentWindow = parent;
             MaskOpacity = 1.0;
         }
-
-        public override void ScaleToWindow(UIElement element) {
-           
-        }
-
+        
         public virtual void ScaleToReal() {
             if (MapImage != null) {
                 Log.DebugFormat("ScaleToReal {0} {1}", ScreenScaleMMperM, ImageScaleMperPix);
@@ -160,10 +156,12 @@ namespace MapViewer.Maps {
         }
 
         private void HandleSymbolsChanged(object sender, EventArgs e) {
-            var drawSettings = new MapDrawingSettings();
-            drawSettings.ZoomScale = ZoomScale;
-            drawSettings.ImageScaleMperPix = ImageScaleMperPix;
-            drawSettings.MinSymbolSizePixel = PlayerSizePixel;
+            var drawSettings = new MapDrawingSettings {
+                ZoomScale = ZoomScale,
+                ImageScaleMperPix = ImageScaleMperPix,
+                MinSymbolSizePixel = PlayerSizePixel,
+                IsToolActive = false
+            };
 
             var symbolsPm = (SymbolsViewModel)sender;
             symbolsPm?.DrawSymbols(CanvasOverlay, drawSettings);

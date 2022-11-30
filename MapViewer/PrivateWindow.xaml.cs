@@ -185,7 +185,6 @@ namespace MapViewer {
             MapPrivate?.ScaleToWindow(Layer1_Map);
         }
 
-
         private void GetLastClickedSymbol() {
             _lastClickedElem = MapPrivate.CanvasOverlay.FindElementHit();
 
@@ -366,7 +365,6 @@ namespace MapViewer {
             MapPrivate.SymbolsPM.RaiseSymbolsChanged();
         }
 
-
         private void ComboBoxPlayerMinSize_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
              var selected = (ComboBoxItem)ComboBoxPlayerMinSize.SelectedItem;
              if (selected == null || MapPublic == null || MapPrivate == null) {
@@ -396,7 +394,6 @@ namespace MapViewer {
             }
             MapPrivate.SymbolsPM.RaiseSymbolsChanged();
         }
-
 
         private void Tab_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
