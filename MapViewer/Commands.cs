@@ -12,6 +12,7 @@ using MapViewer.Properties;
 using MapViewer.Symbols;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
+using Size = System.Windows.Size;
 
 namespace MapViewer {
 	public static class CustomCommands {

@@ -1,7 +1,5 @@
 // Buggar
 
-* Symboler försvinner på public, när private gör page up/down
-
 
 // 	Nya funktioner
 

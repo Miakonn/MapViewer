@@ -6,10 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Xml;
 using System.Xml.Serialization;
+using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 namespace MapViewer.Symbols {
     
@@ -83,98 +84,75 @@ namespace MapViewer.Symbols {
 
         #region Symbol properties
 
-        public void DeleteSymbol(Symbol symbolActive) {
+        private List<Symbol> GetActiveList(Symbol symbolActive) {
             if (symbolActive == null) {
-                return;
+                return new List<Symbol>();
             }
-            Symbols.Remove(symbolActive.Uid);
+
+            if (symbolActive.IsSelected) {
+                return Symbols.Values.Where(symbol => symbol.IsSelected).ToList();
+            }
+
+            ClearSymbolSelection();
+            return new List<Symbol> { symbolActive};
+        }
+
+        public void DeleteSymbol(Symbol symbolActive) {
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                Symbols.Remove(symbol.Uid);
+            }
+
             RaiseSymbolsChanged();
         }
 
         public void DuplicateSymbol(Symbol symbolActive) {
-            if (symbolActive == null) {
-                return;
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                AddSymbol(symbol.Copy());
             }
-
-            var symbolCopy = symbolActive.Copy();
-            AddSymbol(symbolCopy);
             RaiseSymbolsChanged();
         }
 
 
         public void SetSymbolColor(Symbol symbolActive, Color color) {
-            if (symbolActive == null) {
-                return;
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                Symbols.Remove(symbol.Uid);
             }
-            symbolActive.FillColor = color;
             RaiseSymbolsChanged();
         }
 
         public void MoveSymbolToFront(Symbol symbolActive) {
-            if (symbolActive == null) {
-                return;
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                symbol.OrderZ = GetMinOrderZ() - 1;
             }
-
-            symbolActive.OrderZ = GetMinOrderZ() - 1;
             RaiseSymbolsChanged();
         }
 
         public void MoveSymbolToBack(Symbol symbolActive) {
-            if (symbolActive == null) {
-                return;
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                symbol.OrderZ = GetMaxOrderZ() + 1;
             }
-
-            symbolActive.OrderZ = GetMaxOrderZ() + 1;
             RaiseSymbolsChanged();
         }
 
         public void RotateSymbol(Symbol symbolActive, RotationDirection direction) {
-            if (symbolActive == null) {
-                return;
-            }
-     
-            if (symbolActive.IsSelected) {
-                foreach (var symbol in Symbols.Values) {
-                    if (symbol.IsSelected) {
-                        symbol.Rotate(direction);
-                    }
-                }
-            }
-            else {
-                symbolActive.Rotate(direction);
-                ClearSymbolSelection();
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                symbol.Rotate(direction);
             }
             RaiseSymbolsChanged();
         }
         
         public void MoveSymbolPosition(Symbol symbolActive, Vector move) {
-            if (symbolActive == null) {
-                return;
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                symbol.StartPoint -= move;
             }
-
-
-            if (symbolActive.IsSelected) {
-                foreach (var symbol in Symbols.Values) {
-                    if (symbol.IsSelected) {
-                        symbol.StartPoint -= move;
-                    }
-                }
-            }
-            else {
-                symbolActive.StartPoint -= move;
-                ClearSymbolSelection();
-            }
-
             RaiseSymbolsChanged();
         }
 
         public void MoveSymbolUpDown(Symbol symbolActive, SymbolsViewModel symbolsPmNew) {
-            if (symbolActive == null) {
-                return;
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                Symbols.Remove(symbol.Uid);
+                symbolsPmNew.AddSymbol(symbol);
             }
-
-            Symbols.Remove(symbolActive.Uid);
-            symbolsPmNew.AddSymbol(symbolActive);
             RaiseSymbolsChanged();
         }
 
