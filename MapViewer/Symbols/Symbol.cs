@@ -85,7 +85,7 @@ namespace MapViewer.Symbols {
         }
 
 
-        public void DrawSelected(Canvas canvas, MapDrawSettings drawSettings) {
+        public virtual void DrawSelected(Canvas canvas, MapDrawSettings drawSettings) {
             if (!IsSelected) {
                 return;
             }
@@ -97,8 +97,6 @@ namespace MapViewer.Symbols {
                 Height = sizePixel,
                 Stroke = new SolidColorBrush(Colors.Yellow),
                 StrokeThickness = 2 / drawSettings.ZoomScale,
-                StrokeDashArray = DoubleCollection.Parse("3, 3"),
-                StrokeDashOffset = 0,
                 Opacity = 1.0,
                 IsHitTestVisible = false
             };
@@ -115,7 +113,6 @@ namespace MapViewer.Symbols {
                 Stroke = new SolidColorBrush(Colors.Black),
                 StrokeThickness = 2 / drawSettings.ZoomScale,
                 StrokeDashArray = DoubleCollection.Parse("3, 3"),
-                StrokeDashOffset = 3,
                 Opacity = 1.0,
                 IsHitTestVisible = false
             };
