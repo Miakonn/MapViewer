@@ -93,7 +93,7 @@ namespace MapViewer.Maps {
             }
             catch (Exception ex) {
                 Log.Error("LoadImage", ex);
-                MessageBox.Show("Failed to load image", ex.Message);
+                MessageBox.Show("Failed to load image" + ex.Message, "Error");
                 BmpMask = null;
                 MapImage = null;
                 GC.Collect();

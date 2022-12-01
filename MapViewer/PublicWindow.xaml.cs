@@ -16,7 +16,7 @@ namespace MapViewer {
     /// </summary>
     public partial class PublicWindow {
 
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private readonly Canvas _canvasRuler;
 

@@ -65,8 +65,8 @@
         <CommandBinding Command="mapViewer:CustomCommands.ZoomOut" Executed="ZoomOut_Execute" CanExecute="ImageNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelDown" Executed="LevelDown_Execute" CanExecute="ImagesNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.LevelUp" Executed="LevelUp_Execute" CanExecute="ImagesNeeded_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.LevelDownPublish" Executed="LevelDownPublish_Execute" CanExecute="ImagesNeeded_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.LevelUpPublish" Executed="LevelUpPublish_Execute" CanExecute="ImagesNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.LevelDownPublish" Executed="LevelDownPublish_Execute" CanExecute="LevelAndPublish_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.LevelUpPublish" Executed="LevelUpPublish_Execute" CanExecute="LevelAndPublish_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.RotateSymbolCW" Executed="RotateSymbolCW_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.RotateSymbolCCW" Executed="RotateSymbolCCW_Execute" CanExecute="SymbolNeeded_CanExecute" />
 

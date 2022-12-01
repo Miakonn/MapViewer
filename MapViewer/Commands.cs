@@ -113,7 +113,11 @@ namespace MapViewer {
 			return MapPrivate != null && MapPublic != null && PublicWindow.IsVisible;
 		}
 
-		public void Publish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+        public void LevelAndPublish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = (MapPrivate != null && LevelNumber > 1) && Publish_CanExecute();
+        }
+
+        public void Publish_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = Publish_CanExecute();
 		}
 
@@ -207,10 +211,15 @@ namespace MapViewer {
             long groupId = DateTime.Now.Ticks;
 
             foreach (var filename in fileNames) {
+                if (!File.Exists(filename)) {
+                    throw new Exception($"Map {filename} is missing!");
+                }
                 var map = new PrivateMaskedMap( this, groupId);
                 map.LoadImage(filename);
                 MapList.Add(map);
             }
+
+
 
             Level = 0;
             MapPrivate = MapList[Level];
@@ -426,7 +435,11 @@ namespace MapViewer {
         }
 
 		private void PublishMap_Execute(object sender, ExecutedRoutedEventArgs e) {
-			MapPrivate.Serialize();
+            if (MapPrivate == null || MapPublic == null || !PublicWindow.IsVisible) {
+                return;
+            }
+
+            MapPrivate.Serialize();
 			MapPublic.PublishFrom(MapPrivate, PublicNeedsRescaling);
 			PublicWindow.SetRuler();
 			PublicWindow.DrawCompass();

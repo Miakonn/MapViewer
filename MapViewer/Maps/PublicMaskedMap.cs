@@ -14,6 +14,7 @@ namespace MapViewer.Maps {
 
         public PublicWindow ParentWindow { get; set; }
 
+        private PrivateMaskedMap _mapSource;
 
         public PublicMaskedMap(PublicWindow parent, long groupId) : base(groupId) {
             ParentWindow = parent;
@@ -21,37 +22,37 @@ namespace MapViewer.Maps {
         }
         
         public virtual void ScaleToReal() {
-            if (MapImage != null) {
-                Log.DebugFormat("ScaleToReal {0} {1}", ScreenScaleMMperM, ImageScaleMperPix);
-
-                if (MapData.ImageScaleMperPix < 1E-15) {
-                    MessageBox.Show("Image is not calibrated!");
-                    return;
-                }
-                
-                var cp = new Point(CanvasOverlay.ActualWidth / 2, CanvasOverlay.ActualHeight / 2);
-                Point center;
-                if ((TrfScale.Value.IsIdentity && TrfTranslate.Value.IsIdentity) || !DisplayTransform.Value.HasInverse) {
-                    center = new Point(MapImage.Width / 2, MapImage.Height / 2);
-                }
-                else {
-                    // ReSharper disable once PossibleNullReferenceException
-                    center = DisplayTransform.Inverse.Transform(cp);
-                }
-                Log.DebugFormat("ScaleToReal1 MonitorScaleMMperPixel={0}", ParentWindow.MonitorScaleMMperPixel);
-                Log.DebugFormat("ScaleToReal2 CanvasOverlay.ActualWidth={0} MapImage.Width={1}", CanvasOverlay.ActualWidth, MapImage.Width);
-                Log.DebugFormat("ScaleToReal3 center={0} ", center);
-
-                var scale = ScreenScaleMMperM * ImageScaleMperPix / ParentWindow.MonitorScaleMMperPixel;
-
-                TrfScale.CenterX = 0;
-                TrfScale.CenterY = 0;
-                TrfScale.ScaleX = scale;
-                TrfScale.ScaleY = scale;
-                TrfTranslate.X = (CanvasOverlay.ActualWidth / 2) - scale * center.X;
-                TrfTranslate.Y = (CanvasOverlay.ActualHeight / 2) - scale * center.Y;
-
+            if (MapImage == null) {
+                return;
             }
+            Log.DebugFormat("ScaleToReal {0} {1}", ScreenScaleMMperM, ImageScaleMperPix);
+
+            if (MapData.ImageScaleMperPix < 1E-15) {
+                MessageBox.Show("Image is not calibrated!");
+                return;
+            }
+                
+            var cp = new Point(CanvasOverlay.ActualWidth / 2, CanvasOverlay.ActualHeight / 2);
+            Point center;
+            if ((TrfScale.Value.IsIdentity && TrfTranslate.Value.IsIdentity) || !DisplayTransform.Value.HasInverse) {
+                center = new Point(MapImage.Width / 2, MapImage.Height / 2);
+            }
+            else {
+                // ReSharper disable once PossibleNullReferenceException
+                center = DisplayTransform.Inverse.Transform(cp);
+            }
+            Log.DebugFormat("ScaleToReal1 MonitorScaleMMperPixel={0}", ParentWindow.MonitorScaleMMperPixel);
+            Log.DebugFormat("ScaleToReal2 CanvasOverlay.ActualWidth={0} MapImage.Width={1}", CanvasOverlay.ActualWidth, MapImage.Width);
+            Log.DebugFormat("ScaleToReal3 center={0} ", center);
+
+            var scale = ScreenScaleMMperM * ImageScaleMperPix / ParentWindow.MonitorScaleMMperPixel;
+
+            TrfScale.CenterX = 0;
+            TrfScale.CenterY = 0;
+            TrfScale.ScaleX = scale;
+            TrfScale.ScaleY = scale;
+            TrfTranslate.X = (CanvasOverlay.ActualWidth / 2) - scale * center.X;
+            TrfTranslate.Y = (CanvasOverlay.ActualHeight / 2) - scale * center.Y;
         }
 
         public virtual void ScaleToLinked(PrivateMaskedMap mapSource) {
@@ -94,6 +95,9 @@ namespace MapViewer.Maps {
         public void PublishFrom(PrivateMaskedMap mapSource, bool scaleNeedsToRecalculate) {
             Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
 
+            HookUnhookFromSymbolsVM(mapSource);
+            _mapSource = mapSource;
+
             Unit = mapSource.Unit;
             var newImageLoaded = MapId != mapSource.MapId;
             var newGroupLoaded = GroupId != mapSource.GroupId;
@@ -130,9 +134,20 @@ namespace MapViewer.Maps {
                 ScaleToReal();
             }
 
-            mapSource.SymbolsPM.SymbolsChanged += HandleSymbolsChanged;
             mapSource.SymbolsPM.RaiseSymbolsChanged();
         }
+
+        public void HookUnhookFromSymbolsVM(PrivateMaskedMap mapSourceNew) {
+            if (mapSourceNew == _mapSource) {
+                return;
+            }
+
+            if (_mapSource != null) {
+                _mapSource.SymbolsPM.SymbolsChanged -= HandleSymbolsChanged;
+            }
+            mapSourceNew.SymbolsPM.SymbolsChanged += HandleSymbolsChanged;
+        }
+
 
         public void MovePublicCursor(Point pnt, long privateMapId) {
             if (ShowPublicCursor && MapId == privateMapId) {

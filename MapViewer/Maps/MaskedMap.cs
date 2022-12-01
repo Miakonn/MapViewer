@@ -261,7 +261,12 @@ namespace MapViewer.Maps {
             if (element == null || element.RenderSize.Width == 0) {
                 return Math.Min(500 / MapImage.Width, 500 / MapImage.Height);
             }
-            return Math.Min(element.RenderSize.Width / MapImage.Width, element.RenderSize.Height / MapImage.Height);
+
+            if (MapImage != null) {
+                return Math.Min(element.RenderSize.Width / MapImage.Width, element.RenderSize.Height / MapImage.Height);
+            }
+
+            return 1;
         }
 
 
