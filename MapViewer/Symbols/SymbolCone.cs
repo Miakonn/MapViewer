@@ -6,7 +6,6 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
 using MapViewer.Dialogs;
-using MapViewer.Properties;
 
 namespace MapViewer.Symbols {
     [Serializable]
@@ -53,7 +52,6 @@ namespace MapViewer.Symbols {
             if (!IsSelected) {
                 return;
             }
-            var sizePixel = settings.GetMinSizePixelFromMeter(SizeMeter);
 
             var shape = new Polygon {
                 Uid = Uid + "_Selected1",
@@ -63,11 +61,8 @@ namespace MapViewer.Symbols {
                 Opacity = 1.0,
                 IsHitTestVisible = false
             };
-
-
             Canvas.SetLeft(shape, StartPoint.X);
             Canvas.SetTop(shape, StartPoint.Y);
-
             canvas.Children.Add(shape);
 
             shape = new Polygon {
@@ -82,7 +77,6 @@ namespace MapViewer.Symbols {
 
             Canvas.SetLeft(shape, StartPoint.X);
             Canvas.SetTop(shape, StartPoint.Y);
-
             canvas.Children.Add(shape);
         }
 

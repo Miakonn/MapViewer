@@ -14,8 +14,11 @@ namespace MapViewer.Symbols {
         public double WidthMeter { get; set; }
         
         public double RotationDegree { get; set; }
+
+        private PointCollection _corners;
+
         public override void Draw(Canvas canvas, MapDrawSettings settings) {
-            var corners = new PointCollection();
+            _corners = new PointCollection();
 
             double lengthPixel = SizeMeter / settings.ImageScaleMperPix * 0.5;
             double widthPixel = WidthMeter / settings.ImageScaleMperPix * 0.5;
@@ -26,17 +29,17 @@ namespace MapViewer.Symbols {
             var vectWidth = new Vector(-widthPixel * Math.Sin(angleRadians), widthPixel * Math.Cos(angleRadians));
 
             var c1 =  vectLength + vectWidth;
-            corners.Add(new Point(c1.X, c1.Y));
+            _corners.Add(new Point(c1.X, c1.Y));
             var c2 = -vectLength + vectWidth;
-            corners.Add(new Point(c2.X, c2.Y));
+            _corners.Add(new Point(c2.X, c2.Y));
             var c3 = -vectLength - vectWidth;
-            corners.Add(new Point(c3.X, c3.Y));
+            _corners.Add(new Point(c3.X, c3.Y));
             var c4 = vectLength - vectWidth;
-            corners.Add(new Point(c4.X, c4.Y));
+            _corners.Add(new Point(c4.X, c4.Y));
 
             var shape = new Polygon {
                 Uid = Uid,
-                Points = corners,
+                Points = _corners,
                 Fill = new SolidColorBrush(FillColor),
                 Opacity = 0.4,
                 Cursor = (settings.IsToolActive ? null : SymbolCursor)
@@ -47,6 +50,39 @@ namespace MapViewer.Symbols {
 
             base.Draw(canvas, settings);
         }
+
+        
+        public override void DrawSelected(Canvas canvas, MapDrawSettings settings) {
+            if (!IsSelected) {
+                return;
+            }
+
+            var shape = new Polygon {
+                Uid = Uid + "_Selected1",
+                Points = _corners,
+                Stroke = new SolidColorBrush(Colors.Yellow),
+                StrokeThickness = 2 / settings.ZoomScale,
+                Opacity = 1.0,
+                IsHitTestVisible = false
+            };
+            Canvas.SetLeft(shape, StartPoint.X);
+            Canvas.SetTop(shape, StartPoint.Y);
+            canvas.Children.Add(shape);
+
+            shape = new Polygon {
+                Uid = Uid + "_Selected2",
+                Points = _corners,
+                Stroke = new SolidColorBrush(Colors.Black),
+                StrokeThickness = 2 / settings.ZoomScale,
+                StrokeDashArray = DoubleCollection.Parse("3, 3"),
+                Opacity = 1.0,
+                IsHitTestVisible = false
+            };
+            Canvas.SetLeft(shape, StartPoint.X);
+            Canvas.SetTop(shape, StartPoint.Y);
+            canvas.Children.Add(shape);
+        }
+
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
             var dlg = new DialogRectProp {
