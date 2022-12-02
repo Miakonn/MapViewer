@@ -23,12 +23,12 @@ namespace MapViewer.Symbols {
 
             _corners = new PointCollection { new Point() };
             for (var a = -WidthDegrees / 2; a < WidthDegrees / 2; a+= 5.0) {
-                var aRadian = (a + RotationDegree) * (Math.PI / 180.0);
-                var pnt = new Point( sizePixel * Math.Cos(aRadian),  sizePixel * Math.Sin(aRadian) );
+                var aRadian = SymbolsViewModel.ToRadians(a + RotationDegree);
+                var pnt = new Point( sizePixel * Math.Cos(aRadian),  sizePixel * Math.Sin(aRadian));
                 _corners.Add(pnt);
             }
 
-            var aRadianLast = (WidthDegrees / 2.0 + RotationDegree) * (Math.PI / 180) ;
+            var aRadianLast = SymbolsViewModel.ToRadians(WidthDegrees / 2.0 + RotationDegree);
             var pntLast = new Point(sizePixel * Math.Cos(aRadianLast), sizePixel * Math.Sin(aRadianLast));
             _corners.Add(pntLast);
 

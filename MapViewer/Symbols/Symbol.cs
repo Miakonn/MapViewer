@@ -67,7 +67,7 @@ namespace MapViewer.Symbols {
                 return;
             }
             var fontSize = 20 / drawSettings.ZoomScale;
-            var fontColor = Colors.Black;
+            var fontColor = CalculatingContrastingColor();
 
             var textBlock = new TextBlock {
                 Uid = Uid + "_Text",
@@ -84,6 +84,19 @@ namespace MapViewer.Symbols {
             canvas.Children.Add(textBlock);
         }
 
+        protected double CalcLuma(Color color) {
+            return (0.2126 * color.ScR + 0.7152 * color.ScG + 0.0722 * color.ScB);
+        }
+
+        protected Color CalculatingContrastingColor() {
+            var blackLuma = 0.05;
+            var orangeLuma = CalcLuma(Colors.Orange) + 0.05;
+
+            var fillLuma = CalcLuma(FillColor) + 0.05;
+            var blackRatio = (fillLuma / blackLuma);
+            var orangeRatio = (orangeLuma / fillLuma);
+            return blackRatio > orangeRatio ? Colors.Black : Colors.Orange;
+        }
 
         public virtual void DrawSelected(Canvas canvas, MapDrawSettings drawSettings) {
             if (!IsSelected) {
@@ -100,10 +113,8 @@ namespace MapViewer.Symbols {
                 Opacity = 1.0,
                 IsHitTestVisible = false
             };
-
             Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);
             Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);
-
             canvas.Children.Add(shape);
             
             shape = new Ellipse {
@@ -116,11 +127,8 @@ namespace MapViewer.Symbols {
                 Opacity = 1.0,
                 IsHitTestVisible = false
             };
-           
-
             Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);
             Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);
-
             canvas.Children.Add(shape);
         }
     }

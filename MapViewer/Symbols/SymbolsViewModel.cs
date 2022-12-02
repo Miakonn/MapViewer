@@ -115,7 +115,7 @@ namespace MapViewer.Symbols {
 
         public void SetSymbolColor(Symbol symbolActive, Color color) {
             foreach (var symbol in GetActiveList(symbolActive)) {
-                Symbols.Remove(symbol.Uid);
+                symbol.FillColor = color;
             }
             RaiseSymbolsChanged();
         }

@@ -12,8 +12,6 @@ Medel prio =================================
 
 * gummiband vid förflyttning
 
-* mer kontrastarande färger i symboler
-
 * mer färger
 
 * städa bort mer element
