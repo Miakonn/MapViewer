@@ -85,8 +85,9 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			_canvas.Children.Remove(_line);
 					
-			var dialog = new DialogGetDoubleValue() {
-				LeadText1 = "Length (m)",
+			var dialog = new DialogGetSingleValue() {
+				Caption = "Calibrate",
+				LeadText = "Length (m)",
 				Owner = _privateWindow
 			};
 
@@ -98,7 +99,10 @@ namespace MapViewer.Tools {
 
 			var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
 
-			_map.ImageScaleMperPix = dialog.DoubleValue / length;
+			var newScale = dialog.DoubleValue / length;
+            if (newScale > 0.0) {
+                _map.ImageScaleMperPix = newScale;
+            }
 
 			_privateWindow.ActiveTool = null;
 		}

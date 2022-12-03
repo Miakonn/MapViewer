@@ -1,7 +1,7 @@
 ﻿<Window x:Class="MapViewer.Dialogs.DialogGetSingleValue"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DialogGetSingleValue"  SizeToContent="WidthAndHeight"
+        SizeToContent="WidthAndHeight"
         Background="#DFE9F5"
 		WindowStartupLocation="CenterOwner"
 		ResizeMode="CanResizeWithGrip">

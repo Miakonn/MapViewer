@@ -743,7 +743,23 @@ namespace MapViewer {
 			ActiveTool = null;
 			MapPublic.ShowPublicCursor = false;
 		}
-		#endregion
+        
+        private void CheckBoxTextBackground_OnChecked(object sender, RoutedEventArgs e) {
+            MapPublic.UseTextBackground = true;
+            if (MapPrivate != null) {
+                MapPrivate.UseTextBackground = true;
+                MapPrivate.SymbolsPM.RaiseSymbolsChanged();
+            }
+        }
+
+        private void CheckBoxTextBackground_OnUnchecked(object sender, RoutedEventArgs e) {
+            MapPublic.UseTextBackground = false;
+            if (MapPrivate != null) {
+                MapPrivate.UseTextBackground = false;
+                MapPrivate.SymbolsPM.RaiseSymbolsChanged();
+            }
+        }
+        #endregion
 
         private void RotateSymbolCW_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;

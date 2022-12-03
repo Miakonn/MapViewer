@@ -157,7 +157,8 @@ namespace MapViewer.Maps {
                 ZoomScale = ZoomScale,
                 ImageScaleMperPix = ImageScaleMperPix,
                 MinSymbolSizePixel = PlayerMinSizePixel,
-                IsToolActive = ParentWindow.ActiveTool != null
+                IsToolActive = ParentWindow.ActiveTool != null,
+                UseTextBackground = UseTextBackground
             };
 
             var se = sender as SymbolsViewModel;

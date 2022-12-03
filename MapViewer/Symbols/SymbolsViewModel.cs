@@ -17,6 +17,7 @@ namespace MapViewer.Symbols {
     [Serializable]
     [XmlInclude(typeof(Symbol)), XmlInclude(typeof(SymbolCreature))]
     public partial class SymbolsViewModel {
+
         [XmlIgnore]
         private Dictionary<string, Symbol> Symbols { get; set; }
 
@@ -25,7 +26,9 @@ namespace MapViewer.Symbols {
         public const string UidPrefix = "S";
         
         public event EventHandler SymbolsChanged;
-        
+
+
+
         public SymbolsViewModel() {
             Symbols = new Dictionary<string, Symbol>();
         }

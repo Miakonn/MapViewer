@@ -74,7 +74,7 @@ namespace MapViewer.Symbols {
                 Text = caption,
                 FontSize = fontSize,
                 Foreground = new SolidColorBrush(fontColor),
-                Background = new SolidColorBrush(FillColor),
+                Background = drawSettings.UseTextBackground ? new SolidColorBrush(FillColor) : null,
                 FontWeight = FontWeights.Normal,
                 IsHitTestVisible = false
             };

@@ -40,8 +40,9 @@
 
     <Window.CommandBindings>
         <CommandBinding Command="mapViewer:CustomCommands.CreateSymbolPlayer" Executed="Player_Execute" CanExecute="Player_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.CreateSymbolPlayer" Executed="Player_Execute" CanExecute="Player_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.CreateSymbolNonPlayer" Executed="NonPlayer_Execute" CanExecute="Player_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.DuplicateSymbol" Executed="DuplicateSymbol_Execute" CanExecute="Player_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.DuplicateSymbol" Executed="DuplicateSymbol_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.CreateSymbolImage" Executed="SymbolIcon_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.CreateSpellCircular7m" Executed="SpellCircular7m_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.CreateSpellCircular3m" Executed="SpellCircular3m_Execute" CanExecute="Spell_CanExecute" />
@@ -197,6 +198,8 @@
                         <ComboBoxItem Uid="PlayerSize_0.9" Content="0.9m"/>
                         <ComboBoxItem Uid="PlayerSize_1.0" Content="1.0m"/>
                     </ComboBox>
+                    <RibbonCheckBox Name="CheckBoxTextBkg" Label="Text Backgr." Height="20" Margin="2,5,2,5" Checked="CheckBoxTextBackground_OnChecked" Unchecked="CheckBoxTextBackground_OnUnchecked" />
+
                 </RibbonGroup>
 
                 <RibbonGroup Name="Public">

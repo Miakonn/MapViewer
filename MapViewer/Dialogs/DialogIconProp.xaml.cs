@@ -86,7 +86,7 @@ namespace MapViewer.Dialogs {
 
             FilenameValue.Text = dialog.FileName;
             var filename = Path.GetFileNameWithoutExtension(dialog.FileName);
-            var parts = filename.Split(new char[]{'[', ']'}, StringSplitOptions.RemoveEmptyEntries);
+            var parts = filename.Split(new[]{'[', ']'}, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length == 2) {
                 SizeValue.Text = parts[1];
             }

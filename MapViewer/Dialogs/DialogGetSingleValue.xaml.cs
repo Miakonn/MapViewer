@@ -8,17 +8,27 @@ namespace MapViewer.Dialogs {
 			set => LabelHint.Content = value;
         }
 
-		public float FloatValue {
-			get => float.TryParse(TextBoxValue.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var val) ? val : 0;
+		public double DoubleValue {
+            get {
+                var text = TextBoxValue.Text.Replace(",", ".");
+                return double.TryParse(text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture,
+                    out var val)
+                    ? val
+                    : 1;
+            }
             set => TextBoxValue.Text = value.ToString(CultureInfo.InvariantCulture);
         }
 
-		public string TextValue {
+        public string TextValue {
 			get => TextBoxValue.Text;
             set => TextBoxValue.Text =value;
         }
 
-		public DialogGetSingleValue() {
+        public string Caption {
+            set { Title = value; }
+        }
+
+        public DialogGetSingleValue() {
 			InitializeComponent();
             TextBoxValue.Focus();
 		}

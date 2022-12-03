@@ -105,6 +105,7 @@ namespace MapViewer {
             MapPublic.Create();
 
             PrivateContextMenu.Opened += ContextMenu_OnOpened;
+            CheckBoxTextBkg.IsChecked = true;
 
             InitTimer();
 
@@ -416,6 +417,7 @@ namespace MapViewer {
             dialog.ShowDialog();
         }
 
+
         #endregion
 
         #region Public methods
@@ -506,5 +508,6 @@ namespace MapViewer {
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }

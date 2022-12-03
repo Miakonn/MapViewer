@@ -126,6 +126,8 @@ namespace MapViewer.Maps {
 
         public double ScaleDpiFix => MapImage != null ? (MapImage.PixelHeight / MapImage.Height) : 1.0;
 
+        public bool UseTextBackground { get; set; } = true;
+
 
         public event EventHandler ImageScaleChanged;
 
@@ -258,15 +260,15 @@ namespace MapViewer.Maps {
         }
         
         public double GetMinScale(UIElement element) {
+            if (MapImage == null) {
+                return 1;
+            }
+
             if (element == null || element.RenderSize.Width == 0) {
                 return Math.Min(500 / MapImage.Width, 500 / MapImage.Height);
             }
-
-            if (MapImage != null) {
-                return Math.Min(element.RenderSize.Width / MapImage.Width, element.RenderSize.Height / MapImage.Height);
-            }
-
-            return 1;
+            
+            return Math.Min(element.RenderSize.Width / MapImage.Width, element.RenderSize.Height / MapImage.Height);
         }
 
 
