@@ -13,7 +13,10 @@ namespace MapViewer.Dialogs {
 		public Brush SelectedBrush { get; set; }
         public Color SelectedColor { get; set; }
 
-        private readonly string[] _selectedColors = { "Red", "Orange", "Yellow", "YellowGreen", "Green", "Turquoise", "Blue", "Purple", "Black", "LightBlue" };
+        private readonly string[] _selectedColors = {
+            "Blue", "Purple", "Red", "IndianRed", "Sienna",  "Orange", "Yellow", "Khaki",
+            "OliveDrab", "YellowGreen", "Green", "Turquoise", "Black", "Gray",  "Silver", "White", 
+        };
 
 		public DialogColorPicker() {
 			InitializeComponent();

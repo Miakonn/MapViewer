@@ -1,7 +1,7 @@
 ﻿<Window x:Class="MapViewer.Dialogs.DialogColorPicker"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DialogColorPicker" 
+        Title="Color Picker" 
 		ResizeMode="NoResize"
 		WindowStartupLocation="CenterOwner"
 		SizeToContent="WidthAndHeight" Loaded="ColorPicker_Loaded">
@@ -16,7 +16,7 @@
     </Window.Resources>
 
     <Grid>
-		<ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="colorList" SelectionChanged="ColorPicker_SelectionChanged">
+		<ListBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxWidth="200" Margin="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="colorList" SelectionChanged="ColorPicker_SelectionChanged">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<WrapPanel IsItemsHost="True" Orientation="Horizontal"/>
