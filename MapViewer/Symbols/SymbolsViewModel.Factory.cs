@@ -115,7 +115,8 @@ namespace MapViewer.Symbols {
                 Uid = GetTimestamp(),
                 OrderZ = GetMinOrderZ() - 1,
                 SizeMeter = 4,
-                StartPoint = pos
+                StartPoint = pos,
+                FillColor = Colors.LightGray
             };
 
             AddSymbol(symbol);

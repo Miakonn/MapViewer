@@ -74,6 +74,7 @@ namespace MapViewer.Symbols {
                 Text = caption,
                 FontSize = fontSize,
                 Foreground = new SolidColorBrush(fontColor),
+                Background = new SolidColorBrush(FillColor),
                 FontWeight = FontWeights.Normal,
                 IsHitTestVisible = false
             };
@@ -89,6 +90,9 @@ namespace MapViewer.Symbols {
         }
 
         protected Color CalculatingContrastingColor() {
+            if (FillColor.ScA == 0.0) {
+                return Colors.Black;
+            }
             var blackLuma = 0.05;
             var orangeLuma = CalcLuma(Colors.Orange) + 0.05;
 
