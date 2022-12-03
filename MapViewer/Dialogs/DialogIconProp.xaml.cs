@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
@@ -85,7 +86,7 @@ namespace MapViewer.Dialogs {
 
             FilenameValue.Text = dialog.FileName;
             var filename = Path.GetFileNameWithoutExtension(dialog.FileName);
-            var parts = filename.Split(';');
+            var parts = filename.Split(new char[]{'[', ']'}, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length == 2) {
                 SizeValue.Text = parts[1];
             }
