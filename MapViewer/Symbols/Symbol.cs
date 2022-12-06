@@ -16,8 +16,7 @@ namespace MapViewer.Symbols {
     }
 
     [Serializable]
-    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolPolygon)), XmlInclude(typeof(SymbolIcon)),
-     XmlInclude(typeof(SymbolCone)),
+    [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolIcon)), XmlInclude(typeof(SymbolCone)),
      XmlInclude(typeof(SymbolCircle)), XmlInclude(typeof(SymbolText)), XmlInclude(typeof(SymbolRectangle))]
     public abstract class Symbol {
         public const double RotationStep = 22.5;

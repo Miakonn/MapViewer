@@ -95,7 +95,6 @@
     <Compile Include="Symbols\SymbolCreature.cs" />
     <Compile Include="Symbols\SymbolIcon.cs" />
     <Compile Include="Symbols\SymbolRectangle.cs" />
-    <Compile Include="Symbols\SymbolPolygon.cs" />
     <Compile Include="Symbols\Symbol.cs" />
     <Compile Include="Symbols\SymbolsViewModel.cs" />
     <Compile Include="Symbols\SymbolsViewModel.Factory.cs" />

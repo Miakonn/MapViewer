@@ -78,38 +78,6 @@ namespace MapViewer.Symbols {
             return symbol;
         }
 
-
-        public Symbol CreateSymbolPolygon(PointCollection corners, Color color) {
-            var posCenter = new Point();
-
-            foreach (var corner in corners) {
-                posCenter.X += corner.X;
-                posCenter.Y += corner.Y;
-            }
-
-            posCenter.X /= corners.Count;
-            posCenter.Y /= corners.Count;
-
-            var cornersMoved = new PointCollection(corners.Count);
-            foreach (var corner in corners) {
-                var point = corner;
-                point.X -= posCenter.X;
-                point.Y -= posCenter.Y;
-                cornersMoved.Add(point);
-            }
-
-            var symbol = new SymbolPolygon {
-                Uid = GetTimestamp(),
-                FillColor = color,
-                OrderZ = GetMinOrderZ() - 1,
-                StartPoint = posCenter,
-                Corners = cornersMoved
-            };
-
-            AddSymbol(symbol);
-            return symbol;
-        }
-
         public Symbol CreateSymbolIcon(Point pos) {
             var symbol = new SymbolIcon {
                 Uid = GetTimestamp(),
