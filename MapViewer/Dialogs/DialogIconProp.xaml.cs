@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Media;
 using MapViewer.Symbols;
 
 namespace MapViewer.Dialogs {
@@ -16,6 +17,7 @@ namespace MapViewer.Dialogs {
         public SymbolsViewModel SymbolsVM { get; set; }
 
         private static string _lastDirectoryUsed;
+        private Color _color;
 
         public SymbolIcon Symbol {
             get => _symbol;
@@ -25,6 +27,8 @@ namespace MapViewer.Dialogs {
                 SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
                 Angle = (int)Symbol.RotationDegree;
                 FilenameValue.Text = Symbol.ImageFileName;
+                _color = Symbol.FillColor;
+                BtnColor.Background = new SolidColorBrush(_color);
             }
         }
 
@@ -36,6 +40,7 @@ namespace MapViewer.Dialogs {
             Symbol.Caption = CaptionValue.Text;
             Symbol.RotationDegree = Angle;
             Symbol.ImageFileName = FilenameValue.Text;
+            Symbol.FillColor = _color;
 
             var str = SizeValue.Text.Replace(',', '.');
             if (double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sizeM)) {
@@ -107,6 +112,15 @@ namespace MapViewer.Dialogs {
 
         private void BtnApply_Click(object sender, RoutedEventArgs e) {
             ApplyChanges();
+        }
+
+        private void BtnColor_Click(object sender, RoutedEventArgs e) {
+            var dialog = new DialogColorPicker { Owner = this };
+            var result = dialog.ShowDialog();
+            if (result == true) {
+                _color = dialog.SelectedColor;
+                BtnColor.Background = new SolidColorBrush(_color);
+            }
         }
     }
 }
