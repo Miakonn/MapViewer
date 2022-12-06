@@ -23,13 +23,20 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
 			<RowDefinition Height="*" />
+            <RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
 		<Label Grid.Row="0" Grid.Column="0" Content="Name"   HorizontalAlignment="Left" />
 		<TextBox Grid.Row="0" Grid.Column="1" Name="CaptionValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="80"/>
 		<Label Grid.Row="1" Grid.Column="0" Content="Size (m)"   HorizontalAlignment="Left" />
 		<TextBox Grid.Row="1" Grid.Column="1" Name="SizeValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="40"/>
-		<WrapPanel Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Color" HorizontalAlignment="Left" />
+        <WrapPanel Grid.Row="2" Grid.Column="1"   VerticalAlignment="Top">
+            <Button Name="BtnColor" Click="BtnColor_Click" Width="40" Height="20" Margin="2"></Button>
+        </WrapPanel>
+
+        <WrapPanel Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button IsDefault="False" Name="BtnApply" Click="BtnApply_Click" MinWidth="60" Margin="0,0,10,0">Apply</Button>
             <Button IsDefault="True" Name="BtnOk" Click="BtnOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
 			<Button IsCancel="True" MinWidth="60">_Cancel</Button>

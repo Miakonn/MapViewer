@@ -12,9 +12,9 @@ Medel prio =================================
 
 * gummiband vid förflyttning
 
-* mer färger
-
 * städa bort mer element
+
+* lägg till färger i dialog prop
 
 
 Låg prio ------------------------

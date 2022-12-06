@@ -24,6 +24,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
@@ -35,14 +36,19 @@
 
         <Label Grid.Row="2" Grid.Column="0" Content="Angle" HorizontalAlignment="Left" />
         <WrapPanel Grid.Row="2" Grid.Column="1"   VerticalAlignment="Top">
-            <Button x:Name="RotateAntiClockWiseButton"  FontSize="10" Padding="0,-4,0,0" Content="⤹" Height="25" Width="20" FontWeight="ExtraBold" Click="cmdRotateCCW_Click" Margin="3,2,1,3" />
-            <Button x:Name="RotateClockWiseButton"  FontSize="10" Padding="0,-4,0,0" Content="⤸" Height="25" Width="20" FontWeight="ExtraBold" Click="cmdRotateCW_Click" Margin="3,2,1,3" />
+            <Button x:Name="RotateAntiClockWiseButton"  FontSize="20" Padding="0,-6,0,0" Content="⤹" Height="20" Width="20" FontWeight="ExtraBold" Click="cmdRotateCCW_Click" Margin="2" />
+            <Button x:Name="RotateClockWiseButton"  FontSize="20" Padding="0,-6,0,0" Content="⤸" Height="20" Width="20" FontWeight="ExtraBold" Click="cmdRotateCW_Click" Margin="2" />
+        </WrapPanel>
+
+        <Label Grid.Row="3" Grid.Column="0" Content="Color" HorizontalAlignment="Left" />
+        <WrapPanel Grid.Row="3" Grid.Column="1"   VerticalAlignment="Top">
+            <Button Name="BtnColor" Click="BtnColor_Click" Width="40" Height="20" Margin="2"></Button>
         </WrapPanel>
 
         <WrapPanel Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button IsDefault="False" Name="BtnApply" Click="BtnApply_Click" MinWidth="60" Margin="0,0,10,0">Apply</Button> 
+            <Button Name="BtnApply" Click="BtnApply_Click" MinWidth="60" Margin="0,0,10,0">Apply</Button> 
 			<Button IsDefault="True" Name="BtnOk" Click="BtnOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
-            <Button IsDefault="False" IsCancel="True" MinWidth="60">_Cancel</Button>
+            <Button IsCancel="True" MinWidth="60">_Cancel</Button>
 		</WrapPanel>
 		
 	</Grid>

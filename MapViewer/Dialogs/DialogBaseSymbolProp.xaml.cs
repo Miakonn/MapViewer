@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Media;
 using MapViewer.Symbols;
 
 namespace MapViewer.Dialogs {
 	public partial class DialogBaseSymbolProp {
         private Symbol _symbol;
-        
+
+
+        private Color _color;
 
         public SymbolsViewModel SymbolsVM { get; set; }
 
@@ -15,8 +18,9 @@ namespace MapViewer.Dialogs {
             set {
                 _symbol = value;
                 SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
-                
                 CaptionValue.Text = Symbol.Caption;
+                _color = Symbol.FillColor;
+                BtnColor.Background = new SolidColorBrush(_color);
             }
         }
         
@@ -31,6 +35,7 @@ namespace MapViewer.Dialogs {
             }
 
             Symbol.Caption = CaptionValue.Text.Trim();
+            Symbol.FillColor = _color;
 
             var str = SizeValue.Text.Replace(',', '.');
             if (double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sizeValue)) {
@@ -56,6 +61,15 @@ namespace MapViewer.Dialogs {
 
         private void BtnApply_Click(object sender, RoutedEventArgs e) {
             ApplyChanges();
+        }
+
+        private void BtnColor_Click(object sender, RoutedEventArgs e) {
+            var dialog = new DialogColorPicker { Owner = this };
+            var result = dialog.ShowDialog();
+            if (result == true) {
+                _color = dialog.SelectedColor;
+                BtnColor.Background = new SolidColorBrush(_color);
+            }
         }
     }
 }

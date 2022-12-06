@@ -1,13 +1,15 @@
 ﻿using MapViewer.Symbols;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Media;
 
 namespace MapViewer.Dialogs {
 	public partial class DialogCreatureProp {
 
 
         private SymbolCreature _symbol;
-        
+        private Color _color;
+
         public SymbolsViewModel SymbolsVM { get; set; }
 
         public SymbolCreature Symbol {
@@ -16,16 +18,17 @@ namespace MapViewer.Dialogs {
                 _symbol = value;
                 CaptionValue.Text = Symbol.Caption;
                 SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
+                _color = Symbol.FillColor;
+                BtnColor.Background = new SolidColorBrush(_color);
             }
         }
-
-
 
         private void ApplyChanges() {
             if (Symbol == null) {
                 return;
             }
             Symbol.Caption = CaptionValue.Text;
+            Symbol.FillColor = _color;
 
             var str = SizeValue.Text.Replace(',', '.');
             if (double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sizeM)) {
@@ -58,6 +61,15 @@ namespace MapViewer.Dialogs {
 
         private void BtnApply_Click(object sender, RoutedEventArgs e) {
             ApplyChanges();
+        }
+
+        private void BtnColor_Click(object sender, RoutedEventArgs e) {
+            var dialog = new DialogColorPicker { Owner = this };
+            var result = dialog.ShowDialog();
+            if (result == true) {
+                _color = dialog.SelectedColor;
+                BtnColor.Background = new SolidColorBrush(_color);
+            }
         }
     }
 }
