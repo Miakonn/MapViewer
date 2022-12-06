@@ -126,7 +126,7 @@ namespace MapViewer.Maps {
 
         public double ScaleDpiFix => MapImage != null ? (MapImage.PixelHeight / MapImage.Height) : 1.0;
 
-        public bool UseTextBackground { get; set; } = true;
+        public bool UseTextBackground { get; set; } = false;
 
 
         public event EventHandler ImageScaleChanged;

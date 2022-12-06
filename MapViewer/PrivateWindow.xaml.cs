@@ -105,7 +105,7 @@ namespace MapViewer {
             MapPublic.Create();
 
             PrivateContextMenu.Opened += ContextMenu_OnOpened;
-            CheckBoxTextBkg.IsChecked = true;
+            CheckBoxTextBkg.IsChecked = false;
 
             InitTimer();
 
