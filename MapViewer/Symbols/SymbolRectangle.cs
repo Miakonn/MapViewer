@@ -1,51 +1,34 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Xml.Serialization;
 using MapViewer.Dialogs;
 using MapViewer.Maps;
+using Point = System.Windows.Point;
 
 namespace MapViewer.Symbols {
     [Serializable]
-    [XmlInclude(typeof(Symbol))]
     public class SymbolRectangle : Symbol {
         public double WidthMeter { get; set; }
         
         public double RotationDegree { get; set; }
 
-        private PointCollection _corners;
-
         public override void Draw(Canvas canvas, MapDrawSettings settings) {
-            _corners = new PointCollection();
-
-            double lengthPixel = SizeMeter / settings.ImageScaleMperPix * 0.5;
-            double widthPixel = WidthMeter / settings.ImageScaleMperPix * 0.5;
-
-            var angleRadians = SymbolsViewModel.ToRadians(RotationDegree);
-
-            var vectLength = new Vector(lengthPixel * Math.Cos(angleRadians), lengthPixel * Math.Sin(angleRadians));
-            var vectWidth = new Vector(-widthPixel * Math.Sin(angleRadians), widthPixel * Math.Cos(angleRadians));
-
-            var c1 =  vectLength + vectWidth;
-            _corners.Add(new Point(c1.X, c1.Y));
-            var c2 = -vectLength + vectWidth;
-            _corners.Add(new Point(c2.X, c2.Y));
-            var c3 = -vectLength - vectWidth;
-            _corners.Add(new Point(c3.X, c3.Y));
-            var c4 = vectLength - vectWidth;
-            _corners.Add(new Point(c4.X, c4.Y));
-
-            var shape = new Polygon {
+            double lengthPixel = SizeMeter / settings.ImageScaleMperPix;
+            double widthPixel = WidthMeter / settings.ImageScaleMperPix;
+            
+            var shape = new Rectangle {
                 Uid = Uid,
-                Points = _corners,
+                Width = lengthPixel,
+                Height = widthPixel,
                 Fill = new SolidColorBrush(FillColor),
                 Opacity = 0.4,
+                RenderTransform = new RotateTransform(RotationDegree, lengthPixel * 0.5, widthPixel * 0.5),
                 Cursor = (settings.IsToolActive ? null : SymbolCursor)
             };
-            Canvas.SetLeft(shape, StartPoint.X);
-            Canvas.SetTop(shape, StartPoint.Y);
+
+            Canvas.SetLeft(shape, StartPoint.X - lengthPixel * 0.5);
+            Canvas.SetTop(shape, StartPoint.Y - widthPixel * 0.5);
             canvas.Children.Add(shape);
 
             base.Draw(canvas, settings);
@@ -57,29 +40,36 @@ namespace MapViewer.Symbols {
                 return;
             }
 
-            var shape = new Polygon {
-                Uid = Uid + "_Selected1",
-                Points = _corners,
+            double lengthPixel = SizeMeter / settings.ImageScaleMperPix;
+            double widthPixel = WidthMeter / settings.ImageScaleMperPix;
+            var shape = new Rectangle {
+                Uid = Uid+ "_Selected1",
+                Width = lengthPixel,
+                Height = widthPixel,
                 Stroke = new SolidColorBrush(Colors.Yellow),
                 StrokeThickness = 2 / settings.ZoomScale,
                 Opacity = 1.0,
-                IsHitTestVisible = false
-            };
-            Canvas.SetLeft(shape, StartPoint.X);
-            Canvas.SetTop(shape, StartPoint.Y);
+                RenderTransform = new RotateTransform(RotationDegree, lengthPixel * 0.5, widthPixel * 0.5),
+                 IsHitTestVisible = false,
+           };
+
+            Canvas.SetLeft(shape, StartPoint.X - lengthPixel * 0.5);
+            Canvas.SetTop(shape, StartPoint.Y - widthPixel * 0.5);
             canvas.Children.Add(shape);
 
-            shape = new Polygon {
+            shape = new Rectangle {
                 Uid = Uid + "_Selected2",
-                Points = _corners,
+                Width = lengthPixel,
+                Height = widthPixel,
                 Stroke = new SolidColorBrush(Colors.Black),
                 StrokeThickness = 2 / settings.ZoomScale,
                 StrokeDashArray = DoubleCollection.Parse("3, 3"),
                 Opacity = 1.0,
-                IsHitTestVisible = false
+                RenderTransform = new RotateTransform(RotationDegree, lengthPixel * 0.5, widthPixel * 0.5),
+                IsHitTestVisible = false,
             };
-            Canvas.SetLeft(shape, StartPoint.X);
-            Canvas.SetTop(shape, StartPoint.Y);
+            Canvas.SetLeft(shape, StartPoint.X - lengthPixel * 0.5);
+            Canvas.SetTop(shape, StartPoint.Y - widthPixel * 0.5);
             canvas.Children.Add(shape);
         }
 

@@ -14,8 +14,6 @@ Medel prio =================================
 
 * städa bort mer element
 
-* lägg till färger i dialog prop
-
 
 Låg prio ------------------------
 
