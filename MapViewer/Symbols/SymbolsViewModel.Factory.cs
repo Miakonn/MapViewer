@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace MapViewer.Symbols {
@@ -85,6 +86,21 @@ namespace MapViewer.Symbols {
                 SizeMeter = 4,
                 StartPoint = pos,
                 FillColor = Colors.LightGray
+            };
+
+            AddSymbol(symbol);
+            return symbol;
+        }
+
+        public Symbol CreateSymbolFrame(Point startPoint, double sizeM, double widthM, double angleDeg, Color color) {
+            var symbol = new SymbolFrame {
+                Uid = GetTimestamp(),
+                FillColor = color,
+                OrderZ = Int32.MinValue,
+                StartPoint = startPoint,
+                SizeMeter = sizeM,
+                WidthMeter = widthM,
+                RotationDegree = angleDeg
             };
 
             AddSymbol(symbol);

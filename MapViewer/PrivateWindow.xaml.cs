@@ -140,12 +140,8 @@ namespace MapViewer {
         private void MovePublic(Vector vector)
         {
             MapPublic.Translate(vector / MapPublic.ScaleDpiFix);
-            if (MapPublic.IsLinked || MapPublic.MapId != MapPrivate.MapId) {
-                MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
-            }
-            else {
-                MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-            }
+            MapPrivate.UpdateVisibleRectangle(MapPublic);
+            MapPrivate.SystemSymbolsPM.RaiseSymbolsChanged();
         }
 
         #endregion
@@ -197,6 +193,10 @@ namespace MapViewer {
             _lastClickedElem = MapPrivate.CanvasOverlay.FindElementHit();
 
             if (_lastClickedElem == null) {
+                _lastClickedElem = MapPrivate.CanvasOverlay.FindElementHit();
+            }
+
+            if (_lastClickedElem == null) {
                 _lastClickedSymbol = null;
                 return;
             }
@@ -230,7 +230,7 @@ namespace MapViewer {
 
                     _characterDistanceMoved = 0;
                 }
-                else if (_lastClickedElem != null && _lastClickedElem.Uid == MaskedMap.PublicPositionUid) {
+                else if (_lastClickedElem != null && _lastClickedElem.Uid == MapPrivate.PublicPositionUid) {
                     _mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                     _mouseDownPointFirst = _mouseDownPoint;
                     _cursorAction =  CursorAction.MovingPublicMapPos;

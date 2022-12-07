@@ -316,23 +316,17 @@ namespace MapViewer {
 
 		private void ScaleToFit_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ScaleToWindow(Layer1_Map);
-			if (!MapPrivate.IsLinked) {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-			}
+			MapPrivate.UpdateVisibleRectangle(MapPublic);
 		}
 
 		private void ZoomIn_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Zoom(1.2, new Point(0,0));
-			if (!MapPrivate.IsLinked) {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-			}
+			MapPrivate.UpdateVisibleRectangle(MapPublic);
 		}
 
 		private void ZoomOut_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.Zoom(0.8, new Point(0, 0));
-			if (!MapPrivate.IsLinked) {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-			}
+			MapPrivate.UpdateVisibleRectangle(MapPublic);
 		}
 
 		private void Save_Execute(object sender, EventArgs e) {
@@ -447,14 +441,9 @@ namespace MapViewer {
             PublicWindow.MaximizeToCurrentMonitor();
 			PublicNeedsRescaling = false;
 
-			if (MapPublic.IsLinked) {
-				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
-			}
-			else {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-			}
+            MapPrivate.UpdateVisibleRectangle(MapPublic);
 
-			ActiveTool = null;
+            ActiveTool = null;
 			Activate();
 		}
 
@@ -472,10 +461,7 @@ namespace MapViewer {
             }
             MapPrivate.ClearOverlay();
             MapPrivate.SymbolsPM.DeleteAllSymbols();
-            if (!MapPublic.IsLinked) {
-                MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-            }
-
+            MapPrivate.UpdateVisibleRectangle(MapPublic);
             MapPublic.ClearOverlay();
         }
 
@@ -558,13 +544,8 @@ namespace MapViewer {
 
 		private void RotateMap_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.RotateClockwise();
-			if (MapPublic.IsLinked) {
-				MapPrivate.RemoveElement(MaskedMap.PublicPositionUid);
-			}
-			else {
-				MapPrivate.UpdateVisibleRectangle(MapPublic.VisibleRectInMap());
-			}
-		}
+			MapPrivate.UpdateVisibleRectangle(MapPublic);
+        }
 
 		private void AddDisplay_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.Show();

@@ -7,8 +7,8 @@ using MapViewer.Symbols;
 namespace MapViewer {
     public static class CanvasUtils {
       
-        public static void RemoveAllSymbolsFromOverlay(this Canvas canvas) {
-            var symbols = canvas.Children.Cast<UIElement>().Where(elem => elem.Uid.StartsWith(SymbolsViewModel.UidPrefix)).ToList();
+        public static void RemoveMySymbolsFromOverlay(this Canvas canvas, string prefix) {
+            var symbols = canvas.Children.Cast<UIElement>().Where(elem => elem.Uid.StartsWith(prefix)).ToList();
             foreach (var elem in symbols) {
                  canvas.Children.Remove(elem);
             }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -23,17 +24,21 @@ namespace MapViewer.Symbols {
 
         public Collection<Symbol> SymbolsOnly { get; set; }
 
-        public const string UidPrefix = "S";
+        private readonly string UidPrefix;
         
         public event EventHandler SymbolsChanged;
-
-
 
         public SymbolsViewModel() {
             Symbols = new Dictionary<string, Symbol>();
         }
+
+        public SymbolsViewModel(string prefix) {
+            UidPrefix = prefix;
+            Symbols = new Dictionary<string, Symbol>();
+        }
         
         public void AddSymbol(Symbol symbol) {
+            symbol.Uid = UidPrefix + symbol.Uid;
             Symbols[symbol.Uid] = symbol;
             RaiseSymbolsChanged();
         }
@@ -43,7 +48,7 @@ namespace MapViewer.Symbols {
         }
 
         public Symbol FindSymbolFromUid(string uid) {
-            if (!Symbols.ContainsKey(uid)) {
+            if (string.IsNullOrWhiteSpace(uid) || !Symbols.ContainsKey(uid)) {
                 return null;
             }
             return Symbols[uid];
@@ -59,7 +64,7 @@ namespace MapViewer.Symbols {
         }
         
         public static string GetTimestamp() {
-            return UidPrefix + (DateTime.UtcNow.Subtract(new DateTime(2022, 1, 1)).TotalMilliseconds);
+            return (DateTime.UtcNow.Subtract(new DateTime(2022, 1, 1)).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
         }
 
         public int GetMaxOrderZ() {
@@ -77,7 +82,7 @@ namespace MapViewer.Symbols {
         }
         
         public void DrawSymbols(Canvas canvas, MapDrawSettings drawSettings) {
-            canvas.RemoveAllSymbolsFromOverlay();
+            canvas.RemoveMySymbolsFromOverlay(UidPrefix);
 
             var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.OrderZ);
             foreach (var symbol in symbolsInZorder) {

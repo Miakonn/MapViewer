@@ -46,7 +46,7 @@ namespace MapViewer.Maps {
 
         public const string PublicCursorUid = "Cursor";
 
-        public const string PublicPositionUid = "PublicPos";
+        public string PublicPositionUid  { get; set; }
 
         private readonly RotateTransform _trfRotation;
         public RotateTransform TrfRotation {

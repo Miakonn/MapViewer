@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -15,14 +16,19 @@ namespace MapViewer.Maps {
         
         public SymbolsViewModel SymbolsPM;
 
+        public SymbolsViewModel SystemSymbolsPM;
+
         public PrivateWindow ParentWindow { get; set; }
 
         public PrivateMaskedMap(PrivateWindow parent, long groupId) : base(groupId) {
             ParentWindow = parent;
             MaskOpacity = 0.3;
             CreatePalette();
-            SymbolsPM = new SymbolsViewModel();
+            SymbolsPM = new SymbolsViewModel("S");
             SymbolsPM.SymbolsChanged += HandleSymbolsChanged;
+
+            SystemSymbolsPM = new SymbolsViewModel("Q");
+            SystemSymbolsPM.SymbolsChanged += HandleSymbolsChanged;
         }
 
         public void Zoom(double scale, Point pos)
@@ -39,6 +45,7 @@ namespace MapViewer.Maps {
                 var offs = CenterInMap() - posCenterBefore;
                 TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
             }
+            UpdatePublicViewRectangle();
             SymbolsPM.RaiseSymbolsChanged();
         }
 
@@ -54,7 +61,7 @@ namespace MapViewer.Maps {
         private void UpdatePublicViewRectangle() {
             if (ParentWindow is PrivateWindow privateWin && privateWin.MapPrivate != null) {
                 if (!IsLinked && MapId == privateWin.MapPrivate.MapId) {
-                    UpdateVisibleRectangle(privateWin.MapPublic.VisibleRectInMap());
+                    UpdateVisibleRectangle(privateWin.MapPublic);
                 }
             }
         }
@@ -153,6 +160,7 @@ namespace MapViewer.Maps {
         #region Symbols
 
         public void HandleSymbolsChanged(object sender, EventArgs e) {
+
             var drawSettings = new MapDrawSettings {
                 ZoomScale = ZoomScale,
                 ImageScaleMperPix = ImageScaleMperPix,
@@ -161,10 +169,41 @@ namespace MapViewer.Maps {
                 UseTextBackground = UseTextBackground
             };
 
-            var se = sender as SymbolsViewModel;
-            se?.DrawSymbols(CanvasOverlay, drawSettings);
+            SymbolsPM?.DrawSymbols(CanvasOverlay, drawSettings);
+            SystemSymbolsPM?.DrawSymbols(CanvasOverlay, drawSettings);
         }
-        
+
+        public void RemoveVisibleRectangle() {
+            var symbolFrame = SystemSymbolsPM.FindSymbolFromUid(PublicPositionUid);
+            SystemSymbolsPM.DeleteSymbol(symbolFrame);
+        }
+
+        public void UpdateVisibleRectangle(PublicMaskedMap mapPublic) {
+            if (mapPublic.IsLinked || mapPublic.MapId != MapId) {
+                RemoveVisibleRectangle();
+                return;
+            }
+            
+            var rect = mapPublic.VisibleRectInMap();
+
+            var symbol = SystemSymbolsPM.FindSymbolFromUid(PublicPositionUid);
+            var sizeMeter = rect.Width * ImageScaleMperPix;
+            var widthMeter = rect.Height * ImageScaleMperPix;
+
+            var pos = new Point(rect.X + rect.Width / 2, rect.Y + rect.Height / 2); 
+            if (symbol == null) {
+                symbol = SystemSymbolsPM.CreateSymbolFrame(pos, sizeMeter, widthMeter , 0, Colors.Red);
+                PublicPositionUid = symbol.Uid;
+            }
+            else if (symbol is SymbolFrame symbolFrame) {
+                symbolFrame.StartPoint = pos;
+                symbolFrame.SizeMeter = sizeMeter;
+                symbolFrame.WidthMeter = widthMeter;
+
+            }
+            SystemSymbolsPM.RaiseSymbolsChanged();
+        }
+
         #endregion
 
     }
