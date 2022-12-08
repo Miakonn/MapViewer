@@ -32,7 +32,7 @@ namespace MapViewer.Maps {
             SystemSymbolsPM.SymbolsChanged += HandleSymbolsChanged;
         }
 
-        public void Zoom(double scale, Point pos)
+        public void Zoom(double scale, Point posCanvas)
         {
             var posCenterBefore = CenterInMap();
             TrfScale.ScaleX *= scale;
@@ -53,8 +53,9 @@ namespace MapViewer.Maps {
             var scale = GetMinScale(element);
             TrfScale.ScaleX = scale;
             TrfScale.ScaleY = scale;
-            TrfTranslate.X = 0;
-            TrfTranslate.Y = 0;
+
+            TrfTranslate.X = (element.RenderSize.Width - MapImage.Width * scale) / 2;
+            TrfTranslate.Y = (element.RenderSize.Height - MapImage.Height * scale) / 2;
             RaiseZoomChanged();
         }
 

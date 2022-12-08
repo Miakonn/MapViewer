@@ -159,7 +159,7 @@ namespace MapViewer {
             try {
                 e.CanExecute = (!string.IsNullOrWhiteSpace(Settings.Default.MRU));
                 Mru1.Visibility = e.CanExecute ? Visibility.Visible : Visibility.Collapsed;
-                Mru1.Header = e.CanExecute ? ExtractFileName : String.Empty;
+                Mru1.Header = e.CanExecute ? ExtractFileName : string.Empty;
             }
             catch (Exception) {
                 e.CanExecute = false;
@@ -323,12 +323,12 @@ namespace MapViewer {
 		}
 
 		private void ZoomIn_Execute(object sender, ExecutedRoutedEventArgs e) {
-			MapPrivate.Zoom(1.2, new Point(0,0));
+			MapPrivate.Zoom(1.2, _mouseDownPoint);
 			MapPrivate.UpdateVisibleRectangle(MapPublic);
 		}
 
 		private void ZoomOut_Execute(object sender, ExecutedRoutedEventArgs e) {
-			MapPrivate.Zoom(0.8, new Point(0, 0));
+			MapPrivate.Zoom(0.8, _mouseDownPoint);
 			MapPrivate.UpdateVisibleRectangle(MapPublic);
 		}
 

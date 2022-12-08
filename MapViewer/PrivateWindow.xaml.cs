@@ -325,7 +325,7 @@ namespace MapViewer {
         private void PrivateWinMouseWheel(object sender, MouseWheelEventArgs e)
         {
             var scale = (1.0 + e.Delta / 600.0);
-            MapPrivate.Zoom(scale, e.GetPosition(this));
+            MapPrivate.Zoom(scale, e.GetPosition(MapPrivate.CanvasOverlay));
         }
 
         private void PrivateWindow_Closing(object sender, CancelEventArgs e)
