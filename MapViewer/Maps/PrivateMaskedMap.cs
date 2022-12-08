@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -19,6 +18,8 @@ namespace MapViewer.Maps {
         public SymbolsViewModel SystemSymbolsPM;
 
         public PrivateWindow ParentWindow { get; set; }
+
+        public event EventHandler ZoomChanged;
 
         public PrivateMaskedMap(PrivateWindow parent, long groupId) : base(groupId) {
             ParentWindow = parent;
@@ -45,8 +46,7 @@ namespace MapViewer.Maps {
                 var offs = CenterInMap() - posCenterBefore;
                 TrfTranslate = new TranslateTransform(offs.X * TrfScale.ScaleX, offs.Y * TrfScale.ScaleY);
             }
-            UpdatePublicViewRectangle();
-            SymbolsPM.RaiseSymbolsChanged();
+            RaiseZoomChanged();
         }
 
         public void ScaleToWindow(UIElement element) {
@@ -55,17 +55,13 @@ namespace MapViewer.Maps {
             TrfScale.ScaleY = scale;
             TrfTranslate.X = 0;
             TrfTranslate.Y = 0;
-            UpdatePublicViewRectangle();
+            RaiseZoomChanged();
         }
 
-        private void UpdatePublicViewRectangle() {
-            if (ParentWindow is PrivateWindow privateWin && privateWin.MapPrivate != null) {
-                if (!IsLinked && MapId == privateWin.MapPrivate.MapId) {
-                    UpdateVisibleRectangle(privateWin.MapPublic);
-                }
-            }
+        public  void RaiseZoomChanged() {
+            ZoomChanged?.Invoke(this, null);
         }
-
+        
         public void SetCursor(Cursor cursor) {
             if (cursor == null) {
                 cursor = Cursors.Arrow;
@@ -85,8 +81,6 @@ namespace MapViewer.Maps {
                 BmpMask = null;
                 CanvasOverlay.Children.Clear();
 
-                UpdatePublicViewRectangle();
-
                 Deserialize();
                 CreatePalette();
 
@@ -98,6 +92,7 @@ namespace MapViewer.Maps {
                     BmpMask = new WriteableBitmap(MapImage.PixelWidth + 2, MapImage.PixelHeight + 2, MapImage.DpiX, MapImage.DpiY,
                         PixelFormats.Indexed8, MaskPalette);
                 }
+                RaiseZoomChanged();
             }
             catch (Exception ex) {
                 Log.Error("LoadImage", ex);
@@ -179,7 +174,7 @@ namespace MapViewer.Maps {
         }
 
         public void UpdateVisibleRectangle(PublicMaskedMap mapPublic) {
-            if (mapPublic.IsLinked || mapPublic.MapId != MapId) {
+            if (mapPublic == null || mapPublic.IsLinked || mapPublic.MapId != MapId) {
                 RemoveVisibleRectangle();
                 return;
             }

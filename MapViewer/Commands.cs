@@ -229,6 +229,7 @@ namespace MapViewer {
             Layer3_Overlay.Content = MapPrivate.CanvasOverlay;
 
             MapPrivate.ImageScaleChanged += HandleImageScaleChanged;
+            MapPrivate.ZoomChanged += HandleZoomChanged;
             MapPrivate.ScaleToWindow(Layer1_Map);
             HandleImageScaleChanged(null, null);
 
@@ -255,6 +256,7 @@ namespace MapViewer {
                 MapPrivate.MapData.Copy(oldMap.MapData);
                 MapPrivate.CopyTransform(oldMap);
                 MapPrivate.IsLinked = oldMap.IsLinked;
+                MapPrivate.ZoomChanged -= HandleZoomChanged;
             }
 
             if (!MapPrivate.Initiated) {
@@ -264,6 +266,7 @@ namespace MapViewer {
             Layer1_Map.Content = MapPrivate.CanvasMap;
             Layer2_Mask.Content = MapPrivate.CanvasMask;
             Layer3_Overlay.Content = MapPrivate.CanvasOverlay;
+            MapPrivate.ZoomChanged += HandleZoomChanged;
             PublicNeedsRescaling = false;
         }
 

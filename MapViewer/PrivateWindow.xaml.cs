@@ -115,7 +115,12 @@ namespace MapViewer {
         private void HandleImageScaleChanged(object sender, EventArgs e) {
             OnPropertyChanged(nameof(IsImageCalibrated));
         }
+
+        private void HandleZoomChanged(object sender, EventArgs e) {
+            MapPrivate.UpdateVisibleRectangle(MapPublic);
+        }
         
+
         public void SetScale(int scale)
         {
             if (scale == 0) {
