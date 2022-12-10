@@ -26,3 +26,5 @@ Låg prio ------------------------
 * gruppera symboler
 
 * visa rutan före publicering
+
+* fixa så zoom är runt cursor

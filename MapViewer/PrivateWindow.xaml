@@ -183,6 +183,7 @@
                               ToolTip="Player Min Size"
                               SelectionChanged="ComboBoxPlayerMinSize_OnSelectionChanged" >
                         <ComboBoxItem Uid="PlayerMinSize_10p" Content="10 pixel"  IsSelected="True"/>
+                        <ComboBoxItem Uid="PlayerMinSize_15p" Content="15 pixel"/>
                         <ComboBoxItem Uid="PlayerMinSize_20p" Content="20 pixel"/>
                         <ComboBoxItem Uid="PlayerMinSize_25p" Content="25 pixel"/>
                         <ComboBoxItem Uid="PlayerMinSize_30p" Content="30 pixel"/>

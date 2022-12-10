@@ -25,10 +25,9 @@ namespace MapViewer.Maps {
             if (MapImage == null) {
                 return;
             }
-            Log.DebugFormat("ScaleToReal {0} {1}", ScreenScaleMMperM, ImageScaleMperPix);
 
             if (MapData.ImageScaleMperPix < 1E-15) {
-                MessageBox.Show("Image is not calibrated!");
+                //MessageBox.Show("Image is not calibrated!");
                 return;
             }
                 
@@ -41,18 +40,28 @@ namespace MapViewer.Maps {
                 // ReSharper disable once PossibleNullReferenceException
                 center = DisplayTransform.Inverse.Transform(cp);
             }
-            Log.DebugFormat("ScaleToReal1 MonitorScaleMMperPixel={0}", ParentWindow.MonitorScaleMMperPixel);
-            Log.DebugFormat("ScaleToReal2 CanvasOverlay.ActualWidth={0} MapImage.Width={1}", CanvasOverlay.ActualWidth, MapImage.Width);
-            Log.DebugFormat("ScaleToReal3 center={0} ", center);
 
             var scale = ScreenScaleMMperM * ImageScaleMperPix / ParentWindow.MonitorScaleMMperPixel;
 
-            TrfScale.CenterX = 0;
-            TrfScale.CenterY = 0;
-            TrfScale.ScaleX = scale;
-            TrfScale.ScaleY = scale;
-            TrfTranslate.X = (CanvasOverlay.ActualWidth / 2) - scale * center.X;
-            TrfTranslate.Y = (CanvasOverlay.ActualHeight / 2) - scale * center.Y;
+            if (scale != TrfScale.ScaleX) {
+                TrfScale.CenterX = 0;
+                TrfScale.CenterY = 0;
+                TrfScale.ScaleX = scale;
+                TrfScale.ScaleY = scale;
+                TrfTranslate.X = (CanvasOverlay.ActualWidth / 2) - scale * center.X;
+                TrfTranslate.Y = (CanvasOverlay.ActualHeight / 2) - scale * center.Y;
+            }
+        }
+        
+        public Rect VisibleRectInMap() {
+            var rect = new Rect(0.0, 0.0, CanvasMap.ActualWidth, CanvasMap.ActualHeight);
+
+            var inverse = DisplayTransform.Inverse;
+            if (inverse != null) {
+                var rectOut = inverse.TransformBounds(rect);
+                return rectOut;
+            }
+            return new Rect();
         }
 
         public virtual void ScaleToLinked(PrivateMaskedMap mapSource) {
@@ -92,8 +101,7 @@ namespace MapViewer.Maps {
             CanvasMask.RenderTransform = DisplayTransform;
         }
 
-        public void PublishFrom(PrivateMaskedMap mapSource, bool scaleNeedsToRecalculate) {
-            Log.InfoFormat("Publish : scaleNeedsToRecalculate={0}", scaleNeedsToRecalculate);
+        public void PublishFrom(PrivateMaskedMap mapSource) {
 
             HookUnhookFromSymbolsVM(mapSource);
             _mapSource = mapSource;
@@ -130,11 +138,12 @@ namespace MapViewer.Maps {
             if (IsLinked) {
                 ScaleToLinked(mapSource);
             }
-            else if (scaleNeedsToRecalculate) {
+            else{
                 ScaleToReal();
             }
 
-            mapSource.SymbolsPM.RaiseSymbolsChanged();
+            //mapSource.SymbolsPM.RaiseSymbolsChanged();
+            HandleSymbolsChanged(mapSource.SymbolsPM, null);
         }
 
         public void HookUnhookFromSymbolsVM(PrivateMaskedMap mapSourceNew) {

@@ -151,7 +151,7 @@ namespace MapViewer.Maps {
             MapData = new MapData(null);
 
             PlayerSizeMeter = 0.8;
-            PlayerMinSizePixel = 20;
+            PlayerMinSizePixel = 10;
             IsLinked = false;
         }
 
@@ -217,16 +217,6 @@ namespace MapViewer.Maps {
             TrfTranslate.Y = 0;
         }
 
-        public Rect VisibleRectInMap() {
-            var rect = new Rect(0.0, 0.0, CanvasMap.ActualWidth, CanvasMap.ActualHeight);
-
-            var inverse = DisplayTransform.Inverse;
-            if (inverse != null) {
-                var rectOut = inverse.TransformBounds(rect);
-                return rectOut;
-            }
-            return new Rect();
-        }
 
         public Point CenterInMap() {
             var pos = new Point(CanvasMap.ActualWidth / 2, CanvasMap.ActualHeight / 2);
@@ -384,6 +374,10 @@ namespace MapViewer.Maps {
             if (bitmap.Format == PixelFormats.Bgr32) {
                 return Color.FromArgb(0xFF, bytes[2], bytes[1], bytes[0]);
             }
+            if (bitmap.Format == PixelFormats.Indexed8 && bitmap.Palette != null) {
+                var color = bitmap.Palette.Colors[bytes[0]];
+                return color;
+            }
             // handle other required formats
             return Colors.Black;
         }
@@ -394,16 +388,19 @@ namespace MapViewer.Maps {
                 return true;
             }
 
-            const int side = 1;
             var bytesPerPixel = (bitmap.Format.BitsPerPixel + 7) / 8;
-            var stride = side * bytesPerPixel;
-            var bytes = new byte[side * side * bytesPerPixel];
-            var rect = new Int32Rect(x, y, side, side);
+            var stride = bytesPerPixel;
+            var bytes = new byte[bytesPerPixel];
+            var rect = new Int32Rect(x, y, 1, 1);
 
             bitmap.CopyPixels(rect, bytes, stride, 0);
 
             if (bitmap.Format == PixelFormats.Pbgra32 || bitmap.Format == PixelFormats.Bgr32) {
                 return (bytes[2] + bytes[1] + bytes[0]) < 192;
+            }
+            if (bitmap.Format == PixelFormats.Indexed8 && bitmap.Palette != null) {
+                var color = bitmap.Palette.Colors[bytes[0]];
+                return (color.R + color.G + color.B) < 192;
             }
             // handle other required formats
             return true;

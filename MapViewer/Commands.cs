@@ -233,7 +233,6 @@ namespace MapViewer {
             MapPrivate.ScaleToWindow(Layer1_Map);
             HandleImageScaleChanged(null, null);
 
-            PublicNeedsRescaling = true;
             MapPrivate.Create();
 
             SetScale(MapPrivate.MapData.LastFigureScaleUsed);
@@ -267,7 +266,6 @@ namespace MapViewer {
             Layer2_Mask.Content = MapPrivate.CanvasMask;
             Layer3_Overlay.Content = MapPrivate.CanvasOverlay;
             MapPrivate.ZoomChanged += HandleZoomChanged;
-            PublicNeedsRescaling = false;
         }
 
         private void ExitApp_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -429,7 +427,6 @@ namespace MapViewer {
 			}
 			PublicWindow.MonitorSize = dialog.MonitorSize;
 			PublicWindow.MonitorResolution = dialog.MonitorResolution;
-            PublicNeedsRescaling = true;
         }
 
 		private void PublishMap_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -438,11 +435,10 @@ namespace MapViewer {
             }
 
             MapPrivate.Serialize();
-			MapPublic.PublishFrom(MapPrivate, PublicNeedsRescaling);
+			MapPublic.PublishFrom(MapPrivate);
 			PublicWindow.SetRuler();
 			PublicWindow.DrawCompass();
             PublicWindow.MaximizeToCurrentMonitor();
-			PublicNeedsRescaling = false;
 
             MapPrivate.UpdateVisibleRectangle(MapPublic);
 

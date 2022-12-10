@@ -84,7 +84,6 @@ namespace MapViewer {
             }
         }
 
-        public bool PublicNeedsRescaling { get; private set; }
         private int _level;
 
         #endregion
@@ -337,7 +336,6 @@ namespace MapViewer {
         {
             var selected = (ComboBoxItem)ComboBoxPublicScale.SelectedItem;
             if (selected != null && MapPublic != null && MapPrivate != null) {
-                PublicNeedsRescaling = true;
                 var value = int.Parse(selected.Uid.Substring(6));
                 MapPrivate.MapData.LastFigureScaleUsed = value;
                 if (value == 0) {
@@ -385,8 +383,12 @@ namespace MapViewer {
              }
              switch (selected.Uid) {
                 case "PlayerMinSize_10p":
-                    MapPublic.PlayerMinSizePixel = 20;
-                    MapPrivate.PlayerMinSizePixel = 20;
+                    MapPublic.PlayerMinSizePixel = 10;
+                    MapPrivate.PlayerMinSizePixel = 10;
+                    break;
+                case "PlayerMinSize_15p":
+                    MapPublic.PlayerMinSizePixel = 15;
+                    MapPrivate.PlayerMinSizePixel = 15;
                     break;
                 case "PlayerMinSize_20p":
                     MapPublic.PlayerMinSizePixel = 20;
