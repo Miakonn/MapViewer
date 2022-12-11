@@ -14,6 +14,7 @@ Medel prio =================================
 
 * städa bort mer element
 
+* lista med alla symboler
 
 Låg prio ------------------------
 

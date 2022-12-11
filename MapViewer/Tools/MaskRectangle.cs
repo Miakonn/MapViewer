@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
-using log4net;
 
 
 namespace MapViewer.Tools {
@@ -18,9 +17,8 @@ namespace MapViewer.Tools {
 		private Rectangle _rect;
 
 		private Point _pnt1;
-
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        private Point _pnt2;
+		
         public MaskRectangle(PrivateWindow privateWindow, object button, bool mask) {
 			_mask = mask;
 			_map = privateWindow.MapPrivate;
@@ -37,13 +35,13 @@ namespace MapViewer.Tools {
 				InitDraw(_pnt1);
 			}
 			else {
-				UpdateDraw(_pnt1, e.GetPosition(_canvas));
+				UpdateDraw(e.GetPosition(_canvas));
 				EndDraw();
 			}
 		}
 
 		public override void MouseMove(object sender, MouseEventArgs e) {
-			UpdateDraw(_pnt1, e.GetPosition(_canvas));
+			UpdateDraw(e.GetPosition(_canvas));
 		}
 
 		public override void Deactivate() {
@@ -76,39 +74,24 @@ namespace MapViewer.Tools {
 
 		}
 
-		private void UpdateDraw(Point pt1, Point pt2) {
+		private void UpdateDraw( Point pt2) {
 			if (_rect == null) { 
 				return; 
 			}
-			var x = Math.Min(pt1.X, pt2.X);
-			var y = Math.Min(pt1.Y, pt2.Y);
-			var width = Math.Abs(pt1.X - pt2.X);
-			var height = Math.Abs(pt1.Y - pt2.Y);
-			Canvas.SetLeft(_rect, x);
-			Canvas.SetTop(_rect, y);
-			_rect.Width = width;
-			_rect.Height = height;
-		}
+            _pnt2 = pt2;
+            Canvas.SetLeft(_rect, Math.Min(_pnt1.X, _pnt2.X));
+			Canvas.SetTop(_rect, Math.Min(_pnt1.Y, _pnt2.Y));
+			_rect.Width = Math.Abs(_pnt1.X - _pnt2.X);
+			_rect.Height = Math.Abs(_pnt1.Y - _pnt2.Y);
+        }
 
-		private void EndDraw() {
-            try {
-                _map.MaskRectangle(GetElementRect(_rect), (byte) (_mask ? 255 : 0));
-                _canvas.Children.Remove(_rect);
-            }
-            catch (Exception ex) {
-                Log.Error("EndDraw:" + ex.Message);
-            }
+        private void EndDraw() {
+            var pntTL = new Point((int)Math.Min(_pnt1.X, _pnt2.X), (int)Math.Min(_pnt1.Y, _pnt2.Y));
+            var pntBR = new Point((int)Math.Max(_pnt1.X, _pnt2.X), (int)Math.Max(_pnt1.Y, _pnt2.Y));
+            _map.MaskRectangle(pntTL, pntBR, (byte)(_mask ? 255 : 0));
+            _canvas.Children.Remove(_rect);
+
             _rect = null;
-		}
-
-		private Int32Rect GetElementRect(FrameworkElement element) {
-            if (_map?.CanvasMap == null) {
-                Log.Error("_map.CanvasMap == null");
-                return new Int32Rect();
-            }
-			var buttonTransform = element.TransformToVisual(_map.CanvasMap);
-			var point = buttonTransform.Transform(new Point());
-			return new Int32Rect((int)point.X, (int)point.Y, (int)element.ActualWidth, (int)element.ActualHeight);
-		}
-	}
+        }
+    }
 }

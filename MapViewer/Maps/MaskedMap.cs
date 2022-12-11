@@ -290,15 +290,13 @@ namespace MapViewer.Maps {
         }
 
         public void MaskCircle(int centerX, int centerY, int radius, byte colorIndex) {
+            if (!(BmpMask is WriteableBitmap bitmap)) {
+                return;
+            }
 
             centerX = (int)(centerX * ScaleDpiFix);
             centerY = (int)(centerY * ScaleDpiFix);
             radius = (int)(radius * ScaleDpiFix);
-
-            var bitmap = BmpMask as WriteableBitmap;
-            if (bitmap == null) {
-                return;
-            }
 
             var y0 = Between(centerY - radius, 0, bitmap.PixelHeight);
             var yMax = Between(centerY + radius, 0, bitmap.PixelHeight);
@@ -316,35 +314,28 @@ namespace MapViewer.Maps {
             }
         }
 
-        public void MaskRectangle(Int32Rect rect, byte colorIndex) {
-            rect.X = (int)(rect.X * ScaleDpiFix);
-            rect.Y = (int)(rect.Y * ScaleDpiFix);
-            rect.Width = (int)(rect.Width * ScaleDpiFix);
-            rect.Height = (int)(rect.Height * ScaleDpiFix);
-
-            var bitmap = BmpMask as WriteableBitmap;
-            if (bitmap == null) {
+        public void MaskRectangle(Point pntTL, Point pntBR, byte colorIndex) {
+            if (!(BmpMask is WriteableBitmap bitmap)) {
                 return;
             }
 
-            var x0 = Between(rect.X, 0, bitmap.PixelWidth);
-            var y0 = Between(rect.Y, 0, bitmap.PixelHeight);
-            var xMax = Between(rect.X + rect.Width, 0, bitmap.PixelWidth);
-            var yMax = Between(rect.Y + rect.Height, 0, bitmap.PixelHeight);
+            int left =   Between((int)(pntTL.X * ScaleDpiFix), 0, bitmap.PixelWidth);
+            int top =    Between((int)(pntTL.Y * ScaleDpiFix), 0, bitmap.PixelHeight); ;
+            int right =  Between((int)(pntBR.X * ScaleDpiFix), 0, bitmap.PixelWidth); ;
+            int bottom = Between((int)(pntBR.Y * ScaleDpiFix), 0, bitmap.PixelHeight); ;
 
-            var byteCount = (xMax - x0);
+            var byteCount = right - left;
             var colorData = CreateColorData(byteCount, colorIndex);
 
-            var rectLine = new Int32Rect(x0, y0, xMax - x0, 1);
-            for (var y = y0; y < yMax; y++) {
+            var rectLine = new Int32Rect(left, top, right - left, 1);
+            for (var y = top; y < bottom; y++) {
                 rectLine.Y = y;
                 bitmap.WritePixels(rectLine, colorData, byteCount, 0);
             }
         }
 
         public void MaskPolygon(PointCollection pnts, byte colorIndex) {
-            var bitmap = BmpMask as WriteableBitmap;
-            if (bitmap == null) {
+            if (!(BmpMask is WriteableBitmap bitmap)) {
                 return;
             }
 
@@ -446,10 +437,9 @@ namespace MapViewer.Maps {
             }
         }
 
-        public void ClearMask() {
+        public void MaskAll(byte color) {
             if (BmpMask != null) {
-                var rect = new Int32Rect(0, 0, (int)MapImage.Width, (int)MapImage.Height);
-                MaskRectangle(rect, 0);
+                MaskRectangle(new Point(), new Point(MapImage.Width, MapImage.Height), color);
             }
         }
 

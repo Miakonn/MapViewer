@@ -446,10 +446,17 @@ namespace MapViewer {
 			Activate();
 		}
 
-		private void ClearMask_Execute(object sender, ExecutedRoutedEventArgs e) {
+        private void FullMask_Execute(object sender, ExecutedRoutedEventArgs e) {
+            var result = MessageBox.Show("Are you sure you want to mask everything?", "", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) {
+                MapPrivate.MaskAll(255);
+            }
+        }
+
+        private void ClearMask_Execute(object sender, ExecutedRoutedEventArgs e) {
 			var result =MessageBox.Show("Are you sure you want to clear the mask?" , "", MessageBoxButton.YesNo);
 			if (result == MessageBoxResult.Yes) {
-				MapPrivate.ClearMask();
+				MapPrivate.MaskAll(0);
 			}
 		}
 
@@ -533,13 +540,6 @@ namespace MapViewer {
             MapPrivate.SymbolsPM.MoveSymbolUpDown(_lastClickedSymbol, MapBelow.SymbolsPM);
         }
 
-        private void FullMask_Execute(object sender, ExecutedRoutedEventArgs e) {
-			var result = MessageBox.Show("Are you sure you want to mask everything?", "", MessageBoxButton.YesNo);
-			if (result == MessageBoxResult.Yes) {
-				var rect = new Int32Rect(0, 0, (int)MapPrivate.MapImage.Width, (int)MapPrivate.MapImage.Height);
-				MapPrivate.MaskRectangle(rect, 255);
-			}
-		}
 
 		private void RotateMap_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.RotateClockwise();
