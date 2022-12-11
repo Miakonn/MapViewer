@@ -6,7 +6,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
 
 namespace MapViewer.Tools {
-	public class DrawCircle : ICanvasTool {
+	public class DrawCircle : CanvasTool {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
@@ -26,32 +26,31 @@ namespace MapViewer.Tools {
         }
 
 
-		#region ICanvasTool
+		#region CanvasTool
 
-        public void MouseDown(object sender, MouseButtonEventArgs e) {
-			if (_shape == null) {
+        public override void MouseDown(object sender, MouseButtonEventArgs e) {
+            if (_shape == null) {
 				_pnt1 = e.GetPosition(_canvas);
 				InitDraw(_pnt1);
+				return;
 			}
-			else {
-				UpdateDraw(_pnt1, e.GetPosition(_canvas));
-				EndDraw();
-			}
-		}
 
-		public void MouseMove(object sender, MouseEventArgs e) {
+            UpdateDraw(e.GetPosition(_canvas));
+            var length = new Vector(_pnt1.X - _pnt2.X, _pnt1.Y - _pnt2.Y).Length;
+            if (length > MinimumMove) {
+                EndDraw();
+            }
+        }
+
+		public override void MouseMove(object sender, MouseEventArgs e) {
 			if (_shape == null) {
 				return;
 			}
-			UpdateDraw(_pnt1, e.GetPosition(_canvas));
-			_privateWindow.DisplayPopup(string.Format("r={0} {1}", CalculateDistance(), _map.Unit));
+			UpdateDraw(e.GetPosition(_canvas));
+			_privateWindow.DisplayPopup($"r={CalculateDistance()} {_map.Unit}");
 		}
 
-		public void MouseUp(object sender, MouseButtonEventArgs e) { }
-
-		public void KeyDown(object sender, KeyEventArgs e) { }
-
-		public void Deactivate() {
+		public override void Deactivate() {
 			if (_shape != null) {
 				_canvas.Children.Remove(_shape);
 			}
@@ -65,7 +64,7 @@ namespace MapViewer.Tools {
 
 		}
 
-		public bool ShowPublicCursor() {
+		public override bool ShowPublicCursor() {
 			return true;
 		}
 		#endregion
@@ -86,15 +85,15 @@ namespace MapViewer.Tools {
 
 		}
 
-		private void UpdateDraw(Point pt1, Point pt2) {
+		private void UpdateDraw(Point pt2) {
 			if (_shape == null) {
 				return;
 			}
 
 			_pnt2 = pt2;
-			var radius = new Vector(pt1.X - pt2.X, pt1.Y - pt2.Y).Length;
-			var x = pt1.X - radius;
-			var y = pt1.Y - radius;
+			var radius = new Vector(_pnt1.X - _pnt2.X, _pnt1.Y - _pnt2.Y).Length;
+			var x = _pnt1.X - radius;
+			var y = _pnt1.Y - radius;
 			Canvas.SetLeft(_shape, x);
 			Canvas.SetTop(_shape, y);
 			_shape.Width = 2 * radius;

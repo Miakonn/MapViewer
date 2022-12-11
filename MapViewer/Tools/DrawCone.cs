@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
 
 namespace MapViewer.Tools {
-	class DrawCone : ICanvasTool {
+	class DrawCone : CanvasTool {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
@@ -26,19 +26,20 @@ namespace MapViewer.Tools {
             _shape = null;
         }
 
-		#region ICanvasTool
+		#region CanvasTool
 
-        public void MouseDown(object sender, MouseButtonEventArgs e) {
+        public override void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_shape == null) {
 				InitDraw(e.GetPosition(_canvas));
 			}
-			else {
-				UpdateDraw(e.GetPosition(_canvas));
-				EndDraw();
-			}
+            UpdateDraw(e.GetPosition(_canvas));
+            var length = new Vector(_pnt1.X - _pnt2.X, _pnt1.Y - _pnt2.Y).Length;
+            if (length > MinimumMove) {
+                EndDraw();
+            }
 		}
 
-		public void MouseMove(object sender, MouseEventArgs e) {
+		public override void MouseMove(object sender, MouseEventArgs e) {
 			if (_shape == null) {
 				return;
 			}
@@ -46,11 +47,7 @@ namespace MapViewer.Tools {
 			_privateWindow.DisplayPopup(CalculateDistance() + " " + _map.Unit);
 		}
 
-		public void MouseUp(object sender, MouseButtonEventArgs e) { }
-
-		public void KeyDown(object sender, KeyEventArgs e) { }
-
-		public void Deactivate() {
+		public override void Deactivate() {
 			if (_shape != null) {
 				_canvas.Children.Remove(_shape);
 			}
@@ -63,7 +60,7 @@ namespace MapViewer.Tools {
 			_privateWindow.HidePopup(3);
 		}
 
-		public bool ShowPublicCursor() {
+		public override bool ShowPublicCursor() {
 			return true;
 		}
 		#endregion

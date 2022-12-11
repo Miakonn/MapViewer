@@ -24,11 +24,18 @@ namespace MapViewer.Symbols {
         [XmlIgnore]
         public static Cursor SymbolCursor = Cursors.Hand;
 
+        private double _sizeMeter;
+
         public string Uid { get; set; }
         public int OrderZ { get; set; }   
         public Point StartPoint { get; set; }
         public Color FillColor { get; set; }
-        public double SizeMeter { get; set; }
+
+        public double SizeMeter {
+            get => _sizeMeter;
+            set => _sizeMeter = Math.Max(value, 0.1);
+        }
+
         public string Caption { get; set; }
 
         [XmlIgnore]

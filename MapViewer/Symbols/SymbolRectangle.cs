@@ -9,8 +9,13 @@ using Point = System.Windows.Point;
 namespace MapViewer.Symbols {
     [Serializable]
     public class SymbolRectangle : Symbol {
-        public double WidthMeter { get; set; }
-        
+        private double _widthMeter;
+
+        public double WidthMeter {
+            get => _widthMeter;
+            set => _widthMeter = Math.Max(value, 0.1);
+        }
+
         public double RotationDegree { get; set; }
 
         public override void Draw(Canvas canvas, MapDrawSettings settings) {

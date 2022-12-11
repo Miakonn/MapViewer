@@ -9,7 +9,7 @@ using log4net;
 
 
 namespace MapViewer.Tools {
-	public class MaskRectangle : ICanvasTool {
+	public class MaskRectangle : CanvasTool {
 		private readonly Canvas _canvas;
 		private readonly Maps.PrivateMaskedMap _map;
 		private readonly bool _mask;
@@ -29,9 +29,9 @@ namespace MapViewer.Tools {
             _rect = null;
         }
 
-		#region ICanvasTool
+		#region CanvasTool
 
-        public void MouseDown(object sender, MouseButtonEventArgs e) {
+        public override void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_rect == null) {
 				_pnt1 = e.GetPosition(_canvas);
 				InitDraw(_pnt1);
@@ -42,15 +42,11 @@ namespace MapViewer.Tools {
 			}
 		}
 
-		public void MouseMove(object sender, MouseEventArgs e) {
+		public override void MouseMove(object sender, MouseEventArgs e) {
 			UpdateDraw(_pnt1, e.GetPosition(_canvas));
 		}
 
-		public void MouseUp(object sender, MouseButtonEventArgs e) { }
-
-		public void KeyDown(object sender, KeyEventArgs e) { }
-
-		public void Deactivate() {
+		public override void Deactivate() {
 			if (_rect != null) {
 				_canvas.Children.Remove(_rect);
 			}
@@ -60,10 +56,6 @@ namespace MapViewer.Tools {
 				_button.IsChecked = false;
 			}
 			_button = null;
-		}
-
-		public bool ShowPublicCursor() {
-			return false;
 		}
 
 		#endregion

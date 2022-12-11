@@ -8,7 +8,7 @@ using System;
 using MapViewer.Symbols;
 
 namespace MapViewer.Tools {
-	class DrawRectangle : ICanvasTool {
+	class DrawRectangle : CanvasTool {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
@@ -28,37 +28,42 @@ namespace MapViewer.Tools {
 			_shape = null;
 		}
 
-		#region ICanvasTool
+		#region CanvasTool
 
-        public void MouseDown(object sender, MouseButtonEventArgs e) {
+        public override void MouseDown(object sender, MouseButtonEventArgs e) {
+            var pnt = e.GetPosition(_canvas);
+
 			if (_shape == null) {
-				InitDraw(e.GetPosition(_canvas));
+				InitDraw(pnt);
 				_index = 1;
+				return;
 			}
-			else if (_index == 1) {
-				_index++;
-				UpdateDraw(e.GetPosition(_canvas));
-			}
+			if (_index == 1) {
+                var length = new Vector(_pnt1.X - pnt.X, _pnt1.Y - pnt.Y).Length;
+                if (length > MinimumMove) {
+                    _index++;
+                    UpdateDraw(pnt);
+                }
+            }
 			else {
-				_index++;
-				UpdateDraw(e.GetPosition(_canvas));
-				EndDraw();
-			}
+                var length = new Vector(_pnt2.X - pnt.X, _pnt2.Y - pnt.Y).Length;
+                if (length > MinimumMove) {
+                    _index++;
+                    UpdateDraw(pnt); 
+                    EndDraw();
+                }
+            }
 		}
 
-		public void MouseMove(object sender, MouseEventArgs e) {
+		public override void MouseMove(object sender, MouseEventArgs e) {
 			if (_shape == null) {
 				return;
 			}
 			UpdateDraw(e.GetPosition(_canvas));
 			_privateWindow.DisplayPopup(CalculateDistance() + " " + _map.Unit);
 		}
-
-		public void MouseUp(object sender, MouseButtonEventArgs e) { }
-
-		public void KeyDown(object sender, KeyEventArgs e) { }
-
-		public void Deactivate() {
+		
+		public override void Deactivate() {
 			if (_shape != null) {
 				_canvas.Children.Remove(_shape);
 			}
@@ -71,7 +76,7 @@ namespace MapViewer.Tools {
 			_privateWindow.HidePopup(3);
 		}
 
-		public bool ShowPublicCursor() {
+		public override bool ShowPublicCursor() {
 			return true;
 		}
 		#endregion
@@ -104,7 +109,6 @@ namespace MapViewer.Tools {
 			}
 			_shape.Points = CreatePointCollection();
 		}
-     
 
         private Vector PerpVectorFromLine(Point pntL1, Point pntL2, Point pnt3) {
             var  line = new Vector(pntL2.X - pntL1.X, pntL2.Y - pntL1.Y);
@@ -118,7 +122,6 @@ namespace MapViewer.Tools {
 
             return perpendicular * length;
         }
-
 
         private PointCollection CreatePointCollection() {
 			var line = new Vector(_pnt1.X - _pnt2.X, _pnt1.Y - _pnt2.Y);
@@ -159,11 +162,11 @@ namespace MapViewer.Tools {
             var vectLength = new Vector(_pnt2.X - _pnt1.X, _pnt2.Y - _pnt1.Y);
 
             var angleDegree = SymbolsViewModel.ToDegrees(Math.Atan2(vectLength.Y, vectLength.X));
-            var lengthMeter = vectLength.Length * _privateWindow.MapPrivate.ImageScaleMperPix;
+            var lengthMeter = Math.Max(vectLength.Length * _privateWindow.MapPrivate.ImageScaleMperPix, 0.2);
 
 
             var vectWidth = PerpVectorFromLine(_pnt1, _pnt2, _pnt3);
-            var widthMeter = vectWidth.Length * _privateWindow.MapPrivate.ImageScaleMperPix;
+            var widthMeter = Math.Max(vectWidth.Length * _privateWindow.MapPrivate.ImageScaleMperPix, 0.2);
 
             var center = _pnt1 + vectLength * 0.5 + vectWidth * 0.5;
 

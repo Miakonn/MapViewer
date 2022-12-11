@@ -7,7 +7,7 @@ using System.Windows.Controls.Ribbon;
 using MapViewer.Dialogs;
 
 namespace MapViewer.Tools {
-	class Calibrate : ICanvasTool {
+	class Calibrate : CanvasTool {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
@@ -23,9 +23,9 @@ namespace MapViewer.Tools {
             _line = null;
         }
 
-		#region ICanvasTool
+		#region CanvasTool
 
-		public void MouseDown(object sender, MouseButtonEventArgs e) {
+		public override void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_line == null) {
 				InitDraw(e.GetPosition(_canvas));
 				return;
@@ -33,20 +33,16 @@ namespace MapViewer.Tools {
             
             UpdateDraw(e.GetPosition(_canvas)); 
             var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
-			if (length > 10) {
+			if (length > MinimumMove) {
 				EndDraw();
 			}
 		}
 
-		public void MouseMove(object sender, MouseEventArgs e) {
+		public override void MouseMove(object sender, MouseEventArgs e) {
 			UpdateDraw(e.GetPosition(_canvas));
 		}
 
-		public void MouseUp(object sender, MouseButtonEventArgs e) { }
-
-		public void KeyDown(object sender, KeyEventArgs e) { }
-
-		public void Deactivate() {
+		public override void Deactivate() {
 			if (_line != null) {
 				_canvas.Children.Remove(_line);
 			}
@@ -58,9 +54,6 @@ namespace MapViewer.Tools {
 			_button = null;
         }
 
-		public bool ShowPublicCursor() {
-			return false;
-		}
 		#endregion
 
 		private void InitDraw(Point pt1) {

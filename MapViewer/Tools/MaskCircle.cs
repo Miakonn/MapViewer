@@ -6,7 +6,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
 
 namespace MapViewer.Tools {
-	public class MaskCircle : ICanvasTool {
+	public class MaskCircle : CanvasTool {
 		private readonly Canvas _canvas;
 		private readonly Maps.PrivateMaskedMap _map;
 		private readonly bool _mask;
@@ -24,10 +24,9 @@ namespace MapViewer.Tools {
             _circle = null;
         }
 
+		#region CanvasTool
 
-		#region ICanvasTool
-
-        public void MouseDown(object sender, MouseButtonEventArgs e) {
+        public override void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_circle == null) {
 				_pnt1 = e.GetPosition(_canvas);
 				InitDraw(_pnt1);
@@ -38,15 +37,12 @@ namespace MapViewer.Tools {
 			}
 		}
 
-		public void MouseMove(object sender, MouseEventArgs e) {
+		public override void MouseMove(object sender, MouseEventArgs e) {
 			UpdateDraw(_pnt1, e.GetPosition(_canvas));
 		}
 
-		public void MouseUp(object sender, MouseButtonEventArgs e) { }
-
-		public void KeyDown(object sender, KeyEventArgs e) { }
-
-		public void Deactivate() {
+	
+		public override void Deactivate() {
 			if (_circle != null) {
 				_canvas.Children.Remove(_circle);
 			}
@@ -58,10 +54,7 @@ namespace MapViewer.Tools {
 			_button = null;
 		}
 
-		public bool ShowPublicCursor() {
-			return false;
-		}
-		#endregion
+        #endregion
 
 		private void InitDraw(Point pt1) {
 			_pnt1 = pt1;

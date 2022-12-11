@@ -6,7 +6,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
 
 namespace MapViewer.Tools {
-	class Measure : ICanvasTool {
+	class Measure : CanvasTool {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
@@ -28,19 +28,22 @@ namespace MapViewer.Tools {
             _linePublic = null;
         }
 
-        #region ICanvasTool
+        #region CanvasTool
 
-        public void MouseDown(object sender, MouseButtonEventArgs e) {
-			if (_line == null) {
+        public override void MouseDown(object sender, MouseButtonEventArgs e) {
+            if (_line == null) {
 				InitDraw(e.GetPosition(_canvas));
-			}
-			else {
-				UpdateDraw(e.GetPosition(_canvas)); 
-				EndDraw();
-			}
-		}
+				return;
+            }
 
-		public void MouseMove(object sender, MouseEventArgs e) {
+            UpdateDraw(e.GetPosition(_canvas));
+            var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
+            if (length > MinimumMove) {
+                EndDraw();
+            }
+        }
+
+		public override void MouseMove(object sender, MouseEventArgs e) {
 			if (_line == null) {
 				return;
 			}
@@ -49,11 +52,7 @@ namespace MapViewer.Tools {
 			_privateWindow.DisplayPopup(CalculateDistance() + " " + _map.Unit);
 		}
 
-		public void MouseUp(object sender, MouseButtonEventArgs e) { }
-
-		public void KeyDown(object sender, KeyEventArgs e) { }
-
-		public void Deactivate() {
+		public override void Deactivate() {
 			if (_line != null) {
 				_canvas.Children.Remove(_line);
 				_line = null;
@@ -70,7 +69,7 @@ namespace MapViewer.Tools {
 			_privateWindow.HidePopup(10);
 		}
 
-		public bool ShowPublicCursor() {
+		public override bool ShowPublicCursor() {
 			return true;
 		}
 
@@ -89,8 +88,8 @@ namespace MapViewer.Tools {
 			_line = new Line {
 				X1 = pt1.X,
 				Y1 = pt1.Y,
-				X2 = pt1.X,
-				Y2 = pt1.Y,
+				X2 = pt1.X + 1,
+				Y2 = pt1.Y + 1,
 				Stroke = Brushes.Blue,
 				StrokeThickness = 10 / _map.ZoomScale,
 				Opacity = 0.5
@@ -127,6 +126,5 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			_privateWindow.ActiveTool = null;
 		}
-
-	}
+    }
 }

@@ -57,14 +57,14 @@ namespace MapViewer {
         private Point _mouseDownPoint;  // Canvas
         private Point _mouseDownPointFirst;  // Canvas
         private Point _mouseDownPointWindow;
-        private ICanvasTool _activeTool;
+        private CanvasTool _activeTool;
         private bool _writtenLogSetting;
 
         public bool IsImageCalibrated => MapPrivate?.IsCalibrated ?? false;
 
         private double _characterDistanceMoved;
 
-        public ICanvasTool ActiveTool {
+        public CanvasTool ActiveTool {
             get => _activeTool;
 
             set {

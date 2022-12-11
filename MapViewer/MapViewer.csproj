@@ -128,7 +128,7 @@
     <Compile Include="Tools\DrawText.cs" />
     <Compile Include="Tools\MaskCircle.cs" />
     <Compile Include="Tools\Measure.cs" />
-    <Compile Include="Tools\ICanvasTool.cs" />
+    <Compile Include="Tools\CanvasTool.cs" />
     <Compile Include="Maps\MapData.cs" />
     <Compile Include="PublicWindow.xaml.cs">
       <DependentUpon>PublicWindow.xaml</DependentUpon>

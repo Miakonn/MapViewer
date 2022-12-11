@@ -8,7 +8,7 @@ using MapViewer.Symbols;
 using System;
 
 namespace MapViewer.Tools {
-	class DrawLine : ICanvasTool {
+	class DrawLine : CanvasTool {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
@@ -24,19 +24,22 @@ namespace MapViewer.Tools {
 			_line = null;
 		}
 
-		#region ICanvasTool
+		#region CanvasTool
 
-        public void MouseDown(object sender, MouseButtonEventArgs e) {
-			if (_line == null) {
+        public override void MouseDown(object sender, MouseButtonEventArgs e) {
+            if (_line == null) {
 				InitDraw(e.GetPosition(_canvas));
+				return;
 			}
-			else {
-				UpdateDraw(e.GetPosition(_canvas));
-				EndDraw();
-			}
-		}
 
-		public void MouseMove(object sender, MouseEventArgs e) {
+            UpdateDraw(e.GetPosition(_canvas));
+            var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
+            if (length > MinimumMove) {
+                EndDraw();
+            }
+        }
+
+		public override void MouseMove(object sender, MouseEventArgs e) {
 			if (_line == null) {
 				return;
 			}
@@ -44,11 +47,7 @@ namespace MapViewer.Tools {
 			_privateWindow.DisplayPopup(CalculateDistance() + " " + _map.Unit);
 		}
 
-		public void MouseUp(object sender, MouseButtonEventArgs e) { }
-
-		public void KeyDown(object sender, KeyEventArgs e) { }
-
-		public void Deactivate() {
+		public override void Deactivate() {
 			if (_line != null) {
 				_canvas.Children.Remove(_line);
 			}
@@ -62,7 +61,7 @@ namespace MapViewer.Tools {
 		}
 
 
-		public bool ShowPublicCursor() {
+		public override bool ShowPublicCursor() {
 			return true;
 		}
 		#endregion
@@ -71,8 +70,8 @@ namespace MapViewer.Tools {
 			_line = new Line {
 				X1 = pt1.X,
 				Y1 = pt1.Y,
-				X2 = pt1.X,
-				Y2 = pt1.Y,
+				X2 = pt1.X + 1,
+				Y2 = pt1.Y + 1,
 				Stroke = Brushes.OrangeRed,
 				StrokeThickness = 0.8 / _map.ImageScaleMperPix,
 				Opacity = 0.5

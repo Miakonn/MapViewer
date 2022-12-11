@@ -6,7 +6,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
 
 namespace MapViewer.Tools {
-	class MaskPolygon : ICanvasTool {
+	class MaskPolygon : CanvasTool {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
@@ -27,9 +27,9 @@ namespace MapViewer.Tools {
             _shape = null;
         }
 
-		#region ICanvasTool
+		#region CanvasTool
 
-        public void MouseDown(object sender, MouseButtonEventArgs e) {
+        public override void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_shape == null) {
 				InitDraw(e.GetPosition(_canvas));
 			}
@@ -47,7 +47,7 @@ namespace MapViewer.Tools {
 			}
 		}
 
-        public void MouseMove(object sender, MouseEventArgs e) {
+        public override void MouseMove(object sender, MouseEventArgs e) {
 			if (_shape == null) {
 				return;
 			}
@@ -58,15 +58,14 @@ namespace MapViewer.Tools {
             }
         }
 
-		public void MouseUp(object sender, MouseButtonEventArgs e) { }
 
-		public void KeyDown(object sender, KeyEventArgs e) {
+		public override void KeyDown(object sender, KeyEventArgs e) {
 			if (e.Key == Key.Space) {
 				EndDraw();
 			}
 		}
 
-		public void Deactivate() {
+		public override void Deactivate() {
 			if (_shape != null) {
 				_canvas.Children.Remove(_shape);
 			}
@@ -78,9 +77,6 @@ namespace MapViewer.Tools {
 			_button = null;
 		}
 
-		public bool ShowPublicCursor() {
-			return false;
-		}
 
 		#endregion
 
@@ -121,6 +117,5 @@ namespace MapViewer.Tools {
 			double length = new Vector(_pnts[0].X - _pnts[last].X, _pnts[0].Y - _pnts[last].Y).Length;
 			return (length < 20);
 		}
-
-	}
+    }
 }

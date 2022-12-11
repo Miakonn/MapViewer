@@ -9,7 +9,7 @@ using System.Windows.Controls.Ribbon;
 using MapViewer.Dialogs;
 
 namespace MapViewer.Tools {
-	class DrawText : ICanvasTool {
+	class DrawText : CanvasTool {
 
 		private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
@@ -25,30 +25,27 @@ namespace MapViewer.Tools {
             _line = null;
         }
 
-		#region ICanvasTool
+		#region CanvasTool
 
-        public void MouseDown(object sender, MouseButtonEventArgs e) {
+        public override void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_line == null) {
 				InitDraw(e.GetPosition(_canvas));
+				return;
 			}
-			else {
-				UpdateDraw(e.GetPosition(_canvas));
-				EndDraw();
-			}
-		}
+            var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
+            if (length > MinimumMove) {
+                EndDraw();
+            }
+        }
 
-		public void MouseMove(object sender, MouseEventArgs e) {
+		public override void MouseMove(object sender, MouseEventArgs e) {
 			if (_line == null) {
 				return;
 			}
 			UpdateDraw(e.GetPosition(_canvas));
 		}
 
-		public void MouseUp(object sender, MouseButtonEventArgs e) { }
-
-		public void KeyDown(object sender, KeyEventArgs e) { }
-
-		public void Deactivate() {
+		public override void Deactivate() {
 			if (_line != null) {
 				_canvas.Children.Remove(_line);
 			}
@@ -60,7 +57,7 @@ namespace MapViewer.Tools {
 
 		}
 
-		public bool ShowPublicCursor() {
+		public override bool ShowPublicCursor() {
 			return true;
 		}
 
