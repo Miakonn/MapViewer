@@ -14,8 +14,8 @@ namespace MapViewer.Dialogs {
         public Color SelectedColor { get; set; }
 
         private readonly string[] _selectedColors = {
-            "Blue", "Purple", "Red", "IndianRed", "Sienna",  "Orange", "Yellow", "Khaki",
-            "OliveDrab", "YellowGreen", "Green", "Turquoise", "Black", "Gray",  "Silver", "White", 
+            "LightBlue",  "Blue", "Purple", "Red", "IndianRed", "Sienna",  "Orange", "Yellow",
+            "Khaki", "OliveDrab", "YellowGreen", "Green", "Black", "Gray",  "Silver", "White", 
         };
 
 		public DialogColorPicker() {

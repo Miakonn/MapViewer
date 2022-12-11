@@ -184,7 +184,7 @@ namespace MapViewer.Symbols {
         public void ChangePlayerSizes(double sizeMeterNew) {
             foreach (var symbol in Symbols.Values) {
                 if (symbol is SymbolCreature creature) {
-                    if (creature.SizeMeter >= 0.7 && creature.SizeMeter <= 1.0) {
+                    if (creature.SizeMeter >= 0.5 && creature.SizeMeter <= 1.0) {
                         creature.SizeMeter = sizeMeterNew;
                     }
                 }

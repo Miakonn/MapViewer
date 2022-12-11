@@ -194,6 +194,8 @@
                               Margin="2,5,2,5" 
                               ToolTip="Player Size"
                               SelectionChanged="ComboBoxPlayerSize_OnSelectionChanged" >
+                        <ComboBoxItem Uid="PlayerSize_0.5" Content="0.5m"/>
+                        <ComboBoxItem Uid="PlayerSize_0.6" Content="0.6m"/>
                         <ComboBoxItem Uid="PlayerSize_0.7" Content="0.7m"/>
                         <ComboBoxItem Uid="PlayerSize_0.8" Content="0.8m"  IsSelected="True"/>
                         <ComboBoxItem Uid="PlayerSize_0.9" Content="0.9m"/>

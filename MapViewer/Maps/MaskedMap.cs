@@ -102,8 +102,10 @@ namespace MapViewer.Maps {
         public double ImageScaleMperPix {
             get => MapData.ImageScaleMperPix;
             set {
-                MapData.ImageScaleMperPix = value;
-                ImageScaleChanged?.Invoke(this, null);
+                if (value >= 0.0  && value < 1E15) {
+                    MapData.ImageScaleMperPix = value;
+                    ImageScaleChanged?.Invoke(this, null);
+                }
             }
         }
 
@@ -250,7 +252,7 @@ namespace MapViewer.Maps {
         }
         
         public double GetMinScale(UIElement element) {
-            if (MapImage == null) {
+            if (MapImage == null || MapImage.Width == 0 || MapImage.Height == 0) {
                 return 1;
             }
 

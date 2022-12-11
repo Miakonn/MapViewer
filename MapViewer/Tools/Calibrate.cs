@@ -28,9 +28,12 @@ namespace MapViewer.Tools {
 		public void MouseDown(object sender, MouseButtonEventArgs e) {
 			if (_line == null) {
 				InitDraw(e.GetPosition(_canvas));
+				return;
 			}
-			else {
-				UpdateDraw(e.GetPosition(_canvas)); 
+            
+            UpdateDraw(e.GetPosition(_canvas)); 
+            var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
+			if (length > 10) {
 				EndDraw();
 			}
 		}
@@ -64,8 +67,8 @@ namespace MapViewer.Tools {
 			_line = new Line {
 				X1 = pt1.X,
 				Y1 = pt1.Y,
-				X2 = pt1.X,
-				Y2 = pt1.Y,
+				X2 = pt1.X + 1,
+				Y2 = pt1.Y + 1,
 				Stroke = Brushes.Green,
 				StrokeThickness = 10 / _map.ZoomScale,
 				Opacity = 0.5

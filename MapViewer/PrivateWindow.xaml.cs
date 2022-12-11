@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -353,25 +354,15 @@ namespace MapViewer {
             }
         }
 
-        private void ComboBoxPlayerSize_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        private void ComboBoxPlayerSize_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
             var selected = (ComboBoxItem)ComboBoxPlayerSize.SelectedItem;
             if (selected == null || MapPublic == null || MapPrivate == null) {
                 return;
             }
-            switch (selected.Uid) {
-                case "PlayerSize_0.7":
-                    MapPrivate.SymbolsPM.ChangePlayerSizes(0.7);
-                    break;
-                case "PlayerSize_0.8":
-                    MapPrivate.SymbolsPM.ChangePlayerSizes(0.8);
-                    break;
-                case "PlayerSize_0.9":
-                    MapPrivate.SymbolsPM.ChangePlayerSizes(0.9);
-                    break;
-                case "PlayerSize_1.0":
-                    MapPrivate.SymbolsPM.ChangePlayerSizes(1.0);
-                    break;
+
+            var parts = selected.Uid.Split('_');
+            if (parts.Length == 2 && double.TryParse(parts[1], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var size)) {
+                MapPrivate.SymbolsPM.ChangePlayerSizes(size);
             }
             MapPrivate.SymbolsPM.RaiseSymbolsChanged();
         }
