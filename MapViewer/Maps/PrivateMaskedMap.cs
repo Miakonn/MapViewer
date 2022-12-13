@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using MapViewer.Symbols;
 using Path = System.IO.Path;
 using Size = System.Windows.Size;
