@@ -89,8 +89,11 @@ namespace MapViewer {
 		private void ImageNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = MapPrivate != null;
 		}
+        private void MaskNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = MapPrivate != null && MapPrivate.BmpMask != null;
+        }
 
-		private void ImagesNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+        private void ImagesNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
             e.CanExecute = (MapPrivate != null && LevelNumber > 1);
         }
 
@@ -449,14 +452,14 @@ namespace MapViewer {
         private void FullMask_Execute(object sender, ExecutedRoutedEventArgs e) {
             var result = MessageBox.Show("Are you sure you want to mask everything?", "", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes) {
-                MapPrivate.MaskAll(255);
+                MapPrivate.MaskAll();
             }
         }
 
         private void ClearMask_Execute(object sender, ExecutedRoutedEventArgs e) {
 			var result =MessageBox.Show("Are you sure you want to clear the mask?" , "", MessageBoxButton.YesNo);
 			if (result == MessageBoxResult.Yes) {
-				MapPrivate.MaskAll(0);
+                MapPrivate.ClearMaskAll();
 			}
 		}
 
@@ -708,7 +711,7 @@ namespace MapViewer {
 		private void UnmaskLineOfSight20m_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			var radius = 20 / MapPrivate.ImageScaleMperPix;
-			MapPrivate.MaskLineOfSight(_mouseDownPoint.X, _mouseDownPoint.Y, radius, 0);
+			MapPrivate.UnmaskLineOfSight(_mouseDownPoint.X, _mouseDownPoint.Y, radius);
 		}
 		#endregion
 

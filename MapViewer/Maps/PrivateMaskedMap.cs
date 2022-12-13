@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -89,10 +90,6 @@ namespace MapViewer.Maps {
                     ScreenScaleMMperM = 1000.0 / MapData.LastFigureScaleUsed;
                 }
 
-                if (BmpMask == null) {
-                    BmpMask = new WriteableBitmap(MapImage.PixelWidth + 2, MapImage.PixelHeight + 2, MapImage.DpiX, MapImage.DpiY,
-                        PixelFormats.Indexed8, MaskPalette);
-                }
                 RaiseZoomChanged();
             }
             catch (Exception ex) {
@@ -105,18 +102,29 @@ namespace MapViewer.Maps {
             }
         }
 
+        public void MaskAll() {
+            MaskRectangle(new Point(), new Point(MapImage.Width, MapImage.Height), 255);
+        }
+
+        public void ClearMaskAll() {
+            BmpMask = null;
+            UpdateBmpMaskToLayer();
+        }
 
         public void Serialize()
         {
             MapData.Serialize();
-            (BmpMask as WriteableBitmap).Serialize(CreateFilename(ImageFilePath, ".mask.png"));
+            BmpMask.Serialize(CreateFilename(ImageFilePath, ".mask.png"));
             SymbolsPM.Serialize(CreateFilename(ImageFilePath, ".symbols.xml"));
         }
 
         public void Deserialize()
         {
             MapData.Deserialize();
+
             BmpMask = BitmapUtils.Deserialize(CreateFilename(ImageFilePath, ".mask.png"));
+            UpdateBmpMaskToLayer();
+
             var imSize = new Size(MapImage.PixelWidth, MapImage.PixelHeight);
 
             SymbolsPM.Deserialize(CreateFilename(ImageFilePath, ".symbols.xml"), imSize);

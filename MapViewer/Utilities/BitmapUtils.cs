@@ -1,24 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Color = System.Drawing.Color;
 
 
 namespace MapViewer {
 	public static class BitmapUtils {
 		public static void Serialize(this WriteableBitmap wBitMap, string filename) {
-			if (wBitMap == null) {
-				return;
-			}
-			try {
-				using (var stream = new FileStream(filename, FileMode.Create)) {
-					var encoder = new PngBitmapEncoder();
 
-					encoder.Frames.Add(BitmapFrame.Create(wBitMap));
-					encoder.Save(stream);
-				}
-			}
-			catch (Exception ex) {
+            try {
+                if (wBitMap == null) {
+                    if (File.Exists(filename)) {
+                        File.Delete(filename);
+                    }
+                    return;
+                }
+                using (var stream = new FileStream(filename, FileMode.Create)) {
+                    var encoder = new PngBitmapEncoder();
+
+                    encoder.Frames.Add(BitmapFrame.Create(wBitMap));
+                    encoder.Save(stream);
+                }
+            }
+            catch (Exception ex) {
 				MessageBox.Show(ex.Message);
 			}
 		}
@@ -44,7 +52,7 @@ namespace MapViewer {
 			}
 		}
 
-		private static byte[] CreateColorData(int byteCount, byte colorIndex) {
+        private static byte[] CreateColorData(int byteCount, byte colorIndex) {
 			var colorData = new byte[byteCount];
 			for (var i = 0; i < byteCount; i++) {
 				colorData[i] = colorIndex;	// B

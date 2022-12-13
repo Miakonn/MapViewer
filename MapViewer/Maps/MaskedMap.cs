@@ -16,7 +16,7 @@ namespace MapViewer.Maps {
 
         public BitmapImage MapImage;
 
-        public BitmapSource BmpMask { get; set; }
+        public WriteableBitmap BmpMask { get; set; }
 
         public readonly Canvas CanvasMap = new Canvas();
 
@@ -177,27 +177,41 @@ namespace MapViewer.Maps {
                 Uid = "Map"
             };
             CanvasMap.Children.Add(BackgroundImage);
+            
+            // CanvasOverlay
+            CanvasOverlay.RenderTransform = DisplayTransform;
+        }
 
 
-            // CanvasMask
+        public void CreateBmpMaskIfNull() {
+            if (BmpMask == null) {
+                BmpMask = new WriteableBitmap(
+                    MapImage.PixelWidth + 2, 
+                    MapImage.PixelHeight + 2,
+                    MapImage.DpiX, MapImage.DpiY,
+                    PixelFormats.Indexed8, MaskPalette);
+            }
+        }
+
+        public void UpdateBmpMaskToLayer() {
             CanvasMask.Children.Clear();
+            if (BmpMask == null) {
+                return;
+            }
             CanvasMask.RenderTransform = DisplayTransform;
             MaskImage = new Image {
                 Opacity = MaskOpacity,
                 Source = BmpMask,
                 Uid = "Mask"
 
-            };
+            }; 
             CanvasMask.Children.Add(MaskImage);
-
-            // CanvasOverlay
-            CanvasOverlay.RenderTransform = DisplayTransform;
         }
 
         public void CreatePalette() {
             var colors = new List<Color> { Colors.Transparent };
             var color = MaskColor;
-
+    
             for (var i = 1; i <= 255; i++) {
                 colors.Add(color);
             }
@@ -290,7 +304,8 @@ namespace MapViewer.Maps {
         }
 
         public void MaskCircle(int centerX, int centerY, int radius, byte colorIndex) {
-            if (!(BmpMask is WriteableBitmap bitmap)) {
+            CreateBmpMaskIfNull();
+            if (BmpMask == null) {
                 return;
             }
 
@@ -298,31 +313,33 @@ namespace MapViewer.Maps {
             centerY = (int)(centerY * ScaleDpiFix);
             radius = (int)(radius * ScaleDpiFix);
 
-            var y0 = Between(centerY - radius, 0, bitmap.PixelHeight);
-            var yMax = Between(centerY + radius, 0, bitmap.PixelHeight);
+            var y0 = Between(centerY - radius, 0, BmpMask.PixelHeight);
+            var yMax = Between(centerY + radius, 0, BmpMask.PixelHeight);
 
             var byteCount = (2 * radius);
             var colorData = CreateColorData(byteCount, colorIndex);
 
             for (var y = y0; y < yMax; y++) {
                 var corda = (int)Math.Sqrt(radius * radius - (y - centerY) * (y - centerY));
-                var x0 = Between(centerX - corda, 0, bitmap.PixelWidth);
-                var xMax = Between(centerX + corda, 0, bitmap.PixelWidth);
+                var x0 = Between(centerX - corda, 0, BmpMask.PixelWidth);
+                var xMax = Between(centerX + corda, 0, BmpMask.PixelWidth);
                 var rectLine = new Int32Rect(x0, y, xMax - x0, 1);
 
-                bitmap.WritePixels(rectLine, colorData, rectLine.Width, 0);
+                BmpMask.WritePixels(rectLine, colorData, rectLine.Width, 0);
             }
+            UpdateBmpMaskToLayer();
         }
 
         public void MaskRectangle(Point pntTL, Point pntBR, byte colorIndex) {
-            if (!(BmpMask is WriteableBitmap bitmap)) {
+            CreateBmpMaskIfNull();
+            if (BmpMask == null) {
                 return;
             }
 
-            int left =   Between((int)(pntTL.X * ScaleDpiFix), 0, bitmap.PixelWidth);
-            int top =    Between((int)(pntTL.Y * ScaleDpiFix), 0, bitmap.PixelHeight); ;
-            int right =  Between((int)(pntBR.X * ScaleDpiFix), 0, bitmap.PixelWidth); ;
-            int bottom = Between((int)(pntBR.Y * ScaleDpiFix), 0, bitmap.PixelHeight); ;
+            int left =   Between((int)(pntTL.X * ScaleDpiFix), 0, BmpMask.PixelWidth);
+            int top =    Between((int)(pntTL.Y * ScaleDpiFix), 0, BmpMask.PixelHeight);
+            int right =  Between((int)(pntBR.X * ScaleDpiFix), 0, BmpMask.PixelWidth);
+            int bottom = Between((int)(pntBR.Y * ScaleDpiFix), 0, BmpMask.PixelHeight);
 
             var byteCount = right - left;
             var colorData = CreateColorData(byteCount, colorIndex);
@@ -330,12 +347,14 @@ namespace MapViewer.Maps {
             var rectLine = new Int32Rect(left, top, right - left, 1);
             for (var y = top; y < bottom; y++) {
                 rectLine.Y = y;
-                bitmap.WritePixels(rectLine, colorData, byteCount, 0);
+                BmpMask.WritePixels(rectLine, colorData, byteCount, 0);
             }
+            UpdateBmpMaskToLayer();
         }
 
         public void MaskPolygon(PointCollection pnts, byte colorIndex) {
-            if (!(BmpMask is WriteableBitmap bitmap)) {
+            CreateBmpMaskIfNull();
+            if (BmpMask == null) {
                 return;
             }
 
@@ -345,7 +364,8 @@ namespace MapViewer.Maps {
                 intPoints[i * 2 + 1] = (int)(ScaleDpiFix * pnts[i].Y);
             }
 
-            bitmap.FillPolygon(intPoints, colorIndex);
+            BmpMask.FillPolygon(intPoints, colorIndex);
+            UpdateBmpMaskToLayer();
         }
 
         public static Color GetPixelColor(BitmapSource bitmap, int x, int y) {
@@ -412,16 +432,16 @@ namespace MapViewer.Maps {
             bitmap.WritePixels(rect, colorArr, rect.Width, 0);
         }
 
-        public void MaskLineOfSight(double centerX, double centerY, double radius, byte colorIndex) {
-            centerX = (int)(centerX * ScaleDpiFix);
-            centerY = (int)(centerY * ScaleDpiFix);
-            radius = (int)(radius * ScaleDpiFix);
-
-            if (!(BmpMask is WriteableBitmap bitmap)) {
+        public void UnmaskLineOfSight(double centerX, double centerY, double radius) {
+           CreateBmpMaskIfNull();
+            if (BmpMask == null) {
                 return;
             }
 
-            var colorData = CreateColorData(DotSize * DotSize, colorIndex);
+            centerX = (int)(centerX * ScaleDpiFix);
+            centerY = (int)(centerY * ScaleDpiFix);
+            radius = (int)(radius * ScaleDpiFix);
+            var colorData = CreateColorData(DotSize * DotSize, 0);
             for (var angle = 0.0; angle <= 2 * Math.PI; angle += 0.005) {
                 var cosAngle = Math.Cos(angle);
                 var sinAngle = Math.Sin(angle);
@@ -432,16 +452,12 @@ namespace MapViewer.Maps {
                     if (GetPixelIsBlack(MapImage, pntX, pntY)) {
                         break;
                     }
-                    WritePixel(bitmap, pntX, pntY, colorData);
+                    WritePixel(BmpMask, pntX, pntY, colorData);
                 }
             }
+            UpdateBmpMaskToLayer();
         }
 
-        public void MaskAll(byte color) {
-            if (BmpMask != null) {
-                MaskRectangle(new Point(), new Point(MapImage.Width, MapImage.Height), color);
-            }
-        }
 
     }
 }

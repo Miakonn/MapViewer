@@ -110,7 +110,7 @@ namespace MapViewer.Maps {
             var newImageLoaded = MapId != mapSource.MapId;
             var newGroupLoaded = GroupId != mapSource.GroupId;
 
-            if (mapSource.BmpMask != null && MaskImage != null) {
+            if (mapSource.BmpMask != null) {
                 try {
                     BmpMask = mapSource.BmpMask.CloneCurrentValue();
                 }
@@ -118,8 +118,12 @@ namespace MapViewer.Maps {
                     Log.Error(ex.Message);
                     MessageBox.Show(ex.Message);
                 }
-                MaskImage.Source = BmpMask;
             }
+            else {
+                BmpMask = null;
+            }
+            UpdateBmpMaskToLayer();
+            
             if (mapSource.MapImage != null) {
                 if (newImageLoaded) {
                     MapImage = mapSource.MapImage.CloneCurrentValue();
