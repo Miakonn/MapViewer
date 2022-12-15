@@ -87,13 +87,13 @@ namespace MapViewer.Tools {
             _noOfClicks = 1;
 			_shape = new Polygon {
 				Points = _pnts,
-				Fill = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
+				Fill = new SolidColorBrush(_mask ? WritableBitmapUtils.MaskColor : Colors.White),
 				FillRule = FillRule.EvenOdd,
 				StrokeThickness = 3,
                 StrokeEndLineCap = PenLineCap.Flat,
                 StrokeStartLineCap = PenLineCap.Flat,
                 StrokeLineJoin = PenLineJoin.Bevel,
-                Stroke = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
+                Stroke = new SolidColorBrush(_mask ? WritableBitmapUtils.MaskColor : Colors.White),
 				Opacity = 0.5
 			};
 
@@ -105,7 +105,7 @@ namespace MapViewer.Tools {
 
 			_map.CanvasOverlay.Children.Remove(_shape);
 
-			_map.MaskPolygon(_pnts, (byte)(_mask ? 255 : 0));
+			_map.MaskPolygon(_pnts, WritableBitmapUtils.ColorIndex(_mask));
 			_privateWindow.ActiveTool = null;
 		}
 

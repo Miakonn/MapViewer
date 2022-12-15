@@ -30,8 +30,6 @@ namespace MapViewer.Maps {
 
         public Image BackgroundImage { get; private set; }
 
-        public BitmapPalette MaskPalette { get; private set; }
-
         public MapData MapData { get; set; }
 
         public bool Initiated;
@@ -79,25 +77,6 @@ namespace MapViewer.Maps {
             }
         }
 
-        private Color? _maskColor;
-        public Color MaskColor {
-            get {
-                if (_maskColor.HasValue) {
-                    return _maskColor.Value;
-                }
-                var colorString = Settings.Default.MaskColor;
-                try {
-                    _maskColor = (Color?) ColorConverter.ConvertFromString(colorString);
-                    Log.Info("MaskColor= " + _maskColor);
-
-                    return _maskColor ?? Colors.Black;
-                }
-                catch {
-                    Log.Error("Failed to parse color: " + colorString);
-                }
-                return Colors.Black;
-            }
-        }
 
         public double ImageScaleMperPix {
             get => MapData.ImageScaleMperPix;
@@ -185,11 +164,7 @@ namespace MapViewer.Maps {
 
         public void CreateBmpMaskIfNull() {
             if (BmpMask == null) {
-                BmpMask = new WriteableBitmap(
-                    MapImage.PixelWidth + 2, 
-                    MapImage.PixelHeight + 2,
-                    MapImage.DpiX, MapImage.DpiY,
-                    PixelFormats.Indexed8, MaskPalette);
+                BmpMask = WritableBitmapUtils.CreateMaskBitmap(MapImage);
             }
         }
 
@@ -208,15 +183,6 @@ namespace MapViewer.Maps {
             CanvasMask.Children.Add(MaskImage);
         }
 
-        public void CreatePalette() {
-            var colors = new List<Color> { Colors.Transparent };
-            var color = MaskColor;
-    
-            for (var i = 1; i <= 255; i++) {
-                colors.Add(color);
-            }
-            MaskPalette = new BitmapPalette(colors);
-        }
 
         public void CopyTransform(MaskedMap source) {
             TrfTranslate = source.TrfTranslate;

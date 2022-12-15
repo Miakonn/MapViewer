@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using MapViewer.Symbols;
@@ -24,7 +23,6 @@ namespace MapViewer.Maps {
         public PrivateMaskedMap(PrivateWindow parent, long groupId) : base(groupId) {
             ParentWindow = parent;
             MaskOpacity = 0.3;
-            CreatePalette();
             SymbolsPM = new SymbolsViewModel("S");
             SymbolsPM.SymbolsChanged += HandleSymbolsChanged;
 
@@ -83,8 +81,7 @@ namespace MapViewer.Maps {
                 CanvasOverlay.Children.Clear();
 
                 Deserialize();
-                CreatePalette();
-
+               
                 if (MapData.LastFigureScaleUsed != 0) {
                     ScreenScaleMMperM = 1000.0 / MapData.LastFigureScaleUsed;
                 }
@@ -102,7 +99,7 @@ namespace MapViewer.Maps {
         }
 
         public void MaskAll() {
-            MaskRectangle(new Point(), new Point(MapImage.Width, MapImage.Height), 255);
+            MaskRectangle(new Point(), new Point(MapImage.Width, MapImage.Height), WritableBitmapUtils.ColorIndexMask);
         }
 
         public void ClearMaskAll() {
@@ -121,7 +118,7 @@ namespace MapViewer.Maps {
         {
             MapData.Deserialize();
 
-            BmpMask = BitmapUtils.Deserialize(CreateFilename(ImageFilePath, ".mask.png"));
+            BmpMask = WritableBitmapUtils.Deserialize(CreateFilename(ImageFilePath, ".mask.png"));
             UpdateBmpMaskToLayer();
 
             var imSize = new Size(MapImage.PixelWidth, MapImage.PixelHeight);

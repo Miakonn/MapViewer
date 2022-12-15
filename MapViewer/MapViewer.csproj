@@ -100,7 +100,7 @@
     <Compile Include="Symbols\SymbolsViewModel.cs" />
     <Compile Include="Symbols\SymbolsViewModel.Factory.cs" />
     <Compile Include="Symbols\SymbolText.cs" />
-    <Compile Include="Utilities\BitmapUtils.cs" />
+    <Compile Include="Utilities\WritableBitmapUtils.cs" />
     <Compile Include="Utilities\CanvasUtils.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Dialogs\DialogAbout.xaml.cs">

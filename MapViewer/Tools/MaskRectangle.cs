@@ -64,7 +64,7 @@ namespace MapViewer.Tools {
 			_rect = new Rectangle {
 				Width = 5,
 				Height = 5,
-				Fill = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
+				Fill = new SolidColorBrush(_mask ? WritableBitmapUtils.MaskColor : Colors.White),
 				Opacity = 0.5
 			};
 
@@ -88,7 +88,7 @@ namespace MapViewer.Tools {
         private void EndDraw() {
             var pntTL = new Point((int)Math.Min(_pnt1.X, _pnt2.X), (int)Math.Min(_pnt1.Y, _pnt2.Y));
             var pntBR = new Point((int)Math.Max(_pnt1.X, _pnt2.X), (int)Math.Max(_pnt1.Y, _pnt2.Y));
-            _map.MaskRectangle(pntTL, pntBR, (byte)(_mask ? 255 : 0));
+            _map.MaskRectangle(pntTL, pntBR, WritableBitmapUtils.ColorIndex(_mask));
             _canvas.Children.Remove(_rect);
 
             _rect = null;

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using MapViewer.Symbols;
 
 // ReSharper disable once CheckNamespace
 namespace MapViewer {

@@ -62,7 +62,7 @@ namespace MapViewer.Tools {
 			_circle = new Ellipse {
 				Width = 1,
 				Height = 1,
-				Fill = new SolidColorBrush(_mask ? _map.MaskColor : Colors.White),
+				Fill = new SolidColorBrush(_mask ? WritableBitmapUtils.MaskColor : Colors.White),
 				Opacity = 0.5
 			};
 

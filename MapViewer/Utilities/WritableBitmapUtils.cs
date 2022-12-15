@@ -1,16 +1,29 @@
-﻿using System;
+﻿using MapViewer.Properties;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Color = System.Drawing.Color;
+using Color = System.Windows.Media.Color;
+using Colors = System.Windows.Media.Colors;
 
 
 namespace MapViewer {
-	public static class BitmapUtils {
-		public static void Serialize(this WriteableBitmap wBitMap, string filename) {
+	public static class WritableBitmapUtils {
+
+		public static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
+		public static BitmapPalette MaskPalette => new BitmapPalette(new List<Color> { Colors.Transparent, MaskColor });
+
+        public const byte ColorIndexTransparent = 0;
+
+        public const byte ColorIndexMask = 1;
+
+        public static byte ColorIndex(bool fMask) {
+            return fMask ? ColorIndexMask : ColorIndexTransparent;
+        }
+
+        public static void Serialize(this WriteableBitmap wBitMap, string filename) {
 
             try {
                 if (wBitMap == null) {
@@ -52,7 +65,15 @@ namespace MapViewer {
 			}
 		}
 
-        private static byte[] CreateColorData(int byteCount, byte colorIndex) {
+        public static WriteableBitmap CreateMaskBitmap(BitmapImage mapImage) {
+            return new WriteableBitmap(
+                mapImage.PixelWidth + 2,
+                mapImage.PixelHeight + 2,
+                mapImage.DpiX, mapImage.DpiY,
+                PixelFormats.Indexed8, MaskPalette);
+        }
+
+		private static byte[] CreateColorData(int byteCount, byte colorIndex) {
 			var colorData = new byte[byteCount];
 			for (var i = 0; i < byteCount; i++) {
 				colorData[i] = colorIndex;	// B
@@ -121,7 +142,7 @@ namespace MapViewer {
 					var j = i;
 					while (j > 0 && intersectionsX[j - 1] > t) {
 						intersectionsX[j] = intersectionsX[j - 1];
-						j = j - 1;
+						j--;
 					}
 					intersectionsX[j] = t;
 				}
@@ -143,5 +164,25 @@ namespace MapViewer {
 				}
 			}
 		}
-	}
+		
+        private static Color? _maskColor;
+        public static Color MaskColor {
+            get {
+                if (_maskColor.HasValue) {
+                    return _maskColor.Value;
+                }
+                var colorString = Settings.Default.MaskColor;
+                try {
+                    _maskColor = (Color?)ColorConverter.ConvertFromString(colorString);
+                   Log.Info("MaskColor= " + _maskColor);
+
+                    return _maskColor ?? Colors.Black;
+                }
+                catch {
+                    Log.Error("Failed to parse color: " + colorString);
+                }
+                return Colors.Black;
+            }
+        }
+    }
 }

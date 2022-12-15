@@ -89,7 +89,7 @@ namespace MapViewer {
             Width = rect.Width;
             Height = rect.Height;
 
-            PublicBorder.Background = new SolidColorBrush(Map.MaskColor);
+            PublicBorder.Background = new SolidColorBrush(WritableBitmapUtils.MaskColor);
         }
 
         public void MaximizeToCurrentMonitor()
