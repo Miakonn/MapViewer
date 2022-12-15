@@ -78,7 +78,7 @@ namespace MapViewer.Maps {
                 MapData = new MapData(CreateFilename(ImageFilePath, ".xml"));
 
                 BmpMask = null;
-                CanvasOverlay.Children.Clear();
+                CanvasOverlay.Clear();
 
                 Deserialize();
                
@@ -126,7 +126,7 @@ namespace MapViewer.Maps {
             SymbolsPM.Deserialize(CreateFilename(ImageFilePath, ".symbols.xml"), imSize);
             var shape = CanvasOverlay.FindElementByUid(PublicPositionUid);
             if (shape != null) {
-                CanvasOverlay.Children.Remove(shape);
+                CanvasOverlay.RemoveElement(shape);
             }
             CanvasOverlay.Loaded += delegate {
                 Zoom(1.0, new Point());

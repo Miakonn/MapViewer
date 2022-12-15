@@ -16,7 +16,7 @@ namespace MapViewer.Symbols {
         public string ImageFileName { get; set; }
         public double RotationDegree { get; set; }
         
-        public override void Draw(Canvas canvas, MapDrawSettings settings) {
+        public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
             BitmapSource iconSource;
             if (string.IsNullOrWhiteSpace(ImageFileName) || !File.Exists(ImageFileName)) {
                 iconSource = new BitmapImage(new Uri("pack://application:,,,/Images/Question_mark.png"));

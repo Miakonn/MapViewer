@@ -468,10 +468,10 @@ namespace MapViewer {
             if (result != MessageBoxResult.Yes) {
                 return;
             }
-            MapPrivate.ClearOverlay();
+            MapPrivate.CanvasOverlay.Clear();
             MapPrivate.SymbolsPM.DeleteAllSymbols();
             MapPrivate.UpdateVisibleRectangle(MapPublic);
-            MapPublic.ClearOverlay();
+            MapPublic.CanvasOverlay.Clear();
         }
 
 		private void DeleteSymbol_Execute(object sender, ExecutedRoutedEventArgs e) {

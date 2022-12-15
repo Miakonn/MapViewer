@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 
-
+// ReSharper disable once CheckNamespace
 namespace MapViewer {
 	public static class WritableBitmapUtils {
 

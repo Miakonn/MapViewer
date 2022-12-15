@@ -101,7 +101,7 @@
     <Compile Include="Symbols\SymbolsViewModel.Factory.cs" />
     <Compile Include="Symbols\SymbolText.cs" />
     <Compile Include="Utilities\WritableBitmapUtils.cs" />
-    <Compile Include="Utilities\CanvasUtils.cs" />
+    <Compile Include="Utilities\CanvasOverlay.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Dialogs\DialogAbout.xaml.cs">
       <DependentUpon>DialogAbout.xaml</DependentUpon>
@@ -118,7 +118,6 @@
     <Compile Include="Dialogs\DialogGetSingleValue.xaml.cs">
       <DependentUpon>DialogGetSingleValue.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Maps\MaskedMap.Overlay.cs" />
     <Compile Include="Tools\Calibrate.cs" />
     <Compile Include="Tools\DrawLine.cs" />
     <Compile Include="Tools\DrawCircle.cs" />

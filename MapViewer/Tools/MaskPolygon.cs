@@ -103,7 +103,7 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			_pnts.Add(_pnts[0]);
 
-			_map.CanvasOverlay.Children.Remove(_shape);
+			_map.CanvasOverlay.RemoveElement(_shape);
 
 			_map.MaskPolygon(_pnts, WritableBitmapUtils.ColorIndex(_mask));
 			_privateWindow.ActiveTool = null;

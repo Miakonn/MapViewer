@@ -162,24 +162,26 @@ namespace MapViewer.Maps {
         }
 
 
-        public void MovePublicCursor(Point pnt, long privateMapId) {
-            if (ShowPublicCursor && MapId == privateMapId) {
-                var elemCursor = CanvasOverlay.FindElementByUid(PublicCursorUid) as Ellipse;
+        private void OverlayRing(Point pos, double radius, Color color, string uid) {
+            var shape = new Ellipse {
+                Uid = uid,
+                Width = 2 * radius,
+                Height = 2 * radius,
+                Stroke = new SolidColorBrush(color),
+                StrokeThickness = 10 / ZoomScale,
+                Opacity = 0.6
+            };
 
+            Canvas.SetLeft(shape, pos.X - radius);
+            Canvas.SetTop(shape, pos.Y - radius);
+            CanvasOverlay.Children.Add(shape);
+        }
+
+        public void MovePublicCursor(Point pnt, long privateMapId) {
+            CanvasOverlay.RemoveElement(PublicCursorUid);
+            if (ShowPublicCursor && MapId == privateMapId) {
                 var radius = 30 / ZoomScale;
-                if (elemCursor == null) {
-                    OverlayRing(pnt, radius, Colors.Red, PublicCursorUid);
-                }
-                else {
-                    elemCursor.Width = 2 * radius;
-                    elemCursor.Height = 2 * radius;
-                    elemCursor.StrokeThickness = 10 / ZoomScale;
-                    Canvas.SetLeft(elemCursor, pnt.X - radius);
-                    Canvas.SetTop(elemCursor, pnt.Y - radius);
-                }
-            }
-            else {
-                RemoveElement(PublicCursorUid);
+                OverlayRing(pnt, radius, Colors.Red, PublicCursorUid);
             }
         }
 

@@ -41,7 +41,7 @@ namespace MapViewer.Symbols {
         [XmlIgnore]
         public bool IsSelected{ get; set; }
 
-        public virtual void Draw(Canvas canvas, MapDrawSettings settings) {
+        public virtual void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
             if (!(this is SymbolText)) {
                 DrawText(Caption, canvas, settings);
             }
@@ -68,7 +68,7 @@ namespace MapViewer.Symbols {
             Caption = SymbolsViewModel.CountUpCaption(symbolSource.Caption);
         }
 
-        public void DrawText(string caption, Canvas canvas, MapDrawSettings drawSettings) {
+        public void DrawText(string caption, CanvasOverlay canvas, MapDrawSettings drawSettings) {
             if (string.IsNullOrWhiteSpace(caption)) {
                 return;
             }

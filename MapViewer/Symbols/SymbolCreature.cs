@@ -8,7 +8,7 @@ using MapViewer.Maps;
 namespace MapViewer.Symbols {
     public class SymbolCreature : Symbol {
 
-        public override void Draw(Canvas canvas, MapDrawSettings settings) {
+        public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
             var brush = new SolidColorBrush(FillColor);
 
             var sizePixel = settings.GetMinSizePixelFromMeter(SizeMeter);

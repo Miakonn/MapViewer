@@ -6,7 +6,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Xml;
 using System.Xml.Serialization;
 using Color = System.Windows.Media.Color;
@@ -80,8 +79,8 @@ namespace MapViewer.Symbols {
             }
             return Symbols.Values.Select(symbol => symbol.OrderZ).Min();
         }
-        
-        public void DrawSymbols(Canvas canvas, MapDrawSettings drawSettings) {
+            
+        public void DrawSymbols(CanvasOverlay canvas, MapDrawSettings drawSettings) {
             canvas.RemoveMySymbolsFromOverlay(UidPrefix);
 
             var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.OrderZ);

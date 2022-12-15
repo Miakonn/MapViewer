@@ -1,47 +1,34 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Xml.Serialization;
-using MapViewer.Dialogs;
+using Point = System.Windows.Point;
 using MapViewer.Maps;
 
 namespace MapViewer.Symbols {
-    [Serializable]
-    [XmlInclude(typeof(Symbol))]
-    public class SymbolCircle : Symbol {
+   
+    public class SymbolRing : Symbol {
 
-        public override void Draw(CanvasOverlay canvas, MapDrawSettings settings)
-        {
-            var brush = new SolidColorBrush(FillColor);
-
+        public override void Draw(Canvas canvas, MapDrawSettings settings) {
+  
             var shape = new Ellipse {
                 Uid = Uid,
                 Width = SizeMeter / settings.ImageScaleMperPix,
                 Height = SizeMeter / settings.ImageScaleMperPix,
-                Fill = brush,
-                Opacity = 1.0,
-                Cursor = (settings.IsToolActive ? null: SymbolCursor)
+              
+                Stroke = new SolidColorBrush(FillColor),
+                StrokeThickness = 10 / settings.ZoomScale,
+                Opacity = 0.6
             };
 
             Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);
             Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);  
 
             canvas.Children.Add(shape);
-
-            base.Draw(canvas, settings);
         }
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
-            var dlg = new DialogBaseSymbolProp() {
-                Symbol = this,
-                SymbolsVM = symbolsVM,
-                DialogPos = dialogPos
-            };
-
-            var result = dlg.ShowDialog();
-            return result != null && result.Value;
+            return false;
         }
 
         public override Symbol Copy() {

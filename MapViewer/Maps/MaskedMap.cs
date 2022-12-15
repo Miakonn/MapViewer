@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using MapViewer.Properties;
 using Image = System.Windows.Controls.Image;
 using Point = System.Windows.Point;
 
@@ -22,7 +20,7 @@ namespace MapViewer.Maps {
 
         public  Canvas CanvasMask = new Canvas();
         
-        public Canvas CanvasOverlay = new Canvas();
+        public CanvasOverlay CanvasOverlay = new CanvasOverlay();
 
         public TransformGroup DisplayTransform { get; }
 

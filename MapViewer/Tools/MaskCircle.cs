@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
+using System.Threading.Tasks;
 
 namespace MapViewer.Tools {
 	public class MaskCircle : CanvasTool {
@@ -89,7 +90,7 @@ namespace MapViewer.Tools {
 		private void EndDraw() {
 			var center = GetElementCenter(_circle);
 			var radius = (int) (_circle.ActualWidth / 2);
-			_map.MaskCircle((int)center.X, (int)center.Y, radius, (byte)(_mask ? 3 : 0));
+			_map.MaskCircle((int)center.X, (int)center.Y, radius, WritableBitmapUtils.ColorIndex(_mask));
 			_canvas.Children.Remove(_circle);
 			_circle = null;
 		}
