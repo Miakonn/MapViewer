@@ -12,8 +12,8 @@ using Colors = System.Windows.Media.Colors;
 namespace MapViewer {
 	public static class WritableBitmapUtils {
 
-		public static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
-		public static BitmapPalette MaskPalette => new BitmapPalette(new List<Color> { Colors.Transparent, MaskColor });
+		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
+		private static BitmapPalette MaskPalette => new BitmapPalette(new List<Color> { Colors.Transparent, MaskColor });
 
         public const byte ColorIndexTransparent = 0;
 
@@ -65,21 +65,41 @@ namespace MapViewer {
 			}
 		}
 
+        private static int Between(int val, int min, int max) {
+            return Math.Max(Math.Min(val, max), min);
+        }
+
         public static WriteableBitmap CreateMaskBitmap(BitmapImage mapImage) {
             return new WriteableBitmap(
                 mapImage.PixelWidth + 2,
                 mapImage.PixelHeight + 2,
                 mapImage.DpiX, mapImage.DpiY,
-                PixelFormats.Indexed8, MaskPalette);
+                PixelFormats.Indexed1, MaskPalette);
         }
 
-		private static byte[] CreateColorData(int byteCount, byte colorIndex) {
-			var colorData = new byte[byteCount];
+		private static (byte[], int)  CreatePixelData(PixelFormat format, int width, int height, byte colorIndex) {
+            if (format != PixelFormats.Indexed8 && format != PixelFormats.Indexed1) {
+                var msg = $"Unsupported mask format: {format}";
+                Log.Error(msg);
+                throw new Exception(msg);
+            }
+             
+            byte data = colorIndex;
+            int byteCount = width * height;
+            int stride = width;
+            if (format == PixelFormats.Indexed1) {
+                byteCount = byteCount / 8 + height;
+                stride = (width + 7) / 8;
+                data = (byte)(colorIndex == ColorIndexTransparent ? 0x00 : 0xFF);
+            }
+
+            var pixelData = new byte[byteCount];
 			for (var i = 0; i < byteCount; i++) {
-				colorData[i] = colorIndex;	// B
+				pixelData[i] = data;
 			}
-			return colorData;
-		}
+
+            return (pixelData, stride);
+        }
 
 		/// <summary>
 		/// Draws a filled polygon
@@ -109,7 +129,7 @@ namespace MapViewer {
 			if (yMin < 0) yMin = 0;
 			if (yMax >= h) yMax = h - 1;
 
-			var colorData = CreateColorData(bmp.PixelWidth, color);
+			var (pixelData, stride) = CreatePixelData(bmp.Format, bmp.PixelWidth, 1, color);
 
 			// Scan line from min to max
 			for (var y = yMin; y <= yMax; y++) {
@@ -159,12 +179,133 @@ namespace MapViewer {
 
 						// Fill the pixels
 						var rectLine = new Int32Rect(x0, y, x1 - x0, 1);
-						bmp.WritePixels(rectLine, colorData, x1 - x0, 0);
+						bmp.WritePixels(rectLine, pixelData, stride, 0);
 					}
 				}
 			}
 		}
-		
+
+        public static void FillCircle(this WriteableBitmap bmp, int centerX, int centerY, int radius, byte colorIndex) {
+         
+            var y0 = Between(centerY - radius, 0, bmp.PixelHeight);
+            var yMax = Between(centerY + radius, 0, bmp.PixelHeight);
+
+            var byteCount = (2 * radius);
+            var (pixelData, stride) = CreatePixelData(bmp.Format, byteCount, 1, colorIndex);
+
+            for (var y = y0; y < yMax; y++) {
+                var corda = (int)Math.Sqrt(radius * radius - (y - centerY) * (y - centerY));
+                var x0 = Between(centerX - corda, 0, bmp.PixelWidth);
+                var xMax = Between(centerX + corda, 0, bmp.PixelWidth);
+                var rectLine = new Int32Rect(x0, y, xMax - x0, 1);
+
+                bmp.WritePixels(rectLine, pixelData, stride, 0);
+            }
+        }
+
+        public static void FillRectangle(this WriteableBitmap bmp, int left, int top, int right, int bottom, byte colorIndex) {
+            left =   Between(left, 0, bmp.PixelWidth);
+            top =    Between(top, 0, bmp.PixelHeight);
+            right =  Between(right, 0, bmp.PixelWidth);
+            bottom = Between(bottom, 0, bmp.PixelHeight);
+
+            var byteCount = (right - left);
+            var (pixelData, stride) = CreatePixelData(bmp.Format, byteCount, 1, colorIndex);
+
+            var rectLine = new Int32Rect(left, top, right - left, 1);
+            for (var y = top; y < bottom; y++) {
+                rectLine.Y = y;
+                bmp.WritePixels(rectLine, pixelData, stride, 0);
+            }
+        }
+
+        public static void UnmaskLineOfSight(this WriteableBitmap bmp, BitmapImage mapImage, int centerX, int centerY, int radius) {
+
+			var (pixelData, stride) = CreatePixelData(bmp.Format, DotSize, DotSize, ColorIndexTransparent);
+            for (var angle = 0.0; angle <= 2 * Math.PI; angle += 0.005) {
+                var cosAngle = Math.Cos(angle);
+                var sinAngle = Math.Sin(angle);
+
+                for (var rad = 0.0; rad <= radius; rad += 4.0) {
+                    var pntX = (int)(centerX + cosAngle * rad);
+                    var pntY = (int)(centerY + sinAngle * rad);
+                    if (GetPixelIsBlack(mapImage, pntX, pntY)) {
+                        break;
+                    }
+                    bmp.WritePixel(pntX, pntY, pixelData, stride);
+                }
+            }
+        }
+
+
+        const int DotRadius = 2;
+        const int DotSize = DotRadius * 2 + 1;
+
+        private static void WritePixel(this WriteableBitmap bitmap, int x, int y, byte[] pixelArr, int stride) {
+
+            if (x - DotRadius < 0 || y - DotRadius < 0 || x + DotRadius >= bitmap.PixelWidth || y + DotRadius >= bitmap.PixelHeight) {
+                return;
+            }
+            var rect = new Int32Rect(x - DotRadius, y - DotRadius, DotSize, DotSize);
+            bitmap.WritePixels(rect, pixelArr, stride, 0);
+        }
+
+        //public static Color GetPixelColor(BitmapSource bitmap, int x, int y) {
+        //    if (x < 0 || x >= bitmap.PixelWidth || y < 0 || y >= bitmap.PixelHeight) {
+        //        return Colors.Black;
+        //    }
+
+        //    const int side = 1;
+        //    var bytesPerPixel = (bitmap.Format.BitsPerPixel + 7) / 8;
+        //    var stride = side * bytesPerPixel;
+        //    var bytes = new byte[side * side * bytesPerPixel];
+        //    var rect = new Int32Rect(x, y, side, side);
+
+        //    bitmap.CopyPixels(rect, bytes, stride, 0);
+
+        //    if (bitmap.Format == PixelFormats.Pbgra32) {
+        //        return Color.FromArgb(bytes[3], bytes[2], bytes[1], bytes[0]);
+        //    }
+        //    if (bitmap.Format == PixelFormats.Bgr32) {
+        //        return Color.FromArgb(0xFF, bytes[2], bytes[1], bytes[0]);
+        //    }
+        //    if (bitmap.Format == PixelFormats.Indexed8 && bitmap.Palette != null) {
+        //        var color = bitmap.Palette.Colors[bytes[0]];
+        //        return color;
+        //    }
+        //    // handle other required formats
+        //    return Colors.Black;
+        //}
+
+        public static bool GetPixelIsBlack(BitmapSource bitmap, int x, int y) {
+            if (x < 0 || x >= bitmap.PixelWidth || y < 0 || y >= bitmap.PixelHeight) {
+                return true;
+            }
+
+            var bytesPerPixel = (bitmap.Format.BitsPerPixel + 7) / 8;
+            var stride = bytesPerPixel;
+            var bytes = new byte[bytesPerPixel];
+            var rect = new Int32Rect(x, y, 1, 1);
+
+            bitmap.CopyPixels(rect, bytes, stride, 0);
+
+            if (bitmap.Format == PixelFormats.Pbgra32 || bitmap.Format == PixelFormats.Bgr32) {
+                return (bytes[2] + bytes[1] + bytes[0]) < 192;
+            }
+            if (bitmap.Format == PixelFormats.Indexed8 && bitmap.Palette != null) {
+                var color = bitmap.Palette.Colors[bytes[0]];
+                return (color.R + color.G + color.B) < 192;
+            }
+            if (bitmap.Format == PixelFormats.Indexed1 && bitmap.Palette != null) {
+                var color = bitmap.Palette.Colors[bytes[0]];
+                return (color.R + color.G + color.B) < 192;
+            }
+            // handle other required formats
+            return true;
+        }
+
+
+
         private static Color? _maskColor;
         public static Color MaskColor {
             get {

@@ -7,7 +7,7 @@ using Image = System.Windows.Controls.Image;
 using Point = System.Windows.Point;
 
 namespace MapViewer.Maps {
-    public partial class MaskedMap {
+    public class MaskedMap {
         #region Properties
 
         public static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
@@ -134,7 +134,6 @@ namespace MapViewer.Maps {
             IsLinked = false;
         }
 
-
         public void BitmapFromUri(Uri source) {
             MapImage = new BitmapImage();
             MapImage.BeginInit();
@@ -159,7 +158,6 @@ namespace MapViewer.Maps {
             CanvasOverlay.RenderTransform = DisplayTransform;
         }
 
-
         public void CreateBmpMaskIfNull() {
             if (BmpMask == null) {
                 BmpMask = WritableBitmapUtils.CreateMaskBitmap(MapImage);
@@ -181,7 +179,6 @@ namespace MapViewer.Maps {
             CanvasMask.Children.Add(MaskImage);
         }
 
-
         public void CopyTransform(MaskedMap source) {
             TrfTranslate = source.TrfTranslate;
             TrfRotation = source.TrfRotation;
@@ -197,7 +194,6 @@ namespace MapViewer.Maps {
             TrfTranslate.Y = 0;
         }
 
-
         public Point CenterInMap() {
             var pos = new Point(CanvasMap.ActualWidth / 2, CanvasMap.ActualHeight / 2);
             var inverse = DisplayTransform.Inverse;
@@ -207,20 +203,15 @@ namespace MapViewer.Maps {
             }
             return new Point();
         }
-
-        public Point CenterInCanvas() {
-            var pos = new Point(CanvasMap.ActualWidth / 2, CanvasMap.ActualHeight / 2);
-            return pos;
-        }
         
-        public Point GetPosInMap(Point pos) {
-            var inverse = DisplayTransform.Inverse;
-            if (inverse != null) {
-                var posOut = inverse.Transform(pos);
-                return posOut;
-            }
-            return new Point();
-        }
+        //public Point GetPosInMap(Point pos) {
+        //    var inverse = DisplayTransform.Inverse;
+        //    if (inverse != null) {
+        //        var posOut = inverse.Transform(pos);
+        //        return posOut;
+        //    }
+        //    return new Point();
+        //}
 
         public void RotateClockwise() {
             TrfRotation.Angle += 90.0;
@@ -240,8 +231,7 @@ namespace MapViewer.Maps {
             
             return Math.Min(element.RenderSize.Width / MapImage.Width, element.RenderSize.Height / MapImage.Height);
         }
-
-
+        
         public void Translate(Vector move) {
             TrfTranslate.X += move.X;
             TrfTranslate.Y += move.Y;
@@ -254,19 +244,7 @@ namespace MapViewer.Maps {
 
             Log.DebugFormat("{0}: Value={1}", label, DisplayTransform.Value);
         }
-
-        private static int Between(int val, int min, int max) {
-            return Math.Max(Math.Min(val, max), min);
-        }
-
-        private static byte[] CreateColorData(int byteCount, byte colorIndex) {
-            var colorData = new byte[byteCount];
-            for (var i = 0; i < byteCount; i++) {
-                colorData[i] = colorIndex;  // B
-            }
-            return colorData;
-        }
-
+        
         public void MaskCircle(int centerX, int centerY, int radius, byte colorIndex) {
             CreateBmpMaskIfNull();
             if (BmpMask == null) {
@@ -275,22 +253,9 @@ namespace MapViewer.Maps {
 
             centerX = (int)(centerX * ScaleDpiFix);
             centerY = (int)(centerY * ScaleDpiFix);
-            radius = (int)(radius * ScaleDpiFix);
-
-            var y0 = Between(centerY - radius, 0, BmpMask.PixelHeight);
-            var yMax = Between(centerY + radius, 0, BmpMask.PixelHeight);
-
-            var byteCount = (2 * radius);
-            var colorData = CreateColorData(byteCount, colorIndex);
-
-            for (var y = y0; y < yMax; y++) {
-                var corda = (int)Math.Sqrt(radius * radius - (y - centerY) * (y - centerY));
-                var x0 = Between(centerX - corda, 0, BmpMask.PixelWidth);
-                var xMax = Between(centerX + corda, 0, BmpMask.PixelWidth);
-                var rectLine = new Int32Rect(x0, y, xMax - x0, 1);
-
-                BmpMask.WritePixels(rectLine, colorData, rectLine.Width, 0);
-            }
+            radius =  (int)(radius * ScaleDpiFix);
+            BmpMask.FillCircle(centerX, centerY, radius, colorIndex);
+            
             UpdateBmpMaskToLayer();
         }
 
@@ -300,19 +265,11 @@ namespace MapViewer.Maps {
                 return;
             }
 
-            int left =   Between((int)(pntTL.X * ScaleDpiFix), 0, BmpMask.PixelWidth);
-            int top =    Between((int)(pntTL.Y * ScaleDpiFix), 0, BmpMask.PixelHeight);
-            int right =  Between((int)(pntBR.X * ScaleDpiFix), 0, BmpMask.PixelWidth);
-            int bottom = Between((int)(pntBR.Y * ScaleDpiFix), 0, BmpMask.PixelHeight);
-
-            var byteCount = right - left;
-            var colorData = CreateColorData(byteCount, colorIndex);
-
-            var rectLine = new Int32Rect(left, top, right - left, 1);
-            for (var y = top; y < bottom; y++) {
-                rectLine.Y = y;
-                BmpMask.WritePixels(rectLine, colorData, byteCount, 0);
-            }
+            int left =   (int)(pntTL.X * ScaleDpiFix);
+            int top =    (int)(pntTL.Y * ScaleDpiFix);
+            int right =  (int)(pntBR.X * ScaleDpiFix);
+            int bottom = (int)(pntBR.Y * ScaleDpiFix);
+            BmpMask.FillRectangle(left, top, right, bottom, colorIndex);
             UpdateBmpMaskToLayer();
         }
 
@@ -324,101 +281,25 @@ namespace MapViewer.Maps {
 
             var intPoints = new int[pnts.Count * 2];
             for (var i = 0; i < pnts.Count; i++) {
-                intPoints[i * 2] = (int)(ScaleDpiFix * pnts[i].X);
-                intPoints[i * 2 + 1] = (int)(ScaleDpiFix * pnts[i].Y);
+                intPoints[i * 2] = (int)(pnts[i].X * ScaleDpiFix);
+                intPoints[i * 2 + 1] = (int)(pnts[i].Y * ScaleDpiFix);
             }
 
             BmpMask.FillPolygon(intPoints, colorIndex);
             UpdateBmpMaskToLayer();
         }
 
-        public static Color GetPixelColor(BitmapSource bitmap, int x, int y) {
-            if (x < 0 || x >= bitmap.PixelWidth || y < 0 || y >= bitmap.PixelHeight) {
-                return Colors.Black;
-            }
-
-            const int side = 1;
-            var bytesPerPixel = (bitmap.Format.BitsPerPixel + 7) / 8;
-            var stride = side * bytesPerPixel;
-            var bytes = new byte[side * side * bytesPerPixel];
-            var rect = new Int32Rect(x, y, side, side);
-
-            bitmap.CopyPixels(rect, bytes, stride, 0);
-
-            if (bitmap.Format == PixelFormats.Pbgra32) {
-                return Color.FromArgb(bytes[3], bytes[2], bytes[1], bytes[0]);
-            }
-            if (bitmap.Format == PixelFormats.Bgr32) {
-                return Color.FromArgb(0xFF, bytes[2], bytes[1], bytes[0]);
-            }
-            if (bitmap.Format == PixelFormats.Indexed8 && bitmap.Palette != null) {
-                var color = bitmap.Palette.Colors[bytes[0]];
-                return color;
-            }
-            // handle other required formats
-            return Colors.Black;
-        }
-
-        public static bool GetPixelIsBlack(BitmapSource bitmap, int x, int y)
-        {
-            if (x < 0 || x >= bitmap.PixelWidth || y < 0 || y >= bitmap.PixelHeight) {
-                return true;
-            }
-
-            var bytesPerPixel = (bitmap.Format.BitsPerPixel + 7) / 8;
-            var stride = bytesPerPixel;
-            var bytes = new byte[bytesPerPixel];
-            var rect = new Int32Rect(x, y, 1, 1);
-
-            bitmap.CopyPixels(rect, bytes, stride, 0);
-
-            if (bitmap.Format == PixelFormats.Pbgra32 || bitmap.Format == PixelFormats.Bgr32) {
-                return (bytes[2] + bytes[1] + bytes[0]) < 192;
-            }
-            if (bitmap.Format == PixelFormats.Indexed8 && bitmap.Palette != null) {
-                var color = bitmap.Palette.Colors[bytes[0]];
-                return (color.R + color.G + color.B) < 192;
-            }
-            // handle other required formats
-            return true;
-        }
-
-
-        const int DotRadius = 2;
-        const int DotSize = DotRadius * 2 + 1;
-
-        public static void WritePixel(WriteableBitmap bitmap, int x, int y, byte[] colorArr) {
-
-            if (x - DotRadius < 0 || y - DotRadius < 0 || x + DotRadius >= bitmap.PixelWidth || y + DotRadius >= bitmap.PixelHeight) {
-                return;
-            }
-            var rect = new Int32Rect(x - DotRadius, y - DotRadius, DotSize, DotSize);
-            bitmap.WritePixels(rect, colorArr, rect.Width, 0);
-        }
-
-        public void UnmaskLineOfSight(double centerX, double centerY, double radius) {
+        public void UnmaskLineOfSight(Point center, double radius) {
            CreateBmpMaskIfNull();
             if (BmpMask == null) {
                 return;
             }
 
-            centerX = (int)(centerX * ScaleDpiFix);
-            centerY = (int)(centerY * ScaleDpiFix);
-            radius = (int)(radius * ScaleDpiFix);
-            var colorData = CreateColorData(DotSize * DotSize, 0);
-            for (var angle = 0.0; angle <= 2 * Math.PI; angle += 0.005) {
-                var cosAngle = Math.Cos(angle);
-                var sinAngle = Math.Sin(angle);
+            int centerX =   (int)(center.X * ScaleDpiFix);
+            int centerY =   (int)(center.Y * ScaleDpiFix);
+            int radiusInt = (int)(radius * ScaleDpiFix);
+            BmpMask.UnmaskLineOfSight(MapImage, centerX, centerY, radiusInt);
 
-                for (var rad = 0.0; rad <= radius; rad += 4.0) {
-                    var pntX = (int)(centerX + cosAngle * rad);
-                    var pntY = (int)(centerY + sinAngle * rad);
-                    if (GetPixelIsBlack(MapImage, pntX, pntY)) {
-                        break;
-                    }
-                    WritePixel(BmpMask, pntX, pntY, colorData);
-                }
-            }
             UpdateBmpMaskToLayer();
         }
 

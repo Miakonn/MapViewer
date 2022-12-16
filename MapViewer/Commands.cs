@@ -711,7 +711,7 @@ namespace MapViewer {
 		private void UnmaskLineOfSight20m_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
 			var radius = 20 / MapPrivate.ImageScaleMperPix;
-			MapPrivate.UnmaskLineOfSight(_mouseDownPoint.X, _mouseDownPoint.Y, radius);
+			MapPrivate.UnmaskLineOfSight(_mouseDownPoint, radius);
 		}
 		#endregion
 
