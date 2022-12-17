@@ -90,6 +90,7 @@
     <Compile Include="Maps\PrivateMaskedMap.cs" />
     <Compile Include="Maps\PublicMaskedMap.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Symbols\Ruler.cs" />
     <Compile Include="Symbols\SymbolCircle.cs" />
     <Compile Include="Symbols\SymbolCone.cs" />
     <Compile Include="Symbols\SymbolCreature.cs" />

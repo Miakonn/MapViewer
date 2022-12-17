@@ -439,8 +439,8 @@ namespace MapViewer {
 
             MapPrivate.Serialize();
 			MapPublic.PublishFrom(MapPrivate);
-			PublicWindow.SetRuler();
-			PublicWindow.DrawCompass();
+			PublicWindow.Map.DrawRuler(PublicWindow.ActualWidth, PublicWindow.ActualHeight);
+			PublicWindow.Map.DrawCompass(PublicWindow.ActualWidth, PublicWindow.ActualHeight);
             PublicWindow.MaximizeToCurrentMonitor();
 
             MapPrivate.UpdateVisibleRectangle(MapPublic);

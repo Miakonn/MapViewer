@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MapViewer.Symbols;
 
@@ -15,6 +16,10 @@ namespace MapViewer.Maps {
         public PublicWindow ParentWindow { get; set; }
 
         private PrivateMaskedMap _mapSource;
+
+        public readonly Canvas CanvasRuler = new Canvas();
+
+        private readonly RotateTransform _compassTransform = new RotateTransform();
 
         public PublicMaskedMap(PublicWindow parent, long groupId) : base(groupId) {
             ParentWindow = parent;
@@ -150,6 +155,12 @@ namespace MapViewer.Maps {
             HandleSymbolsChanged(mapSource.SymbolsPM, null);
         }
 
+
+        public override void RotateClockwise() {
+            base.RotateClockwise();
+            _compassTransform.Angle = TrfRotation.Angle;
+        }
+
         public void HookUnhookFromSymbolsVM(PrivateMaskedMap mapSourceNew) {
             if (mapSourceNew == _mapSource) {
                 return;
@@ -184,6 +195,40 @@ namespace MapViewer.Maps {
                 OverlayRing(pnt, radius, Colors.Red, PublicCursorUid);
             }
         }
+
+
+        public void DrawCompass(double actualWidth, double actualHeight) {
+            var image = new BitmapImage(new Uri("pack://application:,,,/Images/Compass_rose.png"));
+
+            _compassTransform.Angle = TrfRotation.Angle;
+            _compassTransform.CenterX = image.Width / 2;
+            _compassTransform.CenterY = image.Height / 2;
+
+            var compass = new Image {
+                RenderTransform = _compassTransform,
+                Opacity = 1.0,
+                Source = image,
+                Uid = "Compass"
+            };
+            Canvas.SetLeft(compass, actualWidth - image.Width - 25);
+            Canvas.SetTop(compass, actualHeight - image.Height - 25);
+            CanvasRuler.Children.Add(compass);
+        }
+
+        public void DrawRuler(double actualWidth, double actualHeight) {
+            var ruler = new Ruler(CanvasRuler);
+
+            var drawSettings = new MapDrawSettings {
+                ZoomScale = ZoomScale,
+                ImageScaleMperPix = ImageScaleMperPix,
+                MinSymbolSizePixel = PlayerMinSizePixel,
+                IsToolActive = false,
+                UseTextBackground = false
+            };
+
+            ruler.Draw(actualHeight, drawSettings, Unit);
+        }
+
 
         private void HandleSymbolsChanged(object sender, EventArgs e) {
             var drawSettings = new MapDrawSettings {

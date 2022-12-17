@@ -213,7 +213,7 @@ namespace MapViewer.Maps {
         //    return new Point();
         //}
 
-        public void RotateClockwise() {
+        public virtual void RotateClockwise() {
             TrfRotation.Angle += 90.0;
             var winSizePix = CanvasMap.RenderSize;
             TrfRotation.CenterX = winSizePix.Width / 2;
