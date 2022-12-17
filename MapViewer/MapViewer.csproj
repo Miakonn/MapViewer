@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomCommands.cs" />
     <Compile Include="Dialogs\DialogBaseSymbolProp.xaml.cs">
       <DependentUpon>DialogBaseSymbolProp.xaml</DependentUpon>
     </Compile>

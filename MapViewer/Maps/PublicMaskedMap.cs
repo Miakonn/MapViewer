@@ -195,8 +195,7 @@ namespace MapViewer.Maps {
                 OverlayRing(pnt, radius, Colors.Red, PublicCursorUid);
             }
         }
-
-
+        
         public void DrawCompass(double actualWidth, double actualHeight) {
             var image = new BitmapImage(new Uri("pack://application:,,,/Images/Compass_rose.png"));
 
@@ -217,28 +216,13 @@ namespace MapViewer.Maps {
 
         public void DrawRuler(double actualWidth, double actualHeight) {
             var ruler = new Ruler(CanvasRuler);
-
-            var drawSettings = new MapDrawSettings {
-                ZoomScale = ZoomScale,
-                ImageScaleMperPix = ImageScaleMperPix,
-                MinSymbolSizePixel = PlayerMinSizePixel,
-                IsToolActive = false,
-                UseTextBackground = false
-            };
-
+            var drawSettings = GetMapDrawSettings(false);
             ruler.Draw(actualHeight, drawSettings, Unit);
         }
 
 
         private void HandleSymbolsChanged(object sender, EventArgs e) {
-            var drawSettings = new MapDrawSettings {
-                ZoomScale = ZoomScale,
-                ImageScaleMperPix = ImageScaleMperPix,
-                MinSymbolSizePixel = PlayerMinSizePixel,
-                IsToolActive = false,
-                UseTextBackground = UseTextBackground
-            };
-
+            var drawSettings = GetMapDrawSettings(false);
             var symbolsPm = (SymbolsViewModel)sender;
             symbolsPm?.DrawSymbols(CanvasOverlay, drawSettings);
         }

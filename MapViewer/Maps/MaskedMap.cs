@@ -75,6 +75,15 @@ namespace MapViewer.Maps {
             }
         }
 
+        public MapDrawSettings GetMapDrawSettings(bool isToolACtive) {
+            return new MapDrawSettings {
+                ZoomScale = ZoomScale,
+                ImageScaleMperPix = ImageScaleMperPix,
+                MinSymbolSizePixel = PlayerMinSizePixel,
+                IsToolActive = isToolACtive,
+                UseTextBackground = UseTextBackground
+            };
+        }
 
         public double ImageScaleMperPix {
             get => MapData.ImageScaleMperPix;

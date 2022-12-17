@@ -121,8 +121,7 @@ namespace MapViewer.Maps {
             BmpMask = WritableBitmapUtils.Deserialize(CreateFilename(ImageFilePath, ".mask.png"));
             UpdateBmpMaskToLayer();
 
-            var imSize = new Size(MapImage.PixelWidth, MapImage.PixelHeight);
-
+            var imSize = new Size(MapImage.Width, MapImage.Height);
             SymbolsPM.Deserialize(CreateFilename(ImageFilePath, ".symbols.xml"), imSize);
             var shape = CanvasOverlay.FindElementByUid(PublicPositionUid);
             if (shape != null) {
@@ -156,18 +155,10 @@ namespace MapViewer.Maps {
             return "";
         }
 
-
         #region Symbols
 
         public void HandleSymbolsChanged(object sender, EventArgs e) {
-
-            var drawSettings = new MapDrawSettings {
-                ZoomScale = ZoomScale,
-                ImageScaleMperPix = ImageScaleMperPix,
-                MinSymbolSizePixel = PlayerMinSizePixel,
-                IsToolActive = ParentWindow.ActiveTool != null,
-                UseTextBackground = UseTextBackground
-            };
+            var drawSettings = GetMapDrawSettings(ParentWindow.ActiveTool != null);
 
             SymbolsPM?.DrawSymbols(CanvasOverlay, drawSettings);
             SystemSymbolsPM?.DrawSymbols(CanvasOverlay, drawSettings);

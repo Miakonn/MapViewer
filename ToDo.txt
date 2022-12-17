@@ -12,8 +12,6 @@ Medel prio =================================
 
 * gummiband vid förflyttning
 
-* städa bort mer element
-
 * lista med alla symboler
 
 Låg prio ------------------------
@@ -29,3 +27,5 @@ Låg prio ------------------------
 * visa rutan före publicering
 
 * fixa så zoom är runt cursor
+
+* tillåt rotering av kompass
