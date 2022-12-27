@@ -75,18 +75,14 @@ namespace MapViewer.Symbols {
             }
  
             var textBlock = new OutlineTextControl {
-                FontSize = 20 / drawSettings.ZoomScale,
                 Caption = caption,
-                FontWeight = FontWeights.DemiBold,
-                FontStyle = FontStyles.Normal,
-                Fill = new SolidColorBrush(Colors.White),
-                Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 1.2 / drawSettings.ZoomScale
+                FontSize = 20 / drawSettings.ZoomScale,
+                StrokeThickness = 1.2 / drawSettings.ZoomScale,
+                Uid = Uid
             };
 
-            textBlock.CreateText();
-            var rect = textBlock.TextBounds;
-            textBlock.Uid = Uid + "_Text";
+            var rect = textBlock.CreateText();
+
             var nudge = 2 / drawSettings.ZoomScale;
 
             Canvas.SetLeft(textBlock, StartPoint.X - (rect.Width) / 2.0 - nudge);
