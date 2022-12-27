@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using MapViewer.Utilities;
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
 
@@ -72,22 +73,24 @@ namespace MapViewer.Symbols {
             if (string.IsNullOrWhiteSpace(caption)) {
                 return;
             }
-            var fontSize = 20 / drawSettings.ZoomScale;
-            var fontColor = CalculatingContrastingColor();
-
-            var textBlock = new TextBlock {
-                Uid = Uid + "_Text",
-                Text = caption,
-                FontSize = fontSize,
-                Foreground = new SolidColorBrush(fontColor),
-                Background = drawSettings.UseTextBackground ? new SolidColorBrush(FillColor) : null,
-                FontWeight = FontWeights.Normal,
-                IsHitTestVisible = false
+ 
+            var textBlock = new OutlineTextControl {
+                FontSize = 20 / drawSettings.ZoomScale,
+                Caption = caption,
+                FontWeight = FontWeights.DemiBold,
+                FontStyle = FontStyles.Normal,
+                Fill = new SolidColorBrush(Colors.White),
+                Stroke = new SolidColorBrush(Colors.Black),
+                StrokeThickness = 1.2 / drawSettings.ZoomScale
             };
 
-            var textSize = canvas.GetTextSize(textBlock);
-            Canvas.SetLeft(textBlock, StartPoint.X - textSize.Width / 2.0);
-            Canvas.SetTop(textBlock, StartPoint.Y - textSize.Height / 2.0);
+            textBlock.CreateText();
+            var rect = textBlock.TextBounds;
+            textBlock.Uid = Uid + "_Text";
+            var nudge = 2 / drawSettings.ZoomScale;
+
+            Canvas.SetLeft(textBlock, StartPoint.X - (rect.Width) / 2.0 - nudge);
+            Canvas.SetTop(textBlock, StartPoint.Y - (rect.Height)  / 2.0 - nudge);
             canvas.Children.Add(textBlock);
         }
 

@@ -7,6 +7,7 @@ Hög prio ================================
 
 
 Medel prio =================================
+* symboler utan att kalibrera bild?
 
 * kolla indata i dialogprop
 
@@ -15,6 +16,8 @@ Medel prio =================================
 * lista med alla symboler
 
 Låg prio ------------------------
+
+* släppa låsta bildfiler?
 
 * rotera alla objekt?
 
@@ -29,3 +32,5 @@ Låg prio ------------------------
 * fixa så zoom är runt cursor
 
 * tillåt rotering av kompass
+
+* hit points i prop dialogen?
