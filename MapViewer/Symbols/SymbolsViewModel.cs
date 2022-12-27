@@ -198,7 +198,7 @@ namespace MapViewer.Symbols {
             }
 
             int i = caption.Length - 1;
-            while (char.IsDigit(caption[i]) && i >= 0) {
+            while (i >= 0 && char.IsDigit(caption[i])) {
                 i--;
             }
 
