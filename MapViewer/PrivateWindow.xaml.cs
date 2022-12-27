@@ -105,7 +105,6 @@ namespace MapViewer {
             MapPublic.Create();
 
             PrivateContextMenu.Opened += ContextMenu_OnOpened;
-            CheckBoxTextBkg.IsChecked = false;
 
             InitTimer();
 
@@ -121,8 +120,7 @@ namespace MapViewer {
         }
         
 
-        public void SetScale(int scale)
-        {
+        public void SetScale(int scale) {
             if (scale == 0) {
                 ComboBoxPublicScale.Text = "Linked";
             }
@@ -218,7 +216,7 @@ namespace MapViewer {
             GetLastClickedSymbol();
 
             bool shiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-
+            Debug.WriteLine($"PrivateWinMouseDown: {shiftPressed}");
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 if (shiftPressed) {
                     if (_lastClickedSymbol != null) {

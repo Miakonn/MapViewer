@@ -80,8 +80,7 @@ namespace MapViewer.Maps {
                 ZoomScale = ZoomScale,
                 ImageScaleMperPix = ImageScaleMperPix,
                 MinSymbolSizePixel = PlayerMinSizePixel,
-                IsToolActive = isToolACtive,
-                UseTextBackground = UseTextBackground
+                IsToolActive = isToolACtive
             };
         }
 
@@ -113,9 +112,6 @@ namespace MapViewer.Maps {
         public double ZoomScale => MapImage != null ? TrfScale.ScaleX : 1.0;
 
         public double ScaleDpiFix => MapImage != null ? (MapImage.PixelHeight / MapImage.Height) : 1.0;
-
-        public bool UseTextBackground { get; set; } = false;
-
 
         public event EventHandler ImageScaleChanged;
 
