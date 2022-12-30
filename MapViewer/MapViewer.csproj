@@ -102,6 +102,7 @@
     <Compile Include="Symbols\SymbolsViewModel.cs" />
     <Compile Include="Symbols\SymbolsViewModel.Factory.cs" />
     <Compile Include="Symbols\SymbolText.cs" />
+    <Compile Include="Tools\SelectSymbols.cs" />
     <Compile Include="Utilities\OutlineTextControl.cs" />
     <Compile Include="Utilities\WritableBitmapUtils.cs" />
     <Compile Include="Utilities\CanvasOverlay.cs" />
@@ -295,6 +296,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Question_mark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Rectangular_selection.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

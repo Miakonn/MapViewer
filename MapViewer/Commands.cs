@@ -95,7 +95,11 @@ namespace MapViewer {
                             && Level > 0
                             && _lastClickedSymbol != null);
         }
-        
+
+        private void SelectSymbols_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = (MapPrivate != null && MapPrivate.SymbolsPM.SymbolsExists);
+        }
+
         public void OpenLastImage_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
             InitSettings();
             try {
@@ -478,8 +482,15 @@ namespace MapViewer {
             }
             MapPrivate.SymbolsPM.MoveSymbolUpDown(_lastClickedSymbol, MapBelow.SymbolsPM);
         }
-        
-		private void RotateMap_Execute(object sender, ExecutedRoutedEventArgs e) {
+
+        private void SelectSymbols_Execute(object sender, ExecutedRoutedEventArgs e) {
+            if (CheckToggleState(e.OriginalSource)) {
+                var tool = new Tools.SelectSymbols(this, e.OriginalSource, true);
+                ActiveTool = tool;
+            }
+        }
+
+        private void RotateMap_Execute(object sender, ExecutedRoutedEventArgs e) {
 			PublicWindow.RotateClockwise();
 			MapPrivate.UpdateVisibleRectangle(MapPublic);
         }

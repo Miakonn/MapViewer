@@ -29,6 +29,7 @@ namespace MapViewer.Symbols {
 
         public SymbolsViewModel() {
             Symbols = new Dictionary<string, Symbol>();
+            SymbolsOnly = new Collection<Symbol>();
         }
 
         public SymbolsViewModel(string prefix) {
@@ -45,6 +46,8 @@ namespace MapViewer.Symbols {
         public void AddSymbolWithoutRaise(Symbol symbol) {
             Symbols[symbol.Uid] = symbol;
         }
+
+        public bool SymbolsExists => Symbols.Count > 0;
 
         public Symbol FindSymbolFromUid(string uid) {
             if (string.IsNullOrWhiteSpace(uid) || !Symbols.ContainsKey(uid)) {
@@ -179,6 +182,15 @@ namespace MapViewer.Symbols {
 
             RaiseSymbolsChanged();
         }
+        public void SelectSymbolRectangle(Rect rect) {
+            foreach (var symbol in Symbols.Values) {
+                if (rect.Contains(symbol.StartPoint)) {
+                    symbol.IsSelected = true;
+                }
+            }
+
+            RaiseSymbolsChanged();
+        }
 
         public void ChangePlayerSizes(double sizeMeterNew) {
             foreach (var symbol in Symbols.Values) {
@@ -250,6 +262,9 @@ namespace MapViewer.Symbols {
 
         // Check and calulate if symbol positions needs to scaled to fit.
         private double GetNeededScaleToFitThisImage(Collection<Symbol> symbols, Size imSize) {
+            if (symbols == null) {
+                return 1.0;
+            }
             double maxX = 0;
             double maxY = 0;
             foreach (var symbol in symbols) {

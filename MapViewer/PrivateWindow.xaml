@@ -57,7 +57,7 @@
 
         <CommandBinding Command="mapViewer:CustomCommands.FullMask" Executed="FullMask_Execute" CanExecute="ImageNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.ClearMask" Executed="ClearMask_Execute" CanExecute="MaskNeeded_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearSymbols_Execute" CanExecute="ImageNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.ClearOverlay" Executed="ClearSymbols_Execute" CanExecute="SelectSymbols_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.OpenImage" Executed="OpenImage_Execute" CanExecute="Always_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.OpenLastImage" Executed="OpenLastImage_Execute" CanExecute="OpenLastImage_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.PublishMap" Executed="PublishMap_Execute" CanExecute="Publish_CanExecute" />
@@ -88,6 +88,8 @@
         <CommandBinding Command="mapViewer:CustomCommands.DrawRectangle" Executed="DrawRectangle_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DrawText" Executed="DrawText_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" Executed="ShowPublicCursorTemporary_Execute" CanExecute="Spell_CanExecute" />
+
+        <CommandBinding Command="mapViewer:CustomCommands.SelectSymbols" Executed="SelectSymbols_Execute" CanExecute="SelectSymbols_CanExecute" />
 
         <CommandBinding Command="mapViewer:CustomCommands.MaskRectangle" Executed="MaskRectangle_Execute" CanExecute="ImageNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Execute" CanExecute="MaskNeeded_CanExecute" />
@@ -143,6 +145,7 @@
                 </RibbonGroup>
 
                 <RibbonGroup Name="Symbols">
+                    <RibbonToggleButton Label="Select..." Command="mapViewer:CustomCommands.SelectSymbols" LargeImageSource="Images/Rectangular_selection.png" />
                     <RibbonButton Label="Clear Symbols" Command="mapViewer:CustomCommands.ClearOverlay" LargeImageSource="Images/Map.png"/>
                     <RibbonToggleButton Label="Create Line" Command="mapViewer:CustomCommands.DrawLine" LargeImageSource="Images/draw_line.png" />
                     <RibbonToggleButton Label="Create Cone" Command="mapViewer:CustomCommands.DrawCone" LargeImageSource="Images/draw_cone.png" />
