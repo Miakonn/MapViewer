@@ -18,6 +18,7 @@ namespace MapViewer.Dialogs {
                 _symbol = value;
                 CaptionValue.Text = Symbol.Caption;
                 SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
+                CommentValue.Text = Symbol.Comment;
                 _color = Symbol.FillColor;
                 BtnColor.Background = new SolidColorBrush(_color);
             }
@@ -28,6 +29,7 @@ namespace MapViewer.Dialogs {
                 return;
             }
             Symbol.Caption = CaptionValue.Text;
+            Symbol.Comment = CommentValue.Text;
             Symbol.FillColor = _color;
 
             var str = SizeValue.Text.Replace(',', '.');

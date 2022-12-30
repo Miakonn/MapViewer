@@ -15,6 +15,10 @@ Medel prio =================================
 
 * lista med alla symboler
 
+* status på pc
+
+* bild på pc eller pc-flagga på bild
+
 Låg prio ------------------------
 
 * släppa låsta bildfiler?

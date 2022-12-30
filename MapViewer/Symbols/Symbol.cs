@@ -38,6 +38,7 @@ namespace MapViewer.Symbols {
         }
 
         public string Caption { get; set; }
+        public string Comment { get; set; } 
 
         [XmlIgnore]
         public bool IsSelected{ get; set; }

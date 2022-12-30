@@ -32,20 +32,19 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Filename"  HorizontalAlignment="Left" />
         <TextBox Grid.Row="0" Grid.Column="1" Name="FilenameValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="140" IsReadOnly="True"/>
         <Button Grid.Row="0" Grid.Column="2" Name="Browse" Click="Browse_OnClick">Browse...</Button>
- 		<Label Grid.Row="1" Grid.Column="0" Content="Size (m)" HorizontalAlignment="Left" />
-		<TextBox Grid.Row="1" Grid.Column="1" Name="SizeValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="40"/>
-        <Label Grid.Row="2" Grid.Column="0" Content="Caption" HorizontalAlignment="Left" />
-		<TextBox Grid.Row="2" Grid.Column="1" Name="CaptionValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="80"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Caption" HorizontalAlignment="Left" />
+		<TextBox Grid.Row="1" Grid.Column="1" Name="CaptionValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="80"/>
 
-        <Label Grid.Row="3" Grid.Column="0" Content="Angle"  Name="LabelHint4" HorizontalAlignment="Left" />
-        <WrapPanel Grid.Row="3" Grid.Column="1"   VerticalAlignment="Top">
+        <Label Grid.Row="2" Grid.Column="0" Content="Comment" HorizontalAlignment="Left" />
+        <TextBox Grid.Row="2" Grid.Column="1" Name="CommentValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="80"/>
+
+        <Label Grid.Row="3" Grid.Column="0" Content="Size (m)" HorizontalAlignment="Left" />
+		<TextBox Grid.Row="3" Grid.Column="1" Name="SizeValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="40"/>
+
+        <Label Grid.Row="4" Grid.Column="0" Content="Angle"  Name="LabelHint4" HorizontalAlignment="Left" />
+        <WrapPanel Grid.Row="4" Grid.Column="1"   VerticalAlignment="Top">
             <Button x:Name="RotateAntiClockWiseButton"  FontSize="20" Padding="0,-6,0,0" Content="⤹" Height="20" Width="20" FontWeight="ExtraBold" Click="cmdRotateCCW_Click" Margin="2" />
             <Button x:Name="RotateClockWiseButton"  FontSize="20" Padding="0,-6,0,0" Content="⤸" Height="20" Width="20" FontWeight="ExtraBold" Click="cmdRotateCW_Click" Margin="2" />
-        </WrapPanel>
-
-        <Label Grid.Row="4" Grid.Column="0" Content="Color" HorizontalAlignment="Left" />
-        <WrapPanel Grid.Row="4" Grid.Column="1"   VerticalAlignment="Top">
-            <Button Name="BtnColor" Click="BtnColor_Click" Width="40" Height="20" Margin="2"></Button>
         </WrapPanel>
 
         <WrapPanel Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
