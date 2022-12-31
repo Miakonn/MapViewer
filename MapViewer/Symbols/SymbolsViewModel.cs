@@ -199,6 +199,11 @@ namespace MapViewer.Symbols {
                         creature.SizeMeter = sizeMeterNew;
                     }
                 }
+                if (symbol is SymbolIcon icon) {
+                    if (icon.SizeMeter >= 0.5 && icon.SizeMeter <= 1.0) {
+                        icon.SizeMeter = sizeMeterNew;
+                    }
+                }
             }
 
             RaiseSymbolsChanged();
