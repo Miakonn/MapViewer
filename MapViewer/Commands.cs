@@ -118,7 +118,8 @@ namespace MapViewer {
         private string _lastImageDirectoryUsed;
 
         private void OpenImage_Execute(object sender, ExecutedRoutedEventArgs e) {
-			
+			HideWarning(0);
+
             var dialog = new OpenFileDialog {
                 Filter = "Image Files|*.jpg;*.bmp;*.png",
                 Multiselect = true

@@ -438,6 +438,10 @@ namespace MapViewer {
 
         public void HidePopup(int delay)
         {
+            if (delay == 0) {
+                PopupDisplay.IsOpen = false;
+                return;
+            }
             var time = new DispatcherTimer { Interval = TimeSpan.FromSeconds(delay) };
             time.Start();
             time.Tick += delegate {
@@ -452,6 +456,10 @@ namespace MapViewer {
             if (PopupWarning.Child is TextBlock popupText) {
                 popupText.Text = text;
             }
+            HideWarning(delay);
+        }
+
+        public void HideWarning(int delay) {
             var time = new DispatcherTimer { Interval = TimeSpan.FromSeconds(delay) };
             time.Start();
             time.Tick += delegate {
@@ -459,6 +467,7 @@ namespace MapViewer {
                 time.Stop();
             };
         }
+
 
         private double DistanceFromStart(Point pntNow)
         {
