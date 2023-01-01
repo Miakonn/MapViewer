@@ -51,7 +51,12 @@ namespace MapViewer.Tools {
 			}
 			_rect1= null;
 
-			if (_button != null) {
+            if (_rect2 != null) {
+                _canvas.Children.Remove(_rect2);
+            }
+            _rect2 = null;
+
+            if (_button != null) {
 				_button.IsChecked = false;
 			}
 			_button = null;
