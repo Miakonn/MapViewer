@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -12,8 +11,7 @@ namespace MapViewer.Tools {
         private readonly PrivateWindow _privateWindow;
 		private readonly Canvas _canvas;
 		private readonly Maps.PrivateMaskedMap _map;
-		private readonly bool _mask;
-		private RibbonToggleButton _button;
+        private RibbonToggleButton _button;
 
 		private Rectangle _rect1;
         private Rectangle _rect2;
@@ -23,8 +21,7 @@ namespace MapViewer.Tools {
 		
         public SelectSymbols(PrivateWindow privateWindow, object button, bool mask) {
             _privateWindow = privateWindow;
-            _mask = mask;
-			_map = privateWindow.MapPrivate;
+            _map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
 			_button = button as RibbonToggleButton;
             _rect1 = null;

@@ -3,11 +3,13 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Media;
 using MapViewer.Symbols;
 
 namespace MapViewer.Dialogs {
 	public partial class DialogIconProp {
         private SymbolIcon _symbol;
+        private Color _color;
 
         public double Angle { get; set; }
 
@@ -19,6 +21,7 @@ namespace MapViewer.Dialogs {
             get => _symbol;
             set {
                 _symbol = value;
+                _color = Symbol.FillColor;
                 CaptionValue.Text = Symbol.Caption;
                 CommentValue.Text = Symbol.Comment;
                 SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
@@ -33,6 +36,7 @@ namespace MapViewer.Dialogs {
             }
             Symbol.Caption = CaptionValue.Text;
             Symbol.Comment = CommentValue.Text;
+            Symbol.FillColor = _color;
             Symbol.RotationDegree = Angle;
             Symbol.ImageFileName = FilenameValue.Text;
 
@@ -105,6 +109,15 @@ namespace MapViewer.Dialogs {
 
         private void BtnApply_Click(object sender, RoutedEventArgs e) {
             ApplyChanges();
+        }
+
+        private void BtnColor_OnClick(object sender, RoutedEventArgs e) {
+            var dialog = new DialogColorPicker { Owner = this };
+            var result = dialog.ShowDialog();
+            if (result == true) {
+                _color = dialog.SelectedColor;
+                BtnColor.Background = new SolidColorBrush(_color);
+            }
         }
     }
 }

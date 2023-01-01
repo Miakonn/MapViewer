@@ -5,8 +5,6 @@ using System.Windows.Media;
 
 namespace MapViewer.Dialogs {
 	public partial class DialogCreatureProp {
-
-
         private SymbolCreature _symbol;
         private Color _color;
 

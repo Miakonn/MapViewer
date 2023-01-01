@@ -85,7 +85,7 @@ namespace MapViewer.Symbols {
                 OrderZ = GetMinOrderZ() - 1,
                 SizeMeter = 4,
                 StartPoint = pos,
-                FillColor = Colors.LightGray
+                FillColor = Colors.Gray,
             };
 
             AddSymbol(symbol);

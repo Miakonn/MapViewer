@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Xml.Serialization;
 using MapViewer.Dialogs;
 using MapViewer.Maps;
@@ -51,9 +52,46 @@ namespace MapViewer.Symbols {
                 Cursor = (settings.IsToolActive ? null : SymbolCursor)
             };
 
-            Canvas.SetLeft(shape, StartPoint.X -center.X); 
+            Canvas.SetLeft(shape, StartPoint.X - center.X); 
             Canvas.SetTop(shape, StartPoint.Y - center.Y);
             canvas.Children.Add(shape);
+
+
+            if (!FillColor.Equals(Colors.Gray)) {
+                var line1 = new Line {
+                    Uid = Uid,
+                    X1 = 0,
+                    Y1 = 0,
+                    X2 = iconSource.Width,
+                    Y2 = iconSource.Height,
+                    RenderTransform = finalTransform,
+                    Stroke = new SolidColorBrush(FillColor),
+                    StrokeThickness = iconSource.Width * 0.05,
+                    Opacity = 1.0,
+                    IsHitTestVisible = false
+                };
+
+                Canvas.SetLeft(line1, StartPoint.X - center.X);
+                Canvas.SetTop(line1, StartPoint.Y - center.Y);
+                canvas.Children.Add(line1);
+
+                var line2 = new Line {
+                    Uid = Uid,
+                    X1 = 0,
+                    Y1 = iconSource.Height,
+                    X2 = iconSource.Width,
+                    Y2 = 0,
+                    RenderTransform = finalTransform,
+                    Stroke = new SolidColorBrush(FillColor),
+                    StrokeThickness = iconSource.Width * 0.05,
+                    Opacity = 1.0,
+                    IsHitTestVisible = false
+                };
+
+                Canvas.SetLeft(line2, StartPoint.X - center.X);
+                Canvas.SetTop(line2, StartPoint.Y - center.Y);
+                canvas.Children.Add(line2);
+            }
 
             base.Draw(canvas, settings);
         }
