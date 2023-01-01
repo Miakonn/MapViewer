@@ -56,17 +56,20 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(shape, StartPoint.Y - center.Y);
             canvas.Children.Add(shape);
 
-
             if (!FillColor.Equals(Colors.Gray)) {
+                var thickness = Math.Min(iconSource.Width, iconSource.Height) * 0.06;
+                var xTenth = iconSource.Width * 0.10;
+                var yTenth = iconSource.Height * 0.10;
+
                 var line1 = new Line {
                     Uid = Uid,
-                    X1 = 0,
-                    Y1 = 0,
-                    X2 = iconSource.Width,
-                    Y2 = iconSource.Height,
+                    X1 = xTenth,
+                    Y1 = yTenth,
+                    X2 = iconSource.Width - xTenth,
+                    Y2 = iconSource.Height - yTenth,
                     RenderTransform = finalTransform,
                     Stroke = new SolidColorBrush(FillColor),
-                    StrokeThickness = iconSource.Width * 0.05,
+                    StrokeThickness = thickness,
                     Opacity = 1.0,
                     IsHitTestVisible = false
                 };
@@ -77,13 +80,13 @@ namespace MapViewer.Symbols {
 
                 var line2 = new Line {
                     Uid = Uid,
-                    X1 = 0,
-                    Y1 = iconSource.Height,
-                    X2 = iconSource.Width,
-                    Y2 = 0,
+                    X1 = xTenth,
+                    Y1 = iconSource.Height - yTenth,
+                    X2 = iconSource.Width - xTenth,
+                    Y2 = yTenth,
                     RenderTransform = finalTransform,
                     Stroke = new SolidColorBrush(FillColor),
-                    StrokeThickness = iconSource.Width * 0.05,
+                    StrokeThickness = thickness,
                     Opacity = 1.0,
                     IsHitTestVisible = false
                 };
