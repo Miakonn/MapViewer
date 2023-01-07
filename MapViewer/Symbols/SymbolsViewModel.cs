@@ -175,6 +175,16 @@ namespace MapViewer.Symbols {
             RaiseSymbolsChanged();
         }
 
+
+        public void NewSymbolSelection(Symbol symbolActive) {
+            if (symbolActive == null) {
+                return;
+            }
+            ClearSymbolSelection();
+            symbolActive.IsSelected = true;
+            RaiseSymbolsChanged();
+        }
+
         public void ClearSymbolSelection() {
             foreach (var symbol in Symbols.Values) {
                 symbol.IsSelected = false;

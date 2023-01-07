@@ -55,13 +55,13 @@ namespace MapViewer.Utilities {
 
         public FontFamily Font { get; set; } = new FontFamily("Arial");
 
-        public FontWeight FontWeight { get; set; } = FontWeights.DemiBold;
+        public FontWeight FontWeight { get; set; } = FontWeights.Heavy;
 
         public FontStyle FontStyle { get; set; } = FontStyles.Normal;
 
         public double FontSize { get; set; } = 20.0;
 
-        public Brush Fill { get; set; } = new SolidColorBrush(Colors.White);
+        public Brush Fill { get; set; } = new SolidColorBrush(Colors.Yellow);
 
         public Brush Stroke { get; set; } = new SolidColorBrush(Colors.Black);
 

@@ -173,6 +173,8 @@ namespace MapViewer {
                         MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedSymbol, move);
                     }
                 }
+
+                MapPrivate.SymbolsPM.ClearSymbolSelection();
                 HidePopup(0);
                 ActiveTool = null;
             }
@@ -222,14 +224,14 @@ namespace MapViewer {
                     if (_lastClickedSymbol != null) {
                         MapPrivate.SymbolsPM.ChangeSymbolSelection(_lastClickedSymbol);
                     }
-                    else {
-                        MapPrivate.SymbolsPM.ClearSymbolSelection();
-                    }
                 }
                 else if (_lastClickedSymbol != null) {
                     _mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                     _mouseDownPointFirst = _mouseDownPoint;
                     _cursorAction = CursorAction.MovingSymbol;
+                    if (!_lastClickedSymbol.IsSelected) {
+                        MapPrivate.SymbolsPM.NewSymbolSelection(_lastClickedSymbol);
+                    }
 
                     _characterDistanceMoved = 0;
                 }
@@ -241,6 +243,7 @@ namespace MapViewer {
                     _characterDistanceMoved = 0;
                 }
                 else {
+                    MapPrivate.SymbolsPM.ClearSymbolSelection();
                     _mouseDownPointWindow = e.GetPosition(this);
                     _cursorAction = CursorAction.MovingPrivateMap;
                 }
