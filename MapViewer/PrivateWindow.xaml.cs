@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Bluegrams.Application;
 using log4net;
@@ -254,7 +255,9 @@ namespace MapViewer {
                     _mouseDownPointWindow = e.GetPosition(this);
                     _cursorAction = CursorAction.None;
                     MapPrivate.SymbolsPM.ClearSymbolSelection();
-                    MapPrivate.SymbolsPM.OpenEditor(_lastClickedSymbol, PointToScreen(_mouseDownPointWindow));
+
+                    var posDialog = ScaleWithWindowsDpi(PointToScreen(_mouseDownPointWindow));
+                    MapPrivate.SymbolsPM.OpenEditor(posDialog, _lastClickedSymbol);
                 }
                 e.Handled = true;
             }
@@ -263,6 +266,20 @@ namespace MapViewer {
                 _mouseDownPointWindow = e.GetPosition(this);
                 _mouseDownPointFirst = _mouseDownPoint;
             }
+        }
+
+        public Point ScaleWithWindowsDpi(Point pos) {
+            // Scale with windows dpi scale
+            var dpiScale = VisualTreeHelper.GetDpi(this);
+            pos.X /= dpiScale.DpiScaleX;
+            pos.Y /= dpiScale.DpiScaleY;
+
+            // Move inside window
+            var windowSize = this.RenderSize;
+            pos.X = Math.Min(pos.X, windowSize.Width - 200);
+            pos.Y = Math.Min(pos.Y, windowSize.Height - 200);
+
+            return pos;
         }
 
         private void PrivateWinMouseMove(object sender, MouseEventArgs e)

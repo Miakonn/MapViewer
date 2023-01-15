@@ -247,7 +247,7 @@ namespace MapViewer.Symbols {
             return radians * (180.0 / Math.PI);
         }
 
-        public void OpenEditor(Symbol symbolActive, Point dialogScreenPos) {
+        public void OpenEditor(Point dialogScreenPos, Symbol symbolActive) {
             if (symbolActive == null) {
                 return;
             }
