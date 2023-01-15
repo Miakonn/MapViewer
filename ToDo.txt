@@ -5,8 +5,6 @@
 
 Hög prio ================================
 
-* Dialogens position!
-
 Medel prio =================================
 * symboler utan att kalibrera bild?
 

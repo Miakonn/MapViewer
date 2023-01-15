@@ -282,8 +282,7 @@ namespace MapViewer {
             return pos;
         }
 
-        private void PrivateWinMouseMove(object sender, MouseEventArgs e)
-        {
+        private void PrivateWinMouseMove(object sender, MouseEventArgs e) {
             if (ActiveTool != null) {
                 if (ActiveTool.ShowPublicCursor()) {
                     MapPublic.MovePublicCursor(e.GetPosition(MapPrivate.CanvasOverlay), MapPrivate.MapId);
@@ -329,8 +328,7 @@ namespace MapViewer {
             }
         }
 
-        private void PrivateWinMouseUp(object sender, MouseButtonEventArgs e)
-        {
+        private void PrivateWinMouseUp(object sender, MouseButtonEventArgs e) {
             if (ActiveTool != null) {
                 ActiveTool.MouseUp(sender, e);
                 return;
@@ -340,19 +338,16 @@ namespace MapViewer {
             _cursorAction = CursorAction.None;
         }
 
-        private void PrivateWinMouseWheel(object sender, MouseWheelEventArgs e)
-        {
+        private void PrivateWinMouseWheel(object sender, MouseWheelEventArgs e) {
             var scale = (1.0 + e.Delta / 600.0);
             MapPrivate.Zoom(scale, e.GetPosition(MapPrivate.CanvasOverlay));
         }
 
-        private void PrivateWindow_Closing(object sender, CancelEventArgs e)
-        {
+        private void PrivateWindow_Closing(object sender, CancelEventArgs e) {
             Application.Current.Shutdown();
         }
 
-        private void ComboBoxPublicScale_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        private void ComboBoxPublicScale_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
             var selected = (ComboBoxItem)ComboBoxPublicScale.SelectedItem;
             if (selected != null && MapPublic != null && MapPrivate != null) {
                 var value = int.Parse(selected.Uid.Substring(6));

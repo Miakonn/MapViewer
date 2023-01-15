@@ -247,13 +247,14 @@ namespace MapViewer.Symbols {
             return radians * (180.0 / Math.PI);
         }
 
-        public void OpenEditor(Point dialogScreenPos, Symbol symbolActive) {
+        public bool OpenEditor(Point dialogScreenPos, Symbol symbolActive) {
             if (symbolActive == null) {
-                return;
+                return false;
             }
 
-            symbolActive.OpenDialogProp(dialogScreenPos, this);
+            var result = symbolActive.OpenDialogProp(dialogScreenPos, this);
             RaiseSymbolsChanged();
+            return result;
         }
 
         #endregion

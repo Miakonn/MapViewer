@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using MapViewer.Dialogs;
 using MapViewer.Maps;
 using Point = System.Windows.Point;
 
@@ -36,11 +35,9 @@ namespace MapViewer.Symbols {
             base.Draw(canvas, settings);
         }
 
-        
         public override void DrawSelected(Canvas canvas, MapDrawSettings settings) {
             return;
         }
-
 
         public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
             return false;

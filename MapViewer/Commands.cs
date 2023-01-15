@@ -623,9 +623,9 @@ namespace MapViewer {
 
         private void CreateCreature(Color color, double size) {
             var symbol = MapPrivate.SymbolsPM.CreateSymbolCreature(_mouseDownPoint, color, size, "");
-		
-            Debug.WriteLine($"PointToScreen = {PointToScreen(_mouseDownPointWindow)}");
-            var result = symbol.OpenDialogProp(PointToScreen(_mouseDownPointWindow), MapPrivate.SymbolsPM);
+
+            var posDialog = ScaleWithWindowsDpi(PointToScreen(_mouseDownPointWindow));
+            var result = MapPrivate.SymbolsPM.OpenEditor(posDialog, symbol);
             if (!result) {
                 MapPrivate.SymbolsPM.DeleteSymbol(symbol);
             }
@@ -641,7 +641,8 @@ namespace MapViewer {
 		
         private void SymbolIcon_Execute(object sender, ExecutedRoutedEventArgs e) {
             var symbol = MapPrivate.SymbolsPM.CreateSymbolIcon(_mouseDownPoint);
-            var result = symbol.OpenDialogProp(PointToScreen(_mouseDownPointWindow), MapPrivate.SymbolsPM);
+            var posDialog = ScaleWithWindowsDpi(PointToScreen(_mouseDownPointWindow));
+            var result = MapPrivate.SymbolsPM.OpenEditor(posDialog, symbol);
             if (!result) {
                 MapPrivate.SymbolsPM.DeleteSymbol(symbol);
             }
