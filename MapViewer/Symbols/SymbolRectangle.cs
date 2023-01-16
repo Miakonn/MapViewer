@@ -79,8 +79,9 @@ namespace MapViewer.Symbols {
         }
 
 
-        public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
+        public override bool OpenDialogProp(System.Windows.Window owner, Point dialogPos, SymbolsViewModel symbolsVM) {
             var dlg = new DialogRectProp {
+                Owner = owner,
                 Symbol = this,
                 SymbolsVM = symbolsVM,
                 DialogPos = dialogPos

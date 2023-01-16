@@ -53,7 +53,7 @@ namespace MapViewer.Symbols {
             }
         }
 
-        public virtual bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
+        public virtual bool OpenDialogProp(Window owner, Point dialogPos, SymbolsViewModel symbolsVM) {
             return true;
         }
 

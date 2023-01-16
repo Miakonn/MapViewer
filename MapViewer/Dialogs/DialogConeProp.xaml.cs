@@ -49,10 +49,7 @@ namespace MapViewer.Dialogs {
         }
 
         public Point DialogPos {
-            set { 
-                Left = value.X + 10;
-                Top = value.Y + 10;
-            }
+            set {  }
         }
 
         public DialogConeProp() {

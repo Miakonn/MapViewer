@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Symbol properties"  SizeToContent="WidthAndHeight"
         Background="#DFE9F5"
-        WindowStartupLocation="Manual"
+        WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
     <Window.Resources>

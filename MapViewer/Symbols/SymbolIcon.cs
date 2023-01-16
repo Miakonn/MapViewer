@@ -99,8 +99,9 @@ namespace MapViewer.Symbols {
             base.Draw(canvas, settings);
         }
 
-        public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
+        public override bool OpenDialogProp(Window owner, Point dialogPos, SymbolsViewModel symbolsVM) {
             var dlg = new DialogIconProp {
+                Owner = owner,
                 Symbol = this,
                 SymbolsVM = symbolsVM,
                 DialogPos = dialogPos

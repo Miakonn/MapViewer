@@ -257,7 +257,7 @@ namespace MapViewer {
                     MapPrivate.SymbolsPM.ClearSymbolSelection();
 
                     var posDialog = ScaleWithWindowsDpi(PointToScreen(_mouseDownPointWindow));
-                    MapPrivate.SymbolsPM.OpenEditor(posDialog, _lastClickedSymbol);
+                    MapPrivate.SymbolsPM.OpenEditor(this, posDialog, _lastClickedSymbol);
                 }
                 e.Handled = true;
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -39,7 +40,7 @@ namespace MapViewer.Symbols {
             return;
         }
 
-        public override bool OpenDialogProp(Point dialogPos, SymbolsViewModel symbolsVM) {
+        public override bool OpenDialogProp(Window owner, Point dialogPos, SymbolsViewModel symbolsVM) {
             return false;
         }
 

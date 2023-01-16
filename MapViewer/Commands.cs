@@ -625,7 +625,7 @@ namespace MapViewer {
             var symbol = MapPrivate.SymbolsPM.CreateSymbolCreature(_mouseDownPoint, color, size, "");
 
             var posDialog = ScaleWithWindowsDpi(PointToScreen(_mouseDownPointWindow));
-            var result = MapPrivate.SymbolsPM.OpenEditor(posDialog, symbol);
+            var result = MapPrivate.SymbolsPM.OpenEditor(this, posDialog, symbol);
             if (!result) {
                 MapPrivate.SymbolsPM.DeleteSymbol(symbol);
             }
@@ -642,7 +642,7 @@ namespace MapViewer {
         private void SymbolIcon_Execute(object sender, ExecutedRoutedEventArgs e) {
             var symbol = MapPrivate.SymbolsPM.CreateSymbolIcon(_mouseDownPoint);
             var posDialog = ScaleWithWindowsDpi(PointToScreen(_mouseDownPointWindow));
-            var result = MapPrivate.SymbolsPM.OpenEditor(posDialog, symbol);
+            var result = MapPrivate.SymbolsPM.OpenEditor(this, posDialog, symbol);
             if (!result) {
                 MapPrivate.SymbolsPM.DeleteSymbol(symbol);
             }
