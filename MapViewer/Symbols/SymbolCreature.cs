@@ -44,9 +44,9 @@ namespace MapViewer.Symbols {
             return result != null && result.Value;
         }
 
-        public override Symbol Copy() {
+        public override Symbol Copy(Vector offset) {
             var newSymbol = new SymbolCreature();
-            newSymbol.CopyBase(this);
+            newSymbol.CopyBase(this, offset);
             return newSymbol;
         }
     }

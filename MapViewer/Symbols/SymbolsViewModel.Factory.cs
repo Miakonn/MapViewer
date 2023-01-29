@@ -83,7 +83,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolIcon {
                 Uid = GetTimestamp(),
                 OrderZ = GetMinOrderZ() - 1,
-                SizeMeter = 4,
+                SizeMeter = 1,
                 StartPoint = pos,
                 FillColor = Colors.Gray,
             };

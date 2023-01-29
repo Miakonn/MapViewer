@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -451,8 +450,9 @@ namespace MapViewer {
             if (_lastClickedSymbol == null) {
                 return;
             }
- 
-            MapPrivate.SymbolsPM.DuplicateSymbol(_lastClickedSymbol);
+
+            var offset = new Vector(50 / MapPrivate.ZoomScale, 50 / MapPrivate.ZoomScale);
+            MapPrivate.SymbolsPM.DuplicateSymbol(_lastClickedSymbol, offset);
         }
 
         private void SetSymbolColor_Execute(object sender, ExecutedRoutedEventArgs e) {

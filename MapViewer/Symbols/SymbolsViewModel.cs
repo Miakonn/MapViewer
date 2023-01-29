@@ -72,6 +72,12 @@ namespace MapViewer.Symbols {
         }
 
         public void AddSymbolWithoutRaise(Symbol symbol) {
+            symbol.Uid = UidPrefix + symbol.Uid;
+            Symbols[symbol.Uid] = symbol;
+        }
+
+        public void AddSymbolWithoutRaiseOrNewUid(Symbol symbol) {
+            symbol.Uid = UidPrefix + symbol.Uid;
             Symbols[symbol.Uid] = symbol;
         }
 
@@ -189,7 +195,7 @@ namespace MapViewer.Symbols {
         #region Symbol Actions
 
         public void DeleteSymbol(Symbol symbolActive) {
-            PushToUndoStack();
+            SaveState();
             foreach (var symbol in GetActiveList(symbolActive)) {
                 Symbols.Remove(symbol.Uid);
             }
@@ -197,17 +203,18 @@ namespace MapViewer.Symbols {
             RaiseSymbolsChanged();
         }
 
-        public void DuplicateSymbol(Symbol symbolActive) {
-            PushToUndoStack();
+        public void DuplicateSymbol(Symbol symbolActive, Vector offset) {
+            SaveState();
             foreach (var symbol in GetActiveList(symbolActive)) {
-                AddSymbolWithoutRaise(symbol.Copy());
+                AddSymbolWithoutRaise(symbol.Copy(offset));
+                Debug.WriteLine("Cretaed: "+ symbol.Caption);
             }
             RaiseSymbolsChanged();
         }
 
 
         public void SetSymbolColor(Symbol symbolActive, Color color) {
-            PushToUndoStack();
+            SaveState();
             foreach (var symbol in GetActiveList(symbolActive)) {
                 symbol.FillColor = color;
             }
@@ -215,7 +222,7 @@ namespace MapViewer.Symbols {
         }
 
         public void MoveSymbolToFront(Symbol symbolActive) {
-            PushToUndoStack();
+            SaveState();
             foreach (var symbol in GetActiveList(symbolActive)) {
                 symbol.OrderZ = GetMinOrderZ() - 1;
             }
@@ -223,7 +230,7 @@ namespace MapViewer.Symbols {
         }
 
         public void MoveSymbolToBack(Symbol symbolActive) {
-            PushToUndoStack();
+            SaveState();
             foreach (var symbol in GetActiveList(symbolActive)) {
                 symbol.OrderZ = GetMaxOrderZ() + 1;
             }
@@ -231,7 +238,7 @@ namespace MapViewer.Symbols {
         }
 
         public void RotateSymbol(Symbol symbolActive, RotationDirection direction) {
-            PushToUndoStack();
+            SaveState();
             foreach (var symbol in GetActiveList(symbolActive)) {
                 symbol.Rotate(direction);
             }
@@ -239,7 +246,7 @@ namespace MapViewer.Symbols {
         }
 
         public void ToggleSymbolStatus(Symbol symbolActive, string status) {
-            PushToUndoStack();
+            SaveState();
             var symbolIcons = GetActiveIconList(symbolActive);
             if (symbolIcons.TrueForAll(s => s.Status == status)) {
                 status = string.Empty;
@@ -267,7 +274,7 @@ namespace MapViewer.Symbols {
         }
 
         public void ChangePlayerSizes(double sizeMeterNew) {
-            PushToUndoStack();
+            SaveState();
             foreach (var symbol in Symbols.Values) {
                 if (symbol is SymbolCreature creature) {
                     if (creature.SizeMeter >= 0.5 && creature.SizeMeter <= 1.0) {
@@ -328,7 +335,6 @@ namespace MapViewer.Symbols {
         private void PushToUndoStack() {
             if (!Symbols.Equals(SymbolsUndo)) {
                 SymbolsUndo = (SymbolList)Symbols.Clone();
-                Debug.WriteLine("PushToUndoStack");
             }
         }
 
@@ -402,7 +408,7 @@ namespace MapViewer.Symbols {
 
                     foreach (var symbol in symbolVM.SymbolsOnly) {
                         symbol.StartPoint = new Point(scale * symbol.StartPoint.X, scale * symbol.StartPoint.Y);
-                        AddSymbolWithoutRaise(symbol);
+                        AddSymbolWithoutRaiseOrNewUid(symbol);
                     }
                 }
                 RaiseSymbolsChanged();

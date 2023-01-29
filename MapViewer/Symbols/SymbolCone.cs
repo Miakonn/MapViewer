@@ -93,9 +93,9 @@ namespace MapViewer.Symbols {
             return result != null && result.Value;
         }
 
-        public override Symbol Copy() {
+        public override Symbol Copy(Vector offset) {
             var newSymbol = new SymbolCone();
-            newSymbol.CopyBase(this);
+            newSymbol.CopyBase(this, offset);
             newSymbol.WidthDegrees = WidthDegrees;
             newSymbol.RotationDegree = RotationDegree;
             return newSymbol;

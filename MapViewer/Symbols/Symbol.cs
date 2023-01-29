@@ -59,11 +59,11 @@ namespace MapViewer.Symbols {
 
         public virtual void Rotate(RotationDirection direction) {}
 
-        public abstract Symbol Copy();
+        public abstract Symbol Copy(Vector offset);
 
-        public void CopyBase(Symbol symbolSource) {
+        public void CopyBase(Symbol symbolSource, Vector offset) {
             Uid = SymbolsViewModel.GetTimestamp();
-            StartPoint = symbolSource.StartPoint + new Vector(50, 50);
+            StartPoint = symbolSource.StartPoint + offset;
             FillColor = symbolSource.FillColor;
             OrderZ = symbolSource.OrderZ - 1;
             SizeMeter = symbolSource.SizeMeter;

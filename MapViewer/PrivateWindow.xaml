@@ -39,6 +39,7 @@
 
         <KeyBinding Key="Delete" Command="mapViewer:CustomCommands.DeleteSymbol" />
         <KeyBinding Key="Z" Modifiers="Control" Command="mapViewer:CustomCommands.UndoSymbols" />
+        <KeyBinding Key="V" Modifiers="Control" Command="mapViewer:CustomCommands.DuplicateSymbol" />
 
     </Window.InputBindings>
 

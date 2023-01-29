@@ -44,9 +44,9 @@ namespace MapViewer.Symbols {
             return false;
         }
 
-        public override Symbol Copy() {
+        public override Symbol Copy(Vector offset) {
             var newSymbol = new SymbolRectangle();
-            newSymbol.CopyBase(this);
+            newSymbol.CopyBase(this, offset);
             newSymbol.WidthMeter = WidthMeter;
             newSymbol.RotationDegree = RotationDegree;
             return newSymbol;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -91,9 +92,9 @@ namespace MapViewer.Symbols {
             return result != null && result.Value;
         }
 
-        public override Symbol Copy() {
+        public override Symbol Copy(Vector offset) {
             var newSymbol = new SymbolRectangle();
-            newSymbol.CopyBase(this);
+            newSymbol.CopyBase(this, offset);
             newSymbol.WidthMeter = WidthMeter;
             newSymbol.RotationDegree = RotationDegree;
             return newSymbol;
