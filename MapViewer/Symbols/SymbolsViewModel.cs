@@ -108,7 +108,7 @@ namespace MapViewer.Symbols {
         }
 
         private List<SymbolIcon> GetActiveIconList(Symbol symbolActive) {
-            if (!(symbolActive is SymbolIcon)) {
+            if (symbolActive == null) {
                 return new List<SymbolIcon>();
             }
 
@@ -118,7 +118,7 @@ namespace MapViewer.Symbols {
             }
 
             ClearSymbolSelection();
-            return new List<SymbolIcon> { symbolActive as SymbolIcon};
+            return new List<SymbolIcon> { (SymbolIcon)symbolActive };
         }
 
 
