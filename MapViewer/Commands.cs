@@ -115,6 +115,12 @@ namespace MapViewer {
                 e.CanExecute = false;
             }
         }
+
+
+        private void SymbolsChanged_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = MapPrivate.SymbolsPM.CanUndo;
+        }
+
         #endregion
 
         #region Assorted
@@ -709,6 +715,10 @@ namespace MapViewer {
 
         private void SetSymbolCross_Execute(object sender, ExecutedRoutedEventArgs e) {
             MapPrivate.SymbolsPM.ToggleSymbolStatus(_lastClickedSymbol, "Cross");
+        }
+
+        private void UndoSymbols_Execute(object sender, ExecutedRoutedEventArgs e) {
+            MapPrivate.SymbolsPM.Undo();
         }
 
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -13,31 +14,58 @@ using Point = System.Windows.Point;
 using Size = System.Windows.Size;
 
 namespace MapViewer.Symbols {
-    
+
+    public class SymbolList : Dictionary<string, Symbol>, ICloneable {
+        public object Clone() {
+            var clone = new SymbolList();
+            foreach (var kvp in this) {
+                clone.Add(kvp.Key, (Symbol)kvp.Value.Clone());
+            }
+
+            return clone;
+        }
+    }
+
+
+
     [Serializable]
     [XmlInclude(typeof(Symbol)), XmlInclude(typeof(SymbolCreature))]
     public partial class SymbolsViewModel {
+        
+        [XmlIgnore]
+        private SymbolList Symbols { get; set; }
 
         [XmlIgnore]
-        private Dictionary<string, Symbol> Symbols { get; set; }
-
+        private SymbolList SymbolsUndo { get; set; }
+        
         public Collection<Symbol> SymbolsOnly { get; set; }
 
         private readonly string UidPrefix;
         
         public event EventHandler SymbolsChanged;
 
+        [XmlIgnore]
+        public bool SymbolsExists => Symbols.Count > 0;
+
+        [XmlIgnore]
+        public bool CanUndo => SymbolsUndo != null;
+
+
         public SymbolsViewModel() {
-            Symbols = new Dictionary<string, Symbol>();
+            Symbols = new SymbolList();
             SymbolsOnly = new Collection<Symbol>();
         }
 
         public SymbolsViewModel(string prefix) {
             UidPrefix = prefix;
-            Symbols = new Dictionary<string, Symbol>();
+            Symbols = new SymbolList();
         }
-        
+
+        #region Assorted
+
+
         public void AddSymbol(Symbol symbol) {
+            SaveState();
             symbol.Uid = UidPrefix + symbol.Uid;
             Symbols[symbol.Uid] = symbol;
             RaiseSymbolsChanged();
@@ -47,8 +75,6 @@ namespace MapViewer.Symbols {
             Symbols[symbol.Uid] = symbol;
         }
 
-        public bool SymbolsExists => Symbols.Count > 0;
-
         public Symbol FindSymbolFromUid(string uid) {
             if (string.IsNullOrWhiteSpace(uid) || !Symbols.ContainsKey(uid)) {
                 return null;
@@ -57,6 +83,7 @@ namespace MapViewer.Symbols {
         }
 
         public void DeleteAllSymbols() {
+            PushToUndoStack();
             Symbols.Clear();
             RaiseSymbolsChanged();
         }
@@ -92,8 +119,6 @@ namespace MapViewer.Symbols {
             }
         }
 
-        #region Symbol properties
-
         private List<Symbol> GetActiveList(Symbol symbolActive) {
             if (symbolActive == null) {
                 return new List<Symbol>();
@@ -104,7 +129,7 @@ namespace MapViewer.Symbols {
             }
 
             ClearSymbolSelection();
-            return new List<Symbol> { symbolActive};
+            return new List<Symbol> { symbolActive };
         }
 
         private List<SymbolIcon> GetActiveIconList(Symbol symbolActive) {
@@ -113,137 +138,12 @@ namespace MapViewer.Symbols {
             }
 
             if (symbolActive.IsSelected) {
-               return (from s in Symbols.Values where s.IsSelected && s is SymbolIcon select s as SymbolIcon).ToList();
-                
+                return (from s in Symbols.Values where s.IsSelected && s is SymbolIcon select s as SymbolIcon).ToList();
+
             }
 
             ClearSymbolSelection();
             return new List<SymbolIcon> { (SymbolIcon)symbolActive };
-        }
-
-
-        public void DeleteSymbol(Symbol symbolActive) {
-            foreach (var symbol in GetActiveList(symbolActive)) {
-                Symbols.Remove(symbol.Uid);
-            }
-
-            RaiseSymbolsChanged();
-        }
-
-        public void DuplicateSymbol(Symbol symbolActive) {
-            foreach (var symbol in GetActiveList(symbolActive)) {
-                AddSymbol(symbol.Copy());
-            }
-            RaiseSymbolsChanged();
-        }
-
-
-        public void SetSymbolColor(Symbol symbolActive, Color color) {
-            foreach (var symbol in GetActiveList(symbolActive)) {
-                symbol.FillColor = color;
-            }
-            RaiseSymbolsChanged();
-        }
-
-        public void MoveSymbolToFront(Symbol symbolActive) {
-            foreach (var symbol in GetActiveList(symbolActive)) {
-                symbol.OrderZ = GetMinOrderZ() - 1;
-            }
-            RaiseSymbolsChanged();
-        }
-
-        public void MoveSymbolToBack(Symbol symbolActive) {
-            foreach (var symbol in GetActiveList(symbolActive)) {
-                symbol.OrderZ = GetMaxOrderZ() + 1;
-            }
-            RaiseSymbolsChanged();
-        }
-
-        public void RotateSymbol(Symbol symbolActive, RotationDirection direction) {
-            foreach (var symbol in GetActiveList(symbolActive)) {
-                symbol.Rotate(direction);
-            }
-            RaiseSymbolsChanged();
-        }
-
-        public void ToggleSymbolStatus(Symbol symbolActive, string status) {
-            var symbolIcons = GetActiveIconList(symbolActive);
-            if (symbolIcons.TrueForAll(s => s.Status == status)) {
-                status = string.Empty;
-            }
-            
-            foreach (var symbolIcon in GetActiveIconList(symbolActive)) {
-                symbolIcon.Status = status;
-            }
-            RaiseSymbolsChanged();
-        }
-
-        public void MoveSymbolPosition(Symbol symbolActive, Vector move) {
-            foreach (var symbol in GetActiveList(symbolActive)) {
-                symbol.StartPoint -= move;
-            }
-            RaiseSymbolsChanged();
-        }
-
-        public void MoveSymbolUpDown(Symbol symbolActive, SymbolsViewModel symbolsPmNew) {
-            foreach (var symbol in GetActiveList(symbolActive)) {
-                Symbols.Remove(symbol.Uid);
-                symbolsPmNew.AddSymbol(symbol);
-            }
-            RaiseSymbolsChanged();
-        }
-
-        public void ChangeSymbolSelection(Symbol symbolActive) {
-            if (symbolActive == null) {
-                return;
-            }
-
-            symbolActive.IsSelected = !symbolActive.IsSelected;
-            RaiseSymbolsChanged();
-        }
-
-
-        public void NewSymbolSelection(Symbol symbolActive) {
-            if (symbolActive == null) {
-                return;
-            }
-            ClearSymbolSelection();
-            symbolActive.IsSelected = true;
-            RaiseSymbolsChanged();
-        }
-
-        public void ClearSymbolSelection() {
-            foreach (var symbol in Symbols.Values) {
-                symbol.IsSelected = false;
-            }
-
-            RaiseSymbolsChanged();
-        }
-        public void SelectSymbolRectangle(Rect rect) {
-            foreach (var symbol in Symbols.Values) {
-                if (rect.Contains(symbol.StartPoint)) {
-                    symbol.IsSelected = true;
-                }
-            }
-
-            RaiseSymbolsChanged();
-        }
-
-        public void ChangePlayerSizes(double sizeMeterNew) {
-            foreach (var symbol in Symbols.Values) {
-                if (symbol is SymbolCreature creature) {
-                    if (creature.SizeMeter >= 0.5 && creature.SizeMeter <= 1.0) {
-                        creature.SizeMeter = sizeMeterNew;
-                    }
-                }
-                if (symbol is SymbolIcon icon) {
-                    if (icon.SizeMeter >= 0.5 && icon.SizeMeter <= 1.0) {
-                        icon.SizeMeter = sizeMeterNew;
-                    }
-                }
-            }
-
-            RaiseSymbolsChanged();
         }
 
         public static string CountUpCaption(string caption) {
@@ -286,15 +186,183 @@ namespace MapViewer.Symbols {
 
         #endregion
 
+        #region Symbol Actions
+
+        public void DeleteSymbol(Symbol symbolActive) {
+            PushToUndoStack();
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                Symbols.Remove(symbol.Uid);
+            }
+
+            RaiseSymbolsChanged();
+        }
+
+        public void DuplicateSymbol(Symbol symbolActive) {
+            PushToUndoStack();
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                AddSymbolWithoutRaise(symbol.Copy());
+            }
+            RaiseSymbolsChanged();
+        }
+
+
+        public void SetSymbolColor(Symbol symbolActive, Color color) {
+            PushToUndoStack();
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                symbol.FillColor = color;
+            }
+            RaiseSymbolsChanged();
+        }
+
+        public void MoveSymbolToFront(Symbol symbolActive) {
+            PushToUndoStack();
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                symbol.OrderZ = GetMinOrderZ() - 1;
+            }
+            RaiseSymbolsChanged();
+        }
+
+        public void MoveSymbolToBack(Symbol symbolActive) {
+            PushToUndoStack();
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                symbol.OrderZ = GetMaxOrderZ() + 1;
+            }
+            RaiseSymbolsChanged();
+        }
+
+        public void RotateSymbol(Symbol symbolActive, RotationDirection direction) {
+            PushToUndoStack();
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                symbol.Rotate(direction);
+            }
+            RaiseSymbolsChanged();
+        }
+
+        public void ToggleSymbolStatus(Symbol symbolActive, string status) {
+            PushToUndoStack();
+            var symbolIcons = GetActiveIconList(symbolActive);
+            if (symbolIcons.TrueForAll(s => s.Status == status)) {
+                status = string.Empty;
+            }
+            
+            foreach (var symbolIcon in GetActiveIconList(symbolActive)) {
+                symbolIcon.Status = status;
+            }
+            RaiseSymbolsChanged();
+        }
+
+        public void MoveSymbolPosition(Symbol symbolActive, Vector move) {
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                symbol.StartPoint -= move;
+            }
+            RaiseSymbolsChanged();
+        }
+
+        public void MoveSymbolUpDown(Symbol symbolActive, SymbolsViewModel symbolsPmNew) {
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                Symbols.Remove(symbol.Uid);
+                symbolsPmNew.AddSymbolWithoutRaise(symbol);
+            }
+            RaiseSymbolsChanged();
+        }
+
+        public void ChangePlayerSizes(double sizeMeterNew) {
+            PushToUndoStack();
+            foreach (var symbol in Symbols.Values) {
+                if (symbol is SymbolCreature creature) {
+                    if (creature.SizeMeter >= 0.5 && creature.SizeMeter <= 1.0) {
+                        creature.SizeMeter = sizeMeterNew;
+                    }
+                }
+                if (symbol is SymbolIcon icon) {
+                    if (icon.SizeMeter >= 0.5 && icon.SizeMeter <= 1.0) {
+                        icon.SizeMeter = sizeMeterNew;
+                    }
+                }
+            }
+
+            RaiseSymbolsChanged();
+        }
+        #endregion
+
+        #region Symbol Selection
+        public void ChangeSymbolSelection(Symbol symbolActive) {
+            if (symbolActive == null) {
+                return;
+            }
+
+            symbolActive.IsSelected = !symbolActive.IsSelected;
+            RaiseSymbolsChanged();
+        }
+
+
+        public void NewSymbolSelection(Symbol symbolActive) {
+            if (symbolActive == null) {
+                return;
+            }
+            ClearSymbolSelection();
+            symbolActive.IsSelected = true;
+            RaiseSymbolsChanged();
+        }
+
+        public void ClearSymbolSelection() {
+            foreach (var symbol in Symbols.Values) {
+                symbol.IsSelected = false;
+            }
+
+            RaiseSymbolsChanged();
+        }
+        public void SelectSymbolRectangle(Rect rect) {
+            foreach (var symbol in Symbols.Values) {
+                if (rect.Contains(symbol.StartPoint)) {
+                    symbol.IsSelected = true;
+                }
+            }
+
+            RaiseSymbolsChanged();
+        }
+        #endregion
+
+        #region UndoStack
+
+        private void PushToUndoStack() {
+            if (!Symbols.Equals(SymbolsUndo)) {
+                SymbolsUndo = (SymbolList)Symbols.Clone();
+                Debug.WriteLine("PushToUndoStack");
+            }
+        }
+
+        private void PopFromUndoStack() {
+            if (SymbolsUndo != null) {
+                Symbols = (SymbolList)SymbolsUndo.Clone();
+            }
+        }
+
+        public void Undo() {
+            PopFromUndoStack();
+            RaiseSymbolsChanged();
+        }
+
+        public void SaveState() {
+            PushToUndoStack();
+        }
+
+        #endregion
+        
+        #region Serialization
+
         public void Serialize(string filename) {
             try {
                 SymbolsOnly = new Collection<Symbol>();
                 foreach (var symbol in Symbols.Values) {
                     SymbolsOnly.Add(symbol);
                 }
+                var settings = new XmlWriterSettings {
+                    Indent = true
+                };
 
                 var serializer = new XmlSerializer(GetType());
-                using (var writer = XmlWriter.Create(filename)) {
+                using (var writer = XmlWriter.Create(filename, settings)) {
                     serializer.Serialize(writer, this);
                 }
             }
@@ -303,7 +371,7 @@ namespace MapViewer.Symbols {
             }
         }
 
-        // Check and calulate if symbol positions needs to scaled to fit.
+        // Check and calculate if symbol positions needs to scaled to fit.
         private double GetNeededScaleToFitThisImage(Collection<Symbol> symbols, Size imSize) {
             if (symbols == null) {
                 return 1.0;
@@ -343,6 +411,8 @@ namespace MapViewer.Symbols {
                 MessageBox.Show(ex.Message);
             }
         }
+
+        #endregion
 
     }
 }

@@ -19,7 +19,7 @@ namespace MapViewer.Symbols {
     [Serializable]
     [XmlInclude(typeof(SymbolCreature)), XmlInclude(typeof(SymbolIcon)), XmlInclude(typeof(SymbolCone)),
      XmlInclude(typeof(SymbolCircle)), XmlInclude(typeof(SymbolText)), XmlInclude(typeof(SymbolRectangle))]
-    public abstract class Symbol {
+    public abstract class Symbol : ICloneable {
         public const double RotationStep = 22.5;
 
         [XmlIgnore]
@@ -140,6 +140,10 @@ namespace MapViewer.Symbols {
             Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);
             Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);
             canvas.Children.Add(shape);
+        }
+
+        public object Clone() {
+            return (Symbol)MemberwiseClone();
         }
     }
 }

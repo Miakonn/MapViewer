@@ -38,6 +38,8 @@
         <KeyBinding Key="Left" Command="mapViewer:CustomCommands.RotateSymbolCCW" />
 
         <KeyBinding Key="Delete" Command="mapViewer:CustomCommands.DeleteSymbol" />
+        <KeyBinding Key="Z" Modifiers="Control" Command="mapViewer:CustomCommands.UndoSymbols" />
+
     </Window.InputBindings>
 
     <Window.CommandBindings>
@@ -53,6 +55,7 @@
         <CommandBinding Command="mapViewer:CustomCommands.SetSymbolColor" Executed="SetSymbolColor_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToFront" Executed="SendSymbolToFront_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToBack" Executed="SendSymbolToBack_Execute" CanExecute="SymbolNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.UndoSymbols" Executed="UndoSymbols_Execute" CanExecute="SymbolsChanged_CanExecute" />
 
         <CommandBinding Command="mapViewer:CustomCommands.MoveSymbolUp" Executed="MoveSymbolUp_Execute" CanExecute="MoveSymbolUp_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.MoveSymbolDown" Executed="MoveSymbolDown_Execute" CanExecute="MoveSymbolDown_CanExecute" />

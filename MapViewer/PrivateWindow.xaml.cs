@@ -230,6 +230,7 @@ namespace MapViewer {
                     _mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                     _mouseDownPointFirst = _mouseDownPoint;
                     _cursorAction = CursorAction.MovingSymbol;
+                    MapPrivate.SymbolsPM.SaveState();
                     if (!_lastClickedSymbol.IsSelected) {
                         MapPrivate.SymbolsPM.NewSymbolSelection(_lastClickedSymbol);
                     }
