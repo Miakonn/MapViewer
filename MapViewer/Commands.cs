@@ -82,6 +82,10 @@ namespace MapViewer {
 			e.CanExecute = (_lastClickedSymbol != null);
 		}
 
+        private void IconNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = (_lastClickedSymbol is SymbolIcon);
+        }
+
         private void MoveSymbolUp_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
             e.CanExecute = (MapPrivate != null 
                             && LevelNumber > 1
@@ -262,7 +266,17 @@ namespace MapViewer {
             }
         }
 
-		private void ScaleToFit_Execute(object sender, ExecutedRoutedEventArgs e) {
+        public object HasSymbolCross {
+            get {
+                if (_lastClickedSymbol is SymbolIcon symbolIcon) {
+                    return symbolIcon.Status == "Cross";
+                }
+
+                return false;
+            }
+        }
+
+        private void ScaleToFit_Execute(object sender, ExecutedRoutedEventArgs e) {
 			MapPrivate.ScaleToWindow(Layer1_Map);
 			MapPrivate.UpdateVisibleRectangle(MapPublic);
 		}
@@ -692,5 +706,10 @@ namespace MapViewer {
 
             MapPrivate.SymbolsPM.RotateSymbol(_lastClickedSymbol, RotationDirection.CounterClockwise);
         }
+
+        private void SetSymbolCross_Execute(object sender, ExecutedRoutedEventArgs e) {
+            MapPrivate.SymbolsPM.ToggleSymbolStatus(_lastClickedSymbol, "Cross");
+        }
+
     }
 }

@@ -107,6 +107,21 @@ namespace MapViewer.Symbols {
             return new List<Symbol> { symbolActive};
         }
 
+        private List<SymbolIcon> GetActiveIconList(Symbol symbolActive) {
+            if (!(symbolActive is SymbolIcon)) {
+                return new List<SymbolIcon>();
+            }
+
+            if (symbolActive.IsSelected) {
+               return (from s in Symbols.Values where s.IsSelected && s is SymbolIcon select s as SymbolIcon).ToList();
+                
+            }
+
+            ClearSymbolSelection();
+            return new List<SymbolIcon> { symbolActive as SymbolIcon};
+        }
+
+
         public void DeleteSymbol(Symbol symbolActive) {
             foreach (var symbol in GetActiveList(symbolActive)) {
                 Symbols.Remove(symbol.Uid);
@@ -150,7 +165,19 @@ namespace MapViewer.Symbols {
             }
             RaiseSymbolsChanged();
         }
-        
+
+        public void ToggleSymbolStatus(Symbol symbolActive, string status) {
+            var symbolIcons = GetActiveIconList(symbolActive);
+            if (symbolIcons.TrueForAll(s => s.Status == status)) {
+                status = string.Empty;
+            }
+            
+            foreach (var symbolIcon in GetActiveIconList(symbolActive)) {
+                symbolIcon.Status = status;
+            }
+            RaiseSymbolsChanged();
+        }
+
         public void MoveSymbolPosition(Symbol symbolActive, Vector move) {
             foreach (var symbol in GetActiveList(symbolActive)) {
                 symbol.StartPoint -= move;

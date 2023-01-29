@@ -16,7 +16,9 @@ namespace MapViewer.Symbols {
 
         public string ImageFileName { get; set; }
         public double RotationDegree { get; set; }
-        
+
+        public string Status { get; set; }
+
         public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
             BitmapSource iconSource;
             if (string.IsNullOrWhiteSpace(ImageFileName) || !File.Exists(ImageFileName)) {
@@ -56,48 +58,53 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(shape, StartPoint.Y - center.Y);
             canvas.Children.Add(shape);
 
-            if (!FillColor.Equals(Colors.Gray)) {
-                var thickness = Math.Min(iconSource.Width, iconSource.Height) * 0.06;
-                var xTenth = iconSource.Width * 0.10;
-                var yTenth = iconSource.Height * 0.10;
-
-                var line1 = new Line {
-                    Uid = Uid,
-                    X1 = xTenth,
-                    Y1 = yTenth,
-                    X2 = iconSource.Width - xTenth,
-                    Y2 = iconSource.Height - yTenth,
-                    RenderTransform = finalTransform,
-                    Stroke = new SolidColorBrush(FillColor),
-                    StrokeThickness = thickness,
-                    Opacity = 1.0,
-                    IsHitTestVisible = false
-                };
-
-                Canvas.SetLeft(line1, StartPoint.X - center.X);
-                Canvas.SetTop(line1, StartPoint.Y - center.Y);
-                canvas.Children.Add(line1);
-
-                var line2 = new Line {
-                    Uid = Uid,
-                    X1 = xTenth,
-                    Y1 = iconSource.Height - yTenth,
-                    X2 = iconSource.Width - xTenth,
-                    Y2 = yTenth,
-                    RenderTransform = finalTransform,
-                    Stroke = new SolidColorBrush(FillColor),
-                    StrokeThickness = thickness,
-                    Opacity = 1.0,
-                    IsHitTestVisible = false
-                };
-
-                Canvas.SetLeft(line2, StartPoint.X - center.X);
-                Canvas.SetTop(line2, StartPoint.Y - center.Y);
-                canvas.Children.Add(line2);
+            if (Status == "Cross") {
+                AddCross(canvas, iconSource, finalTransform, center);
             }
 
             base.Draw(canvas, settings);
         }
+
+        void AddCross(CanvasOverlay canvas, BitmapSource iconSource, TransformGroup finalTransform, Vector center) {
+            var thickness = Math.Min(iconSource.Width, iconSource.Height) * 0.06;
+            var xTenth = iconSource.Width * 0.10;
+            var yTenth = iconSource.Height * 0.10;
+
+            var line1 = new Line {
+                Uid = Uid,
+                X1 = xTenth,
+                Y1 = yTenth,
+                X2 = iconSource.Width - xTenth,
+                Y2 = iconSource.Height - yTenth,
+                RenderTransform = finalTransform,
+                Stroke = new SolidColorBrush(FillColor),
+                StrokeThickness = thickness,
+                Opacity = 1.0,
+                IsHitTestVisible = false
+            };
+
+            Canvas.SetLeft(line1, StartPoint.X - center.X);
+            Canvas.SetTop(line1, StartPoint.Y - center.Y);
+            canvas.Children.Add(line1);
+
+            var line2 = new Line {
+                Uid = Uid,
+                X1 = xTenth,
+                Y1 = iconSource.Height - yTenth,
+                X2 = iconSource.Width - xTenth,
+                Y2 = yTenth,
+                RenderTransform = finalTransform,
+                Stroke = new SolidColorBrush(FillColor),
+                StrokeThickness = thickness,
+                Opacity = 1.0,
+                IsHitTestVisible = false
+            };
+
+            Canvas.SetLeft(line2, StartPoint.X - center.X);
+            Canvas.SetTop(line2, StartPoint.Y - center.Y);
+            canvas.Children.Add(line2);
+        }
+
 
         public override bool OpenDialogProp(Window owner, Point dialogPos, SymbolsViewModel symbolsVM) {
             var dlg = new DialogIconProp {
