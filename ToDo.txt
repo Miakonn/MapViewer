@@ -5,11 +5,11 @@
 
 Hög prio ================================
 
+* ångra-funktion på symboler
+
 Medel prio =================================
 
 * Copy/paste på symboler (ctr-c, ctrl-v)
-
-* Delete-lnapp på valda symboler
 
 * symboler utan att kalibrera bild?
 

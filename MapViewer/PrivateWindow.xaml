@@ -36,6 +36,8 @@
 
         <KeyBinding Key="Right" Command="mapViewer:CustomCommands.RotateSymbolCW" />
         <KeyBinding Key="Left" Command="mapViewer:CustomCommands.RotateSymbolCCW" />
+
+        <KeyBinding Key="Delete" Command="mapViewer:CustomCommands.DeleteSymbol" />
     </Window.InputBindings>
 
     <Window.CommandBindings>
