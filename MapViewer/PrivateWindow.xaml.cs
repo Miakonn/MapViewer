@@ -213,6 +213,7 @@ namespace MapViewer {
         private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e) {
             if (ActiveTool != null) {
                 ActiveTool.MouseDown(sender, e);
+                _lastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
                 return;
             }
 

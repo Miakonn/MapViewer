@@ -67,7 +67,7 @@ namespace MapViewer.Symbols {
             FillColor = symbolSource.FillColor;
             OrderZ = symbolSource.OrderZ - 1;
             SizeMeter = symbolSource.SizeMeter;
-            Caption = SymbolsViewModel.CountUpCaption(symbolSource.Caption);
+            Caption = symbolSource.Caption;
         }
 
         public void DrawText(string caption, CanvasOverlay canvas, MapDrawSettings drawSettings) {

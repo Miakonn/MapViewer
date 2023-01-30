@@ -453,6 +453,7 @@ namespace MapViewer {
 
             var offset = new Vector(50 / MapPrivate.ZoomScale, 50 / MapPrivate.ZoomScale);
             MapPrivate.SymbolsPM.DuplicateSymbol(_lastClickedSymbol, offset);
+            _lastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
         }
 
         private void SetSymbolColor_Execute(object sender, ExecutedRoutedEventArgs e) {

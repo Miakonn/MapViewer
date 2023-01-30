@@ -125,6 +125,10 @@ namespace MapViewer.Symbols {
             }
         }
 
+        public Symbol GetSelected() {
+            return Symbols.Values.FirstOrDefault(symbol => symbol.IsSelected);
+        }
+
         private List<Symbol> GetActiveList(Symbol symbolActive) {
             if (symbolActive == null) {
                 return new List<Symbol>();
@@ -152,24 +156,30 @@ namespace MapViewer.Symbols {
             return new List<SymbolIcon> { (SymbolIcon)symbolActive };
         }
 
-        public static string CountUpCaption(string caption) {
+        private bool IsCaptionExisting(string caption) {
+            return Symbols.Values.Any(symbol => symbol.Caption == caption);
+        }
+
+        public string CountUpCaption(string caption) {
             if (string.IsNullOrWhiteSpace(caption)) {
                 return string.Empty;
             }
 
-            int i = caption.Length - 1;
-            while (i >= 0 && char.IsDigit(caption[i])) {
+            int i = caption.Length;
+            while (i > 0 && char.IsDigit(caption[i-1])) {
                 i--;
             }
 
-            i++;
-            if (i <= caption.Length - 1) {
-                int num = int.Parse(caption.Substring(i)) + 1;
-                return caption.Substring(0, i) + num.ToString();
+            int num = 1;
+            if (i < caption.Length) {  // Has numeric ending
+                num = int.Parse(caption.Substring(i)) + 1;
             }
-            else {
-                return caption + "1";
+            var prefix = caption.Substring(0, i);
+            while (IsCaptionExisting(prefix + num)) {
+                num++;
             }
+
+            return prefix + num;
         }
 
         public static double ToRadians(double degrees) {
@@ -205,9 +215,14 @@ namespace MapViewer.Symbols {
 
         public void DuplicateSymbol(Symbol symbolActive, Vector offset) {
             SaveState();
-            foreach (var symbol in GetActiveList(symbolActive)) {
-                AddSymbolWithoutRaise(symbol.Copy(offset));
-                Debug.WriteLine("Cretaed: "+ symbol.Caption);
+            var listSelected = GetActiveList(symbolActive);
+            ClearSymbolSelection();
+            foreach (var symbol in listSelected) {
+                var copy = symbol.Copy(offset);
+                copy.Caption = CountUpCaption(copy.Caption);
+                copy.IsSelected = true;
+                AddSymbolWithoutRaise(copy);
+                Debug.WriteLine("Created: "+ copy.Caption);
             }
             RaiseSymbolsChanged();
         }
@@ -312,6 +327,8 @@ namespace MapViewer.Symbols {
             RaiseSymbolsChanged();
         }
 
+
+
         public void ClearSymbolSelection() {
             foreach (var symbol in Symbols.Values) {
                 symbol.IsSelected = false;
@@ -319,6 +336,7 @@ namespace MapViewer.Symbols {
 
             RaiseSymbolsChanged();
         }
+
         public void SelectSymbolRectangle(Rect rect) {
             foreach (var symbol in Symbols.Values) {
                 if (rect.Contains(symbol.StartPoint)) {
