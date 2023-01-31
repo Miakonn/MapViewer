@@ -65,7 +65,7 @@ namespace MapViewer.Symbols {
             Uid = SymbolsViewModel.GetTimestamp();
             StartPoint = symbolSource.StartPoint + offset;
             FillColor = symbolSource.FillColor;
-            OrderZ = symbolSource.OrderZ - 1;
+            OrderZ = symbolSource.OrderZ;
             SizeMeter = symbolSource.SizeMeter;
             Caption = symbolSource.Caption;
         }

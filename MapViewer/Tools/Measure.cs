@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -81,8 +82,14 @@ namespace MapViewer.Tools {
 			}
 			var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
 			var dist = _map.ImageScaleMperPix * length;
-			return dist.ToString("N1");
-		}
+            if (dist < 100) {
+                return dist.ToString("N1");
+            }
+
+            double size = Math.Pow(10.0, Math.Floor(Math.Log10(dist)) - 2.0); 
+            dist = Math.Round(dist / size) * size;
+            return dist.ToString("N0");
+        }
 
 		private void InitDraw(Point pt1) {
 			_line = new Line {

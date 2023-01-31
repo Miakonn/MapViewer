@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -66,18 +65,17 @@ namespace MapViewer.Symbols {
 
         public void AddSymbol(Symbol symbol) {
             SaveState();
-            symbol.Uid = UidPrefix + symbol.Uid;
+            if (!symbol.Uid.StartsWith(UidPrefix)) {
+                symbol.Uid = UidPrefix + symbol.Uid;
+            }
             Symbols[symbol.Uid] = symbol;
             RaiseSymbolsChanged();
         }
 
         public void AddSymbolWithoutRaise(Symbol symbol) {
-            symbol.Uid = UidPrefix + symbol.Uid;
-            Symbols[symbol.Uid] = symbol;
-        }
-
-        public void AddSymbolWithoutRaiseOrNewUid(Symbol symbol) {
-            symbol.Uid = UidPrefix + symbol.Uid;
+            if (!symbol.Uid.StartsWith(UidPrefix)) {
+                symbol.Uid = UidPrefix + symbol.Uid;
+            }
             Symbols[symbol.Uid] = symbol;
         }
 
@@ -97,9 +95,9 @@ namespace MapViewer.Symbols {
         public void RaiseSymbolsChanged() {
             SymbolsChanged?.Invoke(this, null);
         }
-        
+
         public static string GetTimestamp() {
-            return (DateTime.UtcNow.Subtract(new DateTime(2022, 1, 1)).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
+            return Guid.NewGuid().ToString();
         }
 
         public int GetMaxOrderZ() {
@@ -221,6 +219,7 @@ namespace MapViewer.Symbols {
                 var copy = symbol.Copy(offset);
                 copy.Caption = CountUpCaption(copy.Caption);
                 copy.IsSelected = true;
+                copy.OrderZ = GetMinOrderZ() - 1;
                 AddSymbolWithoutRaise(copy);
                 Debug.WriteLine("Created: "+ copy.Caption);
             }
@@ -426,7 +425,7 @@ namespace MapViewer.Symbols {
 
                     foreach (var symbol in symbolVM.SymbolsOnly) {
                         symbol.StartPoint = new Point(scale * symbol.StartPoint.X, scale * symbol.StartPoint.Y);
-                        AddSymbolWithoutRaiseOrNewUid(symbol);
+                        AddSymbolWithoutRaise(symbol);
                     }
                 }
                 RaiseSymbolsChanged();

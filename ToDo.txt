@@ -9,7 +9,9 @@ Hög prio ================================
 
 Medel prio =================================
 
-* Copy/paste på symboler (ctr-c, ctrl-v)
+* Markera alla med Ctrl-a
+
+* Spara delmängd av symboler
 
 * symboler utan att kalibrera bild?
 

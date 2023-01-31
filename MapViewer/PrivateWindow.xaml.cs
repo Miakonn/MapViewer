@@ -225,6 +225,9 @@ namespace MapViewer {
                 if (shiftPressed) {
                     if (_lastClickedSymbol != null) {
                         MapPrivate.SymbolsPM.ChangeSymbolSelection(_lastClickedSymbol);
+                        if (!_lastClickedSymbol.IsSelected) {
+                            _lastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
+                        }
                     }
                 }
                 else if (_lastClickedSymbol != null) {
