@@ -18,7 +18,7 @@ namespace MapViewer {
         public static readonly RoutedUICommand RotateSymbolCW = new RoutedUICommand("Rotate CW", "RotateCW", typeof(CustomCommands), null);
         public static readonly RoutedUICommand RotateSymbolCCW = new RoutedUICommand("Rotate CCW", "RotateCCW", typeof(CustomCommands), null);
         public static readonly RoutedUICommand SetSymbolCross = new RoutedUICommand("Show Cross", "SetCross", typeof(CustomCommands), null);
-        public static readonly RoutedUICommand UndoSymbols = new RoutedUICommand("Undo symbol chjange", "UndoSymbols", typeof(CustomCommands), null);
+        public static readonly RoutedUICommand UndoSymbols = new RoutedUICommand("Undo symbol change", "UndoSymbols", typeof(CustomCommands), null);
 
 
         public static readonly RoutedUICommand SelectSymbols = new RoutedUICommand("Select", "SelectRectangle", typeof(CustomCommands), null);

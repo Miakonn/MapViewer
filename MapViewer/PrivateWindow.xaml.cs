@@ -18,6 +18,7 @@ using MapViewer.Maps;
 using MapViewer.Properties;
 using MapViewer.Symbols;
 using MapViewer.Tools;
+using MapViewer.Utilities;
 using Application = System.Windows.Application;
 using Cursors = System.Windows.Input.Cursors;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -93,11 +94,11 @@ namespace MapViewer {
         public PrivateWindow()
         {
             InitializeComponent();
-            InitSettings();
-
+ 
             Title = $"Miakonn's MapViewer {FileVersion} - Private map";
-
             Log.Info($"STARTING MapViewer {FileVersion} ******************************************");
+            
+            InitSettings();
 
             MapPublic = PublicWindow.Map;
             MapPublic.ScreenScaleMMperM = 20.0;
@@ -106,6 +107,8 @@ namespace MapViewer {
             MapPublic.Create();
 
             PrivateContextMenu.Opened += ContextMenu_OnOpened;
+
+            DropboxHandler.AddWorkingPath(System.Reflection.Assembly.GetEntryAssembly()?.Location);
 
             InitTimer();
 

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using MapViewer.Symbols;
+using MapViewer.Utilities;
 using Path = System.IO.Path;
 using Size = System.Windows.Size;
 
@@ -81,7 +82,8 @@ namespace MapViewer.Maps {
                 CanvasOverlay.Clear();
 
                 Deserialize();
-               
+                DropboxHandler.AddWorkingPath(imagePath);
+
                 if (MapData.LastFigureScaleUsed != 0) {
                     ScreenScaleMMperM = 1000.0 / MapData.LastFigureScaleUsed;
                 }

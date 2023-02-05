@@ -12,6 +12,8 @@ using MapViewer.Symbols;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using Size = System.Windows.Size;
+using MapViewer.Utilities;
+using System.Windows.Media.Imaging;
 
 namespace MapViewer {
     public partial class PrivateWindow {
@@ -168,15 +170,18 @@ namespace MapViewer {
             long groupId = DateTime.Now.Ticks;
 
             foreach (var filename in fileNames) {
-                if (!File.Exists(filename)) {
-                    throw new Exception($"Map {filename} is missing!");
+                var path = filename;
+                if (!File.Exists(path)) {
+                    path = DropboxHandler.TryFixingPath(path);
+                    if (string.IsNullOrEmpty(path)) {
+                        throw new Exception($"Map {filename} is missing!");
+                    }
                 }
+
                 var map = new PrivateMaskedMap( this, groupId);
-                map.LoadImage(filename);
+                map.LoadImage(path);
                 MapList.Add(map);
             }
-
-
 
             Level = 0;
             MapPrivate = MapList[Level];

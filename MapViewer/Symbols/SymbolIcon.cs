@@ -8,6 +8,7 @@ using System.Windows.Shapes;
 using System.Xml.Serialization;
 using MapViewer.Dialogs;
 using MapViewer.Maps;
+using MapViewer.Utilities;
 
 namespace MapViewer.Symbols {
     [Serializable]
@@ -21,11 +22,23 @@ namespace MapViewer.Symbols {
 
         public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
             BitmapSource iconSource;
-            if (string.IsNullOrWhiteSpace(ImageFileName) || !File.Exists(ImageFileName)) {
+            if (string.IsNullOrWhiteSpace(ImageFileName)) {
                 iconSource = new BitmapImage(new Uri("pack://application:,,,/Images/Question_mark.png"));
+            }
+            else if (!File.Exists(ImageFileName)) {
+                var path = DropboxHandler.TryFixingPath(ImageFileName);
+                if (string.IsNullOrEmpty(path)) {
+                    Log.Error($"Missing file: {ImageFileName}");
+                    iconSource = new BitmapImage(new Uri("pack://application:,,,/Images/Question_mark.png"));
+                }
+                else {
+                    ImageFileName = path;
+                    iconSource = new BitmapImage(new Uri(ImageFileName));
+                }
             }
             else {
                 iconSource = new BitmapImage(new Uri(ImageFileName));
+                DropboxHandler.AddWorkingPath(ImageFileName);
             }
 
             double iconSize = Math.Max(iconSource.Width, iconSource.Height);

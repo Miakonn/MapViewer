@@ -1,11 +1,12 @@
 // Buggar
 
+* missing file!
 
 // 	Nya funktioner
 
 Hög prio ================================
 
-* ångra-funktion på symboler
+* mer ångra-funktion på symboler
 
 Medel prio =================================
 

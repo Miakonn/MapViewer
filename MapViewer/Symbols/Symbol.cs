@@ -22,6 +22,8 @@ namespace MapViewer.Symbols {
     public abstract class Symbol : ICloneable {
         public const double RotationStep = 22.5;
 
+        protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
+        
         [XmlIgnore]
         public static Cursor SymbolCursor = Cursors.Hand;
 

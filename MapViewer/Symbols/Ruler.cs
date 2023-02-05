@@ -74,13 +74,16 @@ namespace MapViewer.Symbols {
         }
 
         public void Draw(double windowHeight,  MapDrawSettings settings, string unit) {
-            Log.Debug($"SetRuler ImageScaleMperPix={settings.ImageScaleMperPix} Scale={settings.ZoomScale}");
-
+            if (settings.ImageScaleMperPix == 0 || settings.ZoomScale == 0) {
+                return;
+            }
+            
             var screenScaleMperPix = settings.ImageScaleMperPix / settings.ZoomScale;
 
             _canvas.Children.Clear();
 
             if (screenScaleMperPix < 0.0001 || screenScaleMperPix > 1E6) {
+                Log.Debug($"SetRuler ImageScaleMperPix={settings.ImageScaleMperPix} Scale={settings.ZoomScale}");
                 Log.Error("Screen scale out of bounds!");
                 return;
             }
@@ -88,9 +91,7 @@ namespace MapViewer.Symbols {
             var height = windowHeight - 2 * y0;
             var lengthM = height * screenScaleMperPix;
             var stepM = CalcStep(lengthM, out var count);
-            Log.Debug($"SetRuler stepM={stepM} count={count}");
             var stepPix = stepM / screenScaleMperPix;
-            Log.Debug($"SetRuler stepPix={stepPix} screenScaleMperPix={screenScaleMperPix}");
 
             DrawRuler(count, stepPix, y0);
             WriteRulerText(unit, count * stepM, y0 - 5, false);
