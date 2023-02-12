@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -36,7 +37,22 @@ namespace MapViewer {
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        public PrivateMaskedMap MapPrivate;
+        private PrivateMaskedMap _mapPrivate;
+
+        public PrivateMaskedMap MapPrivate {
+            get => _mapPrivate;
+            set {
+                if (_mapPrivate != null) {
+                    _mapPrivate.SymbolsPM.SymbolsChanged -= SymbolsPM_SymbolsChanged;
+                }
+                _mapPrivate = value;
+                if (_mapPrivate != null) {
+                    OnPropertyChanged(nameof(MultiLevelVisibility));
+                    _mapPrivate.SymbolsPM.SymbolsChanged += SymbolsPM_SymbolsChanged;
+                }
+            }
+        }
+
         public List<PrivateMaskedMap> MapList = new List<PrivateMaskedMap>();
         public PublicMaskedMap MapPublic;
         public int Level {
@@ -51,6 +67,13 @@ namespace MapViewer {
         public PrivateMaskedMap MapBelow => Level > 0 ? MapList[Level - 1] : null;
 
         public readonly PublicWindow PublicWindow = new PublicWindow();
+
+        public ObservableCollection<Symbol> SymbolCollection { get; } = new ObservableCollection<Symbol>();
+
+        public bool IsSymbolsCollectionNotEmpty => (SymbolCollection?.Count > 0);
+
+        public Visibility MultiLevelVisibility => (LevelNumber > 1 ? Visibility.Visible : Visibility.Collapsed);
+
 
         private UIElement _lastClickedElem;
         private Symbol _lastClickedSymbol;
@@ -77,8 +100,6 @@ namespace MapViewer {
                 MapPrivate?.SymbolsPM.RaiseSymbolsChanged();
                
                 MapPrivate?.SetCursor((value != null) ?  Cursors.Cross : null);
-                
-
 
                 if (MapPublic != null && MapPublic.ShowPublicCursorTemporary) {
                     MapPublic.ShowPublicCursor = false;
@@ -106,13 +127,12 @@ namespace MapViewer {
             MapPublic.IsLinked = false;
             MapPublic.Create();
 
-            PrivateContextMenu.Opened += ContextMenu_OnOpened;
-
             DropboxHandler.AddWorkingPath(System.Reflection.Assembly.GetEntryAssembly()?.Location);
 
             InitTimer();
 
             ComboBoxPublicScale.DataContext = this;
+            PrivateContextMenu.DataContext = this;
         }
 
         private void HandleImageScaleChanged(object sender, EventArgs e) {
@@ -122,7 +142,6 @@ namespace MapViewer {
         private void HandleZoomChanged(object sender, EventArgs e) {
             MapPrivate.UpdateVisibleRectangle(MapPublic);
         }
-        
 
         public void SetScale(int scale) {
             if (scale == 0) {
@@ -436,6 +455,19 @@ namespace MapViewer {
             dialog.ShowDialog();
         }
 
+        private void SymbolsPM_SymbolsChanged(object sender, EventArgs e) {
+
+            SymbolCollection.Clear();
+
+            foreach (var symbol in MapPrivate.SymbolsPM.Symbols.Values) {
+                if (!string.IsNullOrWhiteSpace(symbol.DisplayName)) {
+                    SymbolCollection.Add(symbol);
+                }
+            }
+
+            OnPropertyChanged(nameof(SymbolCollection));
+            OnPropertyChanged(nameof(IsSymbolsCollectionNotEmpty));
+        }
 
         #endregion
 
@@ -521,6 +553,7 @@ namespace MapViewer {
 
         #region Save Timer
         private Timer _saveTimer;
+ 
         public void InitTimer()
         {
             _saveTimer = new Timer();

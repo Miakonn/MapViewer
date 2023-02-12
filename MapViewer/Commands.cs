@@ -13,7 +13,6 @@ using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using Size = System.Windows.Size;
 using MapViewer.Utilities;
-using System.Windows.Media.Imaging;
 
 namespace MapViewer {
     public partial class PrivateWindow {
@@ -82,6 +81,7 @@ namespace MapViewer {
 		private void SymbolNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			e.CanExecute = (_lastClickedSymbol != null);
 		}
+
 
         private void IconNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
             e.CanExecute = (_lastClickedSymbol is SymbolIcon);
@@ -455,6 +455,16 @@ namespace MapViewer {
             var offset = new Vector(50 / MapPrivate.ZoomScale, 50 / MapPrivate.ZoomScale);
             MapPrivate.SymbolsPM.DuplicateSymbol(_lastClickedSymbol, offset);
             _lastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
+        }
+
+        private void FetchSymbol_Execute(object sender, ExecutedRoutedEventArgs e) {
+            ActiveTool = null;
+
+            if (e.Parameter is Symbol symbol) {
+                MapPrivate.SymbolsPM.NewSymbolSelection(symbol);
+                MapPrivate.SymbolsPM.SetSymbolPosition(symbol, _mouseDownPoint);
+                _lastClickedSymbol = symbol;
+            }
         }
 
         private void SetSymbolColor_Execute(object sender, ExecutedRoutedEventArgs e) {

@@ -25,14 +25,12 @@ namespace MapViewer.Symbols {
         }
     }
 
-
-
     [Serializable]
     [XmlInclude(typeof(Symbol)), XmlInclude(typeof(SymbolCreature))]
     public partial class SymbolsViewModel {
         
         [XmlIgnore]
-        private SymbolList Symbols { get; set; }
+        public SymbolList Symbols { get; private set; }
 
         [XmlIgnore]
         private SymbolList SymbolsUndo { get; set; }
@@ -49,6 +47,7 @@ namespace MapViewer.Symbols {
         [XmlIgnore]
         public bool CanUndo => SymbolsUndo != null;
 
+    
 
         public SymbolsViewModel() {
             Symbols = new SymbolList();
@@ -58,6 +57,7 @@ namespace MapViewer.Symbols {
         public SymbolsViewModel(string prefix) {
             UidPrefix = prefix;
             Symbols = new SymbolList();
+            SymbolsOnly = new Collection<Symbol>();
         }
 
         #region Assorted
@@ -276,6 +276,11 @@ namespace MapViewer.Symbols {
             foreach (var symbol in GetActiveList(symbolActive)) {
                 symbol.StartPoint -= move;
             }
+            RaiseSymbolsChanged();
+        }
+
+        public void SetSymbolPosition(Symbol symbolActive, Point pos) {
+            symbolActive.StartPoint = pos;
             RaiseSymbolsChanged();
         }
 

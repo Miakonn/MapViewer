@@ -15,7 +15,6 @@ namespace MapViewer.Symbols {
     [XmlInclude(typeof(Symbol))]
     public class SymbolIcon : Symbol {
 
-        public string ImageFileName { get; set; }
         public double RotationDegree { get; set; }
 
         public string Status { get; set; }

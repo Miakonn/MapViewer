@@ -40,7 +40,24 @@ namespace MapViewer.Symbols {
         }
 
         public string Caption { get; set; }
-        public string Comment { get; set; } 
+        public string Comment { get; set; }
+
+        public string DisplayName {
+            get {
+                if (!string.IsNullOrWhiteSpace(Caption)) {
+                    return Caption;
+                }
+
+                if (string.IsNullOrWhiteSpace(ImageFileName)) {
+                    return string.Empty;
+                }
+                var filename = System.IO.Path.GetFileNameWithoutExtension(ImageFileName);
+                var parts = filename.Split('[');
+                return parts[0].Trim();
+            }
+        }
+
+        public string ImageFileName { get; set; }
 
         [XmlIgnore]
         public bool IsSelected{ get; set; }
