@@ -2,10 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mapViewer="clr-namespace:MapViewer" 
+        xmlns:symbols="clr-namespace:MapViewer.Symbols"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Background="#DFE9F5"
+        Background="SlateGray"
         Title="Miakonn's MapViewer - Private map" Height="800" Width="1200" Closing="PrivateWindow_Closing"
 		WindowStyle="ThreeDBorderWindow" 
 		ResizeMode="CanResizeWithGrip"  
@@ -40,7 +41,6 @@
         <KeyBinding Key="Delete" Command="mapViewer:CustomCommands.DeleteSymbol" />
         <KeyBinding Key="Z" Modifiers="Control" Command="mapViewer:CustomCommands.UndoSymbols" />
         <KeyBinding Key="V" Modifiers="Control" Command="mapViewer:CustomCommands.DuplicateSymbol" />
-
     </Window.InputBindings>
 
     <Window.CommandBindings>
@@ -294,13 +294,11 @@
             </Ribbon.HelpPaneContent>
         </Ribbon>
 
-        <Border Grid.Row="1" BorderThickness="0"  BorderBrush="White" Focusable="True" Loaded="Border_Loaded"
+        <Border Grid.Row="1" BorderThickness="0"  BorderBrush="SlateGray" Focusable="True" Loaded="Border_Loaded"
 					MouseDown="PrivateWinMouseDown" MouseMove="PrivateWinMouseMove" MouseUp="PrivateWinMouseUp" KeyDown="PrivateWinKeyDown" MouseWheel="PrivateWinMouseWheel" >
-            <Grid Name="DrawingSpace"  ClipToBounds="True"  > 
+            <Grid Name="DrawingSpace"  ClipToBounds="True" > 
                 <Grid.ContextMenu>
-                    <ContextMenu Name="PrivateContextMenu" Opened="ContextMenu_OnOpened"
-                    
-                        >
+                    <ContextMenu Name="PrivateContextMenu" Opened="ContextMenu_OnOpened">
                         <MenuItem Command="mapViewer:CustomCommands.CreateSpellCircular3m" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <Separator />
                         <MenuItem Command="mapViewer:CustomCommands.CreateSymbolNonPlayer" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
@@ -316,28 +314,20 @@
                             CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.SendSymbolToFront" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.SendSymbolToBack" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-                        <MenuItem Name="FetchSymbolItem" Header="Move Symbol Here" Icon="" IsEnabled="{Binding Path=IsSymbolsCollectionNotEmpty}"
-                                ItemsSource="{Binding Path=SymbolCollection}">
-
-                            <!--<MenuItem.Resources>
-                                <Image
-                                    x:Key="MenuIcon"
-                                    Width="16"
-                                    Height="16"
-                                    x:Shared="False"
-                                    Source="{Binding Icon}" />
-                            </MenuItem.Resources>-->
-
+                        <MenuItem Header="Move Symbol Here" 
+                                  IsEnabled="{Binding Path=IsSymbolsCollectionNotEmpty}"
+                                  ItemsSource="{Binding Path=SymbolCollection}">
+                            <MenuItem.Resources>
+                                <Image  x:Key="MenuIcon"
+                                        Width="25"
+                                        x:Shared="False"
+                                        Source="{Binding (symbols:Symbol.ImageFileName)}" />
+                            </MenuItem.Resources>
                             <MenuItem.ItemContainerStyle>
                                 <Style TargetType="MenuItem">
                                     <Setter Property="Header" Value="{Binding Path=DisplayName}"></Setter>
-                                    <!--<Setter Property="Icon" Value="{StaticResource MenuIcon}">
-                                        <Setter.Value>
-                                            <Image
-                                            <Image Source="{Binding ImageFileName}" Width="25"
-                                            />
-                                        </Setter.Value>
-                                    </Setter>-->
+                                    <Setter Property="Icon" Value="{StaticResource MenuIcon}">
+                                    </Setter>
                                     <Setter Property="Command" Value="mapViewer:CustomCommands.FetchSymbol" />
                                     <Setter Property="CommandTarget" Value="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                                     <Setter Property="CommandParameter" Value="{Binding Path=.}" />
