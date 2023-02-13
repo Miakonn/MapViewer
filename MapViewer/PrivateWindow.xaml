@@ -290,7 +290,7 @@
             </RibbonTab>
 
             <Ribbon.HelpPaneContent>
-                <RibbonButton x:Name="HelpButton" SmallImageSource="Images\help.png" Click="HelpButton_OnClick"/>
+                <RibbonButton x:Name="HelpButton" SmallImageSource="Images\help.png" Click="HelpButton_OnClick" Margin="2,1"/>
             </Ribbon.HelpPaneContent>
         </Ribbon>
 

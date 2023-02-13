@@ -116,7 +116,7 @@ namespace MapViewer {
         {
             InitializeComponent();
  
-            Title = $"Miakonn's MapViewer {FileVersion} - Private map";
+            Title = $"Miakonn's MapViewer {FileVersion}   —   Private map";
             Log.Info($"STARTING MapViewer {FileVersion} ******************************************");
             
             InitSettings();
@@ -159,7 +159,8 @@ namespace MapViewer {
             get {
                 System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
                 var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-                return fvi.FileVersion;
+                var parts = fvi.FileVersion.Split('.');
+                return $"{parts[0]}.{parts[1]}";
             }
         }
 

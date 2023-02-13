@@ -14,17 +14,71 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto" />
+    <StackPanel>
+        <TextBlock HorizontalAlignment="Center" Margin="10" FontSize="34" FontWeight="ExtraBold" Foreground="Purple">
+            Miakonn's MapViewer©
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Center" Margin="10" FontSize="24" FontWeight="ExtraBold" Foreground="Purple">
+            by Anders Blom
+        </TextBlock>
 
-		</Grid.RowDefinitions>
-		<TextBlock Grid.Row="0"  HorizontalAlignment="Center" Margin="10,10,10,10" TextWrapping="Wrap" FontSize="34"  FontWeight="ExtraBold"  VerticalAlignment="Top"><Run Text="Miakonn's MapViewer"/></TextBlock>
-		<TextBlock Grid.Row="1"  HorizontalAlignment="Center" Margin="10,10,10,10" TextWrapping="Wrap" FontSize="24" FontWeight="ExtraBold"  VerticalAlignment="Top"><Run Text="by Anders Blom"/></TextBlock>
+        <Grid HorizontalAlignment="Center" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="16" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
+            <TextBlock Grid.Row="0" Grid.Column="0">Ctrl-O</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="2">Open map</TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="0">Ctrl-S</TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="2">Save symbols and masking</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="0">F9</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="2">Open last map</TextBlock>
+            <TextBlock Grid.Row="3" Grid.Column="0">F12</TextBlock>
+            <TextBlock Grid.Row="3" Grid.Column="2">Publish to public map</TextBlock>
+            <TextBlock Grid.Row="4" Grid.Column="0">Home</TextBlock>
+            <TextBlock Grid.Row="4" Grid.Column="2">Scale map to fit</TextBlock>
 
-		<Button Grid.Row="2" IsCancel="True" IsDefault="True" Margin="10,50,10,10" Content="Cancel" Width="75" Height="20"  RenderTransformOrigin="0.78,3.918"/>
-	</Grid>
+            <TextBlock Grid.Row="6" Grid.Column="0">Page Down</TextBlock>
+            <TextBlock Grid.Row="6" Grid.Column="2">Show map below</TextBlock>
+            <TextBlock Grid.Row="7" Grid.Column="0">Page Up</TextBlock>
+            <TextBlock Grid.Row="7" Grid.Column="2">Show map above</TextBlock>
+            <TextBlock Grid.Row="8" Grid.Column="0">Ctrl-Page Down</TextBlock>
+            <TextBlock Grid.Row="8" Grid.Column="2">Show map below and publish</TextBlock>
+            <TextBlock Grid.Row="9" Grid.Column="0">Ctrl-Page Up</TextBlock>
+            <TextBlock Grid.Row="9" Grid.Column="2">Show map above and publish</TextBlock>
+
+            <TextBlock Grid.Row="11" Grid.Column="0">Right Arrow</TextBlock>
+            <TextBlock Grid.Row="11" Grid.Column="2">Rotate selected symbols clockwise</TextBlock>
+            <TextBlock Grid.Row="12" Grid.Column="0">Left Arrow</TextBlock>
+            <TextBlock Grid.Row="12" Grid.Column="2">Rotate selected symbols counterclockwise</TextBlock>
+            <TextBlock Grid.Row="13" Grid.Column="0">Delete</TextBlock>
+            <TextBlock Grid.Row="13" Grid.Column="2">Delete selected symbols</TextBlock>
+            <TextBlock Grid.Row="14" Grid.Column="0">Ctrl-V</TextBlock>
+            <TextBlock Grid.Row="14" Grid.Column="2">Duplicate selected symbols</TextBlock>
+            <TextBlock Grid.Row="15" Grid.Column="0">Ctrl-Z</TextBlock>
+            <TextBlock Grid.Row="15" Grid.Column="2">Undo last symbol action</TextBlock>
+        </Grid>
+
+        <Button IsCancel="True" IsDefault="True" Margin="10" Content="Cancel" Width="75" Height="20" />
+    </StackPanel>
 </Window>
