@@ -19,6 +19,7 @@ namespace MapViewer.Symbols {
 
         public string Status { get; set; }
 
+        private bool _errorReported = false;
         public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
             BitmapSource iconSource;
             if (string.IsNullOrWhiteSpace(ImageFileName)) {
@@ -27,7 +28,10 @@ namespace MapViewer.Symbols {
             else if (!File.Exists(ImageFileName)) {
                 var path = DropboxHandler.TryFixingPath(ImageFileName);
                 if (string.IsNullOrEmpty(path)) {
-                    Log.Error($"Missing file: {ImageFileName}");
+                    if (!_errorReported) {
+                        Log.Error($"Missing file: {ImageFileName}");
+                        _errorReported = true;
+                    }
                     iconSource = new BitmapImage(new Uri("pack://application:,,,/Images/Question_mark.png"));
                 }
                 else {

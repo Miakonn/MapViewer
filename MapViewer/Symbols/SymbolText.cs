@@ -25,6 +25,7 @@ namespace MapViewer.Symbols {
             };
 
             var textSize = canvas.GetTextSize(textBlock);
+            textSize.Width = Math.Max(textSize.Width , 10);
             double scaleLength = SizeMeter / settings.ImageScaleMperPix / textSize.Width;
 
             // Reset size and angle

@@ -74,7 +74,6 @@ namespace MapViewer {
 
         public Visibility MultiLevelVisibility => (LevelNumber > 1 ? Visibility.Visible : Visibility.Collapsed);
 
-
         private UIElement _lastClickedElem;
         private Symbol _lastClickedSymbol;
 
@@ -212,7 +211,6 @@ namespace MapViewer {
                 ActiveTool = null;
             }
         }
-
         private void PrivateWinSizeChanged(object sender, SizeChangedEventArgs e)
         {
             MapPrivate?.ScaleToWindow(Layer1_Map);
@@ -407,7 +405,7 @@ namespace MapViewer {
             }
             MapPrivate.SymbolsPM.RaiseSymbolsChanged();
         }
-
+        
         private void ComboBoxPlayerMinSize_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
              var selected = (ComboBoxItem)ComboBoxPlayerMinSize.SelectedItem;
              if (selected == null || MapPublic == null || MapPrivate == null) {
@@ -468,6 +466,7 @@ namespace MapViewer {
 
             OnPropertyChanged(nameof(SymbolCollection));
             OnPropertyChanged(nameof(IsSymbolsCollectionNotEmpty));
+            OnPropertyChanged(nameof(HasSymbolCross));
         }
 
         #endregion
@@ -523,7 +522,6 @@ namespace MapViewer {
                 time.Stop();
             };
         }
-
 
         private double DistanceFromStart(Point pntNow)
         {

@@ -27,10 +27,9 @@ namespace MapViewer.Dialogs {
             }
         }
 
-
         public DialogTextProp() {
             InitializeComponent();
-            SizeValue.Focus();
+            CaptionValue.Focus();
         }
 
         private void ApplyChanges() {

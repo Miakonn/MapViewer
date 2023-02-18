@@ -2,11 +2,9 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
-using MapViewer.Dialogs;
 
 namespace MapViewer.Tools {
 	class DrawText : CanvasTool {
@@ -17,7 +15,7 @@ namespace MapViewer.Tools {
 		private RibbonToggleButton _button;
 		private Line _line;
 
-		public DrawText(PrivateWindow privateWindow, object button) {
+        public DrawText(PrivateWindow privateWindow, object button) {
 			_privateWindow = privateWindow;
 			_map = privateWindow.MapPrivate;
 			_canvas = _map.CanvasOverlay;
@@ -64,7 +62,7 @@ namespace MapViewer.Tools {
 		#endregion
 
 		private void InitDraw(Point pt1) {
-			_line = new Line {
+			_line = new Line() {
 				X1 = pt1.X,
 				Y1 = pt1.Y,
 				X2 = pt1.X,
@@ -86,25 +84,14 @@ namespace MapViewer.Tools {
 		}
 
 		private void EndDraw() {
-
-			var dialog = new DialogGetSingleValue {
-				LeadText = "Text",
-				Owner = _privateWindow
-			};
-
-			var result = dialog.ShowDialog();
-			if (!result.HasValue || !result.Value) {
-				_privateWindow.ActiveTool = null;
-				return;
-			}
-			var angle = Math.Atan2(_line.Y2 - _line.Y1, _line.X2 - _line.X1) * (180 / Math.PI);
+            var angle = Math.Atan2(_line.Y2 - _line.Y1, _line.X2 - _line.X1) * (180 / Math.PI);
             var center = new Point((_line.X1 + _line.X2) / 2, (_line.Y1 + _line.Y2) / 2);
-            var length = Math.Sqrt((_line.X1 - _line.X2) * (_line.X1 - _line.X2) +
-                                   (_line.Y1 - _line.Y2) * (_line.Y1 - _line.Y2)) * _map.ImageScaleMperPix;
-            _map.SymbolsPM.CreateSymbolText(center, angle, length , Colors.Blue, dialog.TextValue);
+            var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length * _map.ImageScaleMperPix;
+
+            var symbol = _map.SymbolsPM.CreateSymbolText(center, angle, length , Colors.Blue, "");
+            symbol.OpenDialogProp(_privateWindow, center, _privateWindow.MapPrivate.SymbolsPM);
 
             _privateWindow.ActiveTool = null;
 		}
-
-	}
+    }
 }

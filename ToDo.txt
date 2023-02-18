@@ -1,6 +1,5 @@
 // Buggar
 
-* missing file!
 
 // 	Nya funktioner
 
@@ -8,7 +7,11 @@ Hög prio ================================
 
 * mer ångra-funktion på symboler
 
+* Ta bort sista elementet!
+
 Medel prio =================================
+
+* Klipp och klistra, mellan levels
 
 * Markera alla med Ctrl-a
 

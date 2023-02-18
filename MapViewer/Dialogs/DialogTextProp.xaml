@@ -29,7 +29,7 @@
 		</Grid.RowDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="Caption"  HorizontalAlignment="Left" />
-        <TextBox Grid.Row="0" Grid.Column="1" Name="CaptionValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="80"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Name="CaptionValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="150"/>
 
         <Label Grid.Row="1" Grid.Column="0" Content="Size (m)"  HorizontalAlignment="Left" />
 		<TextBox Grid.Row="1" Grid.Column="1" Name="SizeValue" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  MinWidth="40"/>
