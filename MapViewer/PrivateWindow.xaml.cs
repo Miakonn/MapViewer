@@ -74,7 +74,6 @@ namespace MapViewer {
 
         public Visibility MultiLevelVisibility => (LevelNumber > 1 ? Visibility.Visible : Visibility.Collapsed);
 
-        private UIElement _lastClickedElem;
         private Symbol _lastClickedSymbol;
 
         private CursorAction _cursorAction;
@@ -207,7 +206,7 @@ namespace MapViewer {
             else if (e.Key == Key.Space) {
                 ActiveTool?.KeyDown(sender, e);
             }
-            else {
+            else if (e.Key != Key.LeftShift && e.Key != Key.RightShift) {
                 ActiveTool = null;
             }
         }
@@ -217,18 +216,15 @@ namespace MapViewer {
         }
 
         private void GetLastClickedSymbol() {
-            _lastClickedElem = MapPrivate.CanvasOverlay.FindElementHit();
+            var elem = MapPrivate.CanvasOverlay.FindElementHit();
 
-            if (_lastClickedElem == null) {
-                _lastClickedElem = MapPrivate.CanvasOverlay.FindElementHit();
-            }
-
-            if (_lastClickedElem == null) {
+            if (elem == null) {
                 _lastClickedSymbol = null;
                 return;
             }
 
-            _lastClickedSymbol = MapPrivate.SymbolsPM.FindSymbolFromUid(_lastClickedElem.Uid);
+            _lastClickedSymbol = MapPrivate.SymbolsPM.FindSymbolFromUid(elem.Uid) 
+                                 ?? MapPrivate.SystemSymbolsPM.FindSymbolFromUid(elem.Uid);
         }
 
         private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e) {
@@ -250,24 +246,27 @@ namespace MapViewer {
                             _lastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
                         }
                     }
+                    else {
+                        var tool = new Tools.SelectSymbols(this, e.OriginalSource, true);
+                        ActiveTool = tool;
+                        ActiveTool.MouseDown(this, e);
+                        return;
+                    }
                 }
                 else if (_lastClickedSymbol != null) {
                     _mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                     _mouseDownPointFirst = _mouseDownPoint;
-                    _cursorAction = CursorAction.MovingSymbol;
-                    MapPrivate.SymbolsPM.SaveState();
-                    if (!_lastClickedSymbol.IsSelected) {
-                        MapPrivate.SymbolsPM.NewSymbolSelection(_lastClickedSymbol);
+                    _characterDistanceMoved = 0;
+                    if (_lastClickedSymbol.Uid == MapPrivate.PublicPositionUid) {
+                        _cursorAction = CursorAction.MovingPublicMapPos;
                     }
-
-                    _characterDistanceMoved = 0;
-                }
-                else if (_lastClickedElem != null && _lastClickedElem.Uid == MapPrivate.PublicPositionUid) {
-                    _mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
-                    _mouseDownPointFirst = _mouseDownPoint;
-                    _cursorAction =  CursorAction.MovingPublicMapPos;
-
-                    _characterDistanceMoved = 0;
+                    else {
+                        _cursorAction = CursorAction.MovingSymbol;
+                        MapPrivate.SymbolsPM.SaveState();
+                        if (!_lastClickedSymbol.IsSelected) {
+                            MapPrivate.SymbolsPM.NewSymbolSelection(_lastClickedSymbol);
+                        }
+                    }
                 }
                 else {
                     MapPrivate.SymbolsPM.ClearSymbolSelection();
@@ -293,21 +292,7 @@ namespace MapViewer {
                 _mouseDownPointFirst = _mouseDownPoint;
             }
         }
-
-        public Point ScaleWithWindowsDpi(Point pos) {
-            // Scale with windows dpi scale
-            var dpiScale = VisualTreeHelper.GetDpi(this);
-            pos.X /= dpiScale.DpiScaleX;
-            pos.Y /= dpiScale.DpiScaleY;
-
-            // Move inside window
-            var windowSize = this.RenderSize;
-            pos.X = Math.Min(pos.X, windowSize.Width - 200);
-            pos.Y = Math.Min(pos.Y, windowSize.Height - 200);
-
-            return pos;
-        }
-
+        
         private void PrivateWinMouseMove(object sender, MouseEventArgs e) {
             if (ActiveTool != null) {
                 if (ActiveTool.ShowPublicCursor()) {
@@ -481,6 +466,20 @@ namespace MapViewer {
                 Log.Debug("Uses settings file:" + PortableSettingsProvider.SettingsFileName);
                 _writtenLogSetting = true;
             }
+        }
+
+        public Point ScaleWithWindowsDpi(Point pos) {
+            // Scale with windows dpi scale
+            var dpiScale = VisualTreeHelper.GetDpi(this);
+            pos.X /= dpiScale.DpiScaleX;
+            pos.Y /= dpiScale.DpiScaleY;
+
+            // Move inside window
+            var windowSize = this.RenderSize;
+            pos.X = Math.Min(pos.X, windowSize.Width - 200);
+            pos.Y = Math.Min(pos.Y, windowSize.Height - 200);
+
+            return pos;
         }
 
         public void DisplayPopup(string text)

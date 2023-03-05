@@ -31,18 +31,27 @@ namespace MapViewer.Tools {
 		#region CanvasTool
 
         public override void MouseDown(object sender, MouseButtonEventArgs e) {
-			if (_rect1 == null) {
+            bool shiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            if (_rect1 == null) {
 				_pnt1 = e.GetPosition(_canvas);
 				InitDraw(_pnt1);
 			}
-			else {
+			else if (!shiftPressed) {
 				UpdateDraw(e.GetPosition(_canvas));
 				EndDraw();
 			}
 		}
 
-		public override void MouseMove(object sender, MouseEventArgs e) {
-			UpdateDraw(e.GetPosition(_canvas));
+        public override void MouseUp(object sender, MouseButtonEventArgs e) {
+            bool shiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            if (shiftPressed) {
+                UpdateDraw(e.GetPosition(_canvas));
+                EndDraw();
+            }
+        }
+
+        public override void MouseMove(object sender, MouseEventArgs e) {
+            UpdateDraw(e.GetPosition(_canvas));
 		}
 
 		public override void Deactivate() {
