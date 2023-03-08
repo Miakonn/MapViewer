@@ -19,6 +19,7 @@ namespace MapViewer.Dialogs {
                 CommentValue.Text = Symbol.Comment;
                 _color = Symbol.FillColor;
                 BtnColor.Background = new SolidColorBrush(_color);
+                ControlOpacity.ComboBoxOpacity.Text = Symbol.OpacityPercent;
             }
         }
 
@@ -29,6 +30,7 @@ namespace MapViewer.Dialogs {
             Symbol.Caption = CaptionValue.Text;
             Symbol.Comment = CommentValue.Text;
             Symbol.FillColor = _color;
+            Symbol.OpacityPercent = ControlOpacity.ComboBoxOpacity.Text;
 
             var str = SizeValue.Text.Replace(',', '.');
             if (double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sizeM)) {

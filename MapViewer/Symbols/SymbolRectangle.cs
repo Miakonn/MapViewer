@@ -28,7 +28,7 @@ namespace MapViewer.Symbols {
                 Width = lengthPixel,
                 Height = widthPixel,
                 Fill = new SolidColorBrush(FillColor),
-                Opacity = 0.4,
+                Opacity = Opacity,
                 RenderTransform = new RotateTransform(RotationDegree, lengthPixel * 0.5, widthPixel * 0.5),
                 Cursor = (settings.IsToolActive ? null : SymbolCursor)
             };

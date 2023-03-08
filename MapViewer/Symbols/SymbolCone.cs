@@ -36,7 +36,7 @@ namespace MapViewer.Symbols {
                 Uid = Uid,
                 Points = _corners,
                 Fill = new SolidColorBrush(FillColor),
-                Opacity = 0.4,
+                Opacity = Opacity,
                 Cursor = (settings.IsToolActive ? null : SymbolCursor)
             };
 

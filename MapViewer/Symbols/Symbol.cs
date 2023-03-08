@@ -1,5 +1,6 @@
 ﻿using MapViewer.Maps;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,6 +34,18 @@ namespace MapViewer.Symbols {
         public int OrderZ { get; set; }   
         public Point StartPoint { get; set; }
         public Color FillColor { get; set; }
+        public double Opacity { get; set; } = 1.0;
+
+
+        [XmlIgnore]
+        public string OpacityPercent {
+            get => $"{Math.Round(Opacity * 100)}%";
+            set {
+                if (int.TryParse(value.TrimEnd('%'), out int opResult)) {
+                    Opacity = opResult / 100.0;
+                }
+            }
+        }
 
         public double SizeMeter {
             get => _sizeMeter;
@@ -87,6 +100,7 @@ namespace MapViewer.Symbols {
             OrderZ = symbolSource.OrderZ;
             SizeMeter = symbolSource.SizeMeter;
             Caption = symbolSource.Caption;
+            Opacity = symbolSource.Opacity;
         }
 
         public void DrawText(string caption, CanvasOverlay canvas, MapDrawSettings drawSettings) {

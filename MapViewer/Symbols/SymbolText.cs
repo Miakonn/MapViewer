@@ -19,6 +19,7 @@ namespace MapViewer.Symbols {
                 Uid = Uid,
                 Text = Caption,
                 FontSize = fontSize,
+                Opacity = Opacity,
                 Foreground = new SolidColorBrush(FillColor),
                 FontWeight = FontWeights.UltraBold,
                 Cursor = (settings.IsToolActive ? null : SymbolCursor)

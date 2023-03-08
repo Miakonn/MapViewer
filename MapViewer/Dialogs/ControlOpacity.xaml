@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="MapViewer.Dialogs.ControlOpacity"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+    <Grid>
+        <ComboBox Name="ComboBoxOpacity"  
+              Height="21" 
+              ToolTip="Opacity" >
+            <ComboBoxItem Content="20%" />
+            <ComboBoxItem Content="40%" />
+            <ComboBoxItem Content="60%" />
+            <ComboBoxItem Content="80%" />
+            <ComboBoxItem Content="100%" />
+        </ComboBox>
+    </Grid>
+</UserControl>

@@ -10,6 +10,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolCreature {
                 Uid = GetTimestamp(),
                 FillColor = color,
+                Opacity = 1,
                 Caption = caption,
                 OrderZ = GetMinOrderZ() - 1,
                 StartPoint = pos,
@@ -24,6 +25,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolCircle {
                 Uid = GetTimestamp(),
                 FillColor = color,
+                Opacity = 0.8,
                 OrderZ = GetMinOrderZ() - 1,
                 StartPoint = pos,
                 SizeMeter = radiusMeter * 2
@@ -37,6 +39,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolRectangle {
                 Uid = GetTimestamp(),
                 FillColor = color,
+                Opacity = 0.8,
                 OrderZ = GetMinOrderZ() - 1,
                 StartPoint = startPoint,
                 SizeMeter = sizeM,
@@ -53,6 +56,7 @@ namespace MapViewer.Symbols {
                 Uid = GetTimestamp(),
                 Caption = caption,
                 FillColor = color,
+                Opacity = 0.8,
                 SizeMeter = sizeMeter,
                 OrderZ = GetMinOrderZ() - 1,
                 StartPoint = pos,
@@ -69,6 +73,7 @@ namespace MapViewer.Symbols {
                 Uid = GetTimestamp(),
                 FillColor = color,
                 SizeMeter = lengthMeter,
+                Opacity = 0.8,
                 WidthDegrees = widthDegrees,
                 OrderZ = GetMinOrderZ() - 1,
                 StartPoint = pos,
@@ -83,6 +88,7 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolIcon {
                 Uid = GetTimestamp(),
                 OrderZ = GetMinOrderZ() - 1,
+                Opacity = 1.0,
                 SizeMeter = 1,
                 StartPoint = pos,
                 FillColor = Colors.Gray,
@@ -96,7 +102,8 @@ namespace MapViewer.Symbols {
             var symbol = new SymbolFrame {
                 Uid = GetTimestamp(),
                 FillColor = color,
-                OrderZ = Int32.MinValue,
+                Opacity = 0.8,
+                OrderZ = int.MinValue,
                 StartPoint = startPoint,
                 SizeMeter = sizeM,
                 WidthMeter = widthM,

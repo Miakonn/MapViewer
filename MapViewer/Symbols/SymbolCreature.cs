@@ -18,7 +18,7 @@ namespace MapViewer.Symbols {
                 Width = sizePixel,
                 Height = sizePixel,
                 Fill = brush,
-                Opacity = 1.0,
+                Opacity = Opacity,
                 Cursor = (settings.IsToolActive ? null : SymbolCursor)
             };
 

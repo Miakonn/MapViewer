@@ -21,7 +21,7 @@ namespace MapViewer.Symbols {
                 Width = SizeMeter / settings.ImageScaleMperPix,
                 Height = SizeMeter / settings.ImageScaleMperPix,
                 Fill = brush,
-                Opacity = 1.0,
+                Opacity = Opacity,
                 Cursor = (settings.IsToolActive ? null: SymbolCursor)
             };
 

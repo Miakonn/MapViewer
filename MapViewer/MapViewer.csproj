@@ -87,6 +87,9 @@
     <Compile Include="Dialogs\DialogCreatureProp.xaml.cs">
       <DependentUpon>DialogCreatureProp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ControlOpacity.xaml.cs">
+      <DependentUpon>ControlOpacity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Maps\MapDrawSettings.cs" />
     <Compile Include="Maps\PrivateMaskedMap.cs" />
     <Compile Include="Maps\PublicMaskedMap.cs" />
@@ -181,6 +184,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\DialogGetSingleValue.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ControlOpacity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

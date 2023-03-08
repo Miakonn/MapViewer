@@ -21,6 +21,7 @@ namespace MapViewer.Dialogs {
                 CaptionValue.Text = Symbol.Caption;
                 _color = Symbol.FillColor;
                 BtnColor.Background = new SolidColorBrush(_color);
+                ControlOpacity.ComboBoxOpacity.Text = Symbol.OpacityPercent;
             }
         }
         
@@ -36,12 +37,14 @@ namespace MapViewer.Dialogs {
 
             Symbol.Caption = CaptionValue.Text.Trim();
             Symbol.FillColor = _color;
+            Symbol.OpacityPercent = ControlOpacity.ComboBoxOpacity.Text;
 
             var str = SizeValue.Text.Replace(',', '.');
             if (double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sizeValue)) {
                 Symbol.SizeMeter = Math.Max(0.0, sizeValue);
                 SizeValue.Text = Symbol.SizeMeter.ToString("N0", CultureInfo.InvariantCulture);
             }
+
 
             SymbolsVM?.RaiseSymbolsChanged();
         }

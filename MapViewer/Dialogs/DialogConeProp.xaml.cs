@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
@@ -13,7 +14,7 @@ namespace MapViewer.Dialogs {
         public double Angle { get; set; }
 
         public SymbolsViewModel SymbolsVM { get; set; }
-
+        
         public SymbolCone Symbol {
             get => _symbol;
             set {
@@ -23,6 +24,7 @@ namespace MapViewer.Dialogs {
                 WidthValue.Text = Symbol.WidthDegrees.ToString("N1", CultureInfo.InvariantCulture);
                 _color = Symbol.FillColor;
                 BtnColor.Background = new SolidColorBrush(_color);
+                ControlOpacity.ComboBoxOpacity.Text = Symbol.OpacityPercent;
             }
         }
 
@@ -32,6 +34,7 @@ namespace MapViewer.Dialogs {
             }
             Symbol.RotationDegree = Angle;
             Symbol.FillColor = _color;
+            Symbol.OpacityPercent = ControlOpacity.ComboBoxOpacity.Text;
 
             var str = SizeValue.Text.Replace(',', '.');
             if (double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sizeValue)) {
@@ -55,6 +58,7 @@ namespace MapViewer.Dialogs {
         public DialogConeProp() {
 			InitializeComponent();
             SizeValue.Focus();
+            DataContext = this;
         }
 
 		private void BtnOk_Click(object sender, RoutedEventArgs e) {
@@ -63,12 +67,12 @@ namespace MapViewer.Dialogs {
             Close();
 		}
         
-        private void cmdRotateCCW_Click(object sender, RoutedEventArgs e) {
+        private void CmdRotateCCW_Click(object sender, RoutedEventArgs e) {
             Angle-= 22.5;
             ApplyChanges();
         }
 
-        private void cmdRotateCW_Click(object sender, RoutedEventArgs e) {
+        private void CmdRotateCW_Click(object sender, RoutedEventArgs e) {
             Angle+= 22.5;
             ApplyChanges();
         }
