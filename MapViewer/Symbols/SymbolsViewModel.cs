@@ -261,12 +261,12 @@ namespace MapViewer.Symbols {
 
         public void ToggleSymbolStatus(Symbol symbolActive, string status) {
             SaveState();
-            var symbolIcons = GetActiveIconList(symbolActive);
+            var symbolIcons = GetActiveList(symbolActive);
             if (symbolIcons.TrueForAll(s => s.Status == status)) {
                 status = string.Empty;
             }
             
-            foreach (var symbolIcon in GetActiveIconList(symbolActive)) {
+            foreach (var symbolIcon in GetActiveList(symbolActive)) {
                 symbolIcon.Status = status;
             }
             RaiseSymbolsChanged();

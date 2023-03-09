@@ -91,7 +91,7 @@
         <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToBack" Executed="SendSymbolToBack_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.SendSymbolToFront" Executed="SendSymbolToFront_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.SetSymbolColor" Executed="SetSymbolColor_Execute" CanExecute="SymbolNeeded_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.SetSymbolCross" Executed="SetSymbolCross_Execute" CanExecute="IconNeeded_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.SetSymbolCross" Executed="SetSymbolCross_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.ShowPublicCursorTemporary" Executed="ShowPublicCursorTemporary_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.UndoSymbols" Executed="UndoSymbols_Execute" CanExecute="SymbolsChanged_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.UnmaskCircle" Executed="UnmaskCircle_Execute" CanExecute="MaskNeeded_CanExecute" />

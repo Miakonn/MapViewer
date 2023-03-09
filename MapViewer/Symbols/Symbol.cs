@@ -1,6 +1,5 @@
 ﻿using MapViewer.Maps;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -75,9 +74,15 @@ namespace MapViewer.Symbols {
         [XmlIgnore]
         public bool IsSelected{ get; set; }
 
+        public string Status { get; set; }
+
         public virtual void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
             if (!(this is SymbolText)) {
                 DrawText(Caption, canvas, settings);
+            }
+
+            if (Status == "Cross") {
+                AddCross(canvas, settings);
             }
 
             if (IsSelected) {
@@ -177,6 +182,48 @@ namespace MapViewer.Symbols {
 
         public object Clone() {
             return (Symbol)MemberwiseClone();
+        }
+
+        protected void AddCross(CanvasOverlay canvas, MapDrawSettings drawSettings) {
+
+            var sizePixel = drawSettings.GetMinSizePixelFromMeter(SizeMeter);
+
+            var thickness = Math.Max(sizePixel * 0.06, 1.5);
+            var circleCorner = sizePixel * 0.146; // (2 - sqr_root(2)) / 4;
+
+            var brush = new SolidColorBrush(CalculatingContrastingColor());
+
+            var line1 = new Line {
+                Uid = Uid,
+                X1 = circleCorner,
+                Y1 = circleCorner,
+                X2 = sizePixel - circleCorner,
+                Y2 = sizePixel - circleCorner,
+                Stroke = brush,
+                StrokeThickness = thickness,
+                Opacity = 1.0,
+                IsHitTestVisible = false
+            };
+
+            Canvas.SetLeft(line1, StartPoint.X - sizePixel * 0.5);
+            Canvas.SetTop(line1, StartPoint.Y - sizePixel * 0.5);
+            canvas.Children.Add(line1);
+
+            var line2 = new Line {
+                Uid = Uid,
+                X1 = circleCorner,
+                Y1 = sizePixel - circleCorner,
+                X2 = sizePixel - circleCorner,
+                Y2 = circleCorner,
+                Stroke = brush,
+                StrokeThickness = thickness,
+                Opacity = 1.0,
+                IsHitTestVisible = false
+            };
+
+            Canvas.SetLeft(line2, StartPoint.X - sizePixel * 0.5);
+            Canvas.SetTop(line2, StartPoint.Y - sizePixel * 0.5);
+            canvas.Children.Add(line2);
         }
     }
 }

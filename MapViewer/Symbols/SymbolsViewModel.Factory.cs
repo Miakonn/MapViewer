@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace MapViewer.Symbols {
@@ -91,7 +90,7 @@ namespace MapViewer.Symbols {
                 Opacity = 1.0,
                 SizeMeter = 1,
                 StartPoint = pos,
-                FillColor = Colors.Gray,
+                FillColor = Colors.Black,
             };
 
             AddSymbol(symbol);
