@@ -247,7 +247,7 @@ namespace MapViewer {
                         }
                     }
                     else {
-                        var tool = new Tools.SelectSymbols(this, e.OriginalSource, true);
+                        var tool = new SelectSymbols(this, e.OriginalSource, true);
                         ActiveTool = tool;
                         ActiveTool.MouseDown(this, e);
                         return;
@@ -546,6 +546,9 @@ namespace MapViewer {
             Settings.Default.Save();
         }
 
+        public void SetSelected(Symbol symbol) {
+            _lastClickedSymbol = symbol;
+        }
         #endregion region
 
 

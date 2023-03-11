@@ -127,6 +127,7 @@ namespace MapViewer.Tools {
             _rect2 = null;
 
             _privateWindow.ActiveTool = null;
+            _privateWindow.SetSelected(_map.SymbolsPM.GetSelected());
         }
     }
 }

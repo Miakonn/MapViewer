@@ -7,6 +7,8 @@ Hög prio ================================
 
 * mer ångra-funktion på symboler
 
+* lägg till fler status, "Fire", "RedCross", "Cross", "GreenCross"
+
 Medel prio =================================
 
 * Klipp och klistra, mellan levels
