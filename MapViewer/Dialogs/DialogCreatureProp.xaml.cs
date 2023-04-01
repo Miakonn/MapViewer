@@ -1,12 +1,10 @@
 ﻿using MapViewer.Symbols;
 using System.Globalization;
 using System.Windows;
-using System.Windows.Media;
 
 namespace MapViewer.Dialogs {
 	public partial class DialogCreatureProp {
         private SymbolCreature _symbol;
-        private Color _color;
 
         public SymbolsViewModel SymbolsVM { get; set; }
 
@@ -17,8 +15,7 @@ namespace MapViewer.Dialogs {
                 CaptionValue.Text = Symbol.Caption;
                 SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
                 CommentValue.Text = Symbol.Comment;
-                _color = Symbol.FillColor;
-                BtnColor.Background = new SolidColorBrush(_color);
+                ControlColorPicker.SelectedColor = Symbol.FillColor;
                 ControlOpacity.ComboBoxOpacity.Text = Symbol.OpacityPercent;
             }
         }
@@ -29,7 +26,7 @@ namespace MapViewer.Dialogs {
             }
             Symbol.Caption = CaptionValue.Text;
             Symbol.Comment = CommentValue.Text;
-            Symbol.FillColor = _color;
+            Symbol.FillColor = ControlColorPicker.SelectedColor;
             Symbol.OpacityPercent = ControlOpacity.ComboBoxOpacity.Text;
 
             var str = SizeValue.Text.Replace(',', '.');
@@ -57,18 +54,8 @@ namespace MapViewer.Dialogs {
 			Close();
 		}
 
-
         private void BtnApply_Click(object sender, RoutedEventArgs e) {
             ApplyChanges();
-        }
-
-        private void BtnColor_Click(object sender, RoutedEventArgs e) {
-            var dialog = new DialogColorPicker { Owner = this };
-            var result = dialog.ShowDialog();
-            if (result == true) {
-                _color = dialog.SelectedColor;
-                BtnColor.Background = new SolidColorBrush(_color);
-            }
         }
     }
 }

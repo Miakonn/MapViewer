@@ -135,7 +135,7 @@ namespace MapViewer.Maps {
             MapData = new MapData(null);
 
             PlayerSizeMeter = 0.8;
-            PlayerMinSizePixel = 15;
+            PlayerMinSizePixel = 25;
             IsLinked = false;
         }
 

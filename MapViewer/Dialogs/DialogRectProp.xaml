@@ -39,14 +39,14 @@
 
         <Label Grid.Row="3" Grid.Column="0" Content="Rotate" HorizontalAlignment="Left" />
         <WrapPanel Grid.Row="3" Grid.Column="1"   VerticalAlignment="Top">
-            <Button x:Name="RotateAntiClockWiseButton"  FontSize="20" Padding="0,-6,0,0" Content="⤹" Height="20" Width="20" FontWeight="ExtraBold" Click="cmdRotateCCW_Click" Margin="2" />
-            <Button x:Name="RotateClockWiseButton"  FontSize="20" Padding="0,-6,0,0" Content="⤸" Height="20" Width="20" FontWeight="ExtraBold" Click="cmdRotateCW_Click" Margin="2" />
+            <Button x:Name="RotateAntiClockWiseButton"  FontSize="20" Padding="0,-6,0,0" Content="⤹" Height="20" Width="20" FontWeight="ExtraBold" Click="CmdRotateCCW_Click" Margin="2" />
+            <Button x:Name="RotateClockWiseButton"  FontSize="20" Padding="0,-6,0,0" Content="⤸" Height="20" Width="20" FontWeight="ExtraBold" Click="CmdRotateCW_Click" Margin="2" />
         </WrapPanel>
 
 
         <Label Grid.Row="4" Grid.Column="0" Content="Color" HorizontalAlignment="Left" />
         <WrapPanel Grid.Row="4" Grid.Column="1"   VerticalAlignment="Top">
-            <Button Name="BtnColor" Click="BtnColor_Click" Width="40" Height="20" Margin="2"></Button>
+            <dialogs:ControlColorPicker x:Name="ControlColorPicker" />
             <dialogs:ControlOpacity x:Name="ControlOpacity" />
         </WrapPanel>
 

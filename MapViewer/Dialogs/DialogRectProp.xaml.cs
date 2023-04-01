@@ -1,15 +1,11 @@
 ﻿using System.Globalization;
-using System.IO;
 using System.Windows;
-using System.Windows.Media;
 using MapViewer.Symbols;
 
 namespace MapViewer.Dialogs {
 	public partial class DialogRectProp
     {
-     
         private SymbolRectangle _symbol;
-        private Color _color;
 
         public double Angle { get; set; }
 
@@ -23,12 +19,10 @@ namespace MapViewer.Dialogs {
                 SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
                 WidthValue.Text = Symbol.WidthMeter.ToString("N1", CultureInfo.InvariantCulture);
                 Angle = (int)Symbol.RotationDegree;
-                _color = Symbol.FillColor;
-                BtnColor.Background = new SolidColorBrush(_color);
+                ControlColorPicker.SelectedColor = Symbol.FillColor;
                 ControlOpacity.ComboBoxOpacity.Text = Symbol.OpacityPercent;
             }
         }
-
 
         private void ApplyChanges() {
             if (Symbol == null) {
@@ -36,7 +30,7 @@ namespace MapViewer.Dialogs {
             }
             Symbol.Caption = CaptionValue.Text;
             Symbol.RotationDegree = Angle;
-            Symbol.FillColor = _color;
+            Symbol.FillColor = ControlColorPicker.SelectedColor;
             Symbol.OpacityPercent = ControlOpacity.ComboBoxOpacity.Text;
 
             var str = SizeValue.Text.Replace(',', '.');
@@ -58,7 +52,6 @@ namespace MapViewer.Dialogs {
             set {      }
         }
 
-
         public DialogRectProp() {
 			InitializeComponent();
             CaptionValue.Focus();
@@ -70,27 +63,18 @@ namespace MapViewer.Dialogs {
             Close();
 		}
 
-        private void cmdRotateCCW_Click(object sender, RoutedEventArgs e) {
+        private void CmdRotateCCW_Click(object sender, RoutedEventArgs e) {
             Angle-= 22.5;
             ApplyChanges();
         }
 
-        private void cmdRotateCW_Click(object sender, RoutedEventArgs e) {
+        private void CmdRotateCW_Click(object sender, RoutedEventArgs e) {
             Angle+= 22.5;
             ApplyChanges();
         }
 
         private void BtnApply_Click(object sender, RoutedEventArgs e) {
             ApplyChanges();
-        }
-
-        private void BtnColor_Click(object sender, RoutedEventArgs e) {
-            var dialog = new DialogColorPicker { Owner = this };
-            var result = dialog.ShowDialog();
-            if (result == true) {
-                _color = dialog.SelectedColor;
-                BtnColor.Background = new SolidColorBrush(_color);
-            }
         }
     }
 }

@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows;
-using System.Windows.Media;
 using MapViewer.Symbols;
 
 namespace MapViewer.Dialogs {
 	public partial class DialogBaseSymbolProp {
         private Symbol _symbol;
-
-
-        private Color _color;
 
         public SymbolsViewModel SymbolsVM { get; set; }
 
@@ -19,8 +15,7 @@ namespace MapViewer.Dialogs {
                 _symbol = value;
                 SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
                 CaptionValue.Text = Symbol.Caption;
-                _color = Symbol.FillColor;
-                BtnColor.Background = new SolidColorBrush(_color);
+                ControlColorPicker.SelectedColor = Symbol.FillColor;
                 ControlOpacity.ComboBoxOpacity.Text = Symbol.OpacityPercent;
             }
         }
@@ -36,7 +31,7 @@ namespace MapViewer.Dialogs {
             }
 
             Symbol.Caption = CaptionValue.Text.Trim();
-            Symbol.FillColor = _color;
+            Symbol.FillColor = ControlColorPicker.SelectedColor;
             Symbol.OpacityPercent = ControlOpacity.ComboBoxOpacity.Text;
 
             var str = SizeValue.Text.Replace(',', '.');
@@ -44,8 +39,6 @@ namespace MapViewer.Dialogs {
                 Symbol.SizeMeter = Math.Max(0.0, sizeValue);
                 SizeValue.Text = Symbol.SizeMeter.ToString("N0", CultureInfo.InvariantCulture);
             }
-
-
             SymbolsVM?.RaiseSymbolsChanged();
         }
 
@@ -61,15 +54,6 @@ namespace MapViewer.Dialogs {
 
         private void BtnApply_Click(object sender, RoutedEventArgs e) {
             ApplyChanges();
-        }
-
-        private void BtnColor_Click(object sender, RoutedEventArgs e) {
-            var dialog = new DialogColorPicker { Owner = this };
-            var result = dialog.ShowDialog();
-            if (result == true) {
-                _color = dialog.SelectedColor;
-                BtnColor.Background = new SolidColorBrush(_color);
-            }
         }
     }
 }

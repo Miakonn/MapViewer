@@ -69,6 +69,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CustomCommands.cs" />
+    <Compile Include="Dialogs\ControlColorPicker.xaml.cs">
+      <DependentUpon>ControlColorPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\DialogBaseSymbolProp.xaml.cs">
       <DependentUpon>DialogBaseSymbolProp.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,10 @@
     <Compile Include="Tools\MaskRectangle.cs" />
     <Compile Include="Utilities\CustomSettingsProvider.cs" />
     <Compile Include="Utilities\MonitorManager.cs" />
+    <Page Include="Dialogs\ControlColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\DialogAbout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

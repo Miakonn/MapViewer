@@ -1,6 +1,7 @@
 ﻿<Window x:Class="MapViewer.Dialogs.DialogIconProp"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dialogs="clr-namespace:MapViewer.Dialogs"
         Title="Icon Properties"  SizeToContent="WidthAndHeight"
 		WindowStartupLocation="CenterOwner"
         Background="#DFE9F5"
@@ -44,7 +45,7 @@
 
         <Label Grid.Row="4" Grid.Column="0" Content="Color" HorizontalAlignment="Left" />
         <WrapPanel Grid.Row="4" Grid.Column="1"   VerticalAlignment="Top">
-            <Button Name="BtnColor" Click="BtnColor_OnClick" Width="40" Height="20" Margin="2"></Button>
+            <dialogs:ControlColorPicker x:Name="ControlColorPicker" />
         </WrapPanel>
 
         <Label Grid.Row="5" Grid.Column="0" Content="Angle"  Name="LabelHint4" HorizontalAlignment="Left" />
