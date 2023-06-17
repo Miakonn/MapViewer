@@ -1,6 +1,5 @@
 ﻿using MapViewer.Maps;
 using System;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -82,8 +81,13 @@ namespace MapViewer.Symbols {
                 DrawText(Caption, canvas, settings);
             }
 
-            if (Status == "Cross") {
-                DrawCross(canvas, settings);
+            if (Status != null) {
+                if (Status.EndsWith("Cross")) {
+                    DrawStatusCross(canvas, settings, GetStatusColor(Status));
+                }
+                else if (Status.EndsWith("Circle")) {
+                    DrawStatusCircle(canvas, settings, GetStatusColor(Status));
+                }
             }
 
             if (IsSelected) {
@@ -185,14 +189,14 @@ namespace MapViewer.Symbols {
             return (Symbol)MemberwiseClone();
         }
 
-        protected void DrawCross(CanvasOverlay canvas, MapDrawSettings drawSettings) {
+        protected void DrawStatusCross(CanvasOverlay canvas, MapDrawSettings drawSettings, Color color) {
 
             var sizePixel = drawSettings.GetMinSizePixelFromMeter(SizeMeter);
 
             var thickness = Math.Max(sizePixel * 0.1, 1.5 / drawSettings.ZoomScale);
             var circleCorner = sizePixel * 0.146; // (2 - sqr_root(2)) / 4;
 
-            var brush = new SolidColorBrush(CalculatingContrastingColor());
+            var brush = new SolidColorBrush(color);
 
             var line1 = new Line {
                 Uid = Uid,
@@ -227,17 +231,15 @@ namespace MapViewer.Symbols {
             canvas.Children.Add(line2);
         }
 
-        private void DrawCircle(Canvas canvas, MapDrawSettings drawSettings, Color color) {
+        private void DrawStatusCircle(Canvas canvas, MapDrawSettings drawSettings, Color color) {
             var sizePixel = drawSettings.GetMinSizePixelFromMeter(SizeMeter);
-
-           
-
+            var thickness = Math.Max(sizePixel * 0.1, 1.5 / drawSettings.ZoomScale);
             var shape = new Ellipse {
                 Uid = Uid + "_Status",
                 Width = sizePixel,
                 Height = sizePixel,
-                Stroke = brush,
-                StrokeThickness = 2 / drawSettings.ZoomScale,
+                Stroke = new SolidColorBrush(color),
+                StrokeThickness = thickness,
                 Opacity = 1.0,
                 IsHitTestVisible = false
             };
@@ -250,10 +252,10 @@ namespace MapViewer.Symbols {
             var parts = status.Split(' ');
 
             if (parts.Length == 1) {
-                return 
+                return Colors.Red;
             }
 
-             return (Color)ColorConverter.ConvertFromString(parts[1]);
+            return (Color)ColorConverter.ConvertFromString(parts[0]);
         }
 
     }

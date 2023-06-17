@@ -108,6 +108,12 @@ namespace MapViewer {
 
         private int _level;
 
+
+        public bool Status_Red_Cross { get; set; }
+        public bool Status_Black_Cross { get; set; }
+        public bool Status_Red_Circle { get; set; }
+        public bool Status_Black_Circle{ get; set; }
+
         #endregion
 
         public PrivateWindow()
@@ -443,15 +449,41 @@ namespace MapViewer {
 
             SymbolCollection.Clear();
 
+
+            Status_Black_Cross = false;
+            Status_Red_Cross = false;
+            Status_Black_Circle = false;
+            Status_Red_Circle = false;
+
             foreach (var symbol in MapPrivate.SymbolsPM.Symbols.Values) {
                 if (!string.IsNullOrWhiteSpace(symbol.DisplayName)) {
                     SymbolCollection.Add(symbol);
+                }
+
+                if (symbol.IsSelected && symbol.Status != null) {
+                    switch (symbol.Status) {
+                        case "Black Cross":
+                            Status_Black_Cross = true;
+                            break;
+                        case "Red Cross":
+                            Status_Red_Cross = true;
+                            break;
+                        case "Black Circle":
+                            Status_Black_Circle = true;
+                            break;
+                        case "Red Circle":
+                            Status_Red_Circle = true;
+                            break;
+                    }
                 }
             }
 
             OnPropertyChanged(nameof(SymbolCollection));
             OnPropertyChanged(nameof(IsSymbolsCollectionNotEmpty));
-            OnPropertyChanged(nameof(HasSymbolCross));
+            OnPropertyChanged(nameof(Status_Black_Cross));
+            OnPropertyChanged(nameof(Status_Red_Cross));
+            OnPropertyChanged(nameof(Status_Black_Circle));
+            OnPropertyChanged(nameof(Status_Red_Circle));
         }
 
         #endregion

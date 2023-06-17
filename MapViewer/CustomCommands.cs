@@ -48,7 +48,7 @@ namespace MapViewer {
         public static readonly RoutedUICommand SendSymbolToBack = new RoutedUICommand("Send to Back", "SendToBack", typeof(CustomCommands));
         public static readonly RoutedUICommand SendSymbolToFront = new RoutedUICommand("Bring to Front", "BringToFront", typeof(CustomCommands));
         public static readonly RoutedUICommand SetSymbolColor = new RoutedUICommand("Set Color", "SetColor", typeof(CustomCommands));
-        public static readonly RoutedUICommand SetSymbolCross = new RoutedUICommand("Show Cross", "SetCross", typeof(CustomCommands));
+        public static readonly RoutedUICommand SetSymbolStatus = new RoutedUICommand("Set Status", "SetStatus", typeof(CustomCommands));
         public static readonly RoutedUICommand ShowPublicCursorTemporary = new RoutedUICommand("Show Cursor Temp.", "ShowCursorTemp", typeof(CustomCommands));
         public static readonly RoutedUICommand UndoSymbols = new RoutedUICommand("Undo symbol change", "UndoSymbols", typeof(CustomCommands));
         public static readonly RoutedUICommand UnmaskCircle = new RoutedUICommand("Unmask Circle", "UnmaskCircle", typeof(CustomCommands));

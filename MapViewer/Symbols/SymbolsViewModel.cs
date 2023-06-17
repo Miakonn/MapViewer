@@ -221,7 +221,6 @@ namespace MapViewer.Symbols {
                 copy.IsSelected = true;
                 copy.OrderZ = GetMinOrderZ() - 1;
                 AddSymbolWithoutRaise(copy);
-                Debug.WriteLine("Created: "+ copy.Caption);
             }
             RaiseSymbolsChanged();
         }
