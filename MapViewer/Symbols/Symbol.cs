@@ -1,5 +1,6 @@
 ﻿using MapViewer.Maps;
 using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -82,7 +83,7 @@ namespace MapViewer.Symbols {
             }
 
             if (Status == "Cross") {
-                AddCross(canvas, settings);
+                DrawCross(canvas, settings);
             }
 
             if (IsSelected) {
@@ -184,11 +185,11 @@ namespace MapViewer.Symbols {
             return (Symbol)MemberwiseClone();
         }
 
-        protected void AddCross(CanvasOverlay canvas, MapDrawSettings drawSettings) {
+        protected void DrawCross(CanvasOverlay canvas, MapDrawSettings drawSettings) {
 
             var sizePixel = drawSettings.GetMinSizePixelFromMeter(SizeMeter);
 
-            var thickness = Math.Max(sizePixel * 0.06, 1.5);
+            var thickness = Math.Max(sizePixel * 0.1, 1.5 / drawSettings.ZoomScale);
             var circleCorner = sizePixel * 0.146; // (2 - sqr_root(2)) / 4;
 
             var brush = new SolidColorBrush(CalculatingContrastingColor());
@@ -225,6 +226,36 @@ namespace MapViewer.Symbols {
             Canvas.SetTop(line2, StartPoint.Y - sizePixel * 0.5);
             canvas.Children.Add(line2);
         }
+
+        private void DrawCircle(Canvas canvas, MapDrawSettings drawSettings, Color color) {
+            var sizePixel = drawSettings.GetMinSizePixelFromMeter(SizeMeter);
+
+           
+
+            var shape = new Ellipse {
+                Uid = Uid + "_Status",
+                Width = sizePixel,
+                Height = sizePixel,
+                Stroke = brush,
+                StrokeThickness = 2 / drawSettings.ZoomScale,
+                Opacity = 1.0,
+                IsHitTestVisible = false
+            };
+            Canvas.SetLeft(shape, StartPoint.X - shape.Width / 2);
+            Canvas.SetTop(shape, StartPoint.Y - shape.Height / 2);
+            canvas.Children.Add(shape);
+        }
+
+        private Color GetStatusColor(string status) {
+            var parts = status.Split(' ');
+
+            if (parts.Length == 1) {
+                return 
+            }
+
+             return (Color)ColorConverter.ConvertFromString(parts[1]);
+        }
+
     }
 }
 

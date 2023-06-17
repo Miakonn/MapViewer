@@ -76,11 +76,13 @@ namespace MapViewer.Tools {
 		private void InitDraw(Point pt1) {
 			_pnt1 = pt1;
 
+            var thickness = 2 /_map.ZoomScale;
+
 			_rect1 = new Rectangle {
 				Width = 5,
 				Height = 5,
 				Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 1
+                StrokeThickness = thickness
 			};
 
 			Canvas.SetLeft(_rect1, pt1.X);
@@ -92,7 +94,7 @@ namespace MapViewer.Tools {
                 Height = 5,
                 Stroke = new SolidColorBrush(Colors.White),
                 StrokeDashArray = DoubleCollection.Parse("3, 3"),
-                StrokeThickness = 1
+                StrokeThickness = thickness
             };
 
             Canvas.SetLeft(_rect2, pt1.X);

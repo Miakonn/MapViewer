@@ -30,8 +30,8 @@ namespace MapViewer.Tools {
 				InitDraw(e.GetPosition(_canvas));
 				return;
 			}
-            var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
-            if (length > MinimumMove) {
+            var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length * _map.ZoomScale;
+            if (length > MinimumMoveScreenPixel) {
                 EndDraw();
             }
         }

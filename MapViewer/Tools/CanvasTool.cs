@@ -17,7 +17,7 @@ namespace MapViewer.Tools {
 
         public virtual bool ShowPublicCursor() {  return false;  }
 
-        protected const double MinimumMove = 10;
+        protected const double MinimumMoveScreenPixel = 10;
 
     }
 

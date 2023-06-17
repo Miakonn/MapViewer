@@ -39,15 +39,15 @@ namespace MapViewer.Tools {
 				return;
 			}
 			if (_index == 1) {
-                var length = new Vector(_pnt1.X - pnt.X, _pnt1.Y - pnt.Y).Length;
-                if (length > MinimumMove) {
+                var length = new Vector(_pnt1.X - pnt.X, _pnt1.Y - pnt.Y).Length * _map.ZoomScale;
+                if (length > MinimumMoveScreenPixel) {
                     _index++;
                     UpdateDraw(pnt);
                 }
             }
 			else {
-                var length = new Vector(_pnt2.X - pnt.X, _pnt2.Y - pnt.Y).Length;
-                if (length > MinimumMove) {
+                var length = new Vector(_pnt2.X - pnt.X, _pnt2.Y - pnt.Y).Length * _map.ZoomScale;
+                if (length > MinimumMoveScreenPixel) {
                     _index++;
                     UpdateDraw(pnt); 
                     EndDraw();
