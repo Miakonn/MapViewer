@@ -96,7 +96,7 @@ namespace MapViewer.Tools {
 			var length = new Vector(_line.X1 - _line.X2, _line.Y1 - _line.Y2).Length;
 
 			var newScale = dialog.DoubleValue / length;
-            if (newScale > 0.0) {
+            if (newScale > 1E-20) {
                 _map.ImageScaleMperPix = newScale;
             }
 

@@ -1,5 +1,9 @@
 // Buggar
 
+System.ArgumentException: "infinity" är inte ett giltigt värde för egenskapen Width.
+   vid System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   vid System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   vid MapViewer.Symbols.SymbolRectangle.Draw(CanvasOverlay canvas, MapDrawSettings settings)
 
 // 	Nya funktioner
 
