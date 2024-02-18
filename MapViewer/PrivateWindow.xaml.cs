@@ -330,7 +330,18 @@ namespace MapViewer {
 
                     MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedSymbol, move);
                     _mouseDownPoint = curMouseDownPoint;
-                    DisplayPopup($"{DistanceFromStart(curMouseDownPoint),5:N1}{MapPrivate.Unit} Track: {DistanceTrack(move),5:N1}{MapPrivate.Unit}");
+
+                    var distanceFromStart = DistanceFromStart(curMouseDownPoint);
+                    var distanceTrack = DistanceTrack(move);
+                    var textFromStart = distanceFromStart < 10
+                        ? $"{distanceFromStart,5:N1}"
+                        : $"{distanceFromStart,5:N0}";
+
+                    var textTrack = distanceTrack < 10
+                        ? $"{distanceTrack,5:N1}"
+                        : $"{distanceTrack,5:N0}";
+                    
+                    DisplayPopup($"Dist:\t{textFromStart} {MapPrivate.Unit}\nTrack:\t{textTrack} {MapPrivate.Unit}");
                     e.Handled = true;
                     break;
                 }
