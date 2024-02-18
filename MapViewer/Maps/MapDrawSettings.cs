@@ -12,17 +12,16 @@ namespace MapViewer.Maps {
 
         public MapDrawSettings(double zoomScale, double imageScaleMperPix, double minSymbolSizePixel, bool isToolActive)
         {
-            if (zoomScale < 1E-20)
-            {
+            if (zoomScale < 1E-20) {
                 MaskedMap.Log.Error($"MapDrawSettings : zoomscale = {zoomScale}");
             }
 
-            if (zoomScale < 1E-20) {
+            if (imageScaleMperPix < 1E-20) {
                 MaskedMap.Log.Error($"MapDrawSettings : imageScaleMperPix = {imageScaleMperPix}");
             }
 
             ZoomScale = zoomScale < 1E-20 ? 1.0: zoomScale;
-            ImageScaleMperPix = imageScaleMperPix < 1E-20 ? 1.0 : zoomScale;
+            ImageScaleMperPix = imageScaleMperPix < 1E-20 ? 1.0 : imageScaleMperPix;
             MinSymbolSizePixel = minSymbolSizePixel;
             IsToolActive = isToolActive;
         }
