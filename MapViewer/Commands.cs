@@ -79,25 +79,25 @@ namespace MapViewer {
 		}
 
 		private void SymbolNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = (_lastClickedSymbol != null);
+			e.CanExecute = (LastClickedSymbol != null);
 		}
 
         private void Hideable_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-            e.CanExecute = (_lastClickedSymbol is SymbolIcon) || (!string.IsNullOrWhiteSpace(_lastClickedSymbol?.DisplayName));
+            e.CanExecute = (LastClickedSymbol is SymbolIcon) || (!string.IsNullOrWhiteSpace(LastClickedSymbol?.DisplayName));
         }
 
         private void MoveSymbolUp_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
             e.CanExecute = (MapPrivate != null 
                             && LevelNumber > 1
                             && Level < LevelNumber - 1
-                            && _lastClickedSymbol != null);
+                            && LastClickedSymbol != null);
         }
 
         private void MoveSymbolDown_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
             e.CanExecute = (MapPrivate != null 
                             && LevelNumber > 1 
                             && Level > 0
-                            && _lastClickedSymbol != null);
+                            && LastClickedSymbol != null);
         }
 
         private void SelectSymbols_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -432,18 +432,18 @@ namespace MapViewer {
 
 		private void DeleteSymbol_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
-			MapPrivate.SymbolsPM.DeleteSymbol(_lastClickedSymbol);
+			MapPrivate.SymbolsPM.DeleteSymbol(LastClickedSymbol);
 		}
 
         private void DuplicateSymbol_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedSymbol == null) {
+            if (LastClickedSymbol == null) {
                 return;
             }
 
             var offset = new Vector(50 / MapPrivate.ZoomScale, 50 / MapPrivate.ZoomScale);
-            MapPrivate.SymbolsPM.DuplicateSymbol(_lastClickedSymbol, offset);
-            _lastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
+            MapPrivate.SymbolsPM.DuplicateSymbol(LastClickedSymbol, offset);
+            LastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
         }
 
         private void FetchSymbol_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -452,19 +452,19 @@ namespace MapViewer {
             if (e.Parameter is Symbol symbol) {
                 MapPrivate.SymbolsPM.NewSymbolSelection(symbol);
                 MapPrivate.SymbolsPM.SetSymbolPosition(symbol, _mouseDownPoint);
-                _lastClickedSymbol = symbol;
+                LastClickedSymbol = symbol;
             }
         }
         
         private void HideSymbol_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             ActiveTool = null;
-            MapPrivate.SymbolsPM.SetSymbolHidden(_lastClickedSymbol);
+            MapPrivate.SymbolsPM.HideSymbols(LastClickedSymbol);
         }
 
         private void SetSymbolColor_Execute(object sender, ExecutedRoutedEventArgs e) {
 			ActiveTool = null;
-			if (_lastClickedSymbol == null) {
+			if (LastClickedSymbol == null) {
 				return;
 			}
 
@@ -474,41 +474,41 @@ namespace MapViewer {
 				return;
 			}
             
-            MapPrivate.SymbolsPM.SetSymbolColor(_lastClickedSymbol, dialog.SelectedColor);
+            MapPrivate.SymbolsPM.SetSymbolColor(LastClickedSymbol, dialog.SelectedColor);
         }
 
         private void SendSymbolToFront_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedSymbol == null) {
+            if (LastClickedSymbol == null) {
                 return;
             }
 
-            MapPrivate.SymbolsPM.MoveSymbolToFront(_lastClickedSymbol);
+            MapPrivate.SymbolsPM.MoveSymbolToFront(LastClickedSymbol);
         }
 
         private void SendSymbolToBack_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedSymbol == null) {
+            if (LastClickedSymbol == null) {
                 return;
             }
  
-            MapPrivate.SymbolsPM.MoveSymbolToBack(_lastClickedSymbol);
+            MapPrivate.SymbolsPM.MoveSymbolToBack(LastClickedSymbol);
         }
         
         private void MoveSymbolUp_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedSymbol == null) {
+            if (LastClickedSymbol == null) {
                 return;
             }
-            MapPrivate.SymbolsPM.MoveSymbolUpDown(_lastClickedSymbol, MapAbove.SymbolsPM);
+            MapPrivate.SymbolsPM.MoveSymbolUpDown(LastClickedSymbol, MapAbove.SymbolsPM);
         }
 
         private void MoveSymbolDown_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedSymbol == null) {
+            if (LastClickedSymbol == null) {
                 return;
             }
-            MapPrivate.SymbolsPM.MoveSymbolUpDown(_lastClickedSymbol, MapBelow.SymbolsPM);
+            MapPrivate.SymbolsPM.MoveSymbolUpDown(LastClickedSymbol, MapBelow.SymbolsPM);
         }
 
         private void SelectSymbols_Execute(object sender, ExecutedRoutedEventArgs e) {
@@ -704,25 +704,25 @@ namespace MapViewer {
 
         private void RotateSymbolCW_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedSymbol == null) {
+            if (LastClickedSymbol == null) {
                 return;
             }
 
-            MapPrivate.SymbolsPM.RotateSymbol(_lastClickedSymbol, RotationDirection.Clockwise);
+            MapPrivate.SymbolsPM.RotateSymbol(LastClickedSymbol, RotationDirection.Clockwise);
         }
 
         private void RotateSymbolCCW_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
-            if (_lastClickedSymbol == null) {
+            if (LastClickedSymbol == null) {
                 return;
             }
 
-            MapPrivate.SymbolsPM.RotateSymbol(_lastClickedSymbol, RotationDirection.CounterClockwise);
+            MapPrivate.SymbolsPM.RotateSymbol(LastClickedSymbol, RotationDirection.CounterClockwise);
         }
 
         private void SetSymbolStatus_Execute(object sender, ExecutedRoutedEventArgs e) {
             if (e.Parameter is string param) {
-                MapPrivate.SymbolsPM.ToggleSymbolStatus(_lastClickedSymbol, param);
+                MapPrivate.SymbolsPM.ToggleSymbolStatus(LastClickedSymbol, param);
             }
         }
 

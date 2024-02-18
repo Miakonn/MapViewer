@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,7 +36,7 @@ namespace MapViewer {
 
         #region Attributes
 
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private PrivateMaskedMap _mapPrivate;
 
@@ -76,6 +77,16 @@ namespace MapViewer {
 
         private Symbol _lastClickedSymbol;
 
+        private Symbol LastClickedSymbol
+        {
+            get => _lastClickedSymbol;
+            set
+            {
+                _lastClickedSymbol = value;
+                OnPropertyChanged(nameof(SymbolCommandsVisibility));
+            }
+        }
+
         private CursorAction _cursorAction;
         private Point _mouseDownPoint;  // Canvas
         private Point _mouseDownPointFirst;  // Canvas
@@ -108,6 +119,7 @@ namespace MapViewer {
 
         private int _level;
 
+        public Visibility SymbolCommandsVisibility => LastClickedSymbol == null ? Visibility.Collapsed : Visibility.Visible;
 
         public bool Status_Red_Cross { get; set; }
         public bool Status_Black_Cross { get; set; }
@@ -131,7 +143,7 @@ namespace MapViewer {
             MapPublic.IsLinked = false;
             MapPublic.Create();
 
-            DropboxHandler.AddWorkingPath(System.Reflection.Assembly.GetEntryAssembly()?.Location);
+            DropboxHandler.AddWorkingPath(Assembly.GetEntryAssembly()?.Location);
 
             InitTimer();
 
@@ -161,7 +173,7 @@ namespace MapViewer {
 
         private static string FileVersion {
             get {
-                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                Assembly assembly = Assembly.GetExecutingAssembly();
                 var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
                 var parts = fvi.FileVersion.Split('.');
                 return $"{parts[0]}.{parts[1]}";
@@ -197,8 +209,8 @@ namespace MapViewer {
             if (e.Key == Key.Escape) {
                 if (_cursorAction == CursorAction.MovingSymbol) {
                     var move = new Vector((_mouseDownPoint.X - _mouseDownPointFirst.X), (_mouseDownPoint.Y - _mouseDownPointFirst.Y));
-                    if (_lastClickedSymbol != null) {
-                        MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedSymbol, move);
+                    if (LastClickedSymbol != null) {
+                        MapPrivate.SymbolsPM.MoveSymbolPosition(LastClickedSymbol, move);
                     }
                 }
 
@@ -225,18 +237,18 @@ namespace MapViewer {
             var elem = MapPrivate.CanvasOverlay.FindElementHit();
 
             if (elem == null) {
-                _lastClickedSymbol = null;
+                LastClickedSymbol = null;
                 return;
             }
 
-            _lastClickedSymbol = MapPrivate.SymbolsPM.FindSymbolFromUid(elem.Uid) 
+            LastClickedSymbol = MapPrivate.SymbolsPM.FindSymbolFromUid(elem.Uid) 
                                  ?? MapPrivate.SystemSymbolsPM.FindSymbolFromUid(elem.Uid);
         }
 
         private void PrivateWinMouseDown(object sender, MouseButtonEventArgs e) {
             if (ActiveTool != null) {
                 ActiveTool.MouseDown(sender, e);
-                _lastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
+                LastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
                 return;
             }
 
@@ -246,10 +258,10 @@ namespace MapViewer {
             Debug.WriteLine($"PrivateWinMouseDown: {shiftPressed}");
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 if (shiftPressed) {
-                    if (_lastClickedSymbol != null) {
-                        MapPrivate.SymbolsPM.ChangeSymbolSelection(_lastClickedSymbol);
-                        if (!_lastClickedSymbol.IsSelected) {
-                            _lastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
+                    if (LastClickedSymbol != null) {
+                        MapPrivate.SymbolsPM.ChangeSymbolSelection(LastClickedSymbol);
+                        if (!LastClickedSymbol.IsSelected) {
+                            LastClickedSymbol = MapPrivate.SymbolsPM.GetSelected();
                         }
                     }
                     else {
@@ -259,18 +271,18 @@ namespace MapViewer {
                         return;
                     }
                 }
-                else if (_lastClickedSymbol != null) {
+                else if (LastClickedSymbol != null) {
                     _mouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                     _mouseDownPointFirst = _mouseDownPoint;
                     _characterDistanceMoved = 0;
-                    if (_lastClickedSymbol.Uid == MapPrivate.PublicPositionUid) {
+                    if (LastClickedSymbol.Uid == MapPrivate.PublicPositionUid) {
                         _cursorAction = CursorAction.MovingPublicMapPos;
                     }
                     else {
                         _cursorAction = CursorAction.MovingSymbol;
                         MapPrivate.SymbolsPM.SaveState();
-                        if (!_lastClickedSymbol.IsSelected) {
-                            MapPrivate.SymbolsPM.NewSymbolSelection(_lastClickedSymbol);
+                        if (!LastClickedSymbol.IsSelected) {
+                            MapPrivate.SymbolsPM.NewSymbolSelection(LastClickedSymbol);
                         }
                     }
                 }
@@ -282,13 +294,13 @@ namespace MapViewer {
                 e.Handled = true;
             }
             else if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
-                if (_lastClickedSymbol != null) {
+                if (LastClickedSymbol != null) {
                     _mouseDownPointWindow = e.GetPosition(this);
                     _cursorAction = CursorAction.None;
                     MapPrivate.SymbolsPM.ClearSymbolSelection();
 
                     var posDialog = ScaleWithWindowsDpi(PointToScreen(_mouseDownPointWindow));
-                    MapPrivate.SymbolsPM.OpenEditor(this, posDialog, _lastClickedSymbol);
+                    MapPrivate.SymbolsPM.OpenEditor(this, posDialog, LastClickedSymbol);
                 }
                 e.Handled = true;
             }
@@ -326,9 +338,9 @@ namespace MapViewer {
                 case CursorAction.MovingSymbol: {
                     var curMouseDownPoint = e.GetPosition(MapPrivate.CanvasOverlay);
                     var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
-                    Debug.Assert(_lastClickedSymbol != null);
+                    Debug.Assert(LastClickedSymbol != null);
 
-                    MapPrivate.SymbolsPM.MoveSymbolPosition(_lastClickedSymbol, move);
+                    MapPrivate.SymbolsPM.MoveSymbolPosition(LastClickedSymbol, move);
                     _mouseDownPoint = curMouseDownPoint;
 
                     var distanceFromStart = DistanceFromStart(curMouseDownPoint);
@@ -518,7 +530,7 @@ namespace MapViewer {
             pos.Y /= dpiScale.DpiScaleY;
 
             // Move inside window
-            var windowSize = this.RenderSize;
+            var windowSize = RenderSize;
             pos.X = Math.Min(pos.X, windowSize.Width - 200);
             pos.Y = Math.Min(pos.Y, windowSize.Height - 200);
 
@@ -590,14 +602,14 @@ namespace MapViewer {
         }
 
         public void SetSelected(Symbol symbol) {
-            _lastClickedSymbol = symbol;
+            LastClickedSymbol = symbol;
         }
         #endregion region
 
 
         #region Save Timer
         private Timer _saveTimer;
- 
+
         public void InitTimer()
         {
             _saveTimer = new Timer();

@@ -305,11 +305,14 @@
                         <MenuItem Command="mapViewer:CustomCommands.CreateSymbolNonPlayer" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <MenuItem Command="mapViewer:CustomCommands.CreateSymbolImage" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
                         <Separator />
-                        <MenuItem Command="mapViewer:CustomCommands.DuplicateSymbol" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"  ToolTip="Ctrl-V" />
-                        <MenuItem Command="mapViewer:CustomCommands.DeleteSymbol" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"  ToolTip="Del" />
-                        <MenuItem Command="mapViewer:CustomCommands.SetSymbolColor" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.DuplicateSymbol" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"  ToolTip="Ctrl-V" 
+                                  Visibility="{Binding SymbolCommandsVisibility}" />
+                        <MenuItem Command="mapViewer:CustomCommands.DeleteSymbol" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"  ToolTip="Del" 
+                                  Visibility="{Binding SymbolCommandsVisibility}" />
+                        <MenuItem Command="mapViewer:CustomCommands.SetSymbolColor" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" 
+                                  Visibility="{Binding SymbolCommandsVisibility}" />
 
-                        <MenuItem Header="Status">
+                        <MenuItem Header="Status" Visibility="{Binding SymbolCommandsVisibility}">
                             <MenuItem Header="Red Cross" IsCheckable="true" Command="mapViewer:CustomCommands.SetSymbolStatus" 
                                       CommandParameter="Red Cross"
                                       CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
@@ -327,9 +330,12 @@
                                       CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                                       IsChecked="{Binding Status_Black_Circle}"/>
                         </MenuItem>
-                        <MenuItem Command="mapViewer:CustomCommands.SendSymbolToFront" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-                        <MenuItem Command="mapViewer:CustomCommands.SendSymbolToBack" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
-                        <MenuItem Command="mapViewer:CustomCommands.HideSymbol" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Command="mapViewer:CustomCommands.SendSymbolToFront" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" 
+                                  Visibility="{Binding SymbolCommandsVisibility}"/>
+                        <MenuItem Command="mapViewer:CustomCommands.SendSymbolToBack" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" 
+                                  Visibility="{Binding SymbolCommandsVisibility}"/>
+                        <MenuItem Command="mapViewer:CustomCommands.HideSymbol" CommandTarget="{Binding Path=PlacementTarget,RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" 
+                                  Visibility="{Binding SymbolCommandsVisibility}"/>
                         <MenuItem Header="Move Symbol Here" 
                                   IsEnabled="{Binding Path=IsSymbolsCollectionNotEmpty}"
                                   ItemsSource="{Binding Path=SymbolCollection}">

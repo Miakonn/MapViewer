@@ -279,18 +279,18 @@ namespace MapViewer.Symbols {
             }
             RaiseSymbolsChanged();
         }
+        public void HideSymbols(Symbol symbolActive)
+        {
+            SaveState();
+            foreach (var symbol in GetActiveList(symbolActive)) {
+                symbol.Hidden = true;
+            }
+            RaiseSymbolsChanged();
+        }
 
         public void SetSymbolPosition(Symbol symbolActive, Point pos) {
             symbolActive.StartPoint = pos;
             symbolActive.Hidden = false;
-            RaiseSymbolsChanged();
-        }
-
-
-        public void SetSymbolHidden(Symbol symbolActive)
-        {
-
-            symbolActive.Hidden = true;
             RaiseSymbolsChanged();
         }
 
