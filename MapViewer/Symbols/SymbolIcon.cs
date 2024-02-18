@@ -19,6 +19,9 @@ namespace MapViewer.Symbols {
 
         private bool _errorReported = false;
         public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
+            if (Hidden) {
+                return;
+            }
             BitmapSource iconSource;
             if (string.IsNullOrWhiteSpace(ImageFileName)) {
                 iconSource = new BitmapImage(new Uri("pack://application:,,,/Images/Question_mark.png"));

@@ -82,9 +82,8 @@ namespace MapViewer {
 			e.CanExecute = (_lastClickedSymbol != null);
 		}
 
-
-        private void IconNeeded_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-            e.CanExecute = (_lastClickedSymbol is SymbolIcon);
+        private void Hideable_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = (_lastClickedSymbol is SymbolIcon) || (!string.IsNullOrWhiteSpace(_lastClickedSymbol?.DisplayName));
         }
 
         private void MoveSymbolUp_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
@@ -455,6 +454,12 @@ namespace MapViewer {
                 MapPrivate.SymbolsPM.SetSymbolPosition(symbol, _mouseDownPoint);
                 _lastClickedSymbol = symbol;
             }
+        }
+        
+        private void HideSymbol_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+            ActiveTool = null;
+            MapPrivate.SymbolsPM.SetSymbolHidden(_lastClickedSymbol);
         }
 
         private void SetSymbolColor_Execute(object sender, ExecutedRoutedEventArgs e) {

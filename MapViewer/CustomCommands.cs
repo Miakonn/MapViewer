@@ -23,6 +23,7 @@ namespace MapViewer {
         public static readonly RoutedUICommand ExitApp = new RoutedUICommand("Exit", "Exit", typeof(CustomCommands));
         public static readonly RoutedUICommand FetchSymbol = new RoutedUICommand("Move Symbol Here", "FetchSymbol", typeof(CustomCommands));
         public static readonly RoutedUICommand FullMask = new RoutedUICommand("Full Mask", "FullMask", typeof(CustomCommands));
+        public static readonly RoutedUICommand HideSymbol = new RoutedUICommand("Hide Symbol", "HideSymbol", typeof(CustomCommands));
         public static readonly RoutedUICommand LevelDown = new RoutedUICommand("Level Down", "LevelDown", typeof(CustomCommands));
         public static readonly RoutedUICommand LevelDownPublish = new RoutedUICommand("Level Down Publish", "LevelDownPublish", typeof(CustomCommands));
         public static readonly RoutedUICommand LevelUp = new RoutedUICommand("Level Up", "LevelUp", typeof(CustomCommands));

@@ -14,6 +14,10 @@ namespace MapViewer.Symbols {
 
         public override void Draw(CanvasOverlay canvas, MapDrawSettings settings)
         {
+            if (Hidden) {
+                return;
+            }
+
             var fontSize = 25 / settings.ZoomScale;
             var textBlock = new TextBlock {
                 Uid = Uid,

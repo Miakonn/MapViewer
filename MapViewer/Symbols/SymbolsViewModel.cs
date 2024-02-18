@@ -119,7 +119,9 @@ namespace MapViewer.Symbols {
 
             var symbolsInZorder = Symbols.Values.OrderByDescending(s => s.OrderZ);
             foreach (var symbol in symbolsInZorder) {
-                symbol.Draw(canvas, drawSettings);
+                if (!symbol.Hidden) {
+                    symbol.Draw(canvas, drawSettings);
+                }
             }
         }
 
@@ -280,6 +282,15 @@ namespace MapViewer.Symbols {
 
         public void SetSymbolPosition(Symbol symbolActive, Point pos) {
             symbolActive.StartPoint = pos;
+            symbolActive.Hidden = false;
+            RaiseSymbolsChanged();
+        }
+
+
+        public void SetSymbolHidden(Symbol symbolActive)
+        {
+
+            symbolActive.Hidden = true;
             RaiseSymbolsChanged();
         }
 

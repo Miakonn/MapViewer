@@ -20,6 +20,10 @@ namespace MapViewer.Symbols {
         public double RotationDegree { get; set; }
 
         public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
+            if (Hidden) {
+                return;
+            }
+
             double lengthPixel = SizeMeter / settings.ImageScaleMperPix;
             double widthPixel = WidthMeter / settings.ImageScaleMperPix;
             
@@ -42,6 +46,10 @@ namespace MapViewer.Symbols {
 
         
         public override void DrawSelected(Canvas canvas, MapDrawSettings settings) {
+            if (Hidden) {
+                return;
+            }
+
             if (!IsSelected) {
                 return;
             }

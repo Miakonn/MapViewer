@@ -34,7 +34,7 @@ namespace MapViewer.Symbols {
         public Point StartPoint { get; set; }
         public Color FillColor { get; set; }
         public double Opacity { get; set; } = 1.0;
-
+        public bool Hidden { get; set; }
 
         [XmlIgnore]
         public string OpacityPercent {
@@ -77,6 +77,10 @@ namespace MapViewer.Symbols {
         public string Status { get; set; }
 
         public virtual void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
+            if (Hidden) {
+                return;
+            }
+
             if (!(this is SymbolText)) {
                 DrawText(Caption, canvas, settings);
             }

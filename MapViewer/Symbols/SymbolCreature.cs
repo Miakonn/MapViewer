@@ -9,6 +9,9 @@ namespace MapViewer.Symbols {
     public class SymbolCreature : Symbol {
 
         public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
+            if (Hidden) {
+                return;
+            }
             var brush = new SolidColorBrush(FillColor);
 
             var sizePixel = settings.GetMinSizePixelFromMeter(SizeMeter);

@@ -17,7 +17,11 @@ namespace MapViewer.Symbols {
 
         private PointCollection _corners;
 
-        public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
+        public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) 
+        {
+            if (Hidden) {
+                return;
+            }
 
             double sizePixel = SizeMeter / settings.ImageScaleMperPix;
 

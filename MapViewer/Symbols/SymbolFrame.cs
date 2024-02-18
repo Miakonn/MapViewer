@@ -14,6 +14,10 @@ namespace MapViewer.Symbols {
         public double RotationDegree { get; set; }
 
         public override void Draw(CanvasOverlay canvas, MapDrawSettings settings) {
+            if (Hidden) {
+                return;
+            }
+
             var thickness = 10 / settings.ZoomScale;
             double lengthPixel = SizeMeter / settings.ImageScaleMperPix + thickness * 2;
             double widthPixel = WidthMeter / settings.ImageScaleMperPix + thickness * 2;

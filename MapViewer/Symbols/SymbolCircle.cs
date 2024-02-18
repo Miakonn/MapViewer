@@ -14,6 +14,9 @@ namespace MapViewer.Symbols {
 
         public override void Draw(CanvasOverlay canvas, MapDrawSettings settings)
         {
+            if (Hidden) {
+                return;
+            }
             var brush = new SolidColorBrush(FillColor);
 
             var shape = new Ellipse {
