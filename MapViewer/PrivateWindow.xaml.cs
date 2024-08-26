@@ -340,21 +340,26 @@ namespace MapViewer {
                     var move = new Vector((_mouseDownPoint.X - curMouseDownPoint.X), (_mouseDownPoint.Y - curMouseDownPoint.Y));
                     Debug.Assert(LastClickedSymbol != null);
 
-                    MapPrivate.SymbolsPM.MoveSymbolPosition(LastClickedSymbol, move);
+                    bool anyMoved = MapPrivate.SymbolsPM.MoveSymbolPosition(LastClickedSymbol, move);
                     _mouseDownPoint = curMouseDownPoint;
 
-                    var distanceFromStart = DistanceFromStart(curMouseDownPoint);
-                    var distanceTrack = DistanceTrack(move);
-                    var textFromStart = distanceFromStart < 10
-                        ? $"{distanceFromStart,5:N1}"
-                        : $"{distanceFromStart,5:N0}";
+                    if (anyMoved) {
+                        var distanceFromStart = DistanceFromStart(curMouseDownPoint);
+                        var distanceTrack = DistanceTrack(move);
+                        var textFromStart = distanceFromStart < 10
+                            ? $"{distanceFromStart,5:N1}"
+                            : $"{distanceFromStart,5:N0}";
 
-                    var textTrack = distanceTrack < 10
-                        ? $"{distanceTrack,5:N1}"
-                        : $"{distanceTrack,5:N0}";
-                    
-                    DisplayPopup($"Dist:\t{textFromStart} {MapPrivate.Unit}\nTrack:\t{textTrack} {MapPrivate.Unit}");
-                    e.Handled = true;
+                        var textTrack = distanceTrack < 10
+                            ? $"{distanceTrack,5:N1}"
+                            : $"{distanceTrack,5:N0}";
+
+                        DisplayPopup(
+                            $"Dist:\t{textFromStart} {MapPrivate.Unit}\nTrack:\t{textTrack} {MapPrivate.Unit}");
+
+                        e.Handled = true;
+                    }
+
                     break;
                 }
                 case CursorAction.MovingPrivateMap: {

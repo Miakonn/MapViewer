@@ -26,6 +26,7 @@ namespace MapViewer.Dialogs {
                 SizeValue.Text = Symbol.SizeMeter.ToString("N1", CultureInfo.InvariantCulture);
                 Angle = (int)Symbol.RotationDegree;
                 FilenameValue.Text = Symbol.ImageFileName;
+                LockedPos.IsChecked = Symbol.LockedPosition;
             }
         }
 
@@ -38,6 +39,7 @@ namespace MapViewer.Dialogs {
             Symbol.FillColor = ControlColorPicker.SelectedColor;
             Symbol.RotationDegree = Angle;
             Symbol.ImageFileName = FilenameValue.Text;
+            Symbol.LockedPosition = LockedPos.IsChecked ?? false;
 
             var str = SizeValue.Text.Replace(',', '.');
             if (double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sizeM)) {

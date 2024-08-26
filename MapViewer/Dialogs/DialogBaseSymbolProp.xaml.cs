@@ -17,6 +17,7 @@ namespace MapViewer.Dialogs {
                 CaptionValue.Text = Symbol.Caption;
                 ControlColorPicker.SelectedColor = Symbol.FillColor;
                 ControlOpacity.ComboBoxOpacity.Text = Symbol.OpacityPercent;
+                LockedPos.IsChecked = Symbol.LockedPosition;
             }
         }
         
@@ -33,6 +34,7 @@ namespace MapViewer.Dialogs {
             Symbol.Caption = CaptionValue.Text.Trim();
             Symbol.FillColor = ControlColorPicker.SelectedColor;
             Symbol.OpacityPercent = ControlOpacity.ComboBoxOpacity.Text;
+            Symbol.LockedPosition = LockedPos.IsChecked ?? false;
 
             var str = SizeValue.Text.Replace(',', '.');
             if (double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sizeValue)) {

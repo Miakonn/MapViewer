@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -273,11 +272,16 @@ namespace MapViewer.Symbols {
             RaiseSymbolsChanged();
         }
 
-        public void MoveSymbolPosition(Symbol symbolActive, Vector move) {
-            foreach (var symbol in GetActiveList(symbolActive)) {
+        public bool MoveSymbolPosition(Symbol symbolActive, Vector move)
+        {
+            var moved = 0;
+            foreach (var symbol in GetActiveList(symbolActive).Where(symbol => !symbol.LockedPosition)) {
                 symbol.StartPoint -= move;
+                moved++;
             }
+
             RaiseSymbolsChanged();
+            return moved > 0;
         }
         public void HideSymbols(Symbol symbolActive)
         {

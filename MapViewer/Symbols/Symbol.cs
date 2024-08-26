@@ -36,6 +36,8 @@ namespace MapViewer.Symbols {
         public double Opacity { get; set; } = 1.0;
         public bool Hidden { get; set; }
 
+        public bool LockedPosition { get; set; }
+
         [XmlIgnore]
         public string OpacityPercent {
             get => $"{Math.Round(Opacity * 100)}%";
@@ -259,6 +261,7 @@ namespace MapViewer.Symbols {
                 return Colors.Red;
             }
 
+            // ReSharper disable once PossibleNullReferenceException
             return (Color)ColorConverter.ConvertFromString(parts[0]);
         }
 

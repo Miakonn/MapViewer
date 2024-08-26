@@ -27,8 +27,6 @@ Medel prio =================================
 
 * gummiband vid förflyttning
 
-* lista med alla symboler
-
 * status på pc
 
 * bild på pc eller pc-flagga på bild

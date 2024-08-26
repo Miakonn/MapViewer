@@ -26,6 +26,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
@@ -47,7 +48,10 @@
             <dialogs:ControlOpacity x:Name="ControlOpacity" />
         </WrapPanel>
 
-        <WrapPanel Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
+        <Label Grid.Row="4" Grid.Column="0" Content="Locked pos" HorizontalAlignment="Left" />
+        <CheckBox Grid.Row="4" Grid.Column="1" Name="LockedPos" VerticalAlignment="Center" IsThreeState="False" />
+
+        <WrapPanel Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button Name="BtnApply" Click="BtnApply_Click" MinWidth="60" Margin="0,0,10,0">Apply</Button> 
 			<Button IsDefault="True" Name="BtnOk" Click="BtnOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
             <Button IsCancel="True" MinWidth="60">_Cancel</Button>
