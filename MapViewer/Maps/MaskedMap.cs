@@ -75,15 +75,15 @@ namespace MapViewer.Maps {
             }
         }
 
-        public MapDrawSettings GetMapDrawSettings(bool isToolACtive)
+        public MapDrawSettings GetMapDrawSettings(bool isToolActive)
         {
-            return new MapDrawSettings(ZoomScale, ImageScaleMperPix, PlayerMinSizePixel, isToolACtive);
+            return new MapDrawSettings(ZoomScale, ImageScaleMperPix, PlayerMinSizePixel, isToolActive);
         }
 
         public double ImageScaleMperPix {
             get => MapData.ImageScaleMperPix;
             set {
-                if (value >= 0.0  && value < 1E15) {
+                if (value >= 1E-20 && value < 1E15) {
                     MapData.ImageScaleMperPix = value;
                     ImageScaleChanged?.Invoke(this, null);
                 }
@@ -133,6 +133,9 @@ namespace MapViewer.Maps {
             PlayerSizeMeter = 0.8;
             PlayerMinSizePixel = 25;
             IsLinked = false;
+
+            CanvasOverlay.IsEnabled = true;
+            CanvasOverlay.Focusable = true;
         }
 
         public void BitmapFromUri(Uri source) {

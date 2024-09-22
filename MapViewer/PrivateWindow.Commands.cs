@@ -21,7 +21,7 @@ namespace MapViewer {
             if (source is RibbonToggleButton button) {
 				return (button.IsChecked.HasValue && button.IsChecked.Value);
 			}
-			return true;
+			return false;
 		}
 
 		#region Can execute
@@ -434,6 +434,11 @@ namespace MapViewer {
 			ActiveTool = null;
 			MapPrivate.SymbolsPM.DeleteSymbol(LastClickedSymbol);
 		}
+
+        private void Dummy_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+           // Do nothing
+        }
 
         private void DuplicateSymbol_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;

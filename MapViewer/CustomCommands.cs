@@ -19,6 +19,7 @@ namespace MapViewer {
         public static readonly RoutedUICommand DrawLine = new RoutedUICommand("Draw Line", "DrawLine", typeof(CustomCommands));
         public static readonly RoutedUICommand DrawRectangle = new RoutedUICommand("Draw Rectangle", "DrawRectangle", typeof(CustomCommands));
         public static readonly RoutedUICommand DrawText = new RoutedUICommand("Draw Text", "DrawText", typeof(CustomCommands));
+        public static readonly RoutedUICommand Dummy = new RoutedUICommand("Dummy", "Dummy", typeof(CustomCommands));
         public static readonly RoutedUICommand DuplicateSymbol = new RoutedUICommand("Duplicate", "Duplicate", typeof(CustomCommands));
         public static readonly RoutedUICommand ExitApp = new RoutedUICommand("Exit", "Exit", typeof(CustomCommands));
         public static readonly RoutedUICommand FetchSymbol = new RoutedUICommand("Move Symbol Here", "FetchSymbol", typeof(CustomCommands));

@@ -12,7 +12,6 @@ namespace MapViewer {
 
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
-
         public Size MonitorResolution {
             get => new Size(Settings.Default.PublicMonitorResolutionWidth, Settings.Default.PublicMonitorResolutionHeight);
             set {
@@ -97,14 +96,11 @@ namespace MapViewer {
             return screen;
         }
 
-
         public void RotateClockwise()
         {
             Map.RotateClockwise();
         }
 
-     
-  
         private void PublicWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;

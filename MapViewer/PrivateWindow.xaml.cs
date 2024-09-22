@@ -410,6 +410,8 @@ namespace MapViewer {
             else {
                 ComboBoxPublicScale.Text = "Linked";
             }
+
+            ClearSelection();
         }
 
         private void ComboBoxPlayerSize_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -422,9 +424,9 @@ namespace MapViewer {
             if (parts.Length == 2 && double.TryParse(parts[1], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var size)) {
                 MapPrivate.SymbolsPM.ChangePlayerSizes(size);
             }
-            MapPrivate.SymbolsPM.RaiseSymbolsChanged();
+            ClearSelection();
         }
-        
+
         private void ComboBoxPlayerMinSize_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
              var selected = (ComboBoxItem)ComboBoxPlayerMinSize.SelectedItem;
              if (selected == null || MapPublic == null || MapPrivate == null) {
@@ -456,7 +458,13 @@ namespace MapViewer {
                     MapPrivate.PlayerMinSizePixel = 35;
                     break;
             }
-            MapPrivate.SymbolsPM.RaiseSymbolsChanged();
+             ClearSelection();
+        }
+
+        private void ClearSelection()
+        {
+            MapPrivate?.SymbolsPM?.ClearSymbolSelection();
+            LastClickedSymbol = null;
         }
 
         private void Tab_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

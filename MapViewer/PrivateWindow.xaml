@@ -38,6 +38,9 @@
         <KeyBinding Key="Right" Command="mapViewer:CustomCommands.RotateSymbolCW" />
         <KeyBinding Key="Left" Command="mapViewer:CustomCommands.RotateSymbolCCW" />
 
+        <KeyBinding Key="Up" Command="mapViewer:CustomCommands.Dummy" />
+        <KeyBinding Key="Down" Command="mapViewer:CustomCommands.Dummy" />
+
         <KeyBinding Key="Delete" Command="mapViewer:CustomCommands.DeleteSymbol" />
         <KeyBinding Key="Z" Modifiers="Control" Command="mapViewer:CustomCommands.UndoSymbols" />
         <KeyBinding Key="V" Modifiers="Control" Command="mapViewer:CustomCommands.DuplicateSymbol" />
@@ -62,6 +65,7 @@
         <CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DrawRectangle" Executed="DrawRectangle_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DrawText" Executed="DrawText_Execute" CanExecute="Spell_CanExecute" />
+        <CommandBinding Command="mapViewer:CustomCommands.Dummy" Executed="Dummy_Execute" CanExecute="Always_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DuplicateSymbol" Executed="DuplicateSymbol_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.ExitApp" Executed="ExitApp_Execute" CanExecute="Always_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.FetchSymbol" Executed="FetchSymbol_Execute" CanExecute="Player_CanExecute" />
@@ -100,7 +104,8 @@
         <CommandBinding Command="mapViewer:CustomCommands.UnmaskPolygon" Executed="UnmaskPolygon_Execute" CanExecute="MaskNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.UnmaskRectangle" Executed="UnmaskRectangle_Execute" CanExecute="MaskNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.ZoomIn" Executed="ZoomIn_Execute" CanExecute="ImageNeeded_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.ZoomOut" Executed="ZoomOut_Execute" CanExecute="ImageNeeded_CanExecute" />    </Window.CommandBindings>
+        <CommandBinding Command="mapViewer:CustomCommands.ZoomOut" Executed="ZoomOut_Execute" CanExecute="ImageNeeded_CanExecute" />
+    </Window.CommandBindings>
 
     <Grid KeyDown="PrivateWinKeyDown">
         <Grid.RowDefinitions>
@@ -161,6 +166,7 @@
                               Height="20" 
                               Margin="2,5,2,5" 
                               ToolTip="Public Map Scale"
+                              Focusable="False"
                               SelectionChanged="ComboBoxPublicScale_OnSelectionChanged">
 
                         <ComboBoxItem Uid="Scale_1" Content="1:1" IsEnabled="{Binding Path=IsImageCalibrated}"/>
@@ -186,6 +192,7 @@
                               Height="20" 
                               Margin="2,5,2,5" 
                               ToolTip="Player Min Size"
+                              Focusable="False"
                               SelectionChanged="ComboBoxPlayerMinSize_OnSelectionChanged" >
                         <ComboBoxItem Uid="PlayerMinSize_10p" Content="10 pixel"/>
                         <ComboBoxItem Uid="PlayerMinSize_15p" Content="15 pixel"  IsSelected="True"/>
@@ -198,6 +205,7 @@
                               Height="20" 
                               Margin="2,5,2,5" 
                               ToolTip="Player Size"
+                              Focusable="False"
                               SelectionChanged="ComboBoxPlayerSize_OnSelectionChanged" >
                         <ComboBoxItem Uid="PlayerSize_0.5" Content="0.5m"/>
                         <ComboBoxItem Uid="PlayerSize_0.6" Content="0.6m"/>
