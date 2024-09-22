@@ -435,11 +435,6 @@ namespace MapViewer {
 			MapPrivate.SymbolsPM.DeleteSymbol(LastClickedSymbol);
 		}
 
-        private void Dummy_Execute(object sender, ExecutedRoutedEventArgs e)
-        {
-           // Do nothing
-        }
-
         private void DuplicateSymbol_Execute(object sender, ExecutedRoutedEventArgs e) {
             ActiveTool = null;
             if (LastClickedSymbol == null) {

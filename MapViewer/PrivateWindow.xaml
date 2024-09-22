@@ -38,9 +38,6 @@
         <KeyBinding Key="Right" Command="mapViewer:CustomCommands.RotateSymbolCW" />
         <KeyBinding Key="Left" Command="mapViewer:CustomCommands.RotateSymbolCCW" />
 
-        <KeyBinding Key="Up" Command="mapViewer:CustomCommands.Dummy" />
-        <KeyBinding Key="Down" Command="mapViewer:CustomCommands.Dummy" />
-
         <KeyBinding Key="Delete" Command="mapViewer:CustomCommands.DeleteSymbol" />
         <KeyBinding Key="Z" Modifiers="Control" Command="mapViewer:CustomCommands.UndoSymbols" />
         <KeyBinding Key="V" Modifiers="Control" Command="mapViewer:CustomCommands.DuplicateSymbol" />
@@ -65,7 +62,6 @@
         <CommandBinding Command="mapViewer:CustomCommands.DrawLine" Executed="DrawLine_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DrawRectangle" Executed="DrawRectangle_Execute" CanExecute="Spell_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DrawText" Executed="DrawText_Execute" CanExecute="Spell_CanExecute" />
-        <CommandBinding Command="mapViewer:CustomCommands.Dummy" Executed="Dummy_Execute" CanExecute="Always_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.DuplicateSymbol" Executed="DuplicateSymbol_Execute" CanExecute="SymbolNeeded_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.ExitApp" Executed="ExitApp_Execute" CanExecute="Always_CanExecute" />
         <CommandBinding Command="mapViewer:CustomCommands.FetchSymbol" Executed="FetchSymbol_Execute" CanExecute="Player_CanExecute" />
