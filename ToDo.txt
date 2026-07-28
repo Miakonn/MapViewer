@@ -1,17 +1,22 @@
 // Buggar
 
-System.ArgumentException: "infinity" är inte ett giltigt värde för egenskapen Width.
+System.ArgumentException: "infinity" ï¿½r inte ett giltigt vï¿½rde fï¿½r egenskapen Width.
    vid System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
    vid System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
    vid MapViewer.Symbols.SymbolRectangle.Draw(CanvasOverlay canvas, MapDrawSettings settings)
 
 // 	Nya funktioner
 
-Hög prio ================================
+Hï¿½g prio ================================
+* GÃ¶r fog war randigt
 
-* mer ångra-funktion på symboler
+* lï¿½gg vit eller svart bakgrund pï¿½ bilder
 
-* lägg till fler status, "Fire", "RedCross", "Cross", "GreenCross"
+* min storlek pï¿½ vanlika ikoner
+
+* mer ï¿½ngra-funktion pï¿½ symboler
+
+* lï¿½gg till fler status, "Fire", "RedCross", "Cross", "GreenCross"
 
 Medel prio =================================
 
@@ -19,34 +24,34 @@ Medel prio =================================
 
 * Markera alla med Ctrl-a
 
-* Spara delmängd av symboler
+* Spara delmï¿½ngd av symboler
 
 * symboler utan att kalibrera bild?
 
 * kolla indata i dialogprop
 
-* gummiband vid förflyttning
+* gummiband vid fï¿½rflyttning
 
-* status på pc
+* status pï¿½ pc
 
-* bild på pc eller pc-flagga på bild
+* bild pï¿½ pc eller pc-flagga pï¿½ bild
 
-Låg prio ------------------------
+Lï¿½g prio ------------------------
 
-* släppa låsta bildfiler?
+* slï¿½ppa lï¿½sta bildfiler?
 
 * rotera alla objekt?
 
-* riktning på creature?
+* riktning pï¿½ creature?
 
-* ändra text-storlek
+* ï¿½ndra text-storlek
 
 * gruppera symboler
 
-* visa rutan före publicering
+* visa rutan fï¿½re publicering
 
-* fixa så zoom är runt cursor
+* fixa sï¿½ zoom ï¿½r runt cursor
 
-* tillåt rotering av kompass
+* tillï¿½t rotering av kompass
 
 * hit points i prop dialogen?
